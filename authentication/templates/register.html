@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<main class="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-6">
+                <div class="card loginCard my-4">
+                    <div class="card-body">
+                        
+                      <div class="pt-4 pb-2">
+                        <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                        <p class="text-center small">Enter your details to create account</p>
+                      </div>
+                      <form class="row g-3 needs-validation loginForm" novalidate>
+                        <div class="col-md-12">
+                            <label  class="form-label">Your Name</label>
+                            <div class="input-group has-validation">
+                              <span class="input-group-text inputGroupPrepend"><i class="las la-user-circle"></i></span>
+                              <input type="text" name="username" class="form-control"  required>
+                              <div class="invalid-feedback">Please enter your Name.</div>
+                            </div>
+                          </div>
+                        <div class="col-md-12">
+                          <label  class="form-label">Your Email</label>
+                          <div class="input-group has-validation">
+                            <span class="input-group-text inputGroupPrepend"><i class="las la-at"></i></span>
+                            <input type="text" name="email" class="form-control"  required>
+                            <div class="invalid-feedback">Please enter your Email Address.</div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Password</label>
+                            <div class="input-group has-validation">
+                              <span class="input-group-text inputGroupPrepend"><i class="las la-unlock-alt"></i></span>
+                            <input type="password" name="password" class="form-control" required>
+                            <div class="invalid-feedback">Please enter your password!</div>
+                            </div>
+                          </div>
+                        <div class="col-md-12">
+                          <label class="form-label">Confirm Password</label>
+                          <div class="input-group has-validation">
+                            <span class="input-group-text inputGroupPrepend"><i class="las la-unlock-alt"></i></span>
+                          <input type="password" name="password2" class="form-control" required>
+                          <div class="invalid-feedback">Please enter your password!</div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <button class="btn btn-primary w-100 mt-2" type="submit">Create Account</button>
+                        </div>
+                        <div class="col-12">
+                          <p class="small mb-0 mt-1">Already have an account? <a href="{% url 'login' %}" class="regLink">Log in</a></p>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="right my-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="{% url 'login' %}" type="button" class="signUpLink btn btn-info">Sign In? <i class="las la-angle-double-right"></i></a>
+                            <div class="logo mx-auto text-center">
+                                <img src="../../static/img/logo/ke.png" class="img-fluid" alt="" srcset="">
+                            </div>
+                            <div class="right-texts my-3 mx-auto text-center">
+                            <h4>Welcome to Veterinary Medicines Directorate</h4>
+                            <p>
+                                The Veterinary Medicines Directorate (VMD) is a new agency tasked with regulating the manufacture, importation, exportation, registration, distribution,
+                                prescription and dispensing of veterinary medicines and other animal health products in Kenya.
+                            </p>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+        </div>
+    </div>
+  </main>
+
+{% endblock %}

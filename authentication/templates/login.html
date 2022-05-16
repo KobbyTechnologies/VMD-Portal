@@ -2,6 +2,65 @@
 {% load static %}
 {% block base %}
 
-<button class="btn btn-success">Try</button>
+<main class="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-5">
+                <div class="card loginCard my-5" style="padding: 4rem 0rem 4rem 0rem;">
+                    <div class="card-body">
+                      <div class="pt-4 pb-2">
+                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                        <p class="text-center small">Enter your Email & password to login</p>
+                      </div>
+                      <form class="row g-3 needs-validation loginForm" novalidate>
+                        <div class="col-md-12">
+                          <label  class="form-label">Email</label>
+                          <div class="input-group has-validation">
+                            <span class="input-group-text inputGroupPrepend"><i class="las la-at"></i></span>
+                            <input type="text" name="email" class="form-control"  required>
+                            <div class="invalid-feedback">Please enter your Email Address.</div>
+                          </div>
+                        </div>
+    
+                        <div class="col-md-12">
+                          <label class="form-label">Password</label>
+                          <div class="input-group has-validation">
+                            <span class="input-group-text inputGroupPrepend"><i class="las la-unlock-alt"></i></span>
+                          <input type="password" name="password" class="form-control" required>
+                          <div class="invalid-feedback">Please enter your password!</div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <button class="btn btn-primary w-100 mt-4" type="submit">Start Now</button>
+                        </div>
+                        <div class="col-12">
+                          <p class="small mb-0 mt-3">Don't have account? <a href="{% url 'register' %}" class="regLink">Create an account</a></p>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+                <div class="right my-5">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="{% url 'register' %}" type="button" class="signUpLink btn btn-info">Sign Up? <i class="las la-angle-double-right"></i></a>
+                            <div class="logo mx-auto text-center">
+                                <img src="../../static/img/logo/ke.png" class="img-fluid" alt="" srcset="">
+                            </div>
+                            <div class="right-text my-3 mx-auto text-center">
+                            <h4>Welcome to Veterinary Medicines Directorate</h4>
+                            <p>
+                                The Veterinary Medicines Directorate (VMD) is a new agency tasked with regulating the manufacture, importation, exportation, registration, distribution,
+                                prescription and dispensing of veterinary medicines and other animal health products in Kenya.
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </main>
 
 {% endblock %}
