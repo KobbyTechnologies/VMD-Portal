@@ -1,0 +1,1 @@
+web: gunicorn VMD.wsgi --log-file -
