@@ -31,7 +31,7 @@
                           </div>
                         </div>
                         <div class="col-md-12">
-                          <button class="btn btn-primary w-100 mt-4" type="submit">Start Now</button>
+                          <a href="{% url 'dashboard' %}" role="button" class="btn btn-primary w-100 mt-4 startBtn" type="submit">Start Now</a>
                         </div>
                         <div class="col-12">
                           <p class="small mb-0 mt-3">Don't have account? <a href="{% url 'register' %}" class="regLink">Create an account</a></p>
@@ -44,7 +44,7 @@
                 <div class="right my-5">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{% url 'register' %}" type="button" class="signUpLink btn btn-info">Sign Up? <i class="las la-angle-double-right"></i></a>
+                            <a href="{% url 'register' %}" type="button" class="signUpLink btn btn-primary">Sign Up? <i class="las la-angle-double-right"></i></a>
                             <div class="logo mx-auto text-center">
                                 <img src="../../static/img/logo/ke.png" class="img-fluid" alt="" srcset="">
                             </div>

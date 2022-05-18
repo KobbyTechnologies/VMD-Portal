@@ -57,12 +57,12 @@
     border: 2px solid var(--third-color);
 }
 
-.loginForm button {
+.loginForm .startBtn {
     background: var(--green);
     border: var(--green);
 }
 
-.loginForm button:hover {
+.loginForm .startBtn:hover {
     background: #196F3D;
     border: #196F3D;
 }
@@ -74,6 +74,8 @@
 }
 
 .signUpLink {
+    background: var(--first-color) !important;
+    border-radius: 5px;
     color: white !important;
     text-decoration: none;
     font-size: 20px;
