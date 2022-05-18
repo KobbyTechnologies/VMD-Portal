@@ -12,6 +12,12 @@
     --red: #c81718;
     --white-shade: #e0e9f1;
 }
+.main{
+    background: url(../img/bg/1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 .newsCard{
     background:linear-gradient(to right, #8696b8, #F7F7F7) !important;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
