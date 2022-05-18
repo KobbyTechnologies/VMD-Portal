@@ -1,4 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
+{% block base %}
 
 
 <!--Header-->
@@ -10,7 +12,6 @@
 <!-- End Sidebar -->
 
 <main id="main" class="main">
-
   <div class="pagetitle">
     <h1>Dashboard</h1>
     <nav>
@@ -19,7 +20,9 @@
         <li class="breadcrumb-item active">Dashboard</li>
       </ol>
     </nav>
-  </div><!-- End Page Title -->
-</main><!-- End #main -->
+  </div>
+</main>
 
 {% include 'footer.html' %}
+
+{% endblock %}
