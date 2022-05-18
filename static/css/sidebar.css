@@ -89,7 +89,7 @@
     align-items: center;
     font-size: 15px;
     font-weight: 600;
-    color: var(--red);
+    color: #000;
     transition: 0.3;
     background: var(--white-shade);
     padding: 10px 15px;

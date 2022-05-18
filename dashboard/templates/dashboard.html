@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block base %}
-
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
 <!--Header-->
 {% include 'navbar.html' %}
@@ -21,6 +21,329 @@
       </ol>
     </nav>
   </div>
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card pb-3" style="height: 420px; width:100%;overflow: hidden;">
+          <div class="card-body">
+            <h5 class="card-title">Registration Info</h5>
+
+            <table class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+              <thead>
+                <tr>
+                  <th scope="col">Certificate</th>
+                  <th scope="col">Renewal Date</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Dawa ya Kuku</td>
+                  <td><a href="#" class="text-primary">22-01-2023</a></td>
+                  <td><span class="badge bg-success">Active</span></td>
+                </tr>
+                <tr>
+                  <td>Dawa ya Kondoo</td>
+                  <td><a href="#" class="text-primary">null</a></td>
+                  <td><span class="badge bg-primary">Pending</span></td>
+                </tr>
+                <tr>
+                  <td>Dawa ya Mifugo</td>
+                  <td><a href="#" class="text-primary">22-01-2023</a></td>
+                  <td><span class="badge bg-danger">Rejected</span></td>
+                </tr>
+                <tr>
+                  <td>Dawa ya Paka</td>
+                  <td><a href="#" class="text-primar">22-01-2023</a></td>
+                  <td><span class="badge bg-warning">Expired</span></td>
+                </tr>
+                <tr>
+                  <td>Dawa ya Paka</td>
+                  <td><a href="#" class="text-primar">22-01-2023</a></td>
+                  <td><span class="badge bg-danger">Expired</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card activityCard">
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Today</a></li>
+              <li><a class="dropdown-item" href="#">This Month</a></li>
+              <li><a class="dropdown-item" href="#">This Year</a></li>
+            </ul>
+          </div>
+
+          <div class="card-body">
+            <h5 class="card-title text-white">Recent Activity <span class="text-light">| Today</span></h5>
+            <div class="activity">
+              <div class="activity-item d-flex">
+                <div class="activite-label">32 min</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  Applied for Veterinary pharmaceutical Certificate
+                </div>
+              </div>
+              <div class="activity-item d-flex">
+                <div class="activite-label">90 min</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  Applied for Veterinary pesticide Certificate
+                </div>
+              </div>
+              <div class="activity-item d-flex">
+                <div class="activite-label">90 min</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  Applied for Veterinary pesticide Certificate
+                </div>
+              </div>
+              <div class="activity-item d-flex">
+                <div class="activite-label">90 min</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  Applied for Veterinary pesticide Certificate
+                </div>
+              </div>
+              <div class="activity-item d-flex">
+                <div class="activite-label">90 min</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  Applied for Veterinary pesticide Certificate
+                </div>
+              </div>
+              <div class="activity-item d-flex">
+                <div class="activite-label">90 min</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  Applied for Veterinary pesticide Certificate
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Recent Activity -->
+      </div>
+    </div>
+    <div class="row my-3">
+      <div class="col-md-4">
+        <div class="card info-card sales-card">
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Today</a></li>
+              <li><a class="dropdown-item" href="#">This Month</a></li>
+              <li><a class="dropdown-item" href="#">This Year</a></li>
+            </ul>
+          </div>
+
+          <div class="card-body">
+            <h5 class="card-title">Retention <span>| Today</span></h5>
+
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-bug"></i>
+              </div>
+              <div class="ps-3">
+                <h6>145</h6>
+                <span class="text-success small pt-1 fw-bold">12%</span> <span
+                  class="text-muted small pt-2 ps-1">increase</span>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card info-card revenue-card">
+
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Today</a></li>
+              <li><a class="dropdown-item" href="#">This Month</a></li>
+              <li><a class="dropdown-item" href="#">This Year</a></li>
+            </ul>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Retention <span>| Today</span></h5>
+
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-bug"></i>
+              </div>
+              <div class="ps-3">
+                <h6>145</h6>
+                <span class="text-success small pt-1 fw-bold">12%</span> <span
+                  class="text-muted small pt-2 ps-1">increase</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+
+        <div class="card info-card customers-card">
+
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Today</a></li>
+              <li><a class="dropdown-item" href="#">This Month</a></li>
+              <li><a class="dropdown-item" href="#">This Year</a></li>
+            </ul>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Retention <span>| Today</span></h5>
+
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-bug"></i>
+              </div>
+              <div class="ps-3">
+                <h6>145</h6>
+                <span class="text-success small pt-1 fw-bold">12%</span> <span
+                  class="text-muted small pt-2 ps-1">increase</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card" style="height: 420px; width:100%;overflow: hidden;">
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Today</a></li>
+              <li><a class="dropdown-item" href="#">This Month</a></li>
+              <li><a class="dropdown-item" href="#">This Year</a></li>
+            </ul>
+          </div>
+
+          <div class="card-body pb-0">
+            <h5 class="card-title">Report <span>| This Month</span></h5>
+
+            <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
+                  legend: {
+                    data: ['Metrics A', 'Metrics B']
+                  },
+                  radar: {
+                    // shape: 'circle',
+                    indicator: [{
+                        name: 'Registration',
+                        max: 6500
+                      },
+                      {
+                        name: 'Renewal',
+                        max: 16000
+                      },
+                      {
+                        name: 'Retention',
+                        max: 30000
+                      },
+                      {
+                        name: 'Appeal',
+                        max: 38000
+                      },
+                      {
+                        name: 'Variation',
+                        max: 52000
+                      },
+                      {
+                        name: 'Replacement of Certificates',
+                        max: 25000
+                      }
+                    ]
+                  },
+                  series: [{
+                    name: 'Budget vs spending',
+                    type: 'radar',
+                    data: [{
+                        value: [4200, 3000, 20000, 35000, 50000, 18000],
+                        name: 'Metrics A'
+                      },
+                      {
+                        value: [5000, 14000, 28000, 26000, 42000, 21000],
+                        name: 'Metrics B'
+                      }
+                    ]
+                  }]
+                });
+              });
+            </script>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card" style="height: 420px; width:100%;overflow: hidden;">
+          <div class="card-body pb-0">
+            <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
+
+            <div class="updates">
+              <div class="row">
+                <div class="col-md-12 mb-2">
+                  <div class="card h-100 newsCard m-2">
+                    <img src="../../static/img/dash/Noodies-Pro-mobile-Concept---2.gif" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Raila Chooses karua</h5>
+                      <p class="card-text">This is a longer card with supporting .. <a href="#">View <i
+                            class="bi bi-box-arrow-up-right"></i></a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 mb-2">
+                  <div class="card h-100 newsCard m-2">
+                    <img src="../../static/img/dash/Noodies-Pro-mobile-Concept---2.gif" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Raila Chooses karua</h5>
+                      <p class="card-text">This is a longer card with supporting .. <a href="#">View <i
+                            class="bi bi-box-arrow-up-right"></i></a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End sidebar recent posts-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
 </main>
 
 {% include 'footer.html' %}
