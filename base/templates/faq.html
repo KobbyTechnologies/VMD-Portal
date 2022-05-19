@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Frequently Asked Questions</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Frequently Asked Questions</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section faq">
+        <div class="row mt-5">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Frequently Asked Questions</h5>
+
+                        <div class="accordion accordion-flush" id="faq-group-1">
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-1" type="button"
+                                        data-bs-toggle="collapse">
+                                        What does VMD do?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-1" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        The Veterinary Medicines Directorate (VMD) is a new agency tasked with
+                                        regulating the manufacture, importation, exportation, registration,
+                                        distribution, prescription and dispensing of veterinary medicines and other
+                                        animal health products in Kenya.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-2" type="button"
+                                        data-bs-toggle="collapse">
+                                        What does VMD do?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-2" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        The Veterinary Medicines Directorate (VMD) is a new agency tasked with
+                                        regulating the manufacture, importation, exportation, registration,
+                                        distribution, prescription and dispensing of veterinary medicines and other
+                                        animal health products in Kenya.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-3" type="button"
+                                        data-bs-toggle="collapse">
+                                        What does VMD do?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-3" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        The Veterinary Medicines Directorate (VMD) is a new agency tasked with
+                                        regulating the manufacture, importation, exportation, registration,
+                                        distribution, prescription and dispensing of veterinary medicines and other
+                                        animal health products in Kenya.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-4" type="button"
+                                        data-bs-toggle="collapse">
+                                        What does VMD do?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-4" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        The Veterinary Medicines Directorate (VMD) is a new agency tasked with
+                                        regulating the manufacture, importation, exportation, registration,
+                                        distribution, prescription and dispensing of veterinary medicines and other
+                                        animal health products in Kenya.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-5" type="button"
+                                        data-bs-toggle="collapse">
+                                        What does VMD do?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-5" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        The Veterinary Medicines Directorate (VMD) is a new agency tasked with
+                                        regulating the manufacture, importation, exportation, registration,
+                                        distribution, prescription and dispensing of veterinary medicines and other
+                                        animal health products in Kenya.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% include 'footer.html' %}
+
+{% endblock %}

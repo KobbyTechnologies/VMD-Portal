@@ -3,7 +3,7 @@
   <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-      <a class="nav-link " href="index.html">
+      <a class="nav-link " href="{% url 'dashboard' %}">
         <i class="bi bi-grid"></i>
         <span>Dashboard</span>
       </a>
@@ -60,6 +60,12 @@
       <a class="nav-link collapsed" href="{% url 'profile' %}">
         <i class="bi bi-person-circle"></i>
         <span>Profile</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'faq' %}">
+        <i class="bi bi-question-circle-fill"></i>
+        <span>F.A.Q</span>
       </a>
     </li>
     <li class="nav-item">

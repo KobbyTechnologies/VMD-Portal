@@ -17,6 +17,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    min-height: 85vh;
 }
 .newsCard{
     background:linear-gradient(to right, #8696b8, #F7F7F7) !important;
