@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap');
+
 
 :root {
     --first-color: #0974bd;
     --first-color-dark: #0e5a8d;
     --second-color: #2b87cd;
-    --font1: 'Open Sans', sans-serif;
+    --font1:'Nunito Sans', sans-serif;
+    --font2: 'Red Hat Display', sans-serif;
     --third-color: #8696b8;
     --green: #12bf68;
     --vmd-grey: #b8bab5;
@@ -29,7 +30,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Nunito", sans-serif;
+  font-family: var(--font1);
 }
 
 /*--------------------------------------------------------------
@@ -248,7 +249,7 @@ h6 {
   font-size: 18px;
   font-weight: 500;
   color: #012970;
-  font-family: "Poppins", sans-serif;
+  font-family: var(--font2);
 }
 
 .card-title span {
@@ -268,7 +269,7 @@ h6 {
 /* Alerts */
 .alert-heading {
   font-weight: 500;
-  font-family: "Poppins", sans-serif;
+  font-family: var(--font2);
   font-size: 20px;
 }
 
@@ -317,7 +318,7 @@ h6 {
 /* Breadcrumbs */
 .breadcrumb {
   font-size: 14px;
-  font-family: "Nunito", sans-serif;
+  font-family: var(--font1);
   color: #899bbd;
   font-weight: 600;
 }
@@ -614,7 +615,7 @@ div.dataTables_filter input {
 }
 table{
     font-family: var(--font1);
-    font-family: 'Red Hat Display', sans-serif;
+    font-family: var(--font2);
 }
 table  thead {
     background: #8696b8;

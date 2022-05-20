@@ -1,10 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap');
+
 :root {
     --first-color: #0974bd;
     scroll-behavior: smooth;
+    --font1:'Nunito Sans', sans-serif;
+    --font2: 'Red Hat Display', sans-serif;
 }
 
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: var(--font1);
     background: #f6f9ff;
     color: #444444;
   }
