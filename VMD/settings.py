@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'base',
     'dashboard',
     'registration',
+    'pharmaceutical',
 ]
 
 MIDDLEWARE = [
