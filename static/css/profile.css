@@ -1,98 +1,98 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap');
 
 :root {
-    --first-color: #0974bd;
-    --first-color-dark: #0e5a8d;
-    --second-color: #2b87cd;
-    --font1:'Nunito Sans', sans-serif;
-    --font2: 'Red Hat Display', sans-serif;
-    --third-color: #8696b8;
-    --green: #12bf68;
-    --vmd-grey: #b8bab5;
-    --red: #c81718;
-    --white-shade: #e0e9f1;
+  --first-color: #0974bd;
+  --first-color-dark: #0e5a8d;
+  --second-color: #2b87cd;
+  --font1: 'Nunito Sans', sans-serif;
+  --font2: 'Red Hat Display', sans-serif;
+  --third-color: #8696b8;
+  --green: #12bf68;
+  --vmd-grey: #b8bab5;
+  --red: #c81718;
+  --white-shade: #e0e9f1;
 }
 
 .iconslist {
-    display: grid;
-    max-width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.25rem;
-    padding-top: 15px;
-  }
-  
-  .iconslist .icon {
-    background-color: #fff;
-    border-radius: 0.25rem;
-    text-align: center;
-    color: #012970;
-    padding: 15px 0;
-  }
-  
-  .iconslist i {
-    margin: 0.25rem;
-    font-size: 2.5rem;
-  }
-  
-  .iconslist .label {
-    font-family: var(--font2);
-    display: inline-block;
-    width: 100%;
-    overflow: hidden;
-    padding: 0.25rem;
-    font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #666;
-  }
-  
-  .profile .profile-card img {
-    max-width: 120px;
-  }
-  
-  .profile .profile-card h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #2c384e;
-    margin: 10px 0 0 0;
-  }
-  
-  .profile .profile-card h3 {
-    font-size: 18px;
-  }
-  
-  .profile .profile-card .social-links a {
-    font-size: 20px;
-    display: inline-block;
-    color: rgba(1, 41, 112, 0.5);
-    line-height: 0;
-    margin-right: 10px;
-    transition: 0.3s;
-  }
-  
-  .profile .profile-card .social-links a:hover {
-    color: #012970;
-  }
-  
-  .profile .profile-overview .row {
-    margin-bottom: 20px;
-    font-size: 15px;
-  }
-  
-  .profile .profile-overview .card-title {
-    color: #012970;
-  }
-  
-  .profile .profile-overview .label {
-    font-weight: 600;
-    color: rgba(1, 41, 112, 0.6);
-  }
-  
-  .profile .profile-edit label {
-    font-weight: 600;
-    color: rgba(1, 41, 112, 0.6);
-  }
-  
-  .profile .profile-edit img {
-    max-width: 120px;
-  }
+  display: grid;
+  max-width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  padding-top: 15px;
+}
+
+.iconslist .icon {
+  background-color: #fff;
+  border-radius: 0.25rem;
+  text-align: center;
+  color: #012970;
+  padding: 15px 0;
+}
+
+.iconslist i {
+  margin: 0.25rem;
+  font-size: 2.5rem;
+}
+
+.iconslist .label {
+  font-family: var(--font2);
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  padding: 0.25rem;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #666;
+}
+
+.profile .profile-card img {
+  max-width: 120px;
+}
+
+.profile .profile-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c384e;
+  margin: 10px 0 0 0;
+}
+
+.profile .profile-card h3 {
+  font-size: 18px;
+}
+
+.profile .profile-card .social-links a {
+  font-size: 20px;
+  display: inline-block;
+  color: rgba(1, 41, 112, 0.5);
+  line-height: 0;
+  margin-right: 10px;
+  transition: 0.3s;
+}
+
+.profile .profile-card .social-links a:hover {
+  color: #012970;
+}
+
+.profile .profile-overview .row {
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.profile .profile-overview .card-title {
+  color: #012970;
+}
+
+.profile .profile-overview .label {
+  font-weight: 600;
+  color: rgba(1, 41, 112, 0.6);
+}
+
+.profile .profile-edit label {
+  font-weight: 600;
+  color: rgba(1, 41, 112, 0.6);
+}
+
+.profile .profile-edit img {
+  max-width: 120px;
+}

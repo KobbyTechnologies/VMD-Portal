@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Gelasio:ital@1&family=Nunito+Sans&family=Titillium+Web&display=swap');
 
 :root {
-    --first-color: #0974bd;
-    --first-color-dark: #0e5a8d;
-    --second-color: #2b87cd;
-    --font1:'Nunito Sans', sans-serif;
-    --font2: 'Red Hat Display', sans-serif;
-    --third-color: #8696b8;
-    --green: #12bf68;
-    --vmd-grey: #b8bab5;
-    --red: #c81718;
-    --white-shade: #e0e9f1;
+  --first-color: #0974bd;
+  --first-color-dark: #0e5a8d;
+  --second-color: #2b87cd;
+  --font1: 'Nunito Sans', sans-serif;
+  --font2: 'Titillium Web', sans-serif;
+  --font3: 'Gelasio', serif;
+  --third-color: #8696b8;
+  --green: #12bf68;
+  --vmd-grey: #b8bab5;
+  --red: #c81718;
+  --white-shade: #e0e9f1;
 }
 
 a {
@@ -318,18 +318,18 @@ h6 {
 /* Breadcrumbs */
 .breadcrumb {
   font-size: 14px;
-  font-family: var(--font1);
-  color: #899bbd;
+  font-family: var(--font2);
+  color: var(--first-color);
   font-weight: 600;
 }
 
 .breadcrumb a {
-  color: #899bbd;
+  color: var(--third-color);
   transition: 0.3s;
 }
 
 .breadcrumb a:hover {
-  color: #51678f;
+  color: var(--first-color);
 }
 
 .breadcrumb .breadcrumb-item::before {
@@ -450,17 +450,21 @@ h6 {
   max-height: 320px;
   overflow-y: scroll;
 }
-.dashboard .activity::-webkit-scrollbar{
-  width:.8em;
+
+.dashboard .activity::-webkit-scrollbar {
+  width: .8em;
 }
+
 .dashboard .activity::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
+
 .dashboard .activity::-webkit-scrollbar-thumb {
   background-color: rgb(255, 255, 255);
   outline: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
 }
+
 .dashboard .activity .activity-item .activite-label {
   color: rgb(206, 206, 206);
   position: relative;
@@ -582,60 +586,71 @@ h6 {
 }
 
 
-.main{
-    background: url(../img/bg/1.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 85vh;
+.main {
+  background: url(../img/bg/1.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 85vh;
 }
-.newsCard{
-    background:linear-gradient(to right, #8696b8, #F7F7F7) !important;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-    box-shadow:2px 2px 20px rgba(0,0,0,0.3);
-    border:none;
-  }
-  .newsCard p{
-   font-size: 15px;
-   margin-top: -1em;
-   color: #222
-  }
-  .newsCard:hover{
-    transform: scale(1.05);
-    transition: all 1s ease;
-    z-index: 999;
-  }
+
+.newsCard {
+  background: linear-gradient(to right, #8696b8, #F7F7F7) !important;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+  border: none;
+}
+
+.newsCard p {
+  font-size: 15px;
+  margin-top: -1em;
+  color: #222
+}
+
+.newsCard:hover {
+  transform: scale(1.05);
+  transition: all 1s ease;
+  z-index: 999;
+}
+
 .activityCard {
-    background: linear-gradient(to right, #0e5a8d, #c81718) !important;
-    height: 420px !important;
+  background: linear-gradient(to right, #0e5a8d, #c81718) !important;
+  height: 420px !important;
 }
+
 div.dataTables_filter input {
-    border-color: var(--first-color);
-    display: none;
+  border-color: var(--first-color);
+  display: none;
 }
-table{
-    font-family: var(--font1);
-    font-family: var(--font2);
+
+table {
+  font-family: var(--font1);
+  font-family: var(--font2);
 }
-table  thead {
-    background: #8696b8;
-    color: #fff;
-    height: 3rem;
-    font-weight: 700;
+
+table thead {
+  background: #8696b8;
+  color: #fff;
+  height: 3rem;
+  font-weight: 700;
 }
-.updates{
-    max-height: 320px;
+
+.updates {
+  max-height: 320px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
-.updates::-webkit-scrollbar{
-    width:.6em;
-  }
-  .updates::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  }
-  .updates::-webkit-scrollbar-thumb {
-    background-color: var(--green);
-    outline: 0.8px solid var(--white-shade);
-    border-radius: 5px;
-  }
+
+.updates::-webkit-scrollbar {
+  width: .6em;
+}
+
+.updates::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.updates::-webkit-scrollbar-thumb {
+  background-color: var(--green);
+  outline: 0.8px solid var(--white-shade);
+  border-radius: 5px;
+}

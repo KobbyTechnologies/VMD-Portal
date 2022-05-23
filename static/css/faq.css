@@ -2,24 +2,24 @@
 
 
 :root {
-    --first-color: #0974bd;
-    --first-color-dark: #0e5a8d;
-    --second-color: #2b87cd;
-    --font1:'Nunito Sans', sans-serif;
-    --font2: 'Red Hat Display', sans-serif;
-    --third-color: #8696b8;
-    --green: #12bf68;
-    --vmd-grey: #b8bab5;
-    --red: #c81718;
-    --white-shade: #e0e9f1;
+  --first-color: #0974bd;
+  --first-color-dark: #0e5a8d;
+  --second-color: #2b87cd;
+  --font1: 'Nunito Sans', sans-serif;
+  --font2: 'Red Hat Display', sans-serif;
+  --third-color: #8696b8;
+  --green: #12bf68;
+  --vmd-grey: #b8bab5;
+  --red: #c81718;
+  --white-shade: #e0e9f1;
 }
 
 .faq .basic h6 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #4154f1;
-  }
-  
-  .faq .basic p {
-    color: #6980aa;
-  }
+  font-size: 18px;
+  font-weight: 600;
+  color: #4154f1;
+}
+
+.faq .basic p {
+  color: #6980aa;
+}

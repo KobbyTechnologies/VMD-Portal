@@ -3,7 +3,7 @@
 :root {
     --first-color: #0974bd;
     scroll-behavior: smooth;
-    --font1:'Nunito Sans', sans-serif;
+    --font1: 'Nunito Sans', sans-serif;
     --font2: 'Red Hat Display', sans-serif;
 }
 
@@ -11,4 +11,4 @@ body {
     font-family: var(--font1);
     background: #f6f9ff;
     color: #444444;
-  }
+}
