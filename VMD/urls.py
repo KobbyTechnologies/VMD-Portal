@@ -25,4 +25,5 @@ urlpatterns = [
     path('', include('pharmaceutical.urls')),
     path('', include('vaccine.urls')),
     path('', include('pesticide.urls')),
+    path('', include('feed.urls')),
 ]
