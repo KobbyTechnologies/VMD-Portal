@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('', include('registration.urls')),
     path('', include('pharmaceutical.urls')),
+    path('', include('vaccine.urls')),
 ]

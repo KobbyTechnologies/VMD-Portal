@@ -161,6 +161,11 @@
   height: 1.55rem;
 }
 
+.Pharmaceutical .form-check-input {
+  width: auto !important;
+  padding: auto !important;
+}
+
 .Pharmaceutical input,
 .Pharmaceutical textarea,
 .Pharmaceutical select {
@@ -173,9 +178,7 @@
 
 
 /* Mark input boxes that gets an error on validation: */
-.Pharmaceutical input.invalid,
-.Pharmaceutical textarea.invalid,
-.Pharmaceutical select {
+.Pharmaceutical input.invalid {
   background-color: #fae8e8;
 }
 
