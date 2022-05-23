@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'registration',
     'pharmaceutical',
     'vaccine',
+    'pesticide',
 ]
 
 MIDDLEWARE = [

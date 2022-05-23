@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('registration.urls')),
     path('', include('pharmaceutical.urls')),
     path('', include('vaccine.urls')),
+    path('', include('pesticide.urls')),
 ]
