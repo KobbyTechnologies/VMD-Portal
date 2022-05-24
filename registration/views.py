@@ -4,3 +4,6 @@ from django.shortcuts import render
 
 def registrationRequest(request):
     return render(request,'registration.html')
+
+def myApplications(request):
+    return render(request, "applications.html")
