@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'feed',
     'biocidal',
     'devices',
+    'alternative',
 ]
 
 MIDDLEWARE = [
