@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'pesticide',
     'feed',
     'biocidal',
+    'devices',
 ]
 
 MIDDLEWARE = [

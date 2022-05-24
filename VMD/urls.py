@@ -27,4 +27,5 @@ urlpatterns = [
     path('', include('pesticide.urls')),
     path('', include('feed.urls')),
     path('', include('biocidal.urls')),
+    path('', include('devices.urls')),
 ]
