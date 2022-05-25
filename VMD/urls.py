@@ -29,4 +29,5 @@ urlpatterns = [
     path('', include('biocidal.urls')),
     path('', include('devices.urls')),
     path('', include('alternative.urls')),
+    path('', include('variation.urls')),
 ]

@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'biocidal',
     'devices',
     'alternative',
+    'variation',
 ]
 
 MIDDLEWARE = [
