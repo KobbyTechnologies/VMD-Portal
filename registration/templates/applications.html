@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>My Applications</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">My Applications</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section contact">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">My Applications</h5>
+                        <!-- Bordered Tabs Justified -->
+                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                    aria-controls="home" aria-selected="true">New Applications
+                                    (1)</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                    aria-controls="profile" aria-selected="false">Approved Applications
+                                    (1)</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-contact" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Rejected Applications
+                                    (1)</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Applications Pending Approval
+                                    (1)</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <table
+                                    class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Certificate</th>
+                                            <th scope="col">Class</th>
+                                            <th scope="col">Renewal Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Dawa ya Kuku</td>
+                                            <td>Veterinary Pharmaceutical</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-success">Active</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Kondoo</td>
+                                            <td>Biocidal</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-primary">Pending</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Mifugo</td>
+                                            <td>Feed additives</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-danger">Rejected</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Paka</td>
+                                            <td>Veterinary pesticide</td>
+                                            <td><a href="#" class="text-primar">22-01-2023</a></td>
+                                            <td><span class="badge bg-warning">Expired</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Paka</td>
+                                            <td>Veterinary Vaccine</td>
+                                            <td><a href="#" class="text-primar">22-01-2023</a></td>
+                                            <td><span class="badge bg-danger">Expired</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Certificate</th>
+                                            <th scope="col">Class</th>
+                                            <th scope="col">Renewal Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Dawa ya Kuku</td>
+                                            <td>Veterinary Pharmaceutical</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-success">Active</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Kondoo</td>
+                                            <td>Biocidal</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-primary">Pending</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Mifugo</td>
+                                            <td>Feed additives</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-danger">Rejected</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Paka</td>
+                                            <td>Veterinary pesticide</td>
+                                            <td><a href="#" class="text-primar">22-01-2023</a></td>
+                                            <td><span class="badge bg-warning">Expired</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Paka</td>
+                                            <td>Veterinary Vaccine</td>
+                                            <td><a href="#" class="text-primar">22-01-2023</a></td>
+                                            <td><span class="badge bg-danger">Expired</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Certificate</th>
+                                            <th scope="col">Class</th>
+                                            <th scope="col">Renewal Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Dawa ya Kuku</td>
+                                            <td>Veterinary Pharmaceutical</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-success">Active</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Kondoo</td>
+                                            <td>Biocidal</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-primary">Pending</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Mifugo</td>
+                                            <td>Feed additives</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-danger">Rejected</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Paka</td>
+                                            <td>Veterinary pesticide</td>
+                                            <td><a href="#" class="text-primar">22-01-2023</a></td>
+                                            <td><span class="badge bg-warning">Expired</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Paka</td>
+                                            <td>Veterinary Vaccine</td>
+                                            <td><a href="#" class="text-primar">22-01-2023</a></td>
+                                            <td><span class="badge bg-danger">Expired</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Certificate</th>
+                                            <th scope="col">Class</th>
+                                            <th scope="col">Renewal Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Dawa ya Kuku</td>
+                                            <td>Veterinary Pharmaceutical</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-success">Active</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Kondoo</td>
+                                            <td>Biocidal</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-primary">Pending</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Mifugo</td>
+                                            <td>Feed additives</td>
+                                            <td><a href="#" class="text-primary">22-01-2023</a></td>
+                                            <td><span class="badge bg-danger">Rejected</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Paka</td>
+                                            <td>Veterinary pesticide</td>
+                                            <td><a href="#" class="text-primar">22-01-2023</a></td>
+                                            <td><span class="badge bg-warning">Expired</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dawa ya Paka</td>
+                                            <td>Veterinary Vaccine</td>
+                                            <td><a href="#" class="text-primar">22-01-2023</a></td>
+                                            <td><span class="badge bg-danger">Expired</span></td>
+                                            <td><button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i> View</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% include 'footer.html' %}
+
+{% endblock %}

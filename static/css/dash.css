@@ -654,3 +654,6 @@ table thead {
   outline: 0.8px solid var(--white-shade);
   border-radius: 5px;
 }
+.tab-content h4{
+  
+}
