@@ -7,3 +7,6 @@ def registrationRequest(request):
 
 def myApplications(request):
     return render(request, "applications.html")
+
+def registrationRenewal(request):
+    return render(request,"renewal.html")
