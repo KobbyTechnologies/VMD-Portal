@@ -654,6 +654,30 @@ table thead {
   outline: 0.8px solid var(--white-shade);
   border-radius: 5px;
 }
-.tab-content h4{
-  
+.error-404 h1 {
+  font-size: 180px;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 0;
+  margin-top: 3rem;
+  line-height: 150px;
+  font-family: var(--font1);
+}
+
+.error-404 h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--first-color);
+  margin-bottom: 30px;
+  font-family: var(--font2);
+}
+
+.error-404 .btn {
+  background: #51678f;
+  color: #fff;
+  padding: 8px 30px;
+}
+
+.error-404 .btn:hover {
+  background: #3e4f6f;
 }

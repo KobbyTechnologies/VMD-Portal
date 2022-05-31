@@ -31,4 +31,5 @@ urlpatterns = [
     path('', include('alternative.urls')),
     path('', include('variation.urls')),
     path('', include('appeal.urls')),
+    path('', include('replacement.urls')),
 ]
