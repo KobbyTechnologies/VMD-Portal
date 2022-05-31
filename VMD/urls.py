@@ -30,4 +30,5 @@ urlpatterns = [
     path('', include('devices.urls')),
     path('', include('alternative.urls')),
     path('', include('variation.urls')),
+    path('', include('appeal.urls')),
 ]

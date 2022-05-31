@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     'devices',
     'alternative',
     'variation',
+    'appeal',
 ]
 
 MIDDLEWARE = [
