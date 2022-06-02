@@ -53,6 +53,7 @@ h6 {
 --------------------------------------------------------------*/
 .pagetitle {
   margin-bottom: 10px;
+  display: inline-block;
 }
 
 .pagetitle h1 {

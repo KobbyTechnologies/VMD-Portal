@@ -10,22 +10,32 @@
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
 
-<main id="main" class="">
+<main id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>Veterinary Pharmaceutical</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Registration' %}">Register</a></li>
-                <li class="breadcrumb-item active">Veterinary Pharmaceutical</li>
-            </ol>
-        </nav>
+    <div class="stick">
+        <div class="pagetitle">
+            <h1>Veterinary Pharmaceutical</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'Registration' %}">Register</a></li>
+                    <li class="breadcrumb-item active">Veterinary Pharmaceutical</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="money">
+            <button class="btn-green">
+                <span class="btn-gradient">
+                    <i class="bi bi-cash-coin"></i>
+                </span>
+                <span class="btn-text">Registration Fee: <span class="text-dark">USD. 10,000</span>
+            </button>
+        </div>
     </div>
     <section class="mt-4">
         <div class="row">
             <div class="col-md-12">
-                <form id="regForm" action="" class="Pharmaceutical">
+                <form id="regForm" action="" class="Pharmaceutical allForm">
 
                     <!-- One "tab" for each step in the form: -->
                     <div class="tab">

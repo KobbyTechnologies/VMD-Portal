@@ -24,6 +24,22 @@
                 </div>
               </div>
               <div class="col-md-12">
+                <label class="form-label">ID Number</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text inputGroupPrepend"><i class="bi bi-pencil-square"></i></span>
+                  <input type="text" name="Id" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your ID Number.</div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label class="form-label">Business Registration Number</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text inputGroupPrepend"><i class="bi bi-pencil-square"></i></span>
+                  <input type="text" name="" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your Business Registration Number.</div>
+                </div>
+              </div>
+              <div class="col-md-12">
                 <label class="form-label">Password</label>
                 <div class="input-group has-validation">
                   <span class="input-group-text inputGroupPrepend"><i class="bi bi-key"></i></span>
@@ -41,7 +57,8 @@
               </div>
               <div class="col-md-12">
                 <a href="{% url 'login' %}" role="button" class="btn btn-primary w-100 mt-2 startBtn"
-                  type="submit">Create Account <i class="bi bi-arrow-right"></i></a>
+                  type="submit">Create
+                  Account <i class="bi bi-arrow-right"></i></a>
               </div>
               <div class="col-12">
                 <p class="small mb-0 mt-1">Already have an account? <a href="{% url 'login' %}" class="regLink">Log
