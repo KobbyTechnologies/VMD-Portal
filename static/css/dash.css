@@ -453,7 +453,7 @@ h6 {
 }
 
 .dashboard .activity::-webkit-scrollbar {
-  width: .8em;
+  width: .5em;
 }
 
 .dashboard .activity::-webkit-scrollbar-track {

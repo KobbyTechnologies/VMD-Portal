@@ -91,15 +91,13 @@
 .sidebar-nav .nav-link {
   display: flex;
   align-items: center;
-  font-size: 15px;
-  font-weight: normal;
-  color: var(--green);
+  font-size: 16px;
+  color: #196F3D;
   transition: 0.3;
   background: whitesmoke;
   padding: 10px 15px;
   border-radius: 4px;
-  font-style: normal;
-  font-family: var(--font2);
+  font-style: bold;
 }
 
 .sidebar-nav .nav-link i {
@@ -109,12 +107,8 @@
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: #444a4a;
-  font-weight: 400;
+  color: #17202A;
   background: #fff;
-  font-family: var(--font2);
-  font-style: normal;
-  text-shadow: 0 1px 0 white;
 }
 
 .sidebar-nav .nav-link.collapsed i {

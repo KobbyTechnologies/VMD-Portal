@@ -1,18 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gelasio:ital@1&family=Nunito+Sans&family=Titillium+Web&display=swap');
 
 :root {
   --first-color: #0974bd;
   --first-color-dark: #0e5a8d;
   --second-color: #2b87cd;
   --font1: 'Nunito Sans', sans-serif;
-  --font2: 'Red Hat Display', sans-serif;
+  --font2: 'Titillium Web', sans-serif;
+  --font3: 'Gelasio', serif;
   --third-color: #8696b8;
   --green: #12bf68;
   --vmd-grey: #b8bab5;
   --red: #c81718;
   --white-shade: #e0e9f1;
 }
-
 .hover-div {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
   -webkit-transition: all 0.3s;
@@ -292,9 +292,17 @@
     border-radius: 5px
 }
 
-.form-control {
-    box-shadow: none !important
+.form-control,
+.form-select {
+    box-shadow: none !important;
+    border: 1px solid #28a745;
+    color: #3f3f3f;
+    font-family: var(--primary-font);
+    background-clip: padding-box;
+    font-family: var(--font2);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 
 .card input::placeholder {
     font-size: 14px
@@ -388,3 +396,5 @@ input.card {
   background: var(--white-shade) !important;
   padding: 10px;
 }
+
+

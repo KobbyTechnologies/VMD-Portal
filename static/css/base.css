@@ -1,14 +1,91 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gelasio:ital@1&family=Nunito+Sans&family=Titillium+Web&display=swap');
 
 :root {
-    --first-color: #0974bd;
-    scroll-behavior: smooth;
-    --font1: 'Nunito Sans', sans-serif;
-    --font2: 'Red Hat Display', sans-serif;
+  --first-color: #0974bd;
+  --first-color-dark: #0e5a8d;
+  --second-color: #2b87cd;
+  --font1: 'Nunito Sans', sans-serif;
+  --font2: 'Titillium Web', sans-serif;
+  --font3: 'Gelasio', serif;
+  --third-color: #8696b8;
+  --green: #12bf68;
+  --vmd-grey: #b8bab5;
+  --red: #c81718;
+  --white-shade: #e0e9f1;
 }
 
 body {
     font-family: var(--font1);
     background: #f6f9ff;
     color: #444444;
+}
+.Startcard {
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+    position: relative;
+    margin-bottom: 10px;
+    box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,0.1), 0 0.9375rem 1.40625rem rgba(90,97,105,0.1), 0 0.25rem 0.53125rem rgba(90,97,105,0.12), 0 0.125rem 0.1875rem rgba(90,97,105,0.1);
+}
+.Startcard h5{
+ font-size: 1rem;
+ font-family: var(--font1);
+ color: white;
+}
+.Startcard h2{
+    font-family: var(--font2);
+    color: white;
+   }
+.l-bg-cherry {
+    background: linear-gradient(to right, #493240, #0974bd) !important;
+    color: #fff;
+}
+
+.l-bg-blue-dark {
+    background: linear-gradient(to right, #373b44, #8696b8) !important;
+    color: #fff;
+}
+
+.l-bg-green-dark {
+    background: linear-gradient(to right, #0a504a, #b8bab5) !important;
+    color: #fff;
+}
+
+.l-bg-orange-dark {
+    background: linear-gradient(to right, #a86008, #c81718) !important;
+    color: #fff;
+}
+.bg-reds{
+    background: var(--vmd-grey)
+}
+
+.card .card-statistic-3 .card-icon {
+    text-align: center;
+    line-height: 50px;
+    margin-left: 15px;
+    color: rgb(245, 14, 14);
+    position: absolute;
+    right: -5px;
+    top: 20px;
+    opacity: 0.2;
+}
+
+.l-bg-cyan {
+    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+    color: #fff;
+}
+
+.l-bg-green {
+    background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
+    color: #fff;
+}
+
+.l-bg-orange {
+    background: linear-gradient(to right, #f9900e, #ffba56) !important;
+    color: #fff;
+}
+
+.l-bg-cyan {
+    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+    color: #fff;
 }
