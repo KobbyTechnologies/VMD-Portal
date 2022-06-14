@@ -1,0 +1,14 @@
+{% autoescape off %}
+
+
+Hi,
+
+Please use the link and Secret Code below to verify your account.
+
+Secret Code: {{Secret}}
+
+
+website url: http://{{domain}}{% url 'verify' %}
+
+
+{% endautoescape %}

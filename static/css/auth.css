@@ -7,9 +7,19 @@
     --font1: 'Nunito Sans', sans-serif;
     --font2: 'Red Hat Display', sans-serif;
     --third-color: #8696b8;
-    --green: #12bf68;
+    --green: #196F3D;
+    --red: #c81718;
 }
-
+.alert-success{
+    background: var(--green) !important;
+    color: white !important;
+    border-color: var(--green) !important;
+}
+.alert-danger{
+    background: var(--red) !important;
+    color: white !important;
+    border-color: var(--red) !important;
+}
 .login {
     background: var(--first-color-dark);
     min-height: 105vh;

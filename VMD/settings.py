@@ -15,6 +15,10 @@ import os
 import django_heroku
 import dj_database_url
 from decouple import config,Csv
+from requests import  Session
+from requests_ntlm import HttpNtlmAuth
+from zeep import Client
+from zeep.transports import Transport
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -116,13 +120,12 @@ WSGI_APPLICATION = 'VMD.wsgi.application'
 
 # Send Email Settings
 
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
-EMAIL_BACKEND = config('EMAIL_BACKEND')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER ='hypertextassassin3@gmail.com'
+EMAIL_HOST_PASSWORD='veydrevbvoaqpnzo'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -154,6 +157,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+ENCRYPT_KEY = b'bzKNyzSwwsN0pwQKglGqPnMKPS6WTPElkRPoCOTYN0I='
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -181,3 +186,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
+
+AUTHS = Session()
+
+WEB_SERVICE_PWD = 'W3C0d3@llD@y'
+BASE_URL = 'http://20.120.96.92:2047/BC200/WS/VMD%20TEST%20LIVE/Codeunit/WebPortal'
+O_DATA = "http://20.120.96.92:2048/BC200/ODataV4/Company(%27VMD%20TEST%20LIVE%27){}"
+AUTHS.auth = HttpNtlmAuth('NAVADMIN', WEB_SERVICE_PWD)
+
+CLIENT = Client(BASE_URL, transport=Transport(session=AUTHS))
+AUTHS = HttpNtlmAuth('NAVADMIN', WEB_SERVICE_PWD)

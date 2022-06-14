@@ -1,0 +1,61 @@
+Training to be grouped by local or foreign and destinations to be the same
+
+Promotion to be added (As a different portal)
+
+Re-Designation
+
+Redeployment (staffs can raise request on the portal)
+
+On Finance Imprest Requisition(Imprest Requisition header to have options of yes or no)
+
+        - Imprest lines on destination to have filter for local or foreign locations
+        - They want notification on sms upon changes on change of status
+        - Labels to change on the portal
+        - check on various types of imprests that they have on their manual.
+        - You cannot raise anew imprest requisition before surrendering the previous one
+        - Remove medical claim from staff claim
+        - View Attachments before sending for approval
+        - Staff claim pending approval not showing
+        - Every department to see plans specific to the department
+        - what happens to failed requests on store requisitions
+        - We get the number of items in store display it to the requesting user by department
+        - add tab of all rejected documents
+
+
+Makueni Website Requirements Gathering
+
+EXISTING WEBSITE
+        - Do you have an existing web address/Website?
+        - if yes, where is the website hosted on cpanel or server
+        - What aspects on your existing website require improvement
+
+MESSAGE & OBJECTIVES
+
+        - What is the objective/goals of the website?
+
+Target Audience
+
+        - Who Are Your Target Audience?
+        - How Do You See The Website Fitting In With Your Normal Everyday Processes and
+
+Operations?
+
+        - Do You Have themes,colors or fonts , that Clearly And Compactly Describe Your
+
+Brand
+
+        - Do You Have Any Special Or Particular Requests With Respect To Design?
+
+        - Do You Have Content for Your Website?
+
+        - Do You Have Good Quality Images?
+
+        - Will Your Site Offer File Downloads? yes
+
+        - Does Your Content Include Audio Material?
+
+        - Does Your Content Include Video Material?
+
+        - Do You Need Web Forms To Collect Data?
+
+        - Will Your Website Require Some Users To Register?

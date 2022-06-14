@@ -1,2 +1,5 @@
 venv/
 .env
+.vscode/
+stats.txt
+notes.txt

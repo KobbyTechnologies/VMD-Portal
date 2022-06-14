@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+<section class="activate">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="introduce my-5">
+                    <h2 class="text-center">Activate Your Account</h2>
+                    <p class="text-center">Enter your email and the secret code sent to your email to activate your
+                        account </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert d-flex align-items-center alert-dismissible alert-success py-3" role="alert">
+                    <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
+                    <div class="a-icon mx-2">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert d-flex align-items-center alert-dismissible alert-warn py-3" role="alert">
+                    <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
+                    <div class="a-icon mx-2">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="activateForm">
+                    <form action="{% url 'verify' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-2">
+                            <label class="form-label">Your Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Secret Code</label>
+                            <input type="text" class="form-control" name="secret" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Activate Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</section>
+
+{% endblock %}
