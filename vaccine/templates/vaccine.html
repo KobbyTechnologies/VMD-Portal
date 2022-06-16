@@ -1,424 +1,441 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block base %}
+<section class="mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="Pharmaceutical allForm">
 
-<!--Header-->
-{% include 'navbar.html' %}
-<!-- End Header -->
-
-<!-- Sidebar-->
-{% include 'sidebar.html' %}
-<!-- End Sidebar -->
-
-<main id="main" class="">
-
-    <div class="pagetitle">
-        <h1>Veterinary Vaccine</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Registration' %}">Register</a></li>
-                <li class="breadcrumb-item active">Veterinary Vaccine</li>
-            </ol>
-        </nav>
-    </div>
-    <section class="mt-4">
-        <div class="row">
-            <div class="col-md-12">
-                <form id="regForm" action="" class="Pharmaceutical">
-
-                    <!-- One "tab" for each step in the form: -->
-                    <div class="tab">
-                        <h1>REGISTRATION OF IMMUNOLOGICAL VETERINARY
-                            PRODUCT(S) IN KENYA</h1>
-                        <div class="row my-2 ">
-                            <h5>Particulars of the Applicant</h5>
-                            <div class="col-md-4">
-                                <label class="form-label">Company Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="companyName">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Physical Address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="PhysicalAddress">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Postal Address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="PostalAddress">
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Phone</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="Phone">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Fax</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="fax">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" oninput="this.className = ''" name="email">
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <h5>Particulars of the Immunological Veterinary Product</h5>
-                            <div class="row my-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Description of the Immunological
-                                        Veterinary Product</label>
-                                    <textarea class="form-control" oninput="this.className = ''" name="Description"
-                                        rows="3"></textarea>
-                                    <div class="form-text">Description of the Immunological Veterinary
-                                        Product(e.g.inactivated/ attenuated / freeze-dried)
+                <!-- One "tab" for each step in the form: -->
+                <div class="tab">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Registration of Immunological Veterinary Product In Kenya
+                                {{res.ProductNo}}
+                            </h5>
+                            <form method="POST" id="VaccineFormOne">
+                                {% csrf_token %}
+                                <input type="hidden" name="myAction" id="myAction" value="modify">
+                                <input type="hidden" name="prodNo" id="prodNo" value="{{res.ProductNo}}">
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingOne">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                                aria-expanded="false" aria-controls="flush-collapseOne">
+                                                Particulars of the Immunological Veterinary Product
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Product Name <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" name="prodName"
+                                                                id="prodName" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Pack Size <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea class="form-control" name="packSize" id="packSize"
+                                                                required placeholder="200 ml, 500ml"
+                                                                rows="3"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Description <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea class="form-control" name="description"
+                                                                id="description" rows="3"></textarea>
+                                                            <div class="form-text">Description of the Immunological
+                                                                Veterinary
+                                                                Product(e.g.inactivated/ attenuated / freeze-dried)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Main Indication(s) <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea class="form-control" name="mainIndication"
+                                                                id="mainIndication"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingTwo">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
+                                                aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                Type of Review Requested
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseTwo" class="accordion-collapse collapse show"
+                                            aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Type of Review<span
+                                                                    class="text-danger">*</span></label>
+                                                            <select class="form-select" name="TypeOfReview"
+                                                                id="TypeOfReview">
+                                                                <option selected disabled value="">Choose...
+                                                                </option>
+                                                                <option value="1">Normal</option>
+                                                                <option value="2">Accelerated</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="display:none;" id="giveReasonsRow">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Give reasons (Optional)
+                                                            </label>
+                                                            <textarea class="form-control" name="giveReasons"
+                                                                id="giveReasons" disabled></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                                aria-expanded="false" aria-controls="flush-collapseThree">
+                                                Declaration by applicant
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseThree" class="accordion-collapse collapse show"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <input class="form-check-input" type="checkbox" value="True"
+                                                                name="iAgree" id="iAgree" checked>
+                                                            <label class="form-check-label text-primary">
+                                                                I hereby apply for registration of
+                                                                the product detailed above and
+                                                                declare that all the information herein is correct
+                                                                and true.
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="mb-2">
+                                                            <label class="form-label"> Signatory Full Name <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control"
+                                                                name="nameOfSignatory" id="nameOfSignatory" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p id="proOutputOne" class="text-success my-2" style="font-weight: 800;"></p>
+                                    <button type="submit" id="proOneSubmit" class="btn btn-success my-2">Submit</button>
+                                    <button type="submit" id="proOneEdit" class="btn btn-primary my-2"
+                                        style="display:none;" disabled>Edit</button>
+                                    <div style="display: inline-block;margin-left: 0;margin-right:auto;">
+                                        <button type="button" id="prevBtn" class="btn btn-secondary"
+                                            onclick="nextPrev(-1)">Previous</button>
+                                        <button type="button" id="nextBtn" class="btn btn-warning" onclick="nextPrev(1)"
+                                            style="display:none;" disabled>Next</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label">Main indication(s)</label>
-                                <textarea class="form-control" oninput="this.className = ''"
-                                    name="indication"></textarea>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab">
+                    <div class="row my-2">
+                        <h5>Particulars of the Manufacturer(s) and Activity</h5>
+                        <div class="col-md-12">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" oninput="this.className = ''" name="Name">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Manufacturing plant address</label>
+                            <input type="text" class="form-control" oninput="this.className = ''" name="plantAddress">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Certification of Recognition</label>
+                            <input type="file" class="form-control" oninput="this.className = ''"
+                                name="CertificationRecognition">
+                            <div class="form-text">
+                                Attach copies of certification of recognition of manufacturer from competent
+                                authority in the country of manufacture.
                             </div>
                         </div>
                     </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Particulars of the Manufacturer(s) and Activity</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="Name">
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Manufacturing plant address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="plantAddress">
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Certification of Recognition</label>
-                                <input type="file" class="form-control" oninput="this.className = ''"
-                                    name="CertificationRecognition">
-                                <div class="form-text">
-                                    Attach copies of certification of recognition of manufacturer from competent
-                                    authority in the country of manufacture.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Activity</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="VisualDescription"></textarea>
-                                <div class="form-text">Visual description of the veterinary pharmaceutical (Add as many
-                                    rows as necessary)</div>
-                            </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Activity</label>
+                            <textarea class="form-control longText" oninput="this.className = ''"
+                                name="VisualDescription"></textarea>
+                            <div class="form-text">Visual description of the veterinary pharmaceutical (Add as many
+                                rows as necessary)</div>
                         </div>
                     </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Authorised Local Technical Representative (LTR) in Member States</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Name of Local Technical
-                                    Representative</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="NameLTR">
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Address of Local Technical Representative</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="addressLTR">
-                            </div>
+                </div>
+                <div class="tab">
+                    <div class="row my-2">
+                        <h5>Authorised Local Technical Representative (LTR) in Member States</h5>
+                        <div class="col-md-12">
+                            <label class="form-label">Name of Local Technical
+                                Representative</label>
+                            <input type="text" class="form-control" oninput="this.className = ''" name="NameLTR">
                         </div>
                     </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Current Registration and Licensing Status</h5>
-                            <div class="col-md-4">
-                                <label class="form-label">Authorisation Status</label>
-                                <select class="form-select" oninput="this.className = ''" name="AuthorisationStatus"
-                                    id="AuthorisationStatus">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Authorised</option>
-                                    <option value="2">Refused</option>
-                                    <option value="3">Withdrawn (by applicant after authorisation)</option>
-                                    <option value="4">Suspended/revoked (by competent authority)</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Country</label>
-                                <select class="form-select" oninput="this.className = ''" name="MarketingCountry"
-                                    id="MarketingCountry" disabled>
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="">Kenya</option>
-                                    <option value="">Uganda</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Date of authorisation</label>
-                                <input type="date" id="DateAuthorisation" class="form-control"
-                                    oninput="this.className = ''" name="DateAuthorisation" disabled>
-                            </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Address of Local Technical Representative</label>
+                            <input type="text" class="form-control" oninput="this.className = ''" name="addressLTR">
                         </div>
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Proprietary Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="ProprietaryName" id="ProprietaryName" disabled>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Authorisation number</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="AuthorisationNumber" id="AuthorisationNumber" disabled>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Certificate of Veterinary Medicine</label>
-                                <input type="file" class="form-control" oninput="this.className = ''"
-                                    name="CertificateVeterinary" id="CertificateVeterinary" disabled>
-                                <div class="form-text">Attach certificate of veterinary medicine from competent
-                                    regulatory authority</div>
-                            </div>
+                    </div>
+                </div>
+                <div class="tab">
+                    <div class="row my-2">
+                        <h5>Current Registration and Licensing Status</h5>
+                        <div class="col-md-4">
+                            <label class="form-label">Authorisation Status</label>
+                            <select class="form-select" oninput="this.className = ''" name="AuthorisationStatus"
+                                id="AuthorisationStatus">
+                                <option selected>Choose...</option>
+                                <option value="1">Authorised</option>
+                                <option value="2">Refused</option>
+                                <option value="3">Withdrawn (by applicant after authorisation)</option>
+                                <option value="4">Suspended/revoked (by competent authority)</option>
+                            </select>
                         </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Reason</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="AuthorisationReason" id="AuthorisationReason" disabled></textarea>
+                        <div class="col-md-4">
+                            <label class="form-label">Country</label>
+                            <select class="form-select" oninput="this.className = ''" name="MarketingCountry"
+                                id="MarketingCountry" disabled>
+                                <option selected disabled value="">Choose...</option>
+                                <option value="">Kenya</option>
+                                <option value="">Uganda</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Date of authorisation</label>
+                            <input type="date" id="DateAuthorisation" class="form-control" oninput="this.className = ''"
+                                name="DateAuthorisation" disabled>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">
+                            <label class="form-label">Proprietary Name</label>
+                            <input type="text" class="form-control" oninput="this.className = ''" name="ProprietaryName"
+                                id="ProprietaryName" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Authorisation number</label>
+                            <input type="text" class="form-control" oninput="this.className = ''"
+                                name="AuthorisationNumber" id="AuthorisationNumber" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Certificate of Veterinary Medicine</label>
+                            <input type="file" class="form-control" oninput="this.className = ''"
+                                name="CertificateVeterinary" id="CertificateVeterinary" disabled>
+                            <div class="form-text">Attach certificate of veterinary medicine from competent
+                                regulatory authority</div>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Reason</label>
+                            <textarea class="form-control longText" oninput="this.className = ''"
+                                name="AuthorisationReason" id="AuthorisationReason" disabled></textarea>
 
-                                <div class="form-text">State reasons for not being authorized</div>
+                            <div class="form-text">State reasons for not being authorized</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab">
+                    <div class="row my-2">
+                        <h1>Product Composition</h1>
+                        <h5>Active (immunogenic) ingredients</h5>
+                        <div class="col-md-12">
+                            <label class="form-label">Name</label>
+                            <input type="file" class="form-control" oninput="this.className = ''" name="name">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Quantity per Dose</label>
+                            <input class="form-control" oninput="this.className = ''" name="QuantityDose">
+                            <div class="form-text">
+                                Give the composition of the product in terms of units per dose
                             </div>
                         </div>
                     </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h1>Product Composition</h1>
-                            <h5>Active (immunogenic) ingredients</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Name</label>
-                                <input type="file" class="form-control" oninput="this.className = ''" name="name">
-                            </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Specification</label>
+                            <textarea class="form-control longText" oninput="this.className = ''"
+                                name="Specification"></textarea>
                         </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Quantity per Dose</label>
-                                <input class="form-control" oninput="this.className = ''" name="QuantityDose">
-                                <div class="form-text">
-                                    Give the composition of the product in terms of units per dose
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="tab">
+                    <div class="row my-2">
+                        <h1>Product Composition</h1>
+                        <h5> Inactive ingredients (adjuvant/excipients/preservative)</h5>
+                        <div class="col-md-12">
+                            <label class="form-label">Name</label>
+                            <input type="file" class="form-control" oninput="this.className = ''" name="name">
                         </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Specification</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="Specification"></textarea>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Quantity per Dose</label>
+                            <input class="form-control" oninput="this.className = ''" name="QuantityDose">
+                            <div class="form-text">
+                                Give the composition of the product in terms of units per dose
                             </div>
                         </div>
                     </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h1>Product Composition</h1>
-                            <h5> Inactive ingredients (adjuvant/excipients/preservative)</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Name</label>
-                                <input type="file" class="form-control" oninput="this.className = ''" name="name">
-                            </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Specification</label>
+                            <textarea class="form-control longText" oninput="this.className = ''"
+                                name="Specification"></textarea>
                         </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Quantity per Dose</label>
-                                <input class="form-control" oninput="this.className = ''" name="QuantityDose">
-                                <div class="form-text">
-                                    Give the composition of the product in terms of units per dose
-                                </div>
-                            </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Reason for Inclusion</label>
+                            <textarea class="form-control longText" oninput="this.className = ''"
+                                name="Reason"></textarea>
                         </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Specification</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="Specification"></textarea>
-                            </div>
+                    </div>
+                </div>
+                <div class="tab">
+                    <div class="row">
+                        <h5>Additional Starting materials</h5>
+                        <div class="col-md-12">
+                            <label class="form-label">Additional Starting Materials </label>
+                            <textarea class="form-control longText" oninput="this.className = ''"
+                                name="Additional"></textarea>
+                            <div class="form-text">Give details of any additional starting materials used in the
+                                manufacturing process
+                                but not found in the final product</div>
                         </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Reason for Inclusion</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="Reason"></textarea>
+                    </div>
+                    <hr class="dropdown-divider">
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Give Reasons </label>
+                            <textarea class="form-control longText" oninput="this.className = ''"
+                                name="MarketRelationship"></textarea>
+                            <div class="form-text">
+                                Give Reasons (if applicable)
                             </div>
                         </div>
                     </div>
-                    <div class="tab">
-                        <div class="row">
-                            <h5>Additional Starting materials</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Additional Starting Materials </label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="Additional"></textarea>
-                                <div class="form-text">Give details of any additional starting materials used in the
-                                    manufacturing process
-                                    but not found in the final product</div>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <h5>Type of Review Requested</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Request</label>
-                                <select class="form-select" oninput="this.className = ''" name="ManufacturerQuiz">
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="">Normal Review</option>
-                                    <option value="">Accelerated Review</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Give Reasons </label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="MarketRelationship"></textarea>
-                                <div class="form-text">
-                                    Give Reasons (if applicable)
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <h5>Supporting Documentation</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Attachments</label>
-                                <input type="file" class="form-control" oninput="this.className = ''">
-                            </div>
+                    <hr class="dropdown-divider">
+                    <div class="row my-2">
+                        <h5>Supporting Documentation</h5>
+                        <div class="col-md-12">
+                            <label class="form-label">Attachments</label>
+                            <input type="file" class="form-control" oninput="this.className = ''">
                         </div>
                     </div>
-                    <div style="overflow:auto;">
-                        <div style="float:right;">
-                            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                        </div>
-                    </div>
-                    <!-- Circles which indicates the steps of the form: -->
-                    <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                    </div>
-                </form>
+                </div>
+
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;margin-top:40px;">
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
             </div>
         </div>
-    </section>
-</main>
+    </div>
+</section>
+
 <script>
     $(document).ready(function () {
-        $('#AssignedATCCode').on('change', function () {
-            if (this.value == "True") {
-                $('#ATCCode').prop('disabled', false);
-                $('#AppliedATCCode').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#AppliedATCCode').prop('disabled', false);
-                $('#ATCCode').prop('disabled', true);
-            }
-        });
-        $('#Legal1').on('change', function () {
-            if (this.value == "True") {
-                $('#legal2').prop('disabled', false);
-                $('#legal3').prop('disabled', false);
-                $('#legal4').prop('disabled', true);
-                $('#legal5').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#legal4').prop('disabled', false);
-                $('#legal5').prop('disabled', false);
-                $('#legal2').prop('disabled', true);
-                $('#legal3').prop('disabled', true);
-            }
-        });
-        $('#AuthorisationStatus').on('change', function () {
+        $('#TypeOfReview').on('change', function () {
             if (this.value == "1") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', true);
-            } else if (this.value == "2") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', true);
-                $('#AuthorisationNumber').prop('disabled', true);
-            } else if (this.value == "3") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', true);
-            } else if (this.value == "4") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', true);
-            }
+                $("#giveReasonsRow").show(1000);
+                $('#giveReasons').prop('disabled', false);
 
-        });
-        $('#ManufacturerQuiz').on('change', function () {
-            if (this.value == "True") {
-                $('#ManufacturerName').prop('disabled', true);
-                $('#ManufacturerCompanyName').prop('disabled', true);
-                $('#ManufacturerAddress').prop('disabled', true);
-                $('#ManufacturerCountry').prop('disabled', true);
-                $('#ManufacturerTelephone').prop('disabled', true);
-                $('#ManufacturerMobile').prop('disabled', true);
-                $('#ManufacturerEmail').prop('disabled', true);
-                $('#ManufacturerRelationship').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#ManufacturerName').prop('disabled', false);
-                $('#ManufacturerCompanyName').prop('disabled', false);
-                $('#ManufacturerAddress').prop('disabled', false);
-                $('#ManufacturerCountry').prop('disabled', false);
-                $('#ManufacturerTelephone').prop('disabled', false);
-                $('#ManufacturerMobile').prop('disabled', false);
-                $('#ManufacturerEmail').prop('disabled', false);
-                $('#ManufacturerRelationship').prop('disabled', false);
+            } else if (this.value == "2") {
+                $("#giveReasonsRow").show(1000);
+                $('#giveReasons').prop('disabled', false);
+            } else {
+                $("#giveReasonsRow").hide();
+                $('#giveReasons').prop('disabled', true);
             }
         });
-        $('#marketQuiz').on('change', function () {
-            if (this.value == "True") {
-                $('#marketName').prop('disabled', true);
-                $('#MarketCompanyName').prop('disabled', true);
-                $('#MarketAddress').prop('disabled', true);
-                $('#MarketCountry').prop('disabled', true);
-                $('#MarketTelephone').prop('disabled', true);
-                $('#MarketMobile').prop('disabled', true);
-                $('#MarketEmail').prop('disabled', true);
-                $('#MarketRelationship').prop('disabled', true);
-                $('#MarketEvidence').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#marketName').prop('disabled', false);
-                $('#MarketCompanyName').prop('disabled', false);
-                $('#MarketAddress').prop('disabled', false);
-                $('#MarketCountry').prop('disabled', false);
-                $('#MarketTelephone').prop('disabled', false);
-                $('#MarketMobile').prop('disabled', false);
-                $('#MarketEmail').prop('disabled', false);
-                $('#MarketRelationship').prop('disabled', false);
-                $('#MarketEvidence').prop('disabled', false);
-            }
+
+        $("#VaccineFormOne").submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "vaccineRegistration" %}',
+                data: {
+                    prodNo: $("#prodNo").val(),
+                    myAction: $("#myAction").val(),
+                    prodName: $("#prodName").val(),
+                    packSize: $("#packSize").val(),
+                    description: $("#description").val(),
+                    mainIndication: $("#mainIndication").val(),
+                    TypeOfReview: $("#TypeOfReview").val(),
+                    giveReasons: $("#giveReasons").val(),
+                    iAgree: $("#iAgree").val(),
+                    nameOfSignatory: $("#nameOfSignatory").val(),
+
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function () {
+                    $("#prodName").val("")
+                    $("#packSize").val("")
+                    $("#description").val("")
+                    $("#mainIndication").val("")
+                    $("#TypeOfReview").val("")
+                    $("#giveReasons").val("")
+                    $("#nameOfSignatory").val("")
+                    $("p#proOutputOne").append(
+                        'Saved. Click Next to Continue or Click Edit to alter document')
+                    $("#proOneSubmit").attr("disabled", true);
+                    $('#proOneSubmit').hide(1000)
+                    $('#proOneEdit').show(1000)
+                    $("#proOneEdit").attr("disabled", false);
+                    $('#nextBtn').show(1500)
+                    $("#nextBtn").attr("disabled", false);
+                }
+            })
         });
     })
 </script>
-{% include 'footer.html' %}
-
-{% endblock %}

@@ -12,7 +12,8 @@
               <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
               <p class="text-center small">Enter your Email & password to login</p>
             </div>
-            <form class="row g-3 needs-validation loginForm" novalidate>
+            <form class="row g-3 needs-validation loginForm" action="{% url 'login' %}" method="POST" novalidate>
+              {% csrf_token %}
               <div class="col-md-12">
                 <label class="form-label">Email</label>
                 <div class="input-group has-validation">
@@ -31,12 +32,15 @@
                 </div>
               </div>
               <div class="col-md-12">
-                <a href="{% url 'dashboard' %}" role="button" class="btn btn-primary w-100 mt-4 startBtn"
-                  type="submit">Start Now <i class="bi bi-arrow-right"></i></a>
+                <button type="submit" class="btn btn-primary w-100 mt-4 startBtn">Start Now <i
+                    class="bi bi-arrow-right"></i></button>
               </div>
               <div class="col-12">
                 <p class="small mb-0 mt-3">Don't have account? <a href="{% url 'register' %}" class="regLink">Create an
                     account</a></p>
+                <p class="small mb-0 mt-3"> <a href="{% url 'register' %}" class="regLink text-white"
+                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">Forgot
+                    Password?</a></p>
               </div>
             </form>
           </div>
@@ -98,5 +102,31 @@
     </div>
   </div>
 </main>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Reset Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'resetPassword' %}" method="post">
+          {% csrf_token %}
+          <div class="row mb-2">
+            <div class="col-md-12">
+              <label class="form-label">Email</label>
+              <input class="form-control" name="email" required>
+            </div>
+          </div>
+          <div class="my-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

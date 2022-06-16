@@ -20,6 +20,16 @@ class EmailThread(threading.Thread):
     def run(self):
         self.email.send()
 
+def send_reset_mail(email,request):
+    current_site = get_current_site(request)
+    email_subject = 'Reset Your Password'
+    email_body = render_to_string('resetMail.html',{
+        'domain': current_site
+    })
+    reset_email = EmailMessage(subject=email_subject,body=email_body,from_email=config.EMAIL_HOST_USER,to=[email])
+
+    EmailThread(reset_email).start()
+
 def send_mail(lTRMail,verificationToken,request):
     current_site = get_current_site(request)
     email_subject = 'Activate Your Account'
@@ -84,7 +94,6 @@ def registerAccount(request):
         cipher_suite = Fernet(config.ENCRYPT_KEY)
         encrypted_text = cipher_suite.encrypt(Password.encode('ascii'))
         myPassword = base64.urlsafe_b64encode(encrypted_text).decode("ascii")
-        print(myPassword)
         try:
             response = config.CLIENT.service.FnRegistrationSignup(lTRName, lTRMail, countryRegionCode,postalAddress,postCode,businessRegNo,city,myPassword,verificationToken, myAction)
             print(response)
@@ -93,7 +102,6 @@ def registerAccount(request):
                     send_mail(lTRMail,verificationToken,request)
                     messages.success(
                     request, 'We sent you an email to verify your account')
-                    request.session['prospectEmail'] = lTRMail
                 except:
                     messages.info(request,"Email not Sent, Try with Signing up with another email")
                     return redirect('register')
@@ -139,4 +147,120 @@ def verifyRequest(request):
     return render(request,"verify.html")
 
 def loginRequest(request):
+    if request.method == 'POST':
+        try:
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+        except ValueError:
+            messages.error(request,'Missing Input')
+            return redirect('login')
+        session = requests.Session()
+        session.auth = config.AUTHS
+        Access_Point = config.O_DATA.format("/QYLTRLogins")
+        try:
+            response = session.get(Access_Point, timeout=10).json()
+            for res in response['value']:
+                if res['LTR_Email'] == email and res['Verified'] == True:
+                    request.session['UserID'] = res['No']
+                    request.session['LTR_Name'] = res['LTR_Name']
+                    request.session['LTR_Email'] = res['LTR_Email']
+                    try:
+                        Portal_Password = base64.urlsafe_b64decode(
+                            res['MyPassword'])
+                        cipher_suite = Fernet(config.ENCRYPT_KEY)
+                        decoded_text = cipher_suite.decrypt(Portal_Password).decode("ascii")
+                        if decoded_text == password:
+                            print("User ID:",request.session['UserID'] )
+                            return redirect('dashboard')
+                        else:
+                            messages.error(request, "Invalid Password")
+                            return redirect('login')
+                    except Exception as e:
+                        messages.error(request, "Incorrect Password")
+                        return redirect('login')
+                else:
+                    messages.error(request, "Your account is not verified, check your email for a verification link or create an account.")
+                    return redirect('login')
+        except requests.exceptions.RequestException as e:
+            print(e)
+            messages.error(request,e)
+            return redirect('login')
     return render(request,'login.html') 
+
+def resetPassword(request):
+    if request.method == 'POST':
+        try:
+            email = request.POST.get('email')
+        except  ValueError:
+            messages.error(request,'Invalid Email')
+            return redirect('login')
+        session = requests.Session()
+        session.auth = config.AUTHS
+        Access_Point = config.O_DATA.format("/QYLTRLogins")
+        try:
+            response = session.get(Access_Point, timeout=10).json()
+            for res in response['value']:
+                try:
+                    if res['LTR_Email'] == email:
+                        request.session['resetMail'] = email
+                        send_reset_mail(email,request)
+                        messages.success(request, 'We sent you an email to reset your password')
+                        return redirect('login')
+                    else:
+                        messages.error(request,"Invalid Email")
+                        return redirect('login')
+                except:
+                    messages.error(request,"Invalid Email")
+                    return redirect('login')
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+            return redirect('login')       
+    return redirect("login")
+
+def reset_request(request):
+    if request.method == 'POST':
+        try:
+            email = request.session['resetMail']
+            password = request.POST.get('password')
+            password2 = request.POST.get('password2')
+            verified = True
+        except KeyError:
+            messages.info(request,"Session Expired, Raise new password reset request")
+            return redirect('login')
+        except  ValueError:
+            messages.error(request,'Invalid Input')
+            return redirect('reset')
+        if len(password) < 6:
+            messages.error(request, "Password should be at least 6 characters")
+            return redirect('reset')
+        if password != password2:
+            messages.error(request, "Password mismatch")
+            return redirect('reset')   
+        cipher_suite = Fernet(config.ENCRYPT_KEY)
+        encrypted_text = cipher_suite.encrypt(password.encode('ascii'))
+        myPassword = base64.urlsafe_b64encode(encrypted_text).decode("ascii") 
+        try:
+            response = config.CLIENT.service.FnResetPassword(email, myPassword,verified)
+            print(response)
+            if response == True:
+                messages.success(request,"Reset successful")
+                del request.session['resetMail']
+                return redirect('login')
+            else:
+                messages.error(request,"Error Try Again")
+                return redirect('reset')
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+            return redirect('reset')
+    return render(request,'reset.html')
+def logout_request(request):
+    try:
+        del request.session['UserID'] 
+        del request.session['LTR_Name']
+        del request.session['LTR_Email']
+    except Exception as e:
+        messages.info(request,e)
+        return redirect ('login')
+    return redirect('login')

@@ -6,9 +6,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="introduce my-5">
-                    <h2 class="text-center">Activate Your Account</h2>
-                    <p class="text-center">Enter your email and the secret code sent to your email to activate your
-                        account </p>
+                    <h2 class="text-center">Reset Your Password</h2>
+                    <p class="text-center">Enter password to create a new password </p>
                 </div>
             </div>
         </div>
@@ -48,17 +47,17 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="activateForm">
-                    <form action="{% url 'verify' %}" method="POST">
+                    <form action="{% url 'reset' %}" method="POST">
                         {% csrf_token %}
                         <div class="mb-2">
-                            <label class="form-label">Your Email</label>
-                            <input type="email" class="form-control" name="email" required>
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label">Secret Code</label>
-                            <input type="text" class="form-control" name="secret" required>
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" name="password2" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Activate Account</button>
+                        <button type="submit" class="btn btn-primary">Reset Password</button>
                     </form>
                 </div>
             </div>

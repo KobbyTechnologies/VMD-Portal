@@ -136,50 +136,9 @@
 }
 
 /* Forms */
-.Pharmaceutical h1 {
-  font-size: 20px;
-  font-weight: bold;
-  color: #000;
-  font-family: var(--font1);
-}
-
-.Pharmaceutical .dropdown-divider {
-  color: var(--green);
-  height: 1px;
-  opacity: 1;
-  margin-top: 1rem !important;
-  margin-bottom: 1rem !important;
-}
-
 .Pharmaceutical h5 {
-  color: #333;
+  color: var(--green);
   font-family: var(--font2);
-}
-
-.Pharmaceutical .form-check-input {
-  width: 1.55rem;
-  height: 1.55rem;
-}
-
-.Pharmaceutical .form-check-input {
-  width: auto !important;
-  padding: auto !important;
-}
-
-.Pharmaceutical input,
-.Pharmaceutical textarea,
-.Pharmaceutical select {
-  padding: 8px;
-  width: 100% !important;
-  font-size: 17px;
-  font-family: var(--font1);
-  border: 1px solid var(--first-color-dark);
-}
-
-
-/* Mark input boxes that gets an error on validation: */
-.Pharmaceutical input.invalid {
-  background-color: #fae8e8;
 }
 
 .Pharmaceutical .longText {
@@ -192,23 +151,6 @@
   display: none;
 }
 
-.Pharmaceutical button {
-  background-color: #04AA6D;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 17px;
-  font-family: var(--font2);
-  cursor: pointer;
-}
-
-.Pharmaceutical button:hover {
-  opacity: 0.8;
-}
-
-.Pharmaceutical #prevBtn {
-  background-color: #bbbbbb;
-}
 
 /* Make circles that indicate the steps of the form: */
 .Pharmaceutical .step {
@@ -229,10 +171,6 @@
 /* Mark the steps that are finished and valid: */
 .Pharmaceutical .step.finish {
   background-color: var(--first-color-dark);
-}
-
-.Pharmaceutical h5 {
-  color: var(--green);
 }
 
 /* Payment Gateway */
@@ -331,7 +269,7 @@ input.card {
     cursor: pointer
 }
 
-.btn.btn-primary {
+.bg.btn.btn-primary {
     box-shadow: none;
     height: 40px;
     padding: 11px
