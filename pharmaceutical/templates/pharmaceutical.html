@@ -1,320 +1,414 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block base %}
+<section class="mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
+                <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
+                <div class="a-icon mx-2">
+                    {{message}}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
+                <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
+                <div class="a-icon mx-2">
+                    {{message}}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
+                <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
+                <div class="a-icon mx-2">
+                    {{message}}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Registration of {{res.Veterinary_Classes}}
+                        {{res.ProductNo}}
+                    </h5>
+                    <form action="{% url 'VeterinaryPharmaceutical' res.ProductNo %}" method="POST">
+                        {% csrf_token %}
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                        aria-controls="flush-collapseOne">
+                                        Particulars of the Product
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                                    aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <div class="row my-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Product Name <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="prodName" required>
+                                                <div class="form-text">Trade Name
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">International Non-proprietary Name</label>
+                                                <input type="text" class="form-control" name="INN">
+                                                <div class="form-text">International Non-proprietary Name (INN) of the
+                                                    Active Ingredient
+                                                    (AI).
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Pack Size <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea class="form-control" name="packSize" required
+                                                        placeholder="200 ml, 500ml" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Visual Description <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea class="form-control" name="visualDescription"
+                                                        rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                        aria-controls="flush-collapseTwo">
+                                        Dosage form and route of administration
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseTwo" class="accordion-collapse collapse show"
+                                    aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Dosage</label>
+                                                <input type="text" class="form-control" name="PharmaceuticalDosage">
+                                                <div class="form-text">Dosage form of the veterinary product</div>
+                                            </div>
 
-<!--Header-->
-{% include 'navbar.html' %}
-<!-- End Header -->
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Route(s) of administration</label>
+                                                <textarea class="form-control longText" name="RouteOfAdministration"
+                                                    required></textarea>
 
-<!-- Sidebar-->
-{% include 'sidebar.html' %}
-<!-- End Sidebar -->
+                                                <div class="form-text">
+                                                    Route(s) of administration (use current list of
+                                                    standard terms - European Pharmacopoeia)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="dropdown-divider">
+                                        <div class="row my-2">
+                                            <h5>Proposed shelf life (in months)</h5>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Proposed shelf life (after reconstitution or
+                                                    dilution)</label>
+                                                <input type="number" class="form-control" name="shelfLifeAfterDilution">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Proposed shelf life (after first opening
+                                                    container)</label>
+                                                <input type="number" class="form-control"
+                                                    name="shelfLifeAfterFirstOpening">
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Proposed storage condition</label>
+                                                <input type="text" class="form-control" name="storageConditions">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Proposed storage conditions after first
+                                                    opening</label>
+                                                <input type="text" class="form-control" name="storageAfterOpening">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                        aria-controls="flush-collapseThree">
+                                        ATC and Legal category
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseThree" class="accordion-collapse collapse show"
+                                    aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <div class="row my-2">
+                                            <h5>Pharmaceutical Dosage form and route of administration</h5>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Pharmacotherapeutic group</label>
+                                                <input type="text" class="form-control" name="PharmacotherapeuticGroup">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Assigned ATC Code</label>
+                                                <select class="form-select" name="AssignedATCCode" id="AssignedATCCode">
+                                                    <option selected disabled value="">Choose...</option>
+                                                    <option value="True">Yes</option>
+                                                    <option value="False">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">ATC Code</label>
+                                                <input type="text" class="form-control" name="ATCCode" id="ATCCode"
+                                                    disabled>
+                                                <div class="form-text">Please use current ATC code.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Applied ATC Code</label>
+                                                <select class="form-select" name="applicationForAtc" id="AppliedATCCode"
+                                                    disabled>
+                                                    <option selected disabled value="">Choose...</option>
+                                                    <option value="True">Yes</option>
+                                                    <option value="False">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <hr class="dropdown-divider">
+                                        <div class="row my-2">
+                                            <h5>Legal category</h5>
+                                            <div class="col-md-12">
+                                                <label class="form-label">Product is subject to medical
+                                                    prescription</label>
+                                                <select class="form-select" name="SubjectMedicalPrescription"
+                                                    id="Legal1">
+                                                    <option selected>Choose...</option>
+                                                    <option value="True">Yes</option>
+                                                    <option value="False">No</option>
+                                                    <div class="form-text">Proposed dispensing category/classification
+                                                    </div>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <div class="row mt-4">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="controlledVeterinaryMedicine" id="legal2"
+                                                                value="True" disabled>
+                                                            <label class="form-check-label">
+                                                                Controlled Veterinary Medicine (POM-V category IA)
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="prescriptionOnlyMedicine" id="legal3" value="True"
+                                                                disabled>
+                                                            <label class="form-check-label">
+                                                                Prescription Only Medicine, (IB-POM-V
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="True"
+                                                                id="legal4" name="nonPharmacy" disabled>
+                                                            <label class="form-check-label">
+                                                                Product Dispensed from Non-pharmacy outlets and
+                                                                pharmacies
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="True"
+                                                                id="legal5" name="pharmaciesOnly" disabled>
+                                                            <label class="form-check-label">
+                                                                Pharmacies only
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseFour" aria-expanded="false"
+                                        aria-controls="flush-collapseFour">
+                                        Name and complete address of the market authorization holder or Manufacturer
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseFour" class="accordion-collapse collapse show"
+                                    aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <div class="row my-2">
+                                            <h5></h5>
+                                            <div class="col-md-12">
+                                                <label class="form-label">Are you the market authorization
+                                                    holder</label>
+                                                <select class="form-select" name="isMarketHolderSame" id="marketQuiz">
+                                                    <option selected disabled value="">Choose...</option>
+                                                    <option value="True">Yes</option>
+                                                    <option value="False">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Name</label>
+                                                <input type="text" class="form-control" name="authorizedName"
+                                                    id="marketName" disabled>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Address</label>
+                                                <input type="text" class="form-control" name="MarketAddress"
+                                                    id="MarketAddress" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Country</label>
+                                                <input type="text" class="form-control" name="authorizedCountry"
+                                                    id="MarketCountry" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Office Telephone Number</label>
+                                                <input type="text" class="form-control" name="authorizedTelephone"
+                                                    id="MarketTelephone" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Office Mobile Number</label>
+                                                <input type="text" class="form-control" name="authorizedMobile"
+                                                    id="MarketMobile" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Email</label>
+                                                <input type="text" class="form-control" name="authorizedEmail"
+                                                    id="MarketEmail" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Relationship</label>
+                                                <textarea class="form-control longText" name="MarketRelationship"
+                                                    id="MarketRelationship" disabled></textarea>
+                                                <div class="form-text">
+                                                    Explain the relationship.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="dropdown-divider">
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <input class="form-check-input" type="checkbox" value="True"
+                                                        name="iAgree" checked>
+                                                    <label class="form-check-label text-primary">
+                                                        I hereby apply for registration of
+                                                        the product detailed above and
+                                                        declare that all the information herein is correct
+                                                        and true.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success my-2">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $('#AssignedATCCode').on('change', function () {
+            if (this.value == "True") {
+                $('#ATCCode').prop('disabled', false);
+                $('#AppliedATCCode').prop('disabled', true);
+            } else if (this.value == "False") {
+                $('#AppliedATCCode').prop('disabled', false);
+                $('#ATCCode').prop('disabled', true);
+            }
+        });
+
+        $('#Legal1').on('change', function () {
+            if (this.value == "True") {
+                $('#legal2').prop('disabled', false);
+                $('#legal3').prop('disabled', false);
+                $('#legal4').prop('disabled', true);
+                $('#legal5').prop('disabled', true);
+            } else if (this.value == "False") {
+                $('#legal4').prop('disabled', false);
+                $('#legal5').prop('disabled', false);
+                $('#legal2').prop('disabled', true);
+                $('#legal3').prop('disabled', true);
+            }
+        });
+        $('#marketQuiz').on('change', function () {
+            if (this.value == "True") {
+                $('#marketName').prop('disabled', true);
+                $('#MarketCompanyName').prop('disabled', true);
+                $('#MarketAddress').prop('disabled', true);
+                $('#MarketCountry').prop('disabled', true);
+                $('#MarketTelephone').prop('disabled', true);
+                $('#MarketMobile').prop('disabled', true);
+                $('#MarketEmail').prop('disabled', true);
+                $('#MarketRelationship').prop('disabled', true);
+                $('#MarketEvidence').prop('disabled', true);
+            } else if (this.value == "False") {
+                $('#marketName').prop('disabled', false);
+                $('#MarketCompanyName').prop('disabled', false);
+                $('#MarketAddress').prop('disabled', false);
+                $('#MarketCountry').prop('disabled', false);
+                $('#MarketTelephone').prop('disabled', false);
+                $('#MarketMobile').prop('disabled', false);
+                $('#MarketEmail').prop('disabled', false);
+                $('#MarketRelationship').prop('disabled', false);
+                $('#MarketEvidence').prop('disabled', false);
+            }
+        });
+    })
+</script>
+<!-- 
 
 <main id="main" class="main">
 
-    <div class="stick">
-        <div class="pagetitle">
-            <h1>Veterinary Pharmaceutical</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'Registration' %}">Register</a></li>
-                    <li class="breadcrumb-item active">Veterinary Pharmaceutical</li>
-                </ol>
-            </nav>
-        </div>
-        <!-- <div class="money">
-            <button class="btn-green">
-                <span class="btn-gradient">
-                    <i class="bi bi-cash-coin"></i>
-                </span>
-                <span class="btn-text">Registration Fee: <span class="text-dark">USD. 10,000</span>
-            </button>
-        </div> -->
-    </div>
-    <section class="mt-4">
+   <section class="mt-4">
         <div class="row">
             <div class="col-md-12">
-                <form id="regForm" action="" class="Pharmaceutical allForm">
-                    <!-- One "tab" for each step in the form: -->
                     <div class="tab">
-                        <h1>PARTICULARS OF THE VETERINARY PHARMACEUTICAL</h1>
-                        <div class="row my-2 ">
-                            <h5>Name and address of Applicant</h5>
-                            <div class="col-md-4">
-                                <label class="form-label">Company Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="companyName">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="addressName">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Country</label>
-                                <select class="form-select" oninput="this.className = ''" name="Country">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Office Telephone Number</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="officeNumber">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Mobile Telephone Number</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="mobileNumber">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" oninput="this.className = ''" name="email">
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <div class="col-md-6">
-                                <label class="form-label">Proprietary Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="ProprietaryName">
-                                <div class="form-text">Trade Name of the veterinary pharmaceutical.
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">International Non-proprietary Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="INN">
-                                <div class="form-text">International Non-proprietary Name (INN) of the Active Ingredient
-                                    (AI).
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Strength of Active Ingredient</label>
-                                <textarea class="form-control" oninput="this.className = ''"
-                                    name="StrengthofActiveIngredient" rows="3"></textarea>
-                                <div class="form-text">Strength of Active Ingredient (AI) per unit dosage of the
-                                    veterinary pharmaceutical.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Pharmaceutical Dosage form and route of administration</h5>
-                            <div class="col-md-6">
-                                <label class="form-label">Pharmaceutical Dosage</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="PharmaceuticalDosage">
-                                <div class="form-text">Pharmaceutical Dosage form of the veterinary pharmaceutical</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Route(s) of administration</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="RouteOfAdministration">
-                                <div class="form-text">Route(s) of administration (use current list of standard terms -
-                                    European Pharmacopoeia)</div>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Packing size</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="packSize">
-                                <div class="form-text">Packing/pack size of the veterinary pharmaceutical</div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Visual description</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="VisualDescription"></textarea>
-                                <div class="form-text">Visual description of the veterinary pharmaceutical (Add as many
-                                    rows as necessary)</div>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <h5>Proposed shelf life (in months)</h5>
-                            <div class="col-md-6">
-                                <label class="form-label">Proposed shelf life (after reconstitution or dilution)</label>
-                                <input type="number" class="form-control" oninput="this.className = ''"
-                                    name="shelfLife1">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Proposed shelf life (after first opening container)</label>
-                                <input type="number" class="form-control" oninput="this.className = ''"
-                                    name="shelfLife2">
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-6">
-                                <label class="form-label">Proposed storage condition</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="storageCondition1">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Proposed storage conditions after first opening</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="storageCondition2">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Pharmaceutical Dosage form and route of administration</h5>
-                            <div class="col-md-6">
-                                <label class="form-label">Pharmacotherapeutic group</label>
-                                <select class="form-select" oninput="this.className = ''"
-                                    name="PharmacotherapeuticGroup">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Assigned ATC Code</label>
-                                <select class="form-select" oninput="this.className = ''" name="AssignedATCCode"
-                                    id="AssignedATCCode">
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-6">
-                                <label class="form-label">ATC Code</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="ATCCode"
-                                    id="ATCCode" disabled>
-                                <div class="form-text">Please use current ATC code.
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Applied ATC Code</label>
-                                <select class="form-select" oninput="this.className = ''" name="AppliedATCCode"
-                                    id="AppliedATCCode" disabled>
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <h5>Legal category</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Product is subject to medical prescription</label>
-                                <select class="form-select" oninput="this.className = ''" name="Legal1" id="Legal1">
-                                    <option selected>Choose...</option>
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
-                                    <div class="form-text">Proposed dispensing category/classification</div>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <div class="row mt-4">
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" oninput="this.className = ''"
-                                                type="checkbox" name="legal2" id="legal2" value="" disabled>
-                                            <label class="form-check-label">
-                                                Controlled veterinary medicine (POM-V category IA)
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
-                                                oninput="this.className = ''" name="legal3" id="legal3" value=""
-                                                disabled>
-                                            <label class="form-check-label">
-                                                Prescription Only Medicine, (IB-POM-V
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
-                                                oninput="this.className = ''" value="" id="legal4" disabled>
-                                            <label class="form-check-label">
-                                                Product Dispensed from Non-pharmacy outlets and pharmacies
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
-                                                oninput="this.className = ''" value="" id="legal5" name="legal5"
-                                                disabled>
-                                            <label class="form-check-label">
-                                                Pharmacies only
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Marketing Authorisation in the country of origin and other countries</h5>
-                            <div class="col-md-4">
-                                <label class="form-label">Authorisation Status</label>
-                                <select class="form-select" oninput="this.className = ''" name="AuthorisationStatus"
-                                    id="AuthorisationStatus">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Authorised</option>
-                                    <option value="2">Refused</option>
-                                    <option value="3">Withdrawn (by applicant after authorisation)</option>
-                                    <option value="4">Suspended/revoked (by competent authority)</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Country</label>
-                                <select class="form-select" oninput="this.className = ''" name="MarketingCountry"
-                                    id="MarketingCountry" disabled>
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="">Kenya</option>
-                                    <option value="">Uganda</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Date of authorisation</label>
-                                <input type="date" id="DateAuthorisation" class="form-control"
-                                    oninput="this.className = ''" name="DateAuthorisation" disabled>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Proprietary Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="ProprietaryName" id="ProprietaryName" disabled>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Authorisation number</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="AuthorisationNumber" id="AuthorisationNumber" disabled>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Certificate of Veterinary Medicine</label>
-                                <input type="file" class="form-control" oninput="this.className = ''"
-                                    name="CertificateVeterinary" id="CertificateVeterinary" disabled>
-                                <div class="form-text">Attach certificate of veterinary medicine from competent
-                                    regulatory authority</div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Reason</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="AuthorisationReason" id="AuthorisationReason" disabled></textarea>
-
-                                <div class="form-text">State reasons for not being authorized</div>
-                            </div>
-                        </div>
+                        
+                       
+                        
                     </div>
                     <div class="tab">
                         <div class="row my-2">
@@ -441,67 +535,7 @@
                             </div>
                         </div>
                         <hr class="dropdown-divider">
-                        <div class="row my-2">
-                            <h5>Name and complete address of the market authorization holder or Manufacturer</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Are you the market authorization holder</label>
-                                <select class="form-select" oninput="this.className = ''" name="ManufacturerQuiz"
-                                    id="marketQuiz">
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-3">
-                                <label class="form-label">Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="marketName"
-                                    id="marketName" disabled>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Company Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="MarketCompanyName" id="MarketCompanyName" disabled>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="MarketAddress" id="MarketAddress" disabled>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Country</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="MarketCountry" id="MarketCountry" disabled>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Office Telephone Number</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="MarketTelephone" id="MarketTelephone" disabled>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Office Mobile Number</label>
-                                <input type="text" class="form-control" oninput="this.className = ''"
-                                    name="MarketMobile" id="MarketMobile" disabled>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Email</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="MarketEmail"
-                                    id="MarketEmail" disabled>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Relationship</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="MarketRelationship" id="MarketRelationship" disabled></textarea>
-                                <div class="form-text">
-                                    Explain the relationship.
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="row my-2">
                             <div class="col-md-12">
                                 <label class="form-label">Relationship Evidence</label>
@@ -551,7 +585,6 @@
                             <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
                         </div>
                     </div>
-                    <!-- Circles which indicates the steps of the form: -->
                     <div style="text-align:center;margin-top:40px;">
                         <span class="step"></span>
                         <span class="step"></span>
@@ -568,60 +601,8 @@
 </main>
 <script>
     $(document).ready(function () {
-        $('#AssignedATCCode').on('change', function () {
-            if (this.value == "True") {
-                $('#ATCCode').prop('disabled', false);
-                $('#AppliedATCCode').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#AppliedATCCode').prop('disabled', false);
-                $('#ATCCode').prop('disabled', true);
-            }
-        });
-        $('#Legal1').on('change', function () {
-            if (this.value == "True") {
-                $('#legal2').prop('disabled', false);
-                $('#legal3').prop('disabled', false);
-                $('#legal4').prop('disabled', true);
-                $('#legal5').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#legal4').prop('disabled', false);
-                $('#legal5').prop('disabled', false);
-                $('#legal2').prop('disabled', true);
-                $('#legal3').prop('disabled', true);
-            }
-        });
-        $('#AuthorisationStatus').on('change', function () {
-            if (this.value == "1") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', true);
-            } else if (this.value == "2") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', true);
-                $('#AuthorisationNumber').prop('disabled', true);
-            } else if (this.value == "3") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', true);
-            } else if (this.value == "4") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', true);
-            }
-
-        });
+       
+       
         $('#ManufacturerQuiz').on('change', function () {
             if (this.value == "True") {
                 $('#ManufacturerName').prop('disabled', true);
@@ -643,31 +624,6 @@
                 $('#ManufacturerRelationship').prop('disabled', false);
             }
         });
-        $('#marketQuiz').on('change', function () {
-            if (this.value == "True") {
-                $('#marketName').prop('disabled', true);
-                $('#MarketCompanyName').prop('disabled', true);
-                $('#MarketAddress').prop('disabled', true);
-                $('#MarketCountry').prop('disabled', true);
-                $('#MarketTelephone').prop('disabled', true);
-                $('#MarketMobile').prop('disabled', true);
-                $('#MarketEmail').prop('disabled', true);
-                $('#MarketRelationship').prop('disabled', true);
-                $('#MarketEvidence').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#marketName').prop('disabled', false);
-                $('#MarketCompanyName').prop('disabled', false);
-                $('#MarketAddress').prop('disabled', false);
-                $('#MarketCountry').prop('disabled', false);
-                $('#MarketTelephone').prop('disabled', false);
-                $('#MarketMobile').prop('disabled', false);
-                $('#MarketEmail').prop('disabled', false);
-                $('#MarketRelationship').prop('disabled', false);
-                $('#MarketEvidence').prop('disabled', false);
-            }
-        });
+        
     })
-</script>
-{% include 'footer.html' %}
-
-{% endblock %}
+</script> -->

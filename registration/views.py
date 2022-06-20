@@ -4,7 +4,7 @@ from django.conf import settings as config
 import requests 
 from django.contrib import messages
 import json
-
+from datetime import date, datetime
 # Create your views here.
 
 def registrationRequest(request):
@@ -118,11 +118,13 @@ def productDetails(request,pk):
     ActiveIngredients = config.O_DATA.format("/QYActiveingredients")
     CountriesRegistered = config.O_DATA.format("/QYCountriesRegistered")
     InactiveIngredients = config.O_DATA.format("/QYInactiveIngredients")
+    MarketingAuthorisation = config.O_DATA.format("/QYMarketingAuthorisation")
     Products = []
     Manufacturer = []
     ActiveIngredient = []
     CountriesRegister = []
     InactiveIngredient = []
+    Marketing = []
     try:
         response = session.get(Access_Point, timeout=10).json()
         for res in response['value']:
@@ -159,6 +161,11 @@ def productDetails(request,pk):
             if Inactive['User_code'] == request.session['UserID'] and Inactive['No'] == pk:
                 output_json = json.dumps(Inactive)
                 InactiveIngredient.append(json.loads(output_json))
+        MarketingAuthorisationResponse = session.get(MarketingAuthorisation, timeout=10).json()
+        for marketing in MarketingAuthorisationResponse['value']:
+            if marketing['User_code'] == request.session['UserID'] and marketing['Country_No_'] == pk:
+                output_json = json.dumps(marketing)
+                Marketing.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -171,7 +178,7 @@ def productDetails(request,pk):
     ctx = {"res":responses,"status":Status,"class":productClass,
     "manufacturer":Manufacturer,"country":resCountry,
     "ActiveIngredient":ActiveIngredient,"CountriesRegister":CountriesRegister,
-    "InactiveIngredient":InactiveIngredient}
+    "InactiveIngredient":InactiveIngredient,"marketing":Marketing}
     return render(request,'productDetails.html',ctx)
 
 def ManufacturesParticulars(request,pk):
@@ -209,11 +216,12 @@ def activeIngredients(request,pk):
             myAction = request.POST.get('myAction')
             ingredientName = request.POST.get('ingredientName')
             quantityPerDose = request.POST.get('quantityPerDose')
+            strengthOfIngredient = request.POST.get('strengthOfIngredient')
             specification = request.POST.get('specification')
             userId = request.session['UserID']
             try:
                 response = config.CLIENT.service.ActiveIngredients(prodNo,myAction,ingredientName,quantityPerDose,
-                specification,userId)
+                specification,strengthOfIngredient,userId)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully. Click Add New to create more records")
@@ -279,6 +287,44 @@ def CountryRegistered(request,pk):
             except requests.exceptions.RequestException as e:
                 print(e)
                 return redirect('productDetails', pk=prodNo)
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+    return redirect ('productDetails',pk=pk)
+
+def MarketingAuthorization(request,pk):
+    if request.method == 'POST':
+        try:
+            prodNo = pk
+            myAction = request.POST.get('myAction')
+            userId = request.session['UserID']
+            AuthorisationStatus = request.POST.get('AuthorisationStatus')
+            MarketingCountry = request.POST.get('MarketingCountry')
+            DateAuthorisation = datetime.strptime(request.POST.get('DateAuthorisation'), '%Y-%m-%d').date()
+            AuthorisationNumber = request.POST.get('AuthorisationNumber')
+            AuthorisationReason = request.POST.get('AuthorisationReason')
+            ProprietaryName = request.POST.get('ProprietaryName')
+
+            if not AuthorisationReason:
+                AuthorisationReason = ''
+            if not AuthorisationNumber:
+                AuthorisationNumber = ''
+            if not ProprietaryName:
+                ProprietaryName = ''
+            try:
+                response = config.CLIENT.service.MarketingAuthorisation(prodNo,myAction,userId,AuthorisationStatus,
+                MarketingCountry,DateAuthorisation,AuthorisationNumber,AuthorisationReason,ProprietaryName)
+                print(response)
+                if response == True:
+                    messages.success(request,"Saved Successfully")
+                    return redirect('productDetails',pk=pk)
+                else:
+                    print("Not sent")
+                    return redirect ('productDetails',pk=pk)
+            except requests.exceptions.RequestException as e:
+                print(e)
+                return redirect('productDetails', pk=pk)
         except KeyError as e:
             messages.info(request,"Session Expired, Login Again")
             print(e)

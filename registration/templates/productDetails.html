@@ -181,7 +181,7 @@
             </div>
         </div>
         <div class="row my-3 gx-2">
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div class="card h-100">
                     <div class="card-header" style="border: none;">
                         <div class="row">
@@ -203,6 +203,7 @@
                                 <tr>
                                     <th scope="col">Name</th>
                                     <th scope="col">Quantity per dose</th>
+                                    <th scope="col">Strength</th>
                                     <th scope="col">Specification</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -212,6 +213,7 @@
                                 <tr>
                                     <td>{{res.Ingredient_Name_Addictives_}}</td>
                                     <td>{{res.Quantity_per_dose}}</td>
+                                    <td>{{res.Strength_of_Active_Ingredients__AI__per_unit_dosage_}}</td>
                                     <td>{{res.Specification_of_purity_of_the_active_substance_}}</td>
                                     <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
                                                 class="fas fa-trash-alt text-danger"></i> </a></td>
@@ -222,7 +224,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body pt-3">
                         <!-- Bordered Tabs -->
@@ -232,19 +234,10 @@
                                 <button class="nav-link active" data-bs-toggle="tab"
                                     data-bs-target="#profile-overview">Attachments</button>
                             </li>
-
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">
-                                    Your Uploads</button>
-                            </li>
                         </ul>
                         <div class="tab-content pt-2">
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
-
-                            </div>
-
-                            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                             </div>
                         </div><!-- End Bordered Tabs -->
@@ -332,6 +325,57 @@
             </div>
 
         </div>
+        {% if class == 'ALTERNATIVE MEDICINE' or class == 'VETERINARY PHARMACEUTICAL' %}
+        <div class="row my-3">
+            <div class="col-md-12">
+                <div class="card h-100">
+                    <div class="card-header" style="border: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Marketing
+                                    Authorisation in the country of origin and other countries
+                                </h5>
+                                <div class="inline mt-2" style="display:inline-block;">
+                                    <button type="button" class="btn text-danger" data-bs-toggle="modal"
+                                        data-bs-target="#MarketingAuthorization"><i class="bi bi-plus-circle"></i>
+                                        Add New</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <table
+                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Authorization Status</th>
+                                    <th scope="col">Country</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Proprietary Name</th>
+                                    <th scope="col">Reason</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in marketing %}
+                                <tr>
+                                    <td>{{res.Marketing_Status}}</td>
+                                    <td>{{res.Country}}</td>
+                                    <td>{{res.Date}}</td>
+                                    <td>{{res.Proprietary_name}}</td>
+                                    <td>{{res.Reason}}</td>
+                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </section>
 </main>
 
@@ -423,6 +467,15 @@
                             <div class="mb-2">
                                 <label class="form-label">Quantity Per Dose<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="quantityPerDose" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Strength Of Ingredient<span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="strengthOfIngredient" required>
                             </div>
                         </div>
                     </div>
@@ -528,6 +581,111 @@
         </div>
     </div>
 </div>
+<!-- MarketingAuthorization -->
+<div class="modal fade" id="MarketingAuthorization" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Marketing Authorization</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'MarketingAuthorization' res.ProductNo %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="myAction" value="insert">
+                    <div class="row my-2">
+                        <h5>Marketing Authorisation in the country of origin and other countries</h5>
+                        <div class="col-md-6">
+                            <label class="form-label">Authorisation Status</label>
+                            <select class="form-select" name="AuthorisationStatus" id="AuthorisationStatus">
+                                <option selected>Choose...</option>
+                                <option value="1">Authorised</option>
+                                <option value="2">Refused</option>
+                                <option value="3">Withdrawn (by applicant after authorisation)</option>
+                                <option value="4">Suspended/revoked (by competent authority)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Country</label>
+                            <select class="form-select" name="MarketingCountry" id="MarketingCountry" disabled>
+                                <option selected disabled value="">Choose...</option>
+                                {% for res in country %}
+                                <option value="{{res.Name}}">{{res.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Date of authorisation/Refusal/Withdrawal/Suspension</label>
+                            <input type="date" id="DateAuthorisation" class="form-control" name="DateAuthorisation"
+                                disabled>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Proprietary Name</label>
+                            <input type="text" class="form-control" name="ProprietaryName" id="ProprietaryName"
+                                disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Authorisation number</label>
+                            <input type="text" class="form-control" name="AuthorisationNumber" id="AuthorisationNumber"
+                                disabled>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Reason</label>
+                            <textarea class="form-control longText" name="AuthorisationReason" id="AuthorisationReason"
+                                disabled></textarea>
+
+                            <div class="form-text">State reasons for not being authorized</div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success my-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#AuthorisationStatus').on('change', function () {
+        if (this.value == "1") {
+            $('#MarketingCountry').prop('disabled', false);
+            $('#DateAuthorisation').prop('disabled', false);
+            $('#ProprietaryName').prop('disabled', false);
+            $('#AuthorisationNumber').prop('disabled', false);
+            $('#CertificateVeterinary').prop('disabled', false);
+            $('#AuthorisationReason').prop('disabled', true);
+        } else if (this.value == "2") {
+            $('#MarketingCountry').prop('disabled', false);
+            $('#DateAuthorisation').prop('disabled', false);
+            $('#AuthorisationReason').prop('disabled', false);
+            $('#CertificateVeterinary').prop('disabled', false);
+            $('#ProprietaryName').prop('disabled', true);
+            $('#AuthorisationNumber').prop('disabled', true);
+        } else if (this.value == "3") {
+            $('#MarketingCountry').prop('disabled', false);
+            $('#DateAuthorisation').prop('disabled', false);
+            $('#AuthorisationReason').prop('disabled', false);
+            $('#CertificateVeterinary').prop('disabled', false);
+            $('#ProprietaryName').prop('disabled', false);
+            $('#AuthorisationNumber').prop('disabled', true);
+        } else if (this.value == "4") {
+            $('#MarketingCountry').prop('disabled', false);
+            $('#DateAuthorisation').prop('disabled', false);
+            $('#AuthorisationReason').prop('disabled', false);
+            $('#CertificateVeterinary').prop('disabled', false);
+            $('#ProprietaryName').prop('disabled', false);
+            $('#AuthorisationNumber').prop('disabled', true);
+        }
+
+    });
+</script>
 {% include 'footer.html' %}
 
 {% endblock %}

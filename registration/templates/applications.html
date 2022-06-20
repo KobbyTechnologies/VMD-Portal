@@ -27,6 +27,8 @@
 
     {% include 'vaccine.html' %}
 
+    {% elif class == 'ALTERNATIVE MEDICINE' or class == 'VETERINARY PHARMACEUTICAL' %}
+    {% include 'pharmaceutical.html' %}
     {% endif %}
     <!-- End Form -->
     {% else %}

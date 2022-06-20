@@ -12,4 +12,5 @@ urlpatterns = [
     path("active/ingredients/<str:pk>",views.activeIngredients,name='activeIngredients'),
     path("inactive/ingredients/<str:pk>",views.InactiveIngredients,name='InactiveIngredients'),
     path("country/registered/<str:pk>",views.CountryRegistered,name='CountryRegistered'),
+    path("marketing/authorization/<str:pk>",views.MarketingAuthorization,name='MarketingAuthorization'),
 ]
