@@ -151,6 +151,23 @@
   display: none;
 }
 
+.Pharmaceutical .tabBtn {
+  background-color: #04AA6D;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: var(--font2);
+  cursor: pointer;
+}
+
+.Pharmaceutical .tabBtn:hover {
+  opacity: 0.8;
+}
+
+.Pharmaceutical #prevBtn {
+  background-color: #bbbbbb;
+}
 
 /* Make circles that indicate the steps of the form: */
 .Pharmaceutical .step {

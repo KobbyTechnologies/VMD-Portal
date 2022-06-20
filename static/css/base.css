@@ -89,3 +89,51 @@ body {
     background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
     color: #fff;
 }
+.actionCard{
+    background: transparent !important;
+    border: 1px solid #0e5a8d !important;
+
+}
+.actionCard{
+    background: black !important;
+    border: 3px solid #158fbb !important;
+    color: #158fbb !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+}
+.actionCard i{
+    color: #158fbb !important;
+    font-size: 2rem !important;
+
+}
+.actionCard:hover{
+    background: linear-gradient(to right, #a86008, #c81718) !important;
+    color: white !important;
+    border: none !important;
+}
+.actionActive{
+    background: #16123f !important;
+    color: white !important;
+    border: none !important; 
+}
+
+.tile {
+    width: 100%;
+    background: #5133AB;
+  }
+
+  .tile:hover {
+    background: #3e2784;
+  }
+  .purple li{
+    background: transparent !important;
+    border: none !important;
+    color: white;
+  }
+  .modal-header{
+    background: var(--third-color) !important;
+    color: white !important;
+  }
+  .btn-close{
+    color: white !important
+  }

@@ -1,0 +1,533 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<main id="main" class="main">
+    <section class="section dashboard mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
+                    <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
+                    <div class="a-icon mx-2">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
+                    <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
+                    <div class="a-icon mx-2">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
+                    <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
+                    <div class="a-icon mx-2">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row g-2 my-1">
+            <div class="col-md-3">
+                <div class="card h-100 info-card revenue-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Payment<span> | {{res.Currency_Code}}</span></h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>${{res.Amount_Payable}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card l-bg-cherry h-100 sales-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">Document Stage<span> | Today</span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-arrow-left-right"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>Apply</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 actionCard text-center">
+                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                    <h6>View Report</h6>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#submission">
+                    <div class="card h-100 actionCard text-center">
+                        <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                        <h6>My Submission</h6>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row g-2 my-1">
+            <div class="col-md-6">
+                <div class="card Startcard l-bg-blue-dark h-100">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fas fa-ticket-alt"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">Application Status</h5>
+                        </div>
+                        <div class="row align-items-center d-flex">
+                            <div class="col-8">
+                                <h4 class="d-flex align-items-center mb-0">
+                                    {{res.Status}}
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 actionCard text-center">
+                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                    <h6>Download Certificate</h6>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'PaymentGateway' res.ProductNo %}">
+                    <div class="card h-100 actionActive actionCard  text-center">
+                        <i class="bi bi-wallet my-3"></i>
+                        <h6>Proceed To Payment </h6>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" style="border: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Manufactures
+                                    Particulars</h5>
+                                <div class="inline mt-2" style="display:inline-block;">
+                                    <button type="button" class="btn text-danger" data-bs-toggle="modal"
+                                        data-bs-target="#createParticulars"><i class="bi bi-plus-circle"></i>
+                                        Add New</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <table
+                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Manufacturer Name</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Activity</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in manufacturer %}
+                                <tr>
+                                    <td>{{res.Manufacture_Company_Name_}}</td>
+                                    <td>{{res.Manufacturing_plant_address}}</a></td>
+                                    <td>{{res.Activity}}</td>
+                                    <td>
+                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                                class="fas fa-trash-alt text-danger"></i> </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-3 gx-2">
+            <div class="col-md-7">
+                <div class="card h-100">
+                    <div class="card-header" style="border: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Active Ingredients
+                                </h5>
+                                <div class="inline mt-2" style="display:inline-block;">
+                                    <button type="button" class="btn text-danger" data-bs-toggle="modal"
+                                        data-bs-target="#activeIngredients"><i class="bi bi-plus-circle"></i>
+                                        Add New</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table
+                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Quantity per dose</th>
+                                    <th scope="col">Specification</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in ActiveIngredient %}
+                                <tr>
+                                    <td>{{res.Ingredient_Name_Addictives_}}</td>
+                                    <td>{{res.Quantity_per_dose}}</td>
+                                    <td>{{res.Specification_of_purity_of_the_active_substance_}}</td>
+                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card h-100">
+                    <div class="card-body pt-3">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab"
+                                    data-bs-target="#profile-overview">Attachments</button>
+                            </li>
+
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">
+                                    Your Uploads</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2">
+
+                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                            </div>
+
+                            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                            </div>
+                        </div><!-- End Bordered Tabs -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row my-3 gx-2">
+            <div class="col-md-4">
+                <div class="card h-100 tile">
+                    <div class="card-headers text-center" style="border: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title text-white">Countries Registered
+
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <ul class="list-group purple">
+                            {% for res in CountriesRegister %}
+                            <li class="list-group-item bg-primary">
+                                {{res.Country_Name}}
+                                <i class="bi bi-trash-fill text-danger" style="float: right;"></i>
+                            </li>
+                            <hr style="color: white;">
+                            {% endfor %}
+                        </ul>
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                                data-bs-target="#CountryRegistered"> <i class="bi bi-plus-circle text-white"></i>
+                                Add New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card h-100">
+                    <div class="card-header" style="border: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Inactive Ingredients
+                                </h5>
+                                <div class="inline mt-2" style="display:inline-block;">
+                                    <button type="button" class="btn text-danger" data-bs-toggle="modal"
+                                        data-bs-target="#InactiveIngredients"><i class="bi bi-plus-circle"></i>
+                                        Add New</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <table
+                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Quantity per dose</th>
+                                    <th scope="col">Specification</th>
+                                    <th scope="col">Reason</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in InactiveIngredient %}
+                                <tr>
+                                    <td>{{res.Inactive_Ingredients_Name}}</td>
+                                    <td>{{res.Quantity_per_dose_Inactive_}}</td>
+                                    <td>{{res.Specification_Reference_text}}</td>
+                                    <td>{{res.Reason_For_Inclusion}}</td>
+                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+
+<!-- Modals -->
+<div class="modal fade" id="submission" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Full Screen Modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Create Manufacturer particulars -->
+<div class="modal fade" id="createParticulars" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add Particulars of the Manufacturer and Activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'ManufacturesParticulars' res.ProductNo %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="myAction" value="insert">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Manufacturer Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="manufacturerName" id="manufacturerName"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Plant Address<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="plantAddress" id="plantAddress" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Activity <span class="text-danger">*</span></label>
+                                <textarea class="form-control longText" name="activity" id="activity"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success my-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Create Active Ingredients -->
+<div class="modal fade" id="activeIngredients" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add Active Ingredients</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'activeIngredients' res.ProductNo %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="myAction" value="insert">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Ingredient Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="ingredientName" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Quantity Per Dose<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="quantityPerDose" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Specification <span class="text-danger">*</span></label>
+                                <textarea class="form-control longText" name="specification"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success my-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Inactive Ingredients -->
+<div class="modal fade" id="InactiveIngredients" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add Inactive Ingredients</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'InactiveIngredients' res.ProductNo %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="myAction" value="insert">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Ingredient Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="ingredientName" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Quantity Per Dose<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="quantityPerDose" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Specification <span class="text-danger">*</span></label>
+                                <textarea class="form-control longText" name="specification"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Reason For Inclusion <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control longText" name="reasonForInclusion"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success my-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end -->
+<!-- Country Registered -->
+<div class="modal fade" id="CountryRegistered" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Country Registered</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'CountryRegistered' res.ProductNo %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="myAction" value="insert">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Country <span class="text-danger">*</span></label>
+                                <select class="form-select" aria-label="Default select example" name="country">
+                                    <option selected value="" disabled>Select Country</option>
+                                    {% for res in country %}
+                                    <option value="{{res.Name}}">{{res.Name}}</option>
+
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-success my-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+
+{% endblock %}

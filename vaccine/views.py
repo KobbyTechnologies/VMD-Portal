@@ -4,11 +4,11 @@ from django.conf import settings as config
 import requests 
 
 # Create your views here.
-def vaccineRegistration(request):
+def vaccineRegistration(request,pk):
     if request.method == 'POST':
         try:
-            prodNo = request.POST.get('prodNo')
-            myAction = request.POST.get('myAction')
+            prodNo = pk
+            myAction = 'modify'
             prodName = request.POST.get('prodName')
             packSize = request.POST.get('packSize')
             description = request.POST.get('description')
@@ -27,14 +27,21 @@ def vaccineRegistration(request):
                 description,mainIndication,TypeOfReview,giveReasons,iAgree,nameOfSignatory,userId)
                 print(response)
                 if response == True:
-                    return redirect('applications', pk=prodNo)
+                    messages.success(request,"Successfully Saved")
+                    return redirect('productDetails', pk=pk)
                 else:
-                    print('not sent')
+                    messages.success(request,"Not sent. Retry Again")
+                    return redirect('applications', pk=pk)
             except requests.exceptions.RequestException as e:
                 print(e)
-                return redirect('applications', pk=prodNo)
+                return redirect('applications', pk=pk)
         except KeyError as e:
             messages.info(request,"Session Expired, Login Again")
             print(e)
-        return redirect('login')
-    return redirect('applications', pk=prodNo)
+            return redirect('login')
+        except ValueError as e:
+            messages.info(request,"Invalid Input")
+            print(e)
+            return redirect('applications', pk=pk)
+    return redirect('applications', pk=pk)
+
