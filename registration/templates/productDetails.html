@@ -134,44 +134,53 @@
                 </a>
             </div>
         </div>
-        <div class="row my-3">
+        <div class="row my-3 gx-2">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-header" style="border: none;">
                         <div class="row">
                             <div class="col-md-12">
-                                <h5 class="card-title" style="display:inline-block;float:right ;">Manufactures
-                                    Particulars</h5>
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Ingredients
+                                </h5>
                                 <div class="inline mt-2" style="display:inline-block;">
                                     <button type="button" class="btn text-danger" data-bs-toggle="modal"
-                                        data-bs-target="#createParticulars"><i class="bi bi-plus-circle"></i>
+                                        data-bs-target="#activeIngredients"><i class="bi bi-plus-circle"></i>
                                         Add New</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-
                         <table
                             class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
-                                    <th scope="col">Manufacturer Name</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col">Activity</th>
+                                    <th scope="col">Name</th>
+                                    <th>Ingredient Type</th>
+                                    <th scope="col">Quantity per dose</th>
+                                    <th scope="col">Strength</th>
+                                    <th>Molecular Formula</th>
+                                    <th>Molecular Weight</th>
+                                    <th>Proportion</th>
+                                    <th scope="col">Specification</th>
+                                    <th>Reason For Inclusion</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for res in manufacturer %}
+                                {% for res in ingredient %}
                                 <tr>
-                                    <td>{{res.Manufacture_Company_Name_}}</td>
-                                    <td>{{res.Manufacturing_plant_address}}</a></td>
-                                    <td>{{res.Activity}}</td>
-                                    <td>
-                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a>
-                                    </td>
+                                    <td>{{res.Ingredient_Name}}</td>
+                                    <td>{{res.Ingredient_Type}}</td>
+                                    <td>{{res.Quantity_per_dose}}</td>
+                                    <td>{{res.Strength_of_Active_Ingredients__AI__per_unit_dosage_}}</td>
+                                    <td>{{res.Molecular_and_structural_formula}}</td>
+                                    <td>{{res.Molecular_weight_for_each_active_ingredient_}}</td>
+                                    <td>{{res.Proportion}}</td>
+                                    <td>{{res.Specification_of_purity_of_the_active_substance_}}</td>
+                                    <td>{{res.Reason_For_Inclusion}}</td>
+                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                                class="fas fa-trash-alt text-danger"></i> </a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -180,6 +189,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row my-3 gx-2">
             <div class="col-md-6">
                 <div class="card h-100 tile">
@@ -234,53 +244,44 @@
 
             </div>
         </div>
-        <div class="row my-3 gx-2">
+        <div class="row my-3">
             <div class="col-md-12">
-                <div class="card h-100">
+                <div class="card">
                     <div class="card-header" style="border: none;">
                         <div class="row">
                             <div class="col-md-12">
-                                <h5 class="card-title" style="display:inline-block;float:right ;">Ingredients
-                                </h5>
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Manufactures
+                                    Particulars</h5>
                                 <div class="inline mt-2" style="display:inline-block;">
                                     <button type="button" class="btn text-danger" data-bs-toggle="modal"
-                                        data-bs-target="#activeIngredients"><i class="bi bi-plus-circle"></i>
+                                        data-bs-target="#createParticulars"><i class="bi bi-plus-circle"></i>
                                         Add New</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
+
                         <table
                             class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
-                                    <th scope="col">Name</th>
-                                    <th>Ingredient Type</th>
-                                    <th scope="col">Quantity per dose</th>
-                                    <th scope="col">Strength</th>
-                                    <th>Molecular Formula</th>
-                                    <th>Molecular Weight</th>
-                                    <th>Proportion</th>
-                                    <th scope="col">Specification</th>
-                                    <th>Reason For Inclusion</th>
+                                    <th scope="col">Manufacturer Name</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Activity</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for res in ingredient %}
+                                {% for res in manufacturer %}
                                 <tr>
-                                    <td>{{res.Ingredient_Name}}</td>
-                                    <td>{{res.Ingredient_Type}}</td>
-                                    <td>{{res.Quantity_per_dose}}</td>
-                                    <td>{{res.Strength_of_Active_Ingredients__AI__per_unit_dosage_}}</td>
-                                    <td>{{res.Molecular_and_structural_formula}}</td>
-                                    <td>{{res.Molecular_weight_for_each_active_ingredient_}}</td>
-                                    <td>{{res.Proportion}}</td>
-                                    <td>{{res.Specification_of_purity_of_the_active_substance_}}</td>
-                                    <td>{{res.Reason_For_Inclusion}}</td>
-                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                    <td>{{res.Manufacture_Company_Name_}}</td>
+                                    <td>{{res.Manufacturing_plant_address}}</a></td>
+                                    <td>{{res.Activity}}</td>
+                                    <td>
+                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                                class="fas fa-trash-alt text-danger"></i> </a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
