@@ -1,493 +1,220 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block base %}
-
-<!--Header-->
-{% include 'navbar.html' %}
-<!-- End Header -->
-
-<!-- Sidebar-->
-{% include 'sidebar.html' %}
-<!-- End Sidebar -->
-
-<main id="main" class="">
-
-    <div class="pagetitle">
-        <h1>Veterinary Devices</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Registration' %}">Register</a></li>
-                <li class="breadcrumb-item active">Veterinary Devices</li>
-            </ol>
-        </nav>
-    </div>
-    <section class="mt-4">
-        <div class="row">
-            <div class="col-md-12">
-                <form id="regForm" action="" class="Pharmaceutical">
-
-                    <!-- One "tab" for each step in the form: -->
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h1>PARTICULARS OF THE APPLICANT</h1>
-                            <h5>Should be the Local Technical Representative</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Are you an LTR</label>
-                                <select class="form-select" oninput="this.className = ''" name="AssignedATCCode"
-                                    id="AssignedATCCode">
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Postal Address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Country</label>
-                                <select class="form-select" oninput="this.className = ''" name="" id="">
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="">Kenya</option>
-                                    <option value="">Uganda</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Physical Address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Telephone number</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Email</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Explain Relationship With Manufacturer</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name="LtRRelationship" id="LtRRelationship" disabled></textarea>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Evidence of Relationship With Manufacturer</label>
-                                <input type="file" class="form-control" oninput="this.className = ''" name="LtREvidence"
-                                    id="LtREvidence" disabled>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Particulars of Manufacturer</h5>
-                            <div class="col-md-4">
-                                <label class="form-label">Manufacturer Name</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Postal Address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Country</label>
-                                <select class="form-select" oninput="this.className = ''" name="" id="">
-                                    <option selected disabled value="">Choose...</option>
-                                    <option value="">Kenya</option>
-                                    <option value="">Uganda</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-4">
-                                <label class="form-label">Physical Address</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Telephone number</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Email</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Good Manufacturing Practice (GMP) Status</label>
-                                <input type="file" class="form-control" oninput="this.className = ''" name="" id="">
-                                <div class="form-text">(Attach certificate)</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <h1>APPLICATION FOR REGISTRATION OF VETERINARY DEVICES</h1>
-                        <div class="row my-2 ">
-                            <h5>Summary of the device</h5>
-                            <div class="col-md-6">
-                                <label class="form-label">Classification of the device</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name=""></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Overview</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name=""></textarea>
-                                <div class="form-text">introductory descriptive information on the medical device and
-                                    any novel features
+<section class="mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
+                <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
+                <div class="a-icon mx-2">
+                    {{message}}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
+                <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
+                <div class="a-icon mx-2">
+                    {{message}}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
+                <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
+                <div class="a-icon mx-2">
+                    {{message}}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Registration of {{res.Veterinary_Classes}}
+                        {{res.ProductNo}}
+                    </h5>
+                    <form action="{% url 'devicesRegistration' res.ProductNo %}" method="POST">
+                        {% csrf_token %}
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                        aria-controls="flush-collapseOne">
+                                        Summary of the device
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                                    aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <div class="row my-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Classification of device <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="Classification" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Device Name</label>
+                                                <input type="text" class="form-control" name="prodName">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Device Overview<span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea class="form-control longText"
+                                                        name="DeviceOverview"></textarea>
+                                                    <div class="form-text">introductory descriptive information on the
+                                                        medical device and
+                                                        any novel features
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Commercial marketing history</label>
+                                                <textarea class="form-control longText"
+                                                    name="marketingHistory"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Intended uses and indications in
+                                                    labelling</label>
+                                                <textarea class="form-control longText" name="intendedUse"></textarea>
+                                                <div class="form-text">
+                                                    According to the data supplied by the manufacturer in the
+                                                    instructions as well as the functional capability of the device.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Important safety/performance related
+                                                    information</label>
+                                                <textarea class="form-control longText"
+                                                    name="ImportantSafety"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <h5>Description of the device</h5>
+                                            <div class="col-md-12">
+                                                <label class="form-label">Visual description</label>
+                                                <textarea class="form-control longText"
+                                                    name="visualDescription"></textarea>
+                                                <div class="form-text">Detailed description of the device attributes is
+                                                    necessary to
+                                                    explain how the device functions, the basic scientific concepts that
+                                                    form the
+                                                    fundamentals for the device, the component materials and accessories
+                                                    used in its
+                                                    principles of operation as well as packaging.</div>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Instructions of Use</label>
+                                                <textarea class="form-control longText" name="instructions"
+                                                    id=""></textarea>
+                                                <div class="form-text">Instructions of use according to information from
+                                                    the
+                                                    manufacturer including the procedures, methods, frequency, duration,
+                                                    quantity and
+                                                    preparation to be followed for safe use of the medical device.</div>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control longText" name="diseaseDescription"
+                                                    id=""></textarea>
+                                                <div class="form-text">Description of the disease or condition and the
+                                                    population for
+                                                    which the device should not be used for the purpose of diagnosis or
+                                                    treatment</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Specific hazard alert</label>
+                                                <textarea class="form-control longText" name="hazardAlert"
+                                                    id=""></textarea>
+                                                <div class="form-text">Specific hazard alert information that a user
+                                                    needs to know
+                                                    before using the device</div>
+                                            </div>
+                                        </div>
+                                        <hr class="dropdown-divider">
+                                        <div class="row my-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Special care necessary</label>
+                                                <textarea class="form-control longText" name="Care"></textarea>
+                                                <div class="form-text">Special care necessary for the safe and effective
+                                                    use of the
+                                                    device.</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Characterization of materials</label>
+                                                <textarea class="form-control longText" name="Characterization"
+                                                    id=""></textarea>
+                                                <div class="form-text">Chemical, biological and physical
+                                                    characterization of materials
+                                                    that have direct or indirect contact with the animal body.</div>
+                                            </div>
+                                        </div>
+                                        <hr class="dropdown-divider">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Functional characteristics</label>
+                                            <textarea class="form-control longText" name="Functional"></textarea>
+                                        </div>
+                                        <hr class="dropdown-divider">
+                                        <div class="row my-2">
+                                            <h5>Device Labelling</h5>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Labels on the device</label>
+                                                <input type="text" class="form-control" name="LabelsOnDevice">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Device packaging</label>
+                                                <input type="text" class="form-control" name="DevicePackaging" id="">
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <input class="form-check-input" type="checkbox" value="True"
+                                                        name="Manual">
+                                                    <label class="form-check-label text-primary">
+                                                        Device has instructions for use/user’s manual
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="dropdown-divider">
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <input class="form-check-input" type="checkbox" value="True"
+                                                        name="iAgree" checked>
+                                                    <label class="form-check-label text-primary">
+                                                        I hereby apply for registration of
+                                                        the product detailed above and
+                                                        declare that all the information herein is correct
+                                                        and true.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <button type="submit" class="btn btn-success my-2">Submit</button>
                         </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Commercial marketing history</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Intended uses and indications in labelling</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-6">
-                                <label class="form-label">List of regulatory approval or marketing clearance
-                                    obtained</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    rows="3"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Important safety/performance related information</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Status of any pending request for market clearance</label>
-                                <select class="form-select" oninput="this.className = ''" name="">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
-                                </select>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Relevant essential principles and methods used to demonstrate conformity</h5>
-                            <div class="col-md-12">
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    rows="3"></textarea>
-
-                                <div class="form-text">
-                                    Identify the general method used to demonstrate conformity to each applicable
-                                    Essential Principle. The evidence of conformity can be provided in tabular form with
-                                    supporting documentation attached. Note: The manufacturer of the device will
-                                    determine which principles are appropriate for a particular device while taking into
-                                    account the intended purpose of the device.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Description of the device</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Visual description</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name=""></textarea>
-                                <div class="form-text">Detailed description of the device attributes is necessary to
-                                    explain how the device functions, the basic scientific concepts that form the
-                                    fundamentals for the device, the component materials and accessories used in its
-                                    principles of operation as well as packaging. A complete description of each
-                                    functional component, material or ingredient of the device should be provided, with
-                                    labelled pictorial representation of the device in the form of diagrams, photographs
-                                    or drawings, as appropriate.</div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Attachments</label>
-                                <input type="file" class="form-control" oninput="this.className = ''" name="">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <div class="col-md-6">
-                                <label class="form-label">Intended Use</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    id=""></textarea>
-                                <div class="form-text">According to the data supplied by the manufacturer in the
-                                    instructions as well as the functional capability of the device.</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Instructions of Use</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    id=""></textarea>
-                                <div class="form-text">Instructions of use according to information from the
-                                    manufacturer including the procedures, methods, frequency, duration, quantity and
-                                    preparation to be followed for safe use of the medical device.</div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-6">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    id=""></textarea>
-                                <div class="form-text">Description of the disease or condition and the population for
-                                    which the device should not be used for the purpose of diagnosis or treatment</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Specific hazard alert</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    id=""></textarea>
-                                <div class="form-text">Specific hazard alert information that a user needs to know
-                                    before using the device</div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-6">
-                                <label class="form-label">Special care necessary</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    id=""></textarea>
-                                <div class="form-text">Special care necessary for the safe and effective use of the
-                                    device.</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Characterization of materials</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    id=""></textarea>
-                                <div class="form-text">Chemical, biological and physical characterization of materials
-                                    that have direct or indirect contact with the animal body.</div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Characteristics</label>
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    id=""></textarea>
-
-                                <div class="form-text">The functional characteristics and technical performance
-                                    specifications for the device including, as relevant, accuracy, sensitivity,
-                                    specificity of measuring and diagnostic medical devices, reliability and other
-                                    factors; and other specifications including chemical, physical, electrical,
-                                    mechanical, biological, software, sterility, stability, storage and transport, and
-                                    packaging to the extent necessary to demonstrate conformity with the relevant
-                                    Essential Principles</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Verification and Validation of Documents</h5>
-                            <div class="col-md-12">
-                                <label class="form-label">Attach</label>
-                                <input type="file" class="form-control" oninput="this.className = ''"
-                                    name="CertificateAnalysis">
-                                <div class="form-text">Data from pre-clinical and clinical studies</div>
-                            </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Device Labelling</h5>
-                            <div class="col-md-6">
-                                <label class="form-label">Labels on the device</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Device packaging</label>
-                                <input type="text" class="form-control" oninput="this.className = ''" name="" id="">
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Instructions for use/user’s manual</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name=""></textarea>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Results of the risk analysis</label>
-                                <textarea class="form-control longText" oninput="this.className = ''"
-                                    name=""></textarea>
-                                <div class="form-text">Results of the risk analysis based upon international or other
-                                    recognized standards</div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Attach</label>
-                                <input type="file" class="form-control" oninput="this.className = ''"
-                                    name="CertificateGMP">
-                                <div class="form-text">Samples of Labels on the Medical device and its Packaging</div>
-                            </div>
-                        </div>
-
-                        <hr class="dropdown-divider">
-                    </div>
-                    <div class="tab">
-                        <div class="row my-2">
-                            <h5>Summary or references of the manufacturing processes, including quality assurance
-                                measures</h5>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <textarea class="form-control longText" oninput="this.className = ''" name=""
-                                    rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <label class="form-label">Attach File(s)</label>
-                                <input type="file" class="form-control" oninput="this.className = ''" name="BatchFile">
-                            </div>
-                        </div>
-                    </div>
-                    <div style="overflow:auto;">
-                        <div style="float:right;">
-                            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                        </div>
-                    </div>
-                    <!-- Circles which indicates the steps of the form: -->
-                    <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </section>
-</main>
-<script>
-    $(document).ready(function () {
-        $('#AssignedATCCode').on('change', function () {
-            if (this.value == "True") {
-                $('#LtRRelationship').prop('disabled', true);
-                $('#LtREvidence').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#LtRRelationship').prop('disabled', false);
-                $('#LtREvidence').prop('disabled', false);
-            }
-        });
-        $('#Legal1').on('change', function () {
-            if (this.value == "True") {
-                $('#legal2').prop('disabled', false);
-                $('#legal3').prop('disabled', false);
-                $('#legal4').prop('disabled', true);
-                $('#legal5').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#legal4').prop('disabled', false);
-                $('#legal5').prop('disabled', false);
-                $('#legal2').prop('disabled', true);
-                $('#legal3').prop('disabled', true);
-            }
-        });
-        $('#AuthorisationStatus').on('change', function () {
-            if (this.value == "1") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', true);
-            } else if (this.value == "2") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', true);
-                $('#AuthorisationNumber').prop('disabled', true);
-            } else if (this.value == "3") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', true);
-            } else if (this.value == "4") {
-                $('#MarketingCountry').prop('disabled', false);
-                $('#DateAuthorisation').prop('disabled', false);
-                $('#AuthorisationReason').prop('disabled', false);
-                $('#CertificateVeterinary').prop('disabled', false);
-                $('#ProprietaryName').prop('disabled', false);
-                $('#AuthorisationNumber').prop('disabled', true);
-            }
-
-        });
-        $('#ManufacturerQuiz').on('change', function () {
-            if (this.value == "True") {
-                $('#ManufacturerName').prop('disabled', true);
-                $('#ManufacturerCompanyName').prop('disabled', true);
-                $('#ManufacturerAddress').prop('disabled', true);
-                $('#ManufacturerCountry').prop('disabled', true);
-                $('#ManufacturerTelephone').prop('disabled', true);
-                $('#ManufacturerMobile').prop('disabled', true);
-                $('#ManufacturerEmail').prop('disabled', true);
-                $('#ManufacturerRelationship').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#ManufacturerName').prop('disabled', false);
-                $('#ManufacturerCompanyName').prop('disabled', false);
-                $('#ManufacturerAddress').prop('disabled', false);
-                $('#ManufacturerCountry').prop('disabled', false);
-                $('#ManufacturerTelephone').prop('disabled', false);
-                $('#ManufacturerMobile').prop('disabled', false);
-                $('#ManufacturerEmail').prop('disabled', false);
-                $('#ManufacturerRelationship').prop('disabled', false);
-            }
-        });
-        $('#marketQuiz').on('change', function () {
-            if (this.value == "True") {
-                $('#marketName').prop('disabled', true);
-                $('#MarketCompanyName').prop('disabled', true);
-                $('#MarketAddress').prop('disabled', true);
-                $('#MarketCountry').prop('disabled', true);
-                $('#MarketTelephone').prop('disabled', true);
-                $('#MarketMobile').prop('disabled', true);
-                $('#MarketEmail').prop('disabled', true);
-                $('#MarketRelationship').prop('disabled', true);
-                $('#MarketEvidence').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#marketName').prop('disabled', false);
-                $('#MarketCompanyName').prop('disabled', false);
-                $('#MarketAddress').prop('disabled', false);
-                $('#MarketCountry').prop('disabled', false);
-                $('#MarketTelephone').prop('disabled', false);
-                $('#MarketMobile').prop('disabled', false);
-                $('#MarketEmail').prop('disabled', false);
-                $('#MarketRelationship').prop('disabled', false);
-                $('#MarketEvidence').prop('disabled', false);
-            }
-        });
-    })
-</script>
-{% include 'footer.html' %}
-
-{% endblock %}
+    </div>
+</section>

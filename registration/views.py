@@ -118,8 +118,10 @@ def productDetails(request,pk):
     CountriesRegistered = config.O_DATA.format("/QYCountriesRegistered")
     MarketingAuthorisation = config.O_DATA.format("/QYMarketingAuthorisation")
     FeedAdditives = config.O_DATA.format("/QYAddictives")
+    Methods = config.O_DATA.format("/QYMethods")
     Products = []
     Additive = []
+    Method = []
     Manufacturer = []
     Ingredient = []
     CountriesRegister = []
@@ -166,6 +168,11 @@ def productDetails(request,pk):
             if additive['User_code'] == request.session['UserID'] and additive['No'] == pk:
                 output_json = json.dumps(additive)
                 Additive.append(json.loads(output_json))
+        MethodResponse = session.get(Methods, timeout=10).json()
+        for method in MethodResponse['value']:
+            if method['User_Code'] == request.session['UserID'] and method['No'] == pk:
+                output_json = json.dumps(method)
+                Method.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -178,7 +185,7 @@ def productDetails(request,pk):
     ctx = {"res":responses,"status":Status,"class":productClass,
     "manufacturer":Manufacturer,"country":resCountry,
     "CountriesRegister":CountriesRegister,
-    "marketing":Marketing,'ingredient':Ingredient,"additive":Additive}
+    "marketing":Marketing,'ingredient':Ingredient,"additive":Additive,"method":Method}
     return render(request,'productDetails.html',ctx)
 
 def ManufacturesParticulars(request,pk):
