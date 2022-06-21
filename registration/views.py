@@ -1,4 +1,3 @@
-from tkinter.filedialog import Open
 from django.shortcuts import redirect, render
 from django.conf import settings as config
 import requests 
@@ -115,15 +114,15 @@ def productDetails(request,pk):
     Access_Point = config.O_DATA.format("/QYRegistration")
     ManufacturesParticulars = config.O_DATA.format("/QYManufactureParticulers")
     Countries = config.O_DATA.format("/QYCountries")
-    ActiveIngredients = config.O_DATA.format("/QYActiveingredients")
+    Ingredients = config.O_DATA.format("/QYIngredients")
     CountriesRegistered = config.O_DATA.format("/QYCountriesRegistered")
-    InactiveIngredients = config.O_DATA.format("/QYInactiveIngredients")
     MarketingAuthorisation = config.O_DATA.format("/QYMarketingAuthorisation")
+    FeedAdditives = config.O_DATA.format("/QYAddictives")
     Products = []
+    Additive = []
     Manufacturer = []
-    ActiveIngredient = []
+    Ingredient = []
     CountriesRegister = []
-    InactiveIngredient = []
     Marketing = []
     try:
         response = session.get(Access_Point, timeout=10).json()
@@ -146,26 +145,27 @@ def productDetails(request,pk):
                 Manufacturer.append(json.loads(output_json))
         CountryResponse = session.get(Countries, timeout=10).json()
         resCountry = CountryResponse['value']
-        ActiveIngredientResponse = session.get(ActiveIngredients, timeout=10).json()
-        for ingredient in ActiveIngredientResponse['value']:
+        IngredientResponse = session.get(Ingredients, timeout=10).json()
+        for ingredient in IngredientResponse['value']:
             if ingredient['User_code'] == request.session['UserID'] and ingredient['No'] == pk:
                 output_json = json.dumps(ingredient)
-                ActiveIngredient.append(json.loads(output_json))
+                Ingredient.append(json.loads(output_json))
         CountriesRegisteredResponse = session.get(CountriesRegistered, timeout=10).json()
         for country in CountriesRegisteredResponse['value']:
             if country['User_code'] == request.session['UserID'] and country['No'] == pk:
                 output_json = json.dumps(country)
                 CountriesRegister.append(json.loads(output_json))
-        InactiveIngredientsResponse = session.get(InactiveIngredients, timeout=10).json()
-        for Inactive in InactiveIngredientsResponse['value']:
-            if Inactive['User_code'] == request.session['UserID'] and Inactive['No'] == pk:
-                output_json = json.dumps(Inactive)
-                InactiveIngredient.append(json.loads(output_json))
+
         MarketingAuthorisationResponse = session.get(MarketingAuthorisation, timeout=10).json()
         for marketing in MarketingAuthorisationResponse['value']:
             if marketing['User_code'] == request.session['UserID'] and marketing['Country_No_'] == pk:
                 output_json = json.dumps(marketing)
                 Marketing.append(json.loads(output_json))
+        AdditiveResponse = session.get(FeedAdditives, timeout=10).json()
+        for additive in AdditiveResponse['value']:
+            if additive['User_code'] == request.session['UserID'] and additive['No'] == pk:
+                output_json = json.dumps(additive)
+                Additive.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -177,8 +177,8 @@ def productDetails(request,pk):
     
     ctx = {"res":responses,"status":Status,"class":productClass,
     "manufacturer":Manufacturer,"country":resCountry,
-    "ActiveIngredient":ActiveIngredient,"CountriesRegister":CountriesRegister,
-    "InactiveIngredient":InactiveIngredient,"marketing":Marketing}
+    "CountriesRegister":CountriesRegister,
+    "marketing":Marketing,'ingredient':Ingredient,"additive":Additive}
     return render(request,'productDetails.html',ctx)
 
 def ManufacturesParticulars(request,pk):
@@ -209,22 +209,29 @@ def ManufacturesParticulars(request,pk):
             return redirect('login')
     return redirect('productDetails',pk=pk)
 
-def activeIngredients(request,pk):
+def Ingredients(request,pk):
     if request.method == 'POST':
         try:
             prodNo = pk
             myAction = request.POST.get('myAction')
+            ingredientType = request.POST.get('ingredientType')
             ingredientName = request.POST.get('ingredientName')
             quantityPerDose = request.POST.get('quantityPerDose')
             strengthOfIngredient = request.POST.get('strengthOfIngredient')
+            MolecularFormula = request.POST.get('MolecularFormula')
+            MolecularWeight = request.POST.get('MolecularWeight')
+            Proportion = request.POST.get('Proportion')
+            ReasonForInclusion= request.POST.get('ReasonForInclusion')
             specification = request.POST.get('specification')
             userId = request.session['UserID']
+            if not ReasonForInclusion:
+                ReasonForInclusion = ''
             try:
-                response = config.CLIENT.service.ActiveIngredients(prodNo,myAction,ingredientName,quantityPerDose,
-                specification,strengthOfIngredient,userId)
+                response = config.CLIENT.service.Ingredients(prodNo,myAction,ingredientName,ingredientType,ReasonForInclusion,quantityPerDose,
+                Proportion,MolecularFormula,MolecularWeight,specification,strengthOfIngredient,userId)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully. Click Add New to create more records")
+                    messages.success(request,"Saved Successfully.")
                     return redirect('productDetails',pk=pk)
                 else:
                     print("Not sent")
@@ -238,35 +245,7 @@ def activeIngredients(request,pk):
             return redirect('login')
     return redirect ('productDetails',pk=pk)
 
-def InactiveIngredients(request,pk):
-    if request.method == 'POST':
-        try:
-            prodNo = pk
-            myAction = request.POST.get('myAction')
-            userId = request.session['UserID']
-            ingredientName = request.POST.get('ingredientName')
-            quantityPerDose = request.POST.get('quantityPerDose')
-            specification = request.POST.get('specification')
-            reasonForInclusion =request.POST.get('reasonForInclusion')
-            
-            try:
-                response = config.CLIENT.service.InactiveIngredient(prodNo,myAction,userId,ingredientName,quantityPerDose,
-                specification,reasonForInclusion)
-                print(response)
-                if response == True:
-                    messages.success(request,"Saved Successfully. Click Add New to create more  records")
-                    return redirect('productDetails',pk=pk)
-                else:
-                    print("Not sent")
-                    return redirect ('productDetails',pk=pk)
-            except requests.exceptions.RequestException as e:
-                print(e)
-                return redirect('productDetails', pk=pk)
-        except KeyError as e:
-            messages.info(request,"Session Expired, Login Again")
-            print(e)
-            return redirect('login')
-    return redirect ('productDetails',pk=pk)
+
 def CountryRegistered(request,pk):
     if request.method == 'POST':
         try:

@@ -181,74 +181,7 @@
             </div>
         </div>
         <div class="row my-3 gx-2">
-            <div class="col-md-8">
-                <div class="card h-100">
-                    <div class="card-header" style="border: none;">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5 class="card-title" style="display:inline-block;float:right ;">Active Ingredients
-                                </h5>
-                                <div class="inline mt-2" style="display:inline-block;">
-                                    <button type="button" class="btn text-danger" data-bs-toggle="modal"
-                                        data-bs-target="#activeIngredients"><i class="bi bi-plus-circle"></i>
-                                        Add New</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <table
-                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Quantity per dose</th>
-                                    <th scope="col">Strength</th>
-                                    <th scope="col">Specification</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for res in ActiveIngredient %}
-                                <tr>
-                                    <td>{{res.Ingredient_Name_Addictives_}}</td>
-                                    <td>{{res.Quantity_per_dose}}</td>
-                                    <td>{{res.Strength_of_Active_Ingredients__AI__per_unit_dosage_}}</td>
-                                    <td>{{res.Specification_of_purity_of_the_active_substance_}}</td>
-                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body pt-3">
-                        <!-- Bordered Tabs -->
-                        <ul class="nav nav-tabs nav-tabs-bordered">
-
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab"
-                                    data-bs-target="#profile-overview">Attachments</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content pt-2">
-
-                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
-
-                            </div>
-                        </div><!-- End Bordered Tabs -->
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="row my-3 gx-2">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="card h-100 tile">
                     <div class="card-headers text-center" style="border: none;">
                         <div class="row">
@@ -278,44 +211,76 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body pt-3">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab"
+                                    data-bs-target="#profile-overview">Attachments</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2">
+
+                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                            </div>
+                        </div><!-- End Bordered Tabs -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row my-3 gx-2">
+            <div class="col-md-12">
                 <div class="card h-100">
                     <div class="card-header" style="border: none;">
                         <div class="row">
                             <div class="col-md-12">
-                                <h5 class="card-title" style="display:inline-block;float:right ;">Inactive Ingredients
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Ingredients
                                 </h5>
                                 <div class="inline mt-2" style="display:inline-block;">
                                     <button type="button" class="btn text-danger" data-bs-toggle="modal"
-                                        data-bs-target="#InactiveIngredients"><i class="bi bi-plus-circle"></i>
+                                        data-bs-target="#activeIngredients"><i class="bi bi-plus-circle"></i>
                                         Add New</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="card-body">
                         <table
                             class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
                                     <th scope="col">Name</th>
+                                    <th>Ingredient Type</th>
                                     <th scope="col">Quantity per dose</th>
+                                    <th scope="col">Strength</th>
+                                    <th>Molecular Formula</th>
+                                    <th>Molecular Weight</th>
+                                    <th>Proportion</th>
                                     <th scope="col">Specification</th>
-                                    <th scope="col">Reason</th>
+                                    <th>Reason For Inclusion</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for res in InactiveIngredient %}
+                                {% for res in ingredient %}
                                 <tr>
-                                    <td>{{res.Inactive_Ingredients_Name}}</td>
-                                    <td>{{res.Quantity_per_dose_Inactive_}}</td>
-                                    <td>{{res.Specification_Reference_text}}</td>
+                                    <td>{{res.Ingredient_Name}}</td>
+                                    <td>{{res.Ingredient_Type}}</td>
+                                    <td>{{res.Quantity_per_dose}}</td>
+                                    <td>{{res.Strength_of_Active_Ingredients__AI__per_unit_dosage_}}</td>
+                                    <td>{{res.Molecular_and_structural_formula}}</td>
+                                    <td>{{res.Molecular_weight_for_each_active_ingredient_}}</td>
+                                    <td>{{res.Proportion}}</td>
+                                    <td>{{res.Specification_of_purity_of_the_active_substance_}}</td>
                                     <td>{{res.Reason_For_Inclusion}}</td>
                                     <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
                                                 class="fas fa-trash-alt text-danger"></i> </a></td>
-                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -323,9 +288,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        {% if class == 'ALTERNATIVE MEDICINE' or class == 'VETERINARY PHARMACEUTICAL' %}
         <div class="row my-3">
             <div class="col-md-12">
                 <div class="card h-100">
@@ -365,6 +328,51 @@
                                     <td>{{res.Date}}</td>
                                     <td>{{res.Proprietary_name}}</td>
                                     <td>{{res.Reason}}</td>
+                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if class == 'FEED ADDITIVES' or class == 'BIOCIDAL PRODUCTS' %}
+        <div class="row my-3">
+            <div class="col-md-12">
+                <div class="card h-100">
+                    <div class="card-header" style="border: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Additives/Impurities
+                                </h5>
+                                <div class="inline mt-2" style="display:inline-block;">
+                                    <button type="button" class="btn text-danger" data-bs-toggle="modal"
+                                        data-bs-target="#Additives"><i class="bi bi-plus-circle"></i>
+                                        Add New</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <table
+                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Proportion</th>
+                                    <th scope="col">Specification</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in additive %}
+                                <tr>
+                                    <td>{{res.Ingredient_Name_Addictives_}}</td>
+                                    <td>{{res.Proportion_e_g_____ppm_units__Addictives_}}</td>
+                                    <td>{{res.Purpose_of_use__Addictives_}}</td>
                                     <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
                                                 class="fas fa-trash-alt text-danger"></i> </a></td>
                                 </tr>
@@ -441,21 +449,33 @@
         </div>
     </div>
 </div>
-<!-- Create Active Ingredients -->
+<!-- Create Ingredients -->
 <div class="modal fade" id="activeIngredients" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Add Active Ingredients</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Add Ingredients</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{% url 'activeIngredients' res.ProductNo %}">
+                <form method="POST" action="{% url 'Ingredients' res.ProductNo %}">
                     {% csrf_token %}
                     <input type="hidden" name="myAction" value="insert">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label class="form-label">Ingredient Type <span class="text-danger">*</span></label>
+                                <select class="form-select" name="ingredientType" id="ingredientType"
+                                    aria-label="Default select example" required>
+                                    <option selected>Choose .. </option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Inactive</option>
+                                    <option value="3">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="mb-2">
                                 <label class="form-label">Ingredient Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="ingredientName" required>
@@ -463,15 +483,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="mb-2">
                                 <label class="form-label">Quantity Per Dose<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="quantityPerDose" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="mb-2">
                                 <label class="form-label">Strength Of Ingredient<span
                                         class="text-danger">*</span></label>
@@ -480,62 +498,47 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="mb-2">
-                                <label class="form-label">Specification <span class="text-danger">*</span></label>
-                                <textarea class="form-control longText" name="specification"></textarea>
+                                <label class="form-label">Molecular Formula<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="MolecularFormula" required>
                             </div>
                         </div>
-                    </div>
-                    <button type="submit" class="btn btn-success my-2">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Inactive Ingredients -->
-<div class="modal fade" id="InactiveIngredients" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Add Inactive Ingredients</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="{% url 'InactiveIngredients' res.ProductNo %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="myAction" value="insert">
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="mb-2">
-                                <label class="form-label">Ingredient Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="ingredientName" required>
+                                <label class="form-label">Molecular Weight<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="MolecularWeight" required>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-2">
-                                <label class="form-label">Quantity Per Dose<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="quantityPerDose" required>
+                                <label class="form-label">Proportion(e.g. %, ppm, units)<span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="Proportion" required>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="mb-2">
-                                <label class="form-label">Specification <span class="text-danger">*</span></label>
-                                <textarea class="form-control longText" name="specification"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div class="row" id="ReasonForInclusionRow" style="display: none;">
                         <div class="col-md-12">
                             <div class="mb-2">
                                 <label class="form-label">Reason For Inclusion <span
                                         class="text-danger">*</span></label>
-                                <textarea class="form-control longText" name="reasonForInclusion"></textarea>
+                                <textarea class="form-control longText" name="ReasonForInclusion"
+                                    id="ReasonForInclusion" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Specification <span class="text-danger">*</span></label>
+                                <textarea class="form-control longText" name="specification"></textarea>
+                                <div class="form-text">
+                                    Specification of purity of the active substance as manufactured in g/kg, g/l or %w/w
+                                    (v/v) as appropriate, providing inclusively the upper and lower limit
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -545,7 +548,7 @@
         </div>
     </div>
 </div>
-<!-- end -->
+
 <!-- Country Registered -->
 <div class="modal fade" id="CountryRegistered" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -651,40 +654,99 @@
         </div>
     </div>
 </div>
-
+<!-- Additives -->
+<div class="modal fade" id="Additives" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Additives/Impurities</h5>
+                <p>The identity of any impurities and additives including by-products of synthesis, optical isomers,
+                    degradation products (if the substance is unstable) un-reacted and end-groups etc. of polymers and
+                    un-reacted starting materials of UVC-substances</p>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'Additive' res.ProductNo %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="myAction" value="insert">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Additive Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="AdditiveName" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Proportion(e.g. %, ppm, units)<span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="Proportion" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Specification <span class="text-danger">*</span></label>
+                                <textarea class="form-control longText" name="specification"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success my-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End -->
 <script>
-    $('#AuthorisationStatus').on('change', function () {
-        if (this.value == "1") {
-            $('#MarketingCountry').prop('disabled', false);
-            $('#DateAuthorisation').prop('disabled', false);
-            $('#ProprietaryName').prop('disabled', false);
-            $('#AuthorisationNumber').prop('disabled', false);
-            $('#CertificateVeterinary').prop('disabled', false);
-            $('#AuthorisationReason').prop('disabled', true);
-        } else if (this.value == "2") {
-            $('#MarketingCountry').prop('disabled', false);
-            $('#DateAuthorisation').prop('disabled', false);
-            $('#AuthorisationReason').prop('disabled', false);
-            $('#CertificateVeterinary').prop('disabled', false);
-            $('#ProprietaryName').prop('disabled', true);
-            $('#AuthorisationNumber').prop('disabled', true);
-        } else if (this.value == "3") {
-            $('#MarketingCountry').prop('disabled', false);
-            $('#DateAuthorisation').prop('disabled', false);
-            $('#AuthorisationReason').prop('disabled', false);
-            $('#CertificateVeterinary').prop('disabled', false);
-            $('#ProprietaryName').prop('disabled', false);
-            $('#AuthorisationNumber').prop('disabled', true);
-        } else if (this.value == "4") {
-            $('#MarketingCountry').prop('disabled', false);
-            $('#DateAuthorisation').prop('disabled', false);
-            $('#AuthorisationReason').prop('disabled', false);
-            $('#CertificateVeterinary').prop('disabled', false);
-            $('#ProprietaryName').prop('disabled', false);
-            $('#AuthorisationNumber').prop('disabled', true);
-        }
+    $(document).ready(function () {
+        $('#AuthorisationStatus').on('change', function () {
+            if (this.value == "1") {
+                $('#MarketingCountry').prop('disabled', false);
+                $('#DateAuthorisation').prop('disabled', false);
+                $('#ProprietaryName').prop('disabled', false);
+                $('#AuthorisationNumber').prop('disabled', false);
+                $('#CertificateVeterinary').prop('disabled', false);
+                $('#AuthorisationReason').prop('disabled', true);
+            } else if (this.value == "2") {
+                $('#MarketingCountry').prop('disabled', false);
+                $('#DateAuthorisation').prop('disabled', false);
+                $('#AuthorisationReason').prop('disabled', false);
+                $('#CertificateVeterinary').prop('disabled', false);
+                $('#ProprietaryName').prop('disabled', true);
+                $('#AuthorisationNumber').prop('disabled', true);
+            } else if (this.value == "3") {
+                $('#MarketingCountry').prop('disabled', false);
+                $('#DateAuthorisation').prop('disabled', false);
+                $('#AuthorisationReason').prop('disabled', false);
+                $('#CertificateVeterinary').prop('disabled', false);
+                $('#ProprietaryName').prop('disabled', false);
+                $('#AuthorisationNumber').prop('disabled', true);
+            } else if (this.value == "4") {
+                $('#MarketingCountry').prop('disabled', false);
+                $('#DateAuthorisation').prop('disabled', false);
+                $('#AuthorisationReason').prop('disabled', false);
+                $('#CertificateVeterinary').prop('disabled', false);
+                $('#ProprietaryName').prop('disabled', false);
+                $('#AuthorisationNumber').prop('disabled', true);
+            }
 
-    });
+        });
+        $('#ingredientType').on('change', function () {
+            if (this.value == "1") {
+                $('#ReasonForInclusionRow').hide()
+                $('#ReasonForInclusion').prop('disabled', true);
+            } else {
+                $('#ReasonForInclusionRow').show(1000)
+                $('#ReasonForInclusion').prop('disabled', false);
+            }
+        });
+
+    })
 </script>
 {% include 'footer.html' %}
 
