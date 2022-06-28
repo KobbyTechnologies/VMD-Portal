@@ -11,33 +11,218 @@
 <!-- End Sidebar -->
 
 <main id="main" class="main">
-
     <div class="pagetitle">
         <h1>Appeal</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Registration' %}">Register</a></li>
+                <li class="breadcrumb-item active">Registration</li>
                 <li class="breadcrumb-item active">Appeal</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    <section class="section contact error-404 text-center">
 
+    <section class="section contact">
         <div class="row">
             <div class="col-md-12">
-                <h1>405</h1>
-                <h2>Request not Allowed.</h2>
-                <p>
-                    You must register a product to raise an appeal request
-                </p>
-                <a class="btn" href="{% url 'Registration' %}">Back to Registration</a>
+
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Bordered Tabs Justified -->
+                        <ul class="nav nav-tabs nav-tabs-bordered d-flex mt-3" id="borderedTabJustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                    aria-controls="home" aria-selected="true">Open
+                                    ({{openCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false"> Pending Approval
+                                    ({{pendCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-approve" type="button" role="tab"
+                                    aria-controls="profile" aria-selected="false">Approved
+                                    ({{appCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-reject" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Rejected
+                                    ({{rejectedCount}})</button>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <table
+                                    class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product No</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in open %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_name}}</td>
+                                            <td><span class="badge bg-success">{{res.Status}}</span></td>
+                                            <td>
+                                                {{res.Description}}
+                                            </td>
+                                            <td>
+                                                <form action="{% url 'ApplyAppeal' res.ProductNo %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-primary"><i
+                                                            class="bi bi-eye-fill"></i>
+                                                        Apply
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product No</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in pending %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_name}}</td>
+                                            <td><span class="badge bg-success">{{res.Status}}</span></td>
+                                            <td>
+                                                {{res.Description}}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i>
+                                                    View</button>
+                                            </td>
+
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-approve" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product No</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in approved %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_name}}</td>
+                                            <td><span class="badge bg-success">{{res.Status}}</span></td>
+                                            <td>
+                                                {{res.Description}}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i>
+                                                    View</button>
+                                            </td>
+
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-reject" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product No</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in rejected %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_name}}</td>
+                                            <td><span class="badge bg-success">{{res.Status}}</span></td>
+                                            <td>
+                                                {{res.Description}}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i>
+                                                    View</button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </section>
-
 </main>
+<script>
+    $(document).ready(function () {
+        $('#changesToTheProduct').on('change', function () {
+            if (this.value == "True") {
+                $('#variationRow').show(1000)
+                $('#variation').prop('disabled', false);
+            } else {
+                $('#variationRow').hide()
+                $('#variation').prop('disabled', true);
+            }
+        });
+
+        $('#variation').on('change', function () {
+            if (this.value == "True") {
+                $('#VariationNumberRow').show(1000)
+                $('#VariationNumber').prop('disabled', false);
+            } else {
+                $('#VariationNumberRow').hide()
+                $('#VariationNumber').prop('disabled', true)
+                $('#responses').append('You have to do a variation first');
+                $('#retentionSubmit').prop('disabled', true)
+            }
+        });
+    })
+</script>
 
 {% include 'footer.html' %}
 

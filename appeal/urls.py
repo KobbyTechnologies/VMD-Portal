@@ -3,5 +3,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("appealRequest", views.appealRequest, name='appeal'),
+    path("appeal/request", views.appealRequest, name='appeal'),
+    path("ApplyAppeal/<str:pk>",views.ApplyAppeal,name='ApplyAppeal'),
 ]

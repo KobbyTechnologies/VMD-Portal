@@ -126,12 +126,15 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <a href="{% url 'PaymentGateway' res.ProductNo %}">
-                    <div class="card h-100 actionActive actionCard  text-center">
-                        <i class="bi bi-wallet my-3"></i>
-                        <h6>Proceed To Payment </h6>
-                    </div>
-                </a>
+                <form action="{% url 'makePayment' res.ProductNo %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">
+                        <div class="card h-100 actionActive actionCard  text-center">
+                            <i class="bi bi-wallet my-3"></i>
+                            <h6>Proceed To Payment </h6>
+                        </div>
+                    </button>
+                </form>
             </div>
         </div>
         {% if class == 'VETERINARY DEVICE' %}
@@ -646,8 +649,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <button type="submit" class="btn btn-success my-2">Submit</button>
                 </form>
             </div>

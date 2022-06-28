@@ -78,8 +78,6 @@ def myApplications(request,pk):
     ctx = {"res":responses,"status":Status,"class":productClass}
     return render(request, "applications.html",ctx)
 
-def registrationRenewal(request):
-    return render(request,"renewal.html")
 
 def productClass(request):
     if request.method == "POST":
@@ -126,6 +124,9 @@ def productDetails(request,pk):
     Ingredient = []
     CountriesRegister = []
     Marketing = []
+    responses =''
+    Status=''
+    productClass=''
     try:
         response = session.get(Access_Point, timeout=10).json()
         for res in response['value']:
@@ -282,7 +283,6 @@ def CountryRegistered(request,pk):
 def MarketingAuthorization(request,pk):
     if request.method == 'POST':
         try:
-            prodNo = pk
             myAction = request.POST.get('myAction')
             userId = request.session['UserID']
             AuthorisationStatus = request.POST.get('AuthorisationStatus')
@@ -299,7 +299,7 @@ def MarketingAuthorization(request,pk):
             if not ProprietaryName:
                 ProprietaryName = ''
             try:
-                response = config.CLIENT.service.MarketingAuthorisation(prodNo,myAction,userId,AuthorisationStatus,
+                response = config.CLIENT.service.MarketingAuthorisation(pk,myAction,userId,AuthorisationStatus,
                 MarketingCountry,DateAuthorisation,AuthorisationNumber,AuthorisationReason,ProprietaryName)
                 print(response)
                 if response == True:
@@ -316,3 +316,25 @@ def MarketingAuthorization(request,pk):
             print(e)
             return redirect('login')
     return redirect ('productDetails',pk=pk)
+
+def makePayment(request,pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
+            print(pk)
+            print(request.session['UserID'])
+            print("response = ",response)
+            messages.success(request,"Saved Successfully")
+            # if response == True:
+            #     return redirect('PaymentGateway', pk=pk)
+            # else:
+            #     print("Not sent")
+            #     return redirect ('productDetails',pk=pk)
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return redirect('productDetails', pk=pk)
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login') 
+    return redirect('productDetails', pk=pk)

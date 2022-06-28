@@ -7,7 +7,6 @@ import requests
 def vaccineRegistration(request,pk):
     if request.method == 'POST':
         try:
-            prodNo = pk
             myAction = 'modify'
             prodName = request.POST.get('prodName')
             packSize = request.POST.get('packSize')
@@ -23,7 +22,7 @@ def vaccineRegistration(request,pk):
             if not giveReasons:
                 giveReasons = ''
             try:
-                response = config.CLIENT.service.FnVaccineCard(prodNo,myAction,prodName,packSize,
+                response = config.CLIENT.service.FnVaccineCard(pk,myAction,prodName,packSize,
                 description,mainIndication,TypeOfReview,giveReasons,iAgree,nameOfSignatory,userId)
                 print(response)
                 if response == True:

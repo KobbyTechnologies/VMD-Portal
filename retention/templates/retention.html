@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Retention</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Registration</li>
+                <li class="breadcrumb-item active">Retention</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section contact">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Bordered Tabs Justified -->
+                        <ul class="nav nav-tabs nav-tabs-bordered d-flex mt-3" id="borderedTabJustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                    aria-controls="home" aria-selected="true">Renew
+                                    ({{openCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false"> Pending Approval
+                                    ({{pendCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-approve" type="button" role="tab"
+                                    aria-controls="profile" aria-selected="false">Approved
+                                    ({{appCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-reject" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Rejected
+                                    ({{rejectedCount}})</button>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <table
+                                    class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product No</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Amount Payable</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Fee Penalty</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in open %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_name}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td><span class="badge bg-success">{{res.Status}}</span></td>
+                                            <td>
+                                                {% if res.Penalty_Amount == 0 %}
+                                                <span class="badge bg-success">None</span>
+                                                {% else %}
+                                                <span class="text-danger">{{res.Currency_Code}}
+                                                    {{res.Penalty_Amount}}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#Retention{{res.ProductNo}}"><i
+                                                        class="bi bi-eye-fill"></i>
+                                                    Renew</button></td>
+                                            <div class="modal fade" id="Retention{{res.ProductNo}}"
+                                                data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title text-dark" id="exampleModalLabel">
+                                                                RETENTION ON PRODUCT
+                                                                {{res.ProductNo}}</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{% url 'ApplyRetention' res.ProductNo %}"
+                                                                method="post">
+                                                                {% csrf_token %}
+                                                                <div class="row my-2">
+                                                                    <div class="col-md-12">
+                                                                        <label class="form-label">VMD
+                                                                            Registration Number</label>
+                                                                        <input type="text" class="form-control"
+                                                                            name="VMDRegistrationNumber">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row my-2">
+                                                                    <div class="col-md-12">
+                                                                        <label class="form-label">Changes to
+                                                                            product since last
+                                                                            Registration/Retention</label>
+                                                                        <select class="form-select"
+                                                                            aria-label="Default select example"
+                                                                            name="changesToTheProduct"
+                                                                            id="changesToTheProduct">
+                                                                            <option selected disabled value="">Choose...
+                                                                            </option>
+                                                                            <option value="True">Yes</option>
+                                                                            <option value="False">No</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row my-2" style="display: none;"
+                                                                    id="variationRow">
+                                                                    <div class="col-md-12">
+                                                                        <label class="form-label">Have you made a
+                                                                            variation?</label>
+                                                                        <select class="form-select"
+                                                                            aria-label="Default select example"
+                                                                            name="variation" id="variation" disabled>
+                                                                            <option selected disabled value="">Choose...
+                                                                            </option>
+                                                                            <option value="True">Yes</option>
+                                                                            <option value="False">No</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row my-2" id="VariationNumberRow"
+                                                                    style="display:none">
+                                                                    <div class="col-md-12">
+                                                                        <label class="form-label">Variation
+                                                                            Number</label>
+                                                                        <input type="text" class="form-control"
+                                                                            name="VariationNumber" id="VariationNumber"
+                                                                            disabled>
+                                                                    </div>
+                                                                </div>
+                                                                <hr class="dropdown-divider">
+                                                                <div class="row my-2">
+                                                                    <div class="col-md-12">
+                                                                        <div class="mb-2">
+                                                                            <input class="form-check-input"
+                                                                                type="checkbox" value="True"
+                                                                                name="iAgree" checked>
+                                                                            <label
+                                                                                class="form-check-label text-primary">
+                                                                                I hereby apply for registration of
+                                                                                the product detailed above and
+                                                                                declare that all the information herein
+                                                                                is correct
+                                                                                and true.
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <p class="text-danger" id="responses"></p>
+                                                                <button type="submit" class="btn btn-success my-2"
+                                                                    id="retentionSubmit">Submit</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product No</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Amount Payable</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Fee Penalty</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in pending %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_name}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td><span class="badge bg-success">{{res.Status}}</span></td>
+                                            <td>
+                                                {% if res.Penalty_Amount == 0 %}
+                                                <span class="badge bg-success">None</span>
+                                                {% else %}
+                                                <span class="text-danger">{{res.Currency_Code}}
+                                                    {{res.Penalty_Amount}}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i>
+                                                    View</button></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-approve" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product No</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Amount Payable</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Fee Penalty</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in approved %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_name}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td><span class="badge bg-success">{{res.Status}}</span></td>
+                                            <td>
+                                                {% if res.Penalty_Amount == 0 %}
+                                                <span class="badge bg-success">None</span>
+                                                {% else %}
+                                                <span class="text-danger">{{res.Currency_Code}}
+                                                    {{res.Penalty_Amount}}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i>
+                                                    View</button></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-reject" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product No</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Amount Payable</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Fee Penalty</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in rejected %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_name}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td><span class="badge bg-success">{{res.Status}}</span></td>
+                                            <td>
+                                                {% if res.Penalty_Amount == 0 %}
+                                                <span class="badge bg-success">None</span>
+                                                {% else %}
+                                                <span class="text-danger">{{res.Currency_Code}}
+                                                    {{res.Penalty_Amount}}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary"><i
+                                                        class="bi bi-eye-fill"></i>
+                                                    View</button></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    $(document).ready(function () {
+        $('#changesToTheProduct').on('change', function () {
+            if (this.value == "True") {
+                $('#variationRow').show(1000)
+                $('#variation').prop('disabled', false);
+            } else {
+                $('#variationRow').hide()
+                $('#variation').prop('disabled', true);
+            }
+        });
+
+        $('#variation').on('change', function () {
+            if (this.value == "True") {
+                $('#VariationNumberRow').show(1000)
+                $('#VariationNumber').prop('disabled', false);
+            } else {
+                $('#VariationNumberRow').hide()
+                $('#VariationNumber').prop('disabled', true)
+                $('#responses').append('You have to do a variation first');
+                $('#retentionSubmit').prop('disabled', true)
+            }
+        });
+    })
+</script>
+
+{% include 'footer.html' %}
+
+{% endblock %}

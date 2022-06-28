@@ -1,15 +1,15 @@
-from django.shortcuts import render,redirect
-import json
+from django.shortcuts import render
 import requests
 from django.conf import settings as config
+import json
 from django.contrib import messages
-from datetime import date, datetime
+from django.shortcuts import redirect, render
 
 # Create your views here.
-def appealRequest(request):
+def registrationRetention(request):
     session = requests.Session()
     session.auth = config.AUTHS
-    Retention= config.O_DATA.format("/QYAppeal")
+    Retention= config.O_DATA.format("/QYRetension")
     OpenProducts = []
     Pending = []
     Approved = []
@@ -46,22 +46,36 @@ def appealRequest(request):
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
     "rejectedCount":rejectedCount,"rejected":Rejected}
-    return render(request,'appeal.html')
+    return render(request,"retention.html",ctx)
 
-def ApplyAppeal(request,pk):
+def ApplyRetention(request,pk):
     if request.method == 'POST':
         try:
-            appNo = ''
+            retNo = ''
             myAction = 'insert'
+            VMDRegistrationNumber = request.POST.get('VMDRegistrationNumber')
+            changesToTheProduct = request.POST.get('changesToTheProduct')
+            variation = request.POST.get('variation')
+            iAgree = eval(request.POST.get('iAgree'))
+            VariationNumber = request.POST.get('VariationNumber')
 
-            response = config.CLIENT.service.FnAppeal(appNo,myAction,request.session['UserID'],pk)
+            if not iAgree:
+                iAgree = False
+            if not variation:
+                variation = False
+            if not VariationNumber:
+                VariationNumber = ''
+
+            response = config.CLIENT.service.Retension(retNo,myAction,request.session['UserID'],pk,VMDRegistrationNumber,
+            VariationNumber,changesToTheProduct,variation,iAgree)
             print(response)
             messages.success(request,"Saved Successfully")
-            return redirect('appeal')
+            return redirect('productDetails', pk=pk)
         except requests.exceptions.RequestException as e:
             print(e)
-            return redirect('appeal')
+            return redirect('retention')
         except KeyError as e:
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login') 
+    return redirect('retention')

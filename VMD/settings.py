@@ -18,6 +18,7 @@ from decouple import config,Csv
 from requests import  Session
 from requests_ntlm import HttpNtlmAuth
 from zeep import Client
+from requests.auth import HTTPBasicAuth
 from zeep.transports import Transport
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -84,6 +85,7 @@ INSTALLED_APPS = [
     'appeal',
     'replacement',
     'payment',
+    'retention',
 ]
 
 MIDDLEWARE = [
@@ -189,10 +191,10 @@ django_heroku.settings(locals())
 
 AUTHS = Session()
 
-WEB_SERVICE_PWD = 'W3C0d3@llD@y'
+WEB_SERVICE_PWD = 'Password@312'
 BASE_URL = 'http://20.120.96.92:2047/BC200/WS/VMD%20TEST%20LIVE/Codeunit/WebPortal'
 O_DATA = "http://20.120.96.92:2048/BC200/ODataV4/Company(%27VMD%20TEST%20LIVE%27){}"
-AUTHS.auth = HttpNtlmAuth('NAVADMIN', WEB_SERVICE_PWD)
+AUTHS.auth = HTTPBasicAuth('KTL-ADMIN', WEB_SERVICE_PWD)
 
 CLIENT = Client(BASE_URL, transport=Transport(session=AUTHS))
-AUTHS = HttpNtlmAuth('NAVADMIN', WEB_SERVICE_PWD)
+AUTHS = HTTPBasicAuth('KTL-ADMIN', WEB_SERVICE_PWD)
