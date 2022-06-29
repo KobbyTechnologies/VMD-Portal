@@ -7,10 +7,8 @@ import requests
 def VeterinaryPharmaceutical(request,pk):
     if request.method == 'POST':
         try:
-            prodNo = pk
             myAction = 'modify'
             prodName = request.POST.get('prodName')
-            Inn = request.POST.get('INN')
             packSize = request.POST.get('packSize')
             visualDescription = request.POST.get('visualDescription')
             PharmaceuticalDosage = request.POST.get('PharmaceuticalDosage')
@@ -28,14 +26,6 @@ def VeterinaryPharmaceutical(request,pk):
             prescriptionOnlyMedicine = request.POST.get('prescriptionOnlyMedicine')
             nonPharmacy = request.POST.get('nonPharmacy')
             pharmaciesOnly = request.POST.get('pharmaciesOnly')
-            isMarketHolderSame = eval(request.POST.get('isMarketHolderSame'))
-            authorizedName = request.POST.get('authorizedName')
-            authorizedAddress = request.POST.get('authorizedAddress')
-            authorizedCountry = request.POST.get('authorizedCountry')
-            authorizedTelephone = request.POST.get('authorizedTelephone')
-            authorizedMobile = request.POST.get('authorizedMobile')
-            authorizedEmail = request.POST.get('authorizedEmail')
-            MarketRelationship = request.POST.get('MarketRelationship')
             iAgree = eval(request.POST.get('iAgree'))
             userId = request.session['UserID']
             if not iAgree:
@@ -52,20 +42,7 @@ def VeterinaryPharmaceutical(request,pk):
                 nonPharmacy = 'False'
             if not pharmaciesOnly:
                 pharmaciesOnly = 'False'
-            if not authorizedName:
-                authorizedName = ''
-            if not authorizedAddress:
-                authorizedAddress = ''
-            if not authorizedCountry:
-                authorizedCountry = ''
-            if not authorizedTelephone:
-                authorizedTelephone = ''
-            if not authorizedMobile:
-                authorizedMobile = ''
-            if not authorizedEmail:
-                authorizedEmail = ''
-            if not MarketRelationship:
-                MarketRelationship = ''
+
             AppliedATCCode = eval(AppliedATCCode)
             print("Atc",AppliedATCCode)
             nonPharmacy = eval(nonPharmacy)
@@ -74,7 +51,13 @@ def VeterinaryPharmaceutical(request,pk):
             controlledVeterinaryMedicine = eval(controlledVeterinaryMedicine)
             
             try:
-                response = config.CLIENT.service.FnPharmaceuticalCard(prodNo,myAction,prodName,Inn,packSize,visualDescription,PharmaceuticalDosage,RouteOfAdministration,shelfLifeAfterDilution,shelfLifeAfterFirstOpening,storageConditions,storageAfterOpening,PharmacotherapeuticGroup,AssignedATCCode,ATCCode,AppliedATCCode,SubjectMedicalPrescription,controlledVeterinaryMedicine,prescriptionOnlyMedicine,nonPharmacy,pharmaciesOnly,isMarketHolderSame,authorizedName,authorizedAddress,authorizedCountry,authorizedTelephone,authorizedMobile,authorizedEmail,MarketRelationship,userId,iAgree)
+                response = config.CLIENT.service.FnPharmaceuticalCard(pk,myAction,prodName,packSize,visualDescription,
+                PharmaceuticalDosage,RouteOfAdministration,shelfLifeAfterDilution,shelfLifeAfterFirstOpening,
+                storageConditions,storageAfterOpening,PharmacotherapeuticGroup,AssignedATCCode
+                ,ATCCode,AppliedATCCode,SubjectMedicalPrescription,controlledVeterinaryMedicine,
+                prescriptionOnlyMedicine,nonPharmacy,pharmaciesOnly,
+                userId,iAgree
+                )
                 print(response)
                 if response == True:
                     messages.success(request,"Successfully Saved")

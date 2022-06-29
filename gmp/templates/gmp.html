@@ -1,0 +1,414 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Good Manufacturing Practices</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Good Manufacturing Practices</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdropGMP"
+                    style="float: right;">
+                    <i class="bi bi-plus"></i> Start Application</button>
+            </div>
+        </div>
+
+    </div><!-- End Page Title -->
+
+    <section class="section contact">
+        <div class="row">
+            <div class="col-md-12">
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
+                    <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
+                    <div class="a-icon mx-2">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
+                    <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
+                    <div class="a-icon mx-2">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
+                    <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
+                    <div class="a-icon mx-2">
+                        {{message}}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">My Applications</h5>
+                        <!-- Bordered Tabs Justified -->
+                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                    aria-controls="home" aria-selected="true">New
+                                    ({{openCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                    aria-controls="profile" aria-selected="false"> Pending Approval
+                                    ({{pendCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-contact" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Approved
+                                    ({{appCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Rejected
+                                    ({{rejectedCount}})</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <table
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>GMP No</th>
+                                            <th>Product Class</th>
+                                            <th>Inspection Type</th>
+                                            <th>Status</th>
+                                            <th>Amount Payable</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in open %}
+                                        <tr>
+                                            <td>{{res.GMP_No_}}</td>
+                                            <td>{{res.Document_Date}}</td>
+                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td class="text-success">{{res.Status}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'applications' res.ProductNo %}" type="button"
+                                                    class="btn btn-success"> Start <i class="bi bi-arrow-right"></i></a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <table
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Document Date</th>
+                                            <th>Types Of Manufacturers</th>
+                                            <th>Status</th>
+                                            <th>Amount Payable</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in pending %}
+                                        <tr>
+                                            <td>{{res.Veterinary_Classes}}</td>
+                                            <td>{{res.Document_Date}}</td>
+                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td class="text-success">{{res.Status}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'pharmDetails' %}" type="button"
+                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Document Date</th>
+                                            <th>Types Of Manufacturers</th>
+                                            <th>Status</th>
+                                            <th>Amount Payable</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in approved %}
+                                        <tr>
+                                            <td>{{res.Veterinary_Classes}}</td>
+                                            <td>{{res.Document_Date}}</td>
+                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td class="text-success">{{res.Status}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'pharmDetails' %}" type="button"
+                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Document Date</th>
+                                            <th>Types Of Manufacturers</th>
+                                            <th>Status</th>
+                                            <th>Amount Payable</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in rejected %}
+                                        <tr>
+                                            <td>{{res.Veterinary_Classes}}</td>
+                                            <td>{{res.Document_Date}}</td>
+                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td class="text-success">{{res.Status}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'pharmDetails' %}" type="button"
+                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Registration Modal -->
+<div class="modal fade" id="staticBackdropGMP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Register Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    Particulars of the site to be inspected
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <div class="row my-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Physical Address</label>
+                                            <input type="text" class="form-control" name="SitePhysicalAddress">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Country</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="SiteCountry">
+                                                <option selected disabled value="">Choose...</option>
+                                                {% for res in country %}
+                                                <option value="{{res.Code}}">{{res.Name}}</option>
+                                                {% empty %}
+                                                <option value="KE">KENYA</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Telephone <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="SiteTelephone" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Mobile <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="SiteMobile" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="SiteEmail" required>
+                                        </div>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <div class="row my-3">
+                                        <h5>Particulars of person on site</h5>
+                                        <div class="col-md-12">
+                                            <label class="form-label">Are you (LTR) the contact person?</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="isContact" id="isContact">
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="True">True</option>
+                                                <option value="False">False</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3" id="ContactRow" style="display: none;">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Name of Contact person <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="ContactName" id="ContactName"
+                                                disabled>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Contact Person Telephone <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="ContactTel" id="ContactTel"
+                                                disabled>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Contact Person Email <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="ContactEmail"
+                                                id="ContactEmail" disabled>
+                                        </div>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <div class="row my-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Type of Veterinary Medicines</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="VeterinaryMedicines" required>
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="1">Veterinary Vaccine</option>
+                                                <option value="2">Veterinary Pharmaceutical</option>
+                                                <option value="3">Veterinary Pesticide</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Type of Inspection</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="TypeOfInspection" id="TypeOfInspection" required>
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="1">First Inspection</option>
+                                                <option value="2">Re-inspection after failure</option>
+                                                <option value="3">Routine Re-inspection </option>
+                                                <option value="4">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3" style="display: none;" id="stateOtherRow">
+                                        <div class="col-md-12">
+                                            <label class="form-label">State Other Type of Inspection </label>
+                                            <input type="text" class="form-control" name="stateOther" id="stateOther"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <div class="row my-2">
+                                        <div class="col-md-12">
+                                            <div class="mb-2">
+                                                <input class="form-check-input" type="checkbox" value="True"
+                                                    name="iAgree" checked>
+                                                <label class="form-check-label text-primary">
+                                                    I hereby apply for registration of
+                                                    the product detailed above and
+                                                    declare that all the information herein is correct
+                                                    and true.
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success my-2">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#isContact').on('change', function () {
+            if (this.value == "True") {
+                $('#ContactRow').hide();
+                $('#ContactName').prop('disabled', true);
+                $('#ContactTel').prop('disabled', true);
+                $('#ContactEmail').prop('disabled', true);
+            } else {
+                $('#ContactRow').show(1000);
+                $('#ContactName').prop('disabled', false);
+                $('#ContactTel').prop('disabled', false);
+                $('#ContactEmail').prop('disabled', false);
+            }
+        });
+        $('#TypeOfInspection').on('change', function () {
+            if (this.value == "4") {
+                $('#stateOtherRow').show(1000);
+                $('#stateOther').prop('disabled', false);
+            } else {
+                $('#stateOtherRow').hide();
+                $('#stateOther').prop('disabled', true);
+            }
+        });
+    })
+</script>
+{% include 'footer.html' %}
+
+{% endblock %}

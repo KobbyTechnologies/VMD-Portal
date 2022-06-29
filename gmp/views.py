@@ -1,22 +1,24 @@
-from django.shortcuts import render,redirect
-import json
+import re
+from django.shortcuts import render, redirect
 import requests
+import json
 from django.conf import settings as config
 from django.contrib import messages
-from datetime import date, datetime
 
 # Create your views here.
-def appealRequest(request):
+def GMPApplication(request):
     session = requests.Session()
     session.auth = config.AUTHS
-    Retention= config.O_DATA.format("/QYAppeal")
+    Retention= config.O_DATA.format("/QYGMP")
+    CountriesRegistered = config.O_DATA.format("/QYCountries")
     OpenProducts = []
     Pending = []
     Approved = []
     Rejected =[]
     try:
         response = session.get(Retention, timeout=10).json()
-
+        CountryResponse = session.get(CountriesRegistered, timeout=10).json()
+        resCountry = CountryResponse['value']
         for res in response['value']:
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
                 output_json = json.dumps(res)
@@ -45,23 +47,50 @@ def appealRequest(request):
     rejectedCount = len(Rejected)
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected}
-    return render(request,'appeal.html',ctx)
+    "rejectedCount":rejectedCount,"rejected":Rejected,
+    "country":resCountry}
+    return render(request,'gmp.html',ctx)
 
-def ApplyAppeal(request,pk):
-    if request.method == 'POST':
+def ApplyGMP(request):
+    if request.method == "POST":
         try:
-            appNo = ''
-            myAction = 'insert'
+            gmpNo = ''
+            myAction= 'insert'
+            SitePhysicalAddress = request.POST.get('SitePhysicalAddress')
+            SiteCountry = request.POST.get('SiteCountry')
+            SiteTelephone = request.POST.get('SiteTelephone')
+            SiteMobile = request.POST.get('SiteMobile')
+            SiteEmail = request.POST.get('SiteEmail')
+            isContact = request.POST.get('isContact')
+            ContactName =request.POST.get('ContactName')
+            ContactTel = request.POST.get('ContactTel')
+            ContactEmail = request.POST.get('ContactEmail')
+            VeterinaryMedicines = request.POST.get('VeterinaryMedicines')
+            TypeOfInspection = request.POST.get('TypeOfInspection')
+            stateOther = request.POST.get('StateOther')
+            iAgree = eval(request.POST.get('iAgree'))
 
-            response = config.CLIENT.service.FnAppeal(appNo,myAction,request.session['UserID'],pk)
+            if not iAgree:
+                iAgree = False
+
+            response = config.CLIENT.service.GMP(gmpNo,myAction,request.session['UserID'],SitePhysicalAddress,
+            SiteCountry,SiteTelephone,SiteMobile,SiteEmail,isContact,ContactName,ContactTel,ContactEmail,
+            VeterinaryMedicines,TypeOfInspection,stateOther,iAgree
+            )
             print(response)
             messages.success(request,"Saved Successfully")
-            return redirect('productDetails', pk=pk)
+            return redirect('gmp')
+
         except requests.exceptions.RequestException as e:
             print(e)
-            return redirect('appeal')
+            return redirect('dashboard')
         except KeyError as e:
             messages.info(request,"Session Expired, Login Again")
             print(e)
-            return redirect('login') 
+            return redirect('login')
+    return redirect('gmp')
+
+def GMPDetails(request,pk):
+    return render(request,"gmpDetails.html")
+
+    # To check against the user code to see whether there are products registered

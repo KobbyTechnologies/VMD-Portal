@@ -1,12 +1,11 @@
 from django.shortcuts import render,redirect
-import json
 import requests
-from django.conf import settings as config
+import json
 from django.contrib import messages
-from datetime import date, datetime
+from django.conf import settings as config
 
 # Create your views here.
-def appealRequest(request):
+def RenewalRequest(request):
     session = requests.Session()
     session.auth = config.AUTHS
     Retention= config.O_DATA.format("/QYAppeal")
@@ -46,22 +45,4 @@ def appealRequest(request):
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
     "rejectedCount":rejectedCount,"rejected":Rejected}
-    return render(request,'appeal.html',ctx)
-
-def ApplyAppeal(request,pk):
-    if request.method == 'POST':
-        try:
-            appNo = ''
-            myAction = 'insert'
-
-            response = config.CLIENT.service.FnAppeal(appNo,myAction,request.session['UserID'],pk)
-            print(response)
-            messages.success(request,"Saved Successfully")
-            return redirect('productDetails', pk=pk)
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return redirect('appeal')
-        except KeyError as e:
-            messages.info(request,"Session Expired, Login Again")
-            print(e)
-            return redirect('login') 
+    return render (request,'renew.html')

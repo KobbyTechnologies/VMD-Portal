@@ -10,7 +10,6 @@ def feedRegistration(request,pk):
             prodNo = pk
             myAction = 'modify'
             prodName = request.POST.get('prodName')
-            Inn = request.POST.get('INN')
             proposedCategory = request.POST.get('proposedCategory')
             casNumber = request.POST.get('casNumber')
             otherNames = request.POST.get('otherNames')
@@ -25,20 +24,16 @@ def feedRegistration(request,pk):
             packagingMaterial = request.POST.get('packagingMaterial')
             closureSystem = request.POST.get('closureSystem')
             packSize = request.POST.get('packSize')
-            detailedDescription = request.POST.get('detailedDescription')
-            rawMaterials = request.POST.get('rawMaterials')
-            finishedProduct = request.POST.get('finishedProduct')
-            safetyAndSafetyManage = request.POST.get('safetyAndSafetyManage')
             iAgree = eval(request.POST.get('iAgree'))
             userId = request.session['UserID']
             if not iAgree:
                 iAgree = False         
             
             try:
-                response = config.CLIENT.service.FeedAdditivesCard(prodNo,myAction,prodName,Inn,proposedCategory,casNumber,
-                otherNames,intendedUse,dosage,packSize,detailedDescription,dosageForm,proposedShelfLife,ShelfLifeAfterDilution,
-                countryOfOrigin,visualDescription,packagingMaterial,closureSystem,shelfLifeAfterFirstOpening,rawMaterials,
-                finishedProduct,safetyAndSafetyManage,userId,iAgree)
+                response = config.CLIENT.service.FeedAdditivesCard(prodNo,myAction,prodName,proposedCategory,casNumber,
+                otherNames,intendedUse,dosage,packSize,dosageForm,proposedShelfLife,ShelfLifeAfterDilution,
+                countryOfOrigin,visualDescription,packagingMaterial,closureSystem,shelfLifeAfterFirstOpening,
+                userId,iAgree)
                 print(response)
                 if response == True:
                     messages.success(request,"Successfully Saved")

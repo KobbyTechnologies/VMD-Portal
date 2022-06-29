@@ -1,35 +1,7 @@
 <section class="mt-4">
     <div class="row">
         <div class="col-md-12">
-            {% if messages %}
-            {% for message in messages %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-            <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
-                <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
-                <div class="a-icon mx-2">
-                    {{message}}
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-            <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
-                <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
-                <div class="a-icon mx-2">
-                    {{message}}
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
-                <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
-                <div class="a-icon mx-2">
-                    {{message}}
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endif %}
-            {% endfor %}
-            {% endif %}
+            {% include 'alert.html' %}
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Registration of {{res.Veterinary_Classes}}
@@ -133,16 +105,6 @@
                                             <div class="col-md-12">
                                                 <label class="form-label">Storage Conditions after first opening</label>
                                                 <textarea class="form-control" name="storageAfterOpening"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="row my-2">
-                                            <div class="col-md-6">
-                                                <label class="form-label">Patent Status</label>
-                                                <input type="text" class="form-control" name="patentStatus">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Expiry Date</label>
-                                                <input type="date" class="form-control" name="expiryDate">
                                             </div>
                                         </div>
                                         <div class="row my-2">

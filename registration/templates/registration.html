@@ -37,380 +37,103 @@
     <section class="section contact">
         <div class="row">
             <div class="col-md-12">
-                {% if messages %}
-                {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
-                    <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
-                    <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
-                    <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endif %}
-                {% endfor %}
-                {% endif %}
+                {% include 'alert.html' %}
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">My Applications</h5>
-                        <!-- Bordered Tabs Justified -->
-                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
-                            <li class="nav-item flex-fill" role="presentation">
-                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
-                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
-                                    aria-controls="home" aria-selected="true">New
-                                    ({{openCount}})</button>
-                            </li>
-                            <li class="nav-item flex-fill" role="presentation">
-                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
-                                    data-bs-target="#bordered-justified-profile" type="button" role="tab"
-                                    aria-controls="profile" aria-selected="false"> Pending Approval
-                                    ({{pendCount}})</button>
-                            </li>
-                            <li class="nav-item flex-fill" role="presentation">
-                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
-                                    data-bs-target="#bordered-justified-contact" type="button" role="tab"
-                                    aria-controls="contact" aria-selected="false">Approved
-                                    ({{appCount}})</button>
-                            </li>
-                            <li class="nav-item flex-fill" role="presentation">
-                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
-                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
-                                    aria-controls="contact" aria-selected="false">Rejected
-                                    ({{rejectedCount}})</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
-                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
-                                aria-labelledby="home-tab">
-                                <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>Product Name</th>
-                                            <th>Document Date</th>
-                                            <th>Types Of Manufacturers</th>
-                                            <th>Status</th>
-                                            <th>Amount Payable</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for res in open %}
-                                        <tr>
-                                            <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Document_Date}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
-                                            <td class="text-success">{{res.Status}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#static{{res.ProductNo}}"><i
-                                                        class="bi bi-pencil-square"></i>
-                                                    Edit</button>
-                                                <!--Edit Modal -->
-                                                <div class="modal fade" id="static{{res.ProductNo}}"
-                                                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="staticBackdropLabel">Edit
-                                                                    Product {{res.ProductNo}}</h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="card-title">New Applications ({{openCount}})</h5>
+                        <table
+                            class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th>Product Class</th>
+                                    <th>Document Date</th>
+                                    <th>Types Of Manufacturer</th>
+                                    <th>Amount Payable</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in open %}
+                                <tr>
+                                    <td>{{res.Veterinary_Classes}}</td>
+                                    <td>{{res.Document_Date}}</td>
+                                    <td>{{res.Types_Of_Manufacturers}}</td>
+                                    <td><span class="text-primary"
+                                            style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#static{{res.ProductNo}}"><i
+                                                class="bi bi-pencil-square"></i>
+                                            Edit</button>
+                                        <!--Edit Modal -->
+                                        <div class="modal fade" id="static{{res.ProductNo}}" data-bs-backdrop="static"
+                                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="staticBackdropLabel">Edit
+                                                            Product {{res.ProductNo}}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{% url 'productClass' %}" method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="prodNo"
+                                                                value="{{res.ProductNo}}">
+                                                            <input type="hidden" name="myAction" value="modify">
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-12">
+                                                                    <label class="form-label">Product
+                                                                        Type</label>
+                                                                    <select class="form-select" name="vetClass">
+                                                                        <option selected disabled value="">
+                                                                            Select Product</option>
+                                                                        {% for res in product %}
+                                                                        <option value="{{res.Class}}">
+                                                                            {{res.Class}}</option>
+                                                                        {% empty %}
+                                                                        <option selected disabled value="">Null
+                                                                        </option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <form action="{% url 'productClass' %}" method="post">
-                                                                    {% csrf_token %}
-                                                                    <input type="hidden" name="prodNo"
-                                                                        value="{{res.ProductNo}}">
-                                                                    <input type="hidden" name="myAction" value="modify">
-                                                                    <div class="row mb-2">
-                                                                        <div class="col-md-12">
-                                                                            <label class="form-label">Product
-                                                                                Type</label>
-                                                                            <select class="form-select" name="vetClass">
-                                                                                <option selected disabled value="">
-                                                                                    Select Product</option>
-                                                                                {% for res in product %}
-                                                                                <option value="{{res.Class}}">
-                                                                                    {{res.Class}}</option>
-                                                                                {% empty %}
-                                                                                <option selected disabled value="">Null
-                                                                                </option>
-                                                                                {% endfor %}
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <label class="form-label">Manufacturer
-                                                                                Type</label>
-                                                                            <select class="form-select"
-                                                                                name="typeofManufacture">
-                                                                                <option value="1">Local</option>
-                                                                                <option value="2">Foregn</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Submit</button>
-                                                                    </div>
-                                                                </form>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label class="form-label">Manufacturer
+                                                                        Type</label>
+                                                                    <select class="form-select"
+                                                                        name="typeofManufacture">
+                                                                        <option value="1">Local</option>
+                                                                        <option value="2">Foregn</option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                            <div class="footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Submit</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
-                                                <a href="{% url 'applications' res.ProductNo %}" type="button"
-                                                    class="btn btn-success"> Start <i class="bi bi-arrow-right"></i></a>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
-                                aria-labelledby="profile-tab">
-                                <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>Product Name</th>
-                                            <th>Document Date</th>
-                                            <th>Types Of Manufacturers</th>
-                                            <th>Status</th>
-                                            <th>Amount Payable</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for res in pending %}
-                                        <tr>
-                                            <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Document_Date}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
-                                            <td class="text-success">{{res.Status}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'pharmDetails' %}" type="button"
-                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
-                                aria-labelledby="contact-tab">
-                                <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>Product Name</th>
-                                            <th>Document Date</th>
-                                            <th>Types Of Manufacturers</th>
-                                            <th>Status</th>
-                                            <th>Amount Payable</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for res in approved %}
-                                        <tr>
-                                            <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Document_Date}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
-                                            <td class="text-success">{{res.Status}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'pharmDetails' %}" type="button"
-                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
-                                aria-labelledby="contact-tab">
-                                <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>Product Name</th>
-                                            <th>Document Date</th>
-                                            <th>Types Of Manufacturers</th>
-                                            <th>Status</th>
-                                            <th>Amount Payable</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for res in rejected %}
-                                        <tr>
-                                            <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Document_Date}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
-                                            <td class="text-success">{{res.Status}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'pharmDetails' %}" type="button"
-                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                            </div>
+                                        </div>
+                                        <a href="{% url 'applications' res.ProductNo %}" type="button"
+                                            class="btn btn-success"> Start <i class="bi bi-arrow-right"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <div class="row g-1 mt-5">
-            <div class="col-md-3">
-                <div class="card w-100 h-100 hover-div">
-                    <a href="">
-                        <div class="content-box color-effect-1">
-                            <h3>Veterinary </br> pharmaceutical</h3>
-                            <div class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a">
-                                <div class="box-icon">
-                                    <i class="bi bi-plus-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card w-100 h-100 hover-div">
-                    <a href="#">
-                        <div class="content-box color-effect-1">
-                            <h3>Veterinary </br> vaccine</h3>
-                            <div class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a">
-                                <div class="box-icon">
-                                    <i class="bi bi-plus-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card w-100 h-100 hover-div">
-                    <a href="#">
-                        <div class="content-box color-effect-1">
-                            <h3>Veterinary </br> pesticide</h3>
-                            <div class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a">
-                                <div class="box-icon">
-                                    <i class="bi bi-plus-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card w-100 h-100 hover-div">
-                    <a href="#">
-                        <div class="content-box color-effect-1">
-                            <h3>Feed </br> additives</h3>
-                            <div class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a">
-                                <div class="box-icon">
-                                    <i class="bi bi-plus-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row g-1 mt-2">
-            <div class="col-md-3">
-                <div class="card w-100 h-100 hover-div">
-                    <a href="">
-                        <div class="content-box color-effect-1">
-                            <h3 style="margin-bottom: 2rem;">Biocidal</h3>
-                            <div class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a">
-                                <div class="box-icon">
-                                    <i class="bi bi-plus-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card w-100 h-100 hover-div">
-                    <a href="">
-                        <div class="content-box color-effect-1">
-                            <h3>Veterinary </br> devices</h3>
-                            <div class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a">
-                                <div class="box-icon">
-                                    <i class="bi bi-plus-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card w-100 h-100 hover-div">
-                    <a href="">
-                        <div class="content-box color-effect-1">
-                            <h3>Alternative </br> medicine</h3>
-                            <div class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a">
-                                <div class="box-icon">
-                                    <i class="bi bi-plus-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card w-100 h-100 hover-div" style="background:#12bf68 ;">
-                    <a href="">
-                        <div class="content-box color-effect-1">
-                            <h3>My </br> Applications</h3>
-                            <div class="box-icon-wrap box-icon-effect-1 box-icon-effect-1a">
-                                <div class="box-icon">
-                                    <i class="bi bi-eye-fill"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div> -->
     </section>
 </main>
 

@@ -31,7 +31,8 @@ urlpatterns = [
     path('', include('alternative.urls')),
     path('', include('variation.urls')),
     path('', include('appeal.urls')),
-    path('', include('replacement.urls')),
     path('', include('payment.urls')),
     path('', include('retention.urls')),
+    path('', include('renewal.urls')),
+    path('', include('gmp.urls')),
 ]

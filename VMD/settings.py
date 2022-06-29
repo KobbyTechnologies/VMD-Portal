@@ -83,9 +83,10 @@ INSTALLED_APPS = [
     'alternative',
     'variation',
     'appeal',
-    'replacement',
     'payment',
     'retention',
+    'renewal',
+    'gmp',
 ]
 
 MIDDLEWARE = [
