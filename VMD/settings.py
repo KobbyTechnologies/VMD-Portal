@@ -80,7 +80,6 @@ INSTALLED_APPS = [
     'feed',
     'biocidal',
     'devices',
-    'alternative',
     'variation',
     'appeal',
     'payment',

@@ -53,7 +53,6 @@ def ApplyRetention(request,pk):
         try:
             retNo = ''
             myAction = 'insert'
-            VMDRegistrationNumber = request.POST.get('VMDRegistrationNumber')
             changesToTheProduct = request.POST.get('changesToTheProduct')
             variation = request.POST.get('variation')
             iAgree = eval(request.POST.get('iAgree'))
@@ -66,7 +65,7 @@ def ApplyRetention(request,pk):
             if not VariationNumber:
                 VariationNumber = ''
 
-            response = config.CLIENT.service.Retension(retNo,myAction,request.session['UserID'],pk,VMDRegistrationNumber,
+            response = config.CLIENT.service.Retension(retNo,myAction,request.session['UserID'],pk,
             VariationNumber,changesToTheProduct,variation,iAgree)
             print(response)
             messages.success(request,"Saved Successfully")

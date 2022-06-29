@@ -37,35 +37,7 @@
     <section class="section contact">
         <div class="row">
             <div class="col-md-12">
-                {% if messages %}
-                {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
-                    <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
-                    <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
-                    <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endif %}
-                {% endfor %}
-                {% endif %}
+                {% include 'alert.html' %}
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">My Applications</h5>
@@ -115,14 +87,14 @@
                                         {% for res in open %}
                                         <tr>
                                             <td>{{res.GMP_No_}}</td>
-                                            <td>{{res.Document_Date}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td>{{res.Type_of_Vertinary_Medicines}}</td>
+                                            <td>{{res.Type_Of_Inspection}}</td>
                                             <td class="text-success">{{res.Status}}</td>
                                             <td><span class="text-primary"
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <a href="{% url 'applications' res.ProductNo %}" type="button"
+                                                <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
                                                     class="btn btn-success"> Start <i class="bi bi-arrow-right"></i></a>
                                             </td>
                                         </tr>
@@ -155,7 +127,7 @@
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <a href="{% url 'pharmDetails' %}" type="button"
+                                                <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
                                                     class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
                                             </td>
                                         </tr>
@@ -188,7 +160,7 @@
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <a href="{% url 'pharmDetails' %}" type="button"
+                                                <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
                                                     class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
                                             </td>
                                         </tr>
@@ -221,7 +193,7 @@
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <a href="{% url 'pharmDetails' %}" type="button"
+                                                <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
                                                     class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
                                             </td>
                                         </tr>
@@ -247,7 +219,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST">
+                <form action="{% url 'ApplyGMP' %}" method="POST">
                     {% csrf_token %}
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <div class="accordion-item">

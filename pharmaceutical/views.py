@@ -10,7 +10,6 @@ def VeterinaryPharmaceutical(request,pk):
             myAction = 'modify'
             prodName = request.POST.get('prodName')
             packSize = request.POST.get('packSize')
-            visualDescription = request.POST.get('visualDescription')
             PharmaceuticalDosage = request.POST.get('PharmaceuticalDosage')
             RouteOfAdministration = request.POST.get('RouteOfAdministration')
             shelfLifeAfterDilution = request.POST.get('shelfLifeAfterDilution')
@@ -18,9 +17,7 @@ def VeterinaryPharmaceutical(request,pk):
             storageConditions =request.POST.get('storageConditions')
             storageAfterOpening =request.POST.get('storageAfterOpening')
             PharmacotherapeuticGroup = request.POST.get('PharmacotherapeuticGroup')
-            AssignedATCCode =  eval(request.POST.get('AssignedATCCode'))
             ATCCode = request.POST.get('ATCCode')
-            AppliedATCCode = request.POST.get('AppliedATCCode')
             SubjectMedicalPrescription = request.POST.get('SubjectMedicalPrescription')
             controlledVeterinaryMedicine = request.POST.get('controlledVeterinaryMedicine')
             prescriptionOnlyMedicine = request.POST.get('prescriptionOnlyMedicine')
@@ -28,12 +25,10 @@ def VeterinaryPharmaceutical(request,pk):
             pharmaciesOnly = request.POST.get('pharmaciesOnly')
             iAgree = eval(request.POST.get('iAgree'))
             userId = request.session['UserID']
+            CountryOfOrigin = request.POST.get('CountryOfOrigin')
+            CountryOfRelease = request.POST.get('CountryOfRelease')
             if not iAgree:
                 iAgree = False
-            if not ATCCode:
-                ATCCode = ''
-            if not AppliedATCCode:
-                AppliedATCCode = 'True'
             if not controlledVeterinaryMedicine:
                 controlledVeterinaryMedicine = 'False'
             if not prescriptionOnlyMedicine:
@@ -42,21 +37,22 @@ def VeterinaryPharmaceutical(request,pk):
                 nonPharmacy = 'False'
             if not pharmaciesOnly:
                 pharmaciesOnly = 'False'
+            if not ATCCode:
+                messages.info(request,"You must have an ATC Code to register a product")
+                return redirect('registration')
 
-            AppliedATCCode = eval(AppliedATCCode)
-            print("Atc",AppliedATCCode)
             nonPharmacy = eval(nonPharmacy)
             pharmaciesOnly = eval(pharmaciesOnly)
             SubjectMedicalPrescription = eval(SubjectMedicalPrescription)
             controlledVeterinaryMedicine = eval(controlledVeterinaryMedicine)
             
             try:
-                response = config.CLIENT.service.FnPharmaceuticalCard(pk,myAction,prodName,packSize,visualDescription,
+                response = config.CLIENT.service.FnPharmaceuticalCard(pk,myAction,prodName,packSize,
                 PharmaceuticalDosage,RouteOfAdministration,shelfLifeAfterDilution,shelfLifeAfterFirstOpening,
-                storageConditions,storageAfterOpening,PharmacotherapeuticGroup,AssignedATCCode
-                ,ATCCode,AppliedATCCode,SubjectMedicalPrescription,controlledVeterinaryMedicine,
-                prescriptionOnlyMedicine,nonPharmacy,pharmaciesOnly,
-                userId,iAgree
+                storageConditions,storageAfterOpening,PharmacotherapeuticGroup
+                ,ATCCode,SubjectMedicalPrescription,controlledVeterinaryMedicine,
+                prescriptionOnlyMedicine,nonPharmacy,pharmaciesOnly,userId,CountryOfOrigin,CountryOfRelease,
+                iAgree
                 )
                 print(response)
                 if response == True:

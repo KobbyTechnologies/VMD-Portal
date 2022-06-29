@@ -13,8 +13,6 @@ def biocidalRegistration(request,pk):
             otherNames = request.POST.get('otherNames')
             chemicalName = request.POST.get('chemicalName')
             casNumber = request.POST.get('casNumber')
-            intendedUse = request.POST.get('intendedUse')
-            instructions = request.POST.get('instructions')
             proposedShelfLife =request.POST.get('proposedShelfLife')
             shelfLifeAfterFirstOpening =request.POST.get('shelfLifeAfterFirstOpening')
             ShelfLifeAfterDilution = request.POST.get('ShelfLifeAfterDilution')
@@ -30,7 +28,7 @@ def biocidalRegistration(request,pk):
             
             try:
                 response = config.CLIENT.service.BiocidalCard(prodNo,myAction,prodName,otherNames,
-                chemicalName,casNumber,intendedUse,instructions,proposedShelfLife,
+                chemicalName,casNumber,proposedShelfLife,
                 shelfLifeAfterFirstOpening,ShelfLifeAfterDilution,visualDescription,packagingMaterial,
                 packSize,closureSystem,userId,iAgree)
                 print(response)

@@ -13,7 +13,6 @@ def feedRegistration(request,pk):
             proposedCategory = request.POST.get('proposedCategory')
             casNumber = request.POST.get('casNumber')
             otherNames = request.POST.get('otherNames')
-            intendedUse = request.POST.get('intendedUse')
             dosageForm = request.POST.get('dosageForm')
             dosage =request.POST.get('dosage')
             proposedShelfLife =request.POST.get('proposedShelfLife')
@@ -21,7 +20,6 @@ def feedRegistration(request,pk):
             ShelfLifeAfterDilution = request.POST.get('ShelfLifeAfterDilution')
             countryOfOrigin = request.POST.get('countryOfOrigin')
             visualDescription = request.POST.get('visualDescription')
-            packagingMaterial = request.POST.get('packagingMaterial')
             closureSystem = request.POST.get('closureSystem')
             packSize = request.POST.get('packSize')
             iAgree = eval(request.POST.get('iAgree'))
@@ -31,8 +29,8 @@ def feedRegistration(request,pk):
             
             try:
                 response = config.CLIENT.service.FeedAdditivesCard(prodNo,myAction,prodName,proposedCategory,casNumber,
-                otherNames,intendedUse,dosage,packSize,dosageForm,proposedShelfLife,ShelfLifeAfterDilution,
-                countryOfOrigin,visualDescription,packagingMaterial,closureSystem,shelfLifeAfterFirstOpening,
+                otherNames,dosage,packSize,dosageForm,proposedShelfLife,ShelfLifeAfterDilution,
+                countryOfOrigin,visualDescription,closureSystem,shelfLifeAfterFirstOpening,
                 userId,iAgree)
                 print(response)
                 if response == True:

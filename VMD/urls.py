@@ -28,7 +28,6 @@ urlpatterns = [
     path('', include('feed.urls')),
     path('', include('biocidal.urls')),
     path('', include('devices.urls')),
-    path('', include('alternative.urls')),
     path('', include('variation.urls')),
     path('', include('appeal.urls')),
     path('', include('payment.urls')),

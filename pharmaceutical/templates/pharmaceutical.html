@@ -31,20 +31,12 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="mb-2">
                                                     <label class="form-label">Pack Size <span
                                                             class="text-danger">*</span></label>
                                                     <textarea class="form-control" name="packSize" required
                                                         placeholder="200 ml, 500ml" rows="3"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label class="form-label">Visual Description <span
-                                                            class="text-danger">*</span></label>
-                                                    <textarea class="form-control" name="visualDescription"
-                                                        rows="3"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -129,30 +121,28 @@
                                                 <input type="text" class="form-control" name="PharmacotherapeuticGroup">
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label">Assigned ATC Code</label>
-                                                <select class="form-select" name="AssignedATCCode" id="AssignedATCCode">
-                                                    <option selected disabled value="">Choose...</option>
-                                                    <option value="True">Yes</option>
-                                                    <option value="False">No</option>
-                                                </select>
+                                                <label class="form-label">ATC Code <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="ATCCode" required>
+                                                <div class="form-text">Please use current ATC code.
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row my-2">
                                             <div class="col-md-6">
-                                                <label class="form-label">ATC Code</label>
-                                                <input type="text" class="form-control" name="ATCCode" id="ATCCode"
-                                                    disabled>
-                                                <div class="form-text">Please use current ATC code.
+                                                <div class="mb-2">
+                                                    <label class="form-label">Country of Origin <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea class="form-control" name="CountryOfOrigin"
+                                                        rows="3"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label">Applied ATC Code</label>
-                                                <select class="form-select" name="applicationForAtc" id="AppliedATCCode"
-                                                    disabled>
-                                                    <option selected disabled value="">Choose...</option>
-                                                    <option value="True">Yes</option>
-                                                    <option value="False">No</option>
-                                                </select>
+                                                <div class="mb-2">
+                                                    <label class="form-label">Country of Release</label>
+                                                    <textarea class="form-control" name="CountryOfRelease"
+                                                        rows="3"></textarea>
+                                                </div>
                                             </div>
                                         </div>
                                         <hr class="dropdown-divider">
@@ -243,16 +233,6 @@
 
 <script>
     $(document).ready(function () {
-        $('#AssignedATCCode').on('change', function () {
-            if (this.value == "True") {
-                $('#ATCCode').prop('disabled', false);
-                $('#AppliedATCCode').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#AppliedATCCode').prop('disabled', false);
-                $('#ATCCode').prop('disabled', true);
-            }
-        });
-
         $('#Legal1').on('change', function () {
             if (this.value == "True") {
                 $('#legal2').prop('disabled', false);

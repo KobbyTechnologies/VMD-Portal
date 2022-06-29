@@ -26,43 +26,17 @@ def pesticideRegistration(request,pk):
             animalSafety = request.POST.get('animalSafety')
             withholdingPeriod =  request.POST.get('withholdingPeriod')
             maximumLimit = request.POST.get('maximumLimit')
-            gmpStatus = request.POST.get('gmpStatus')
-            reason = request.POST.get('reason')
             iAgree = eval(request.POST.get('iAgree'))
             userId = request.session['UserID']
             if not iAgree:
-                iAgree = False
-            if not reason:
-                reason = '' 
-            print("userId",userId) 
-            print("iAgree",iAgree)  
-            print("reason",reason)  
-            print("gmpStatus",gmpStatus)  
-            print("maximumLimit",maximumLimit)  
-            print("withholdingPeriod",withholdingPeriod) 
-            print("animalSafety",animalSafety) 
-            print("frequencyApplication",frequencyApplication) 
-            print("targetParasites",targetParasites)  
-            print("targetAnimals",targetAnimals)  
-            print("visualDescription",visualDescription)  
-            print("othersIndicate",othersIndicate)  
-            print("formulation",formulation)
-            print("tradeMark",tradeMark) 
-            print("storageAfterOpening",storageAfterOpening)  
-            print("shelfLifeAfterFirstOpening",shelfLifeAfterFirstOpening)  
-            print("storageConditions",storageConditions)  
-            print("proposedShelfLife",proposedShelfLife)  
-            print("packSize",packSize)
-            print("prodNo",prodNo)  
-            print("prodName",prodName)
-                        
+                iAgree = False                   
 
             try:
                 
                 response = config.CLIENT.service.PesticideCard(prodNo,myAction,prodName,packSize,proposedShelfLife,
                 storageConditions,shelfLifeAfterFirstOpening,storageAfterOpening,tradeMark,othersIndicate,
-                visualDescription,targetAnimals,targetParasites,frequencyApplication,animalSafety,withholdingPeriod,maximumLimit,gmpStatus,
-                reason,formulation,userId,iAgree)
+                visualDescription,targetAnimals,targetParasites,frequencyApplication,animalSafety,withholdingPeriod,maximumLimit,
+                formulation,userId,iAgree)
 
                 print(response)
                 if response == True:

@@ -8,12 +8,15 @@
         "excipients",
         "Fernet",
         "IUPAC",
+        "Linestobe",
         "Manufacures",
         "NAVADMIN",
         "Particulers",
         "pharmaceutica",
         "Pharmacotherapeutic",
+        "QYGMP",
         "Retension",
-        "Strengthof"
+        "Strengthof",
+        "Vertinary"
     ]
 }

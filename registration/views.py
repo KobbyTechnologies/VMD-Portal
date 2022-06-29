@@ -194,13 +194,28 @@ def ManufacturesParticulars(request,pk):
         try:
             prodNo = pk
             myAction = request.POST.get('myAction')
+            TypeOfManufacturer = int(request.POST.get('TypeOfManufacturer'))
+            manufacturerOther = request.POST.get('manufacturerOther')
             manufacturerName = request.POST.get('manufacturerName')
             plantAddress = request.POST.get('plantAddress')
-            activity = request.POST.get('activity')
+            country = request.POST.get('country')
+            ManufacturerTelephone = request.POST.get('ManufacturerTelephone')
+            ManufacturerEmail= request.POST.get('ManufacturerEmail')
+            activity = int(request.POST.get('activity'))
+            ManufacturerGMP = request.POST.get('ManufacturerGMP')
             userId = request.session['UserID']
+
+            if not manufacturerOther:
+                manufacturerOther = ''
+            
+            if not ManufacturerGMP:
+                messages.info(request,"You must have a GMP Code to register a product")
+                return redirect('registration')
+
             try:
-                response = config.CLIENT.service.ManufacuresParticulars(prodNo,myAction,manufacturerName,plantAddress,
-                activity,userId)
+                response = config.CLIENT.service.ManufacuresParticulars(prodNo,myAction,TypeOfManufacturer,
+                manufacturerOther,manufacturerName,plantAddress,country,ManufacturerTelephone,ManufacturerEmail,
+                activity,ManufacturerGMP,userId)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully. Click Add New to create more  records")

@@ -8,7 +8,7 @@ from django.conf import settings as config
 def RenewalRequest(request):
     session = requests.Session()
     session.auth = config.AUTHS
-    Retention= config.O_DATA.format("/QYAppeal")
+    Retention= config.O_DATA.format("/QYRenewal")
     OpenProducts = []
     Pending = []
     Approved = []
@@ -46,3 +46,23 @@ def RenewalRequest(request):
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
     "rejectedCount":rejectedCount,"rejected":Rejected}
     return render (request,'renew.html')
+
+
+def ApplyRenewal(request,pk):
+    if request.method == 'POST':
+        try:
+            renNo = ''
+            myAction = 'insert'
+
+            response = config.CLIENT.service.Retension(renNo,myAction,request.session['UserID'],pk)
+            print(response)
+            messages.success(request,"Saved Successfully")
+            return redirect('productDetails', pk=pk)
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return redirect('renew')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login') 
+    return redirect('renew')

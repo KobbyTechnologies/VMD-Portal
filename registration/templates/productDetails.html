@@ -16,35 +16,7 @@
     <section class="section dashboard mt-4">
         <div class="row">
             <div class="col-md-12">
-                {% if messages %}
-                {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
-                    <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
-                    <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
-                    <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
-                    <div class="a-icon mx-2">
-                        {{message}}
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endif %}
-                {% endfor %}
-                {% endif %}
+                {% include 'alert.html' %}
             </div>
         </div>
 
@@ -59,7 +31,7 @@
                                 <i class="bi bi-currency-dollar"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>${{res.Amount_Payable}}</h6>
+                                <h6>$ {{res.Amount_Payable}}</h6>
                             </div>
                         </div>
                     </div>
@@ -126,15 +98,16 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <form action="{% url 'makePayment' res.ProductNo %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">
-                        <div class="card h-100 actionActive actionCard  text-center">
-                            <i class="bi bi-wallet my-3"></i>
-                            <h6>Proceed To Payment </h6>
-                        </div>
-                    </button>
-                </form>
+                <div class="card h-100 actionActive actionCard  text-center">
+                    <i class="bi bi-wallet my-3"></i>
+                    <form action="{% url 'makePayment' res.ProductNo %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info">
+                            Pay $ {{res.Amount_Payable}}
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
         {% if class == 'VETERINARY DEVICE' %}
@@ -148,11 +121,13 @@
                             <div class="col-md-12">
                                 <h5 class="card-title" style="display:inline-block;float:right ;">Ingredients
                                 </h5>
+                                {% if status == 'Open' %}
                                 <div class="inline mt-2" style="display:inline-block;">
                                     <button type="button" class="btn text-danger" data-bs-toggle="modal"
                                         data-bs-target="#activeIngredients"><i class="bi bi-plus-circle"></i>
                                         Add New</button>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -206,11 +181,13 @@
                                 <h5 class="card-title" style="display:inline-block;float:right ;">Essential Principles
                                     and methods used to demonstrate conformity
                                 </h5>
+                                {% if status == 'Open' %}
                                 <div class="inline mt-2" style="display:inline-block;">
                                     <button type="button" class="btn text-danger" data-bs-toggle="modal"
                                         data-bs-target="#principles"><i class="bi bi-plus-circle"></i>
                                         Add New</button>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -324,11 +301,13 @@
                             <div class="col-md-12">
                                 <h5 class="card-title" style="display:inline-block;float:right ;">Manufactures
                                     Particulars</h5>
+                                {% if status == 'Open' %}
                                 <div class="inline mt-2" style="display:inline-block;">
                                     <button type="button" class="btn text-danger" data-bs-toggle="modal"
                                         data-bs-target="#createParticulars"><i class="bi bi-plus-circle"></i>
                                         Add New</button>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -338,8 +317,13 @@
                             class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
+                                    <th scope="col">Manufacturer Type</th>
                                     <th scope="col">Manufacturer Name</th>
                                     <th scope="col">Address</th>
+                                    <th scope="col">Country</th>
+                                    <th scope="col">Telephone</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">GMP NO</th>
                                     <th scope="col">Activity</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -347,8 +331,13 @@
                             <tbody>
                                 {% for res in manufacturer %}
                                 <tr>
+                                    <td>{{res.Type_of_Manufacture}}</td>
                                     <td>{{res.Manufacture_Company_Name_}}</td>
                                     <td>{{res.Manufacturing_plant_address}}</a></td>
+                                    <td>{{res.Country}}</a></td>
+                                    <td>{{res.Telephone}}</a></td>
+                                    <td>{{res.Email}}</a></td>
+                                    <td>{{res.GMP_No}}</a></td>
                                     <td>{{res.Activity}}</td>
                                     <td>
                                         <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
@@ -371,11 +360,13 @@
                                 <h5 class="card-title" style="display:inline-block;float:right ;">Marketing
                                     Authorisation in the country of origin and other countries
                                 </h5>
+                                {% if status == 'Open' %}
                                 <div class="inline mt-2" style="display:inline-block;">
                                     <button type="button" class="btn text-danger" data-bs-toggle="modal"
                                         data-bs-target="#MarketingAuthorization"><i class="bi bi-plus-circle"></i>
                                         Add New</button>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -420,11 +411,13 @@
                             <div class="col-md-12">
                                 <h5 class="card-title" style="display:inline-block;float:right ;">Additives/Impurities
                                 </h5>
+                                {% if status == 'Open' %}
                                 <div class="inline mt-2" style="display:inline-block;">
                                     <button type="button" class="btn text-danger" data-bs-toggle="modal"
                                         data-bs-target="#Additives"><i class="bi bi-plus-circle"></i>
                                         Add New</button>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -481,7 +474,7 @@
 <!-- Create Manufacturer particulars -->
 <div class="modal fade" id="createParticulars" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Add Particulars of the Manufacturer and Activity</h5>
@@ -491,30 +484,74 @@
                 <form method="POST" action="{% url 'ManufacturesParticulars' res.ProductNo %}">
                     {% csrf_token %}
                     <input type="hidden" name="myAction" value="insert">
-                    <div class="row">
+                    <div class="row my-2">
                         <div class="col-md-12">
-                            <div class="mb-2">
-                                <label class="form-label">Manufacturer Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="manufacturerName" id="manufacturerName"
-                                    required>
-                            </div>
+                            <label class="form-label">Type of Manufacturer <span class="text-danger">*</span></label>
+                            <select class="form-select" name="TypeOfManufacturer" id="TypeOfManufacturer"
+                                aria-label="Default select example" required>
+                                <option selected>Choose .. </option>
+                                <option value="1">Manufacturer of finished product</option>
+                                <option value="2">Company releasing product </option>
+                                <option value="3">Manufacturer of active ingredient</option>
+                                <option value="4">Manufacturer of inactive ingredient</option>
+                                <option value="5">Other</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row my-2" id="manufacturerOtherRow" style="display: none;">
                         <div class="col-md-12">
-                            <div class="mb-2">
-                                <label class="form-label">Plant Address<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="plantAddress" id="plantAddress" required>
-                            </div>
+                            <label class="form-label">Other Type of Manufacturer</label>
+                            <input type="text" class="form-control" name="manufacturerOther" id="manufacturerOther"
+                                disabled>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="mb-2">
-                                <label class="form-label">Activity <span class="text-danger">*</span></label>
-                                <textarea class="form-control longText" name="activity" id="activity"></textarea>
-                            </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="manufacturerName" id="manufacturerName"
+                                required>
                         </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Plant Address<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="plantAddress" required>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer Country <span class="text-danger">*</span></label>
+                            <select class="form-select" aria-label="Default select example" name="country">
+                                <option selected value="" disabled>Select Country</option>
+                                {% for res in country %}
+                                <option value="{{res.Name}}">{{res.Name}}</option>
+
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer Telephone<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="ManufacturerTelephone" required>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer Email <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="ManufacturerEmail" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer GMP<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="ManufacturerGMP" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Activity</label>
+                        <select class="form-select" name="activity">
+                            <option selected>Choose...</option>
+                            <option value="1">Formulation (dispensing, mixing, blending) </option>
+                            <option value="2">Processing(compression, emulsification etc)</option>
+                            <option value="3">Packaging</option>
+                            <option value="4">Quality Control</option>
+                            <option value="5">Warehousing (raw material, finished products)</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-success my-2">Submit</button>
                 </form>
@@ -658,7 +695,7 @@
 <!-- MarketingAuthorization -->
 <div class="modal fade" id="MarketingAuthorization" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Marketing Authorization</h5>
@@ -670,7 +707,7 @@
                     <input type="hidden" name="myAction" value="insert">
                     <div class="row my-2">
                         <h5>Marketing Authorisation in the country of origin and other countries</h5>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="form-label">Authorisation Status</label>
                             <select class="form-select" name="AuthorisationStatus" id="AuthorisationStatus">
                                 <option selected>Choose...</option>
@@ -680,7 +717,9 @@
                                 <option value="4">Suspended/revoked (by competent authority)</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row my-2" style="display: none;" id="MarketingCountryRow">
+                        <div class="col-md-12">
                             <label class="form-label">Country</label>
                             <select class="form-select" name="MarketingCountry" id="MarketingCountry" disabled>
                                 <option selected disabled value="">Choose...</option>
@@ -689,28 +728,29 @@
                                 {% endfor %}
                             </select>
                         </div>
-
                     </div>
-                    <div class="row my-2">
+                    <div class="row my-2" style="display: none;" id="DateAuthorisationRow">
                         <div class="col-md-12">
                             <label class="form-label">Date of authorisation/Refusal/Withdrawal/Suspension</label>
                             <input type="date" id="DateAuthorisation" class="form-control" name="DateAuthorisation"
                                 disabled>
                         </div>
                     </div>
-                    <div class="row my-2">
-                        <div class="col-md-6">
+                    <div class="row my-2" style="display:none ;" id="ProprietaryNameRow">
+                        <div class="col-md-12">
                             <label class="form-label">Proprietary Name</label>
                             <input type="text" class="form-control" name="ProprietaryName" id="ProprietaryName"
                                 disabled>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row my-2" style="display: none;" id="AuthorisationNumberRow">
+                        <div class="col-md-12">
                             <label class="form-label">Authorisation number</label>
                             <input type="text" class="form-control" name="AuthorisationNumber" id="AuthorisationNumber"
                                 disabled>
                         </div>
                     </div>
-                    <div class="row my-2">
+                    <div class="row my-2" style="display: none;" id="AuthorisationReasonRow">
                         <div class="col-md-12">
                             <label class="form-label">Reason</label>
                             <textarea class="form-control longText" name="AuthorisationReason" id="AuthorisationReason"
@@ -732,9 +772,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Additives/Impurities</h5>
-                <p>The identity of any impurities and additives including by-products of synthesis, optical isomers,
-                    degradation products (if the substance is unstable) un-reacted and end-groups etc. of polymers and
-                    un-reacted starting materials of UVC-substances</p>
+
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -815,6 +853,11 @@
     $(document).ready(function () {
         $('#AuthorisationStatus').on('change', function () {
             if (this.value == "1") {
+                $('#MarketingCountryRow').show(1000)
+                $('#DateAuthorisationRow').show(1500)
+                $('#ProprietaryNameRow').show(1800)
+                $('#AuthorisationNumberRow').show(2000)
+                $('#AuthorisationReasonRow').hide()
                 $('#MarketingCountry').prop('disabled', false);
                 $('#DateAuthorisation').prop('disabled', false);
                 $('#ProprietaryName').prop('disabled', false);
@@ -822,6 +865,11 @@
                 $('#CertificateVeterinary').prop('disabled', false);
                 $('#AuthorisationReason').prop('disabled', true);
             } else if (this.value == "2") {
+                $('#MarketingCountryRow').show(1000)
+                $('#DateAuthorisationRow').show(1800)
+                $('#ProprietaryNameRow').hide()
+                $('#AuthorisationNumberRow').hide()
+                $('#AuthorisationReasonRow').show(2500)
                 $('#MarketingCountry').prop('disabled', false);
                 $('#DateAuthorisation').prop('disabled', false);
                 $('#AuthorisationReason').prop('disabled', false);
@@ -829,6 +877,11 @@
                 $('#ProprietaryName').prop('disabled', true);
                 $('#AuthorisationNumber').prop('disabled', true);
             } else if (this.value == "3") {
+                $('#MarketingCountryRow').show(1000)
+                $('#DateAuthorisationRow').show(1500)
+                $('#ProprietaryNameRow').show(1800)
+                $('#AuthorisationNumberRow').hide()
+                $('#AuthorisationReasonRow').show(2500)
                 $('#MarketingCountry').prop('disabled', false);
                 $('#DateAuthorisation').prop('disabled', false);
                 $('#AuthorisationReason').prop('disabled', false);
@@ -836,6 +889,11 @@
                 $('#ProprietaryName').prop('disabled', false);
                 $('#AuthorisationNumber').prop('disabled', true);
             } else if (this.value == "4") {
+                $('#MarketingCountryRow').show(1000)
+                $('#DateAuthorisationRow').show(1500)
+                $('#ProprietaryNameRow').show(1800)
+                $('#AuthorisationNumberRow').hide()
+                $('#AuthorisationReasonRow').show(2500)
                 $('#MarketingCountry').prop('disabled', false);
                 $('#DateAuthorisation').prop('disabled', false);
                 $('#AuthorisationReason').prop('disabled', false);
@@ -852,6 +910,16 @@
             } else {
                 $('#ReasonForInclusionRow').show(1000)
                 $('#ReasonForInclusion').prop('disabled', false);
+            }
+        });
+
+        $('#TypeOfManufacturer').on('change', function () {
+            if (this.value == "5") {
+                $('#manufacturerOtherRow').show(1000)
+                $('#manufacturerOther').prop('disabled', false);
+            } else {
+                $('#manufacturerOtherRow').hide(1000)
+                $('#manufacturerOther').prop('disabled', true);
             }
         });
 

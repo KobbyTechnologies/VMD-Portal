@@ -65,21 +65,33 @@ def ApplyGMP(request):
             ContactName =request.POST.get('ContactName')
             ContactTel = request.POST.get('ContactTel')
             ContactEmail = request.POST.get('ContactEmail')
-            VeterinaryMedicines = request.POST.get('VeterinaryMedicines')
-            TypeOfInspection = request.POST.get('TypeOfInspection')
+            VeterinaryMedicines = int(request.POST.get('VeterinaryMedicines'))
+            TypeOfInspection = int(request.POST.get('TypeOfInspection'))
             stateOther = request.POST.get('StateOther')
             iAgree = eval(request.POST.get('iAgree'))
 
             if not iAgree:
                 iAgree = False
+            if not ContactName:
+                ContactName = ''
+
+            if not ContactTel:
+                ContactTel = ''
+
+            if not ContactEmail:
+                ContactEmail = ''
+
+            if not stateOther:
+                stateOther = ''
 
             response = config.CLIENT.service.GMP(gmpNo,myAction,request.session['UserID'],SitePhysicalAddress,
             SiteCountry,SiteTelephone,SiteMobile,SiteEmail,isContact,ContactName,ContactTel,ContactEmail,
             VeterinaryMedicines,TypeOfInspection,stateOther,iAgree
             )
             print(response)
-            messages.success(request,"Saved Successfully")
-            return redirect('gmp')
+            if response == True:
+                messages.success(request,"Saved Successfully")
+                return redirect('gmp')
 
         except requests.exceptions.RequestException as e:
             print(e)
@@ -91,6 +103,70 @@ def ApplyGMP(request):
     return redirect('gmp')
 
 def GMPDetails(request,pk):
-    return render(request,"gmpDetails.html")
+    session = requests.Session()
+    session.auth = config.AUTHS
+    Access_Point = config.O_DATA.format("/QYGMP")
+    Lines = config.O_DATA.format("/QYLinestobeInspected")
+    gmp = []
+    Line = []
+    responses =''
+    Status=''
+
+    try:
+        response = session.get(Access_Point, timeout=10).json()
+        for res in response['value']:
+            if res['User_code'] == request.session['UserID']:
+                output_json = json.dumps(res)
+                gmp.append(json.loads(output_json))
+                for product in gmp:
+                    if product['GMP_No_'] == pk and product['I_Agree'] == True:
+                        responses = product
+                        Status = product['Status']
+                    if product['GMP_No_'] == pk and product['I_Agree'] == False:
+                        messages.error(request,"You have not agreed to the terms and conditions. You can not continue with registration. Your data will be deleted")
+                        return redirect('gmp')
+        linesResponse = session.get(Lines, timeout=10).json()
+        for line in linesResponse['value']:
+            if line['User_code'] == request.session['UserID'] and line['No'] == pk:
+                output_json = json.dumps(line)
+                Line.append(json.loads(output_json))
+    except requests.exceptions.RequestException as e:
+        messages.error(request,e)
+        print(e)
+        return redirect('Registration')
+    except KeyError as e:
+        messages.info(request,"Session Expired, Login Again")
+        print(e)
+        return redirect('login')
+    
+    ctx = {"res":responses,"status":Status,"line":Line}
+    return render(request,"gmpDetails.html",ctx)
+
+def linesToInspect(request,pk):
+    if request.method == "POST":
+        try:
+            myAction= 'insert'
+            DosageForm = int(request.POST.get('DosageForm'))
+            otherDosage = request.POST.get('otherDosage')
+            Activity = int(request.POST.get('Activity'))
+
+            if not otherDosage:
+                otherDosage = ''
+            try:
+                response = config.CLIENT.service.LinesInspected(pk,myAction,request.session['UserID'],DosageForm,
+                otherDosage,Activity)
+                print(response)
+                if response == True:
+                    messages.success(request,"Saved Successfully")
+                    return redirect('GMPDetails',pk=pk)
+            except requests.exceptions.RequestException as e:
+                print(e)
+                messages.error(request,e)
+                return redirect('GMPDetails',pk=pk)
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+    return redirect('GMPDetails',pk=pk)
 
     # To check against the user code to see whether there are products registered

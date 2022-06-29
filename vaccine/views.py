@@ -11,12 +11,10 @@ def vaccineRegistration(request,pk):
             myAction = 'modify'
             prodName = request.POST.get('prodName')
             packSize = request.POST.get('packSize')
-            description = request.POST.get('description')
             mainIndication = request.POST.get('mainIndication')
             TypeOfReview = request.POST.get('TypeOfReview')
             giveReasons = request.POST.get('giveReasons')
             iAgree = eval(request.POST.get('iAgree'))
-            nameOfSignatory = request.POST.get('nameOfSignatory')
             userId = request.session['UserID']
             if not iAgree:
                 iAgree = False
@@ -24,7 +22,7 @@ def vaccineRegistration(request,pk):
                 giveReasons = ''
             try:
                 response = config.CLIENT.service.FnVaccineCard(pk,myAction,prodName,packSize,
-                description,mainIndication,TypeOfReview,giveReasons,iAgree,nameOfSignatory,userId)
+                mainIndication,TypeOfReview,giveReasons,iAgree,userId)
                 print(response)
                 if response == True:
                     messages.success(request,"Successfully Saved")
