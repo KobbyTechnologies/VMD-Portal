@@ -12,4 +12,6 @@ urlpatterns = [
     path("country/registered/<str:pk>",views.CountryRegistered,name='CountryRegistered'),
     path("marketing/authorization/<str:pk>",views.MarketingAuthorization,name='MarketingAuthorization'),
     path("makePayment/<str:pk>",views.makePayment,name='makePayment'),
+    path("my/submissions", views.allApplications, name='allApplications'),
+
 ]

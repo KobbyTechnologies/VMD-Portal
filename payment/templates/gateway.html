@@ -29,15 +29,15 @@
                         <div class="row box-right">
                             <div class="col-md-8 ps-0 ">
                                 <p class="ps-3 textmuted fw-bold h6 mb-0"><span class="bi bi-circle-fill pe-2"
-                                        style="color:#0e5a8d;"></span> Pending Payment</p>
+                                        style="color:#0e5a8d;"></span> Total to Pay</p>
                                 <p class="h1 fw-bold d-flex"> <span
                                         class="bi bi-currency-dollar textmuted pe-1 h6 align-text-top mt-1"></span>
-                                    10,000 <span class="textmuted">.00</span>
+                                    {{res.Amount_Payable}}
                                 </p>
                             </div>
                             <div class="col-md-4">
                                 <p class="p-blue"> Total Received</p>
-                                <p class="fw-bold mb-3"><span class="bi bi-currency-dollar pe-1"></span>1254<span
+                                <p class="fw-bold mb-3"><span class="bi bi-currency-dollar pe-1"></span>0000<span
                                         class="textmuted">.00</span> </p>
                             </div>
                         </div>
@@ -51,8 +51,8 @@
                                         class=" bg btn btn-primary bi bi-exclamation-circle"></span> </p>
                             </div>
                             <div class="bg-blue p-2">
-                                <P class="textmuted">For Cheque and bank transfer, kindly allow for verification
-                                    before your account us updated.
+                                <P class="textmuted">VMD will never ask you for your password, PIN, CVV, or
+                                    full card details.
                                 </P>
                             </div>
                         </div>
@@ -96,8 +96,7 @@
                                                 placeholder="cvv">
                                         </div>
                                     </div>
-                                    <a href="" type="button" class="btn btn-primary d-block h8">PAY <span
-                                            class="bi bi-currency-dollar ms-2"></span>10,000<span
+                                    <a href="#" type="button" class="btn btn-primary d-block h8">Confirm Payment <span
                                             class="ms-3 bi bi-arrow-right"></span>
                                     </a>
                                 </div>

@@ -32,6 +32,8 @@
                             </div>
                             <div class="ps-3">
                                 <h6>$ {{res.Amount_Payable}}</h6>
+                                <span class="text-muted small pt-2 ps-1">Paid:</span>
+                                <span class="text-success small pt-1 fw-bold">{{res.Paid}}</span>
                             </div>
                         </div>
                     </div>
@@ -46,7 +48,7 @@
                                 <i class="bi bi-arrow-left-right"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>Apply</h6>
+                                <h6> {{res.DocumentStage}} </h6>
                             </div>
                         </div>
                     </div>
@@ -102,7 +104,7 @@
                     <i class="bi bi-wallet my-3"></i>
                     <form action="{% url 'makePayment' res.ProductNo %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-info">
+                        <button type="submit" class="btn btn-secondary">
                             Pay $ {{res.Amount_Payable}}
                         </button>
                     </form>
@@ -133,7 +135,7 @@
                     </div>
                     <div class="card-body">
                         <table
-                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
                                     <th scope="col">Name</th>
@@ -193,7 +195,7 @@
                     </div>
                     <div class="card-body">
                         <table
-                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            class="display table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
                                     <th scope="col">Essential Principle</th>
@@ -314,7 +316,7 @@
                     <div class="card-body">
 
                         <table
-                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            class="display table  table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
                                     <th scope="col">Manufacturer Type</th>
@@ -424,7 +426,7 @@
 
                     <div class="card-body">
                         <table
-                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
                                     <th scope="col">Name</th>
@@ -455,22 +457,7 @@
 
 
 <!-- Modals -->
-<div class="modal fade" id="submission" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Full Screen Modal {{res.ProductNo}}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'data.html' %}
 <!-- Create Manufacturer particulars -->
 <div class="modal fade" id="createParticulars" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">

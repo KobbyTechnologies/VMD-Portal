@@ -164,6 +164,8 @@ def loginRequest(request):
                     request.session['UserID'] = res['No']
                     request.session['LTR_Name'] = res['LTR_Name']
                     request.session['LTR_Email'] = res['LTR_Email']
+                    request.session['Country'] = res['Country']
+                    request.session['Business_Registration_No_'] = res['Business_Registration_No_']
                     try:
                         Portal_Password = base64.urlsafe_b64decode(
                             res['MyPassword'])
@@ -178,9 +180,9 @@ def loginRequest(request):
                     except Exception as e:
                         messages.error(request, "Incorrect Password")
                         return redirect('login')
-                else:
-                    messages.error(request, "Your account is not verified, check your email for a verification link or create an account.")
-                    return redirect('login')
+                # else:
+                #     messages.error(request, "Your account is not verified, check your email for a verification link or create an account.")
+                #     return redirect('login')
         except requests.exceptions.RequestException as e:
             print(e)
             messages.error(request,e)
@@ -260,6 +262,8 @@ def logout_request(request):
         del request.session['UserID'] 
         del request.session['LTR_Name']
         del request.session['LTR_Email']
+        del request.session['Country']
+        del request.session['Business_Registration_No_'] 
     except Exception as e:
         messages.info(request,e)
         return redirect ('login')

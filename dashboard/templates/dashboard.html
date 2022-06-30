@@ -26,33 +26,31 @@
       <div class="col-md-8">
         <div class="card pb-3" style="height: 420px; width:100%;overflow: hidden;">
           <div class="card-body">
-            <h5 class="card-title">Registration Info</h5>
+            <h5 class="card-title">Documents Pending Approval </h5>
 
             <table class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
               <thead>
                 <tr>
+                  <th scope="col">Product No.</th>
                   <th scope="col">Product Name</th>
-                  <th scope="col">Renewal Date</th>
-                  <th scope="col">Status</th>
+                  <th scope="col">Veterinary Class</th>
+                  <th scope="col">Document Date</th>
+                  <th scope="col">Document Stage</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
+                {% for res in pending %}
                 <tr>
+                  <td>{{res.ProductNo}}</td>
                   <td>Product X</td>
-                  <td><a href="#" class="text-primary">22-01-2023</a></td>
-                  <td><span class="badge bg-success">Active</span></td>
+                  <td>{{res.Veterinary_Classes}}</td>
+                  <td>{{res.Document_Date}}</td>
+                  <td><span class="badge bg-success">{{res.DocumentStage}}</span></td>
+                  <td><a href="{% url 'productDetails' res.ProductNo %}" type="button" class="btn btn-success"> View <i
+                        class="bi bi-eye"></i></a></td>
                 </tr>
-
-                <tr>
-                  <td>Product Y</td>
-                  <td><a href="#" class="text-primar">22-01-2023</a></td>
-                  <td><span class="badge bg-danger">Expired</span></td>
-                </tr>
-                <tr>
-                  <td>Product Z</td>
-                  <td><a href="#" class="text-primar">22-01-2023</a></td>
-                  <td><span class="badge bg-danger">Expired</span></td>
-                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
@@ -60,62 +58,43 @@
       </div>
       <div class="col-md-4">
         <div class="card activityCard">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
-
           <div class="card-body">
-            <h5 class="card-title text-white">Recent Activity <span class="text-light">| Today</span></h5>
+            <h5 class="card-title text-white">Common Requirements<span class="text-light">| VMD</span></h5>
             <div class="activity">
               <div class="activity-item d-flex">
-                <div class="activite-label">32 min</div>
+                <div class="activite-label"></div>
                 <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                 <div class="activity-content">
-                  Applied for Veterinary pharmaceutical Certificate
+                  Good Manufacturing Practices - Required in Registering Veterinary Classes
                 </div>
               </div>
               <div class="activity-item d-flex">
-                <div class="activite-label">90 min</div>
+                <div class="activite-label"></div>
                 <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                 <div class="activity-content">
-                  Applied for Veterinary pesticide Certificate
+                  Particulars of Manufactures and their activities
                 </div>
               </div>
               <div class="activity-item d-flex">
-                <div class="activite-label">90 min</div>
+                <div class="activite-label"></div>
                 <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                 <div class="activity-content">
-                  Applied for Veterinary pesticide Certificate
+                  Marketing authorisation issued by the
+                  appropriate regulatory authority.
                 </div>
               </div>
               <div class="activity-item d-flex">
-                <div class="activite-label">90 min</div>
+                <div class="activite-label"></div>
                 <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                 <div class="activity-content">
-                  Applied for Veterinary pesticide Certificate
+                  Proposal for marketing monitoring
                 </div>
               </div>
               <div class="activity-item d-flex">
-                <div class="activite-label">90 min</div>
+                <div class="activite-label"></div>
                 <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                 <div class="activity-content">
-                  Applied for Veterinary pesticide Certificate
-                </div>
-              </div>
-              <div class="activity-item d-flex">
-                <div class="activite-label">90 min</div>
-                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                <div class="activity-content">
-                  Applied for Veterinary pesticide Certificate
+                  Anatomical Therapeutic Chemical (ATC) Code
                 </div>
               </div>
             </div>
@@ -303,30 +282,22 @@
             <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
 
             <div class="updates">
+              {% for data in articles %}
+              {% if data.urlToImage %}
               <div class="row">
                 <div class="col-md-12 mb-2">
                   <div class="card h-100 newsCard m-2">
-                    <img src="../../static/img/dash/Noodies-Pro-mobile-Concept---2.gif" class="card-img-top" alt="...">
+                    <img src="{{data.urlToImage}}" class="card-img-top" alt="...">
                     <div class="card-body">
-                      <h5 class="card-title">Raila Chooses karua</h5>
-                      <p class="card-text">This is a longer card with supporting .. <a href="#">View <i
-                            class="bi bi-box-arrow-up-right"></i></a></p>
+                      <h5 class="card-title">{{data.title}}</h5>
+                      <a href="{{data.url}}" class="btn btn-success w-100 text-warning" target="_blank">Read More <i
+                          class="bi bi-box-arrow-up-right"></i></a>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-12 mb-2">
-                  <div class="card h-100 newsCard m-2">
-                    <img src="../../static/img/dash/Noodies-Pro-mobile-Concept---2.gif" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Raila Chooses karua</h5>
-                      <p class="card-text">This is a longer card with supporting .. <a href="#">View <i
-                            class="bi bi-box-arrow-up-right"></i></a></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {% endif %}
+              {% endfor %}
             </div><!-- End sidebar recent posts-->
 
           </div>

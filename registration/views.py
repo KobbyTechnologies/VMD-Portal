@@ -1,3 +1,4 @@
+from asyncio import exceptions
 from django.shortcuts import redirect, render
 from django.conf import settings as config
 import requests 
@@ -117,6 +118,7 @@ def productDetails(request,pk):
     MarketingAuthorisation = config.O_DATA.format("/QYMarketingAuthorisation")
     FeedAdditives = config.O_DATA.format("/QYAddictives")
     Methods = config.O_DATA.format("/QYMethods")
+
     Products = []
     Additive = []
     Method = []
@@ -128,6 +130,13 @@ def productDetails(request,pk):
     Status=''
     productClass=''
     try:
+        UserID=request.session['UserID']
+        LTR_Name=request.session['LTR_Name']
+        LTR_Email=request.session['LTR_Email']
+        LTR_Country=request.session['Country']
+        LTR_BS_No=request.session['Business_Registration_No_'] 
+        print(LTR_Country)
+        print(LTR_BS_No)
         response = session.get(Access_Point, timeout=10).json()
         for res in response['value']:
             if res['User_code'] == request.session['UserID']:
@@ -182,11 +191,15 @@ def productDetails(request,pk):
         messages.info(request,"Session Expired, Login Again")
         print(e)
         return redirect('login')
+    except Exception as e:
+        messages.error(request,e)
+        return redirect('Registration')
     
     ctx = {"res":responses,"status":Status,"class":productClass,
     "manufacturer":Manufacturer,"country":resCountry,
     "CountriesRegister":CountriesRegister,
-    "marketing":Marketing,'ingredient':Ingredient,"additive":Additive,"method":Method}
+    "marketing":Marketing,'ingredient':Ingredient,"additive":Additive,"method":Method,
+    "UserID":UserID,"LTRName":LTR_Name,"LTR_Email":LTR_Email,"LTRCountry":LTR_Country,"LTRBsNo":LTR_BS_No}
     return render(request,'productDetails.html',ctx)
 
 def ManufacturesParticulars(request,pk):
@@ -339,19 +352,17 @@ def makePayment(request,pk):
             print(pk)
             print(request.session['UserID'])
             print("response = ",response)
-            messages.success(request,"Saved Successfully")
-            # if response == True:
-            #     return redirect('PaymentGateway', pk=pk)
-            # else:
-            #     print("Not sent")
-            #     return redirect ('productDetails',pk=pk)
-        except requests.exceptions.RequestException as e:
+
+            if response == True:
+                messages.success(request,"Please Make Your payment and click confirm payment.")
+                return redirect('PaymentGateway', pk=pk)
+            else:
+                print("Not sent")
+                return redirect ('productDetails',pk=pk)
+        except Exception as e:
             print(e)
+            messages.error(request,e)
             return redirect('productDetails', pk=pk)
-        except KeyError as e:
-            messages.info(request,"Session Expired, Login Again")
-            print(e)
-            return redirect('login') 
     return redirect('productDetails', pk=pk)
 
 def MyApplications(request):
@@ -398,3 +409,45 @@ def MyApplications(request):
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
     "rejectedCount":rejectedCount,"rejected":Rejected}
     return render(request,'applications.html')
+
+def allApplications(request):
+    session = requests.Session()
+    session.auth = config.AUTHS
+    Access_Point= config.O_DATA.format("/QYRegistration")
+    OpenProducts = []
+    Pending = []
+    Approved = []
+    Rejected =[]
+    try:
+        response = session.get(Access_Point, timeout=10).json()
+
+        for res in response['value']:
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
+                output_json = json.dumps(res)
+                OpenProducts.append(json.loads(output_json))
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Pending Approval':
+                output_json = json.dumps(res)
+                Pending.append(json.loads(output_json))
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
+                output_json = json.dumps(res)
+                Approved.append(json.loads(output_json))
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
+                output_json = json.dumps(res)
+                Rejected.append(json.loads(output_json))
+
+    except requests.exceptions.RequestException as e:
+        messages.error(request,e)
+        print(e)
+        return redirect('Registration')
+    except KeyError as e:
+        messages.info(request,"Session Expired, Login Again")
+        print(e)
+        return redirect('login')
+    openCount = len(OpenProducts)
+    pendCount = len(Pending)
+    appCount = len(Approved)
+    rejectedCount = len(Rejected)
+    ctx = {"openCount":openCount,"open":OpenProducts,
+    "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
+    "rejectedCount":rejectedCount,"rejected":Rejected}
+    return render(request,'submitted.html',ctx)

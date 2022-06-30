@@ -159,7 +159,7 @@ def linesToInspect(request,pk):
                 if response == True:
                     messages.success(request,"Saved Successfully")
                     return redirect('GMPDetails',pk=pk)
-            except requests.exceptions.RequestException as e:
+            except Exception as e:
                 print(e)
                 messages.error(request,e)
                 return redirect('GMPDetails',pk=pk)

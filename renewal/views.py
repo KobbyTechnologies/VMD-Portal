@@ -45,7 +45,7 @@ def RenewalRequest(request):
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
     "rejectedCount":rejectedCount,"rejected":Rejected}
-    return render (request,'renew.html')
+    return render (request,'renew.html',ctx)
 
 
 def ApplyRenewal(request,pk):

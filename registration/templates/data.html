@@ -1,0 +1,341 @@
+<div class="modal fade" id="submission" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{res.Productname}}-{{res.ProductNo}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-5">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">My Submission</h5>
+
+                                <div class="accordion accordion-flush" id="faq-group-1">
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" data-bs-target="#faqsOne-1"
+                                                type="button" data-bs-toggle="collapse">
+                                                Particulars of the Applicant
+                                            </button>
+                                        </h2>
+                                        <div id="faqsOne-1" class="accordion-collapse collapse"
+                                            data-bs-parent="#faq-group-1">
+                                            <div class="accordion-body">
+                                                <form action="">
+                                                    <div class="row">
+                                                        <div class="col-md-4 mb-2">
+                                                            <label class="form-label">LTR ID</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="{{UserID}}" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <label class="form-label">LTR Name </label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="{{LTRName}}" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <label class="form-label">LTR Name </label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="{{LTRName}}" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <label class="form-label">LTR Email </label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="{{LTR_Email}}" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <label class="form-label">LTR Country </label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="{{LTRCountry}}" readonly>
+                                                        </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <label class="form-label">Business No. </label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="{{LTRBsNo}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" data-bs-target="#faqsOne-2"
+                                                type="button" data-bs-toggle="collapse">
+                                                Particulars of the Manufacturer
+                                            </button>
+                                        </h2>
+                                        <div id="faqsOne-2" class="accordion-collapse collapse"
+                                            data-bs-parent="#faq-group-1">
+                                            <div class="accordion-body">
+                                                <table
+                                                    class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Manufacturer Type</th>
+                                                            <th scope="col">Manufacturer Name</th>
+                                                            <th scope="col">Address</th>
+                                                            <th scope="col">Country</th>
+                                                            <th scope="col">Telephone</th>
+                                                            <th scope="col">Email</th>
+                                                            <th scope="col">GMP NO</th>
+                                                            <th scope="col">Activity</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for res in manufacturer %}
+                                                        <tr>
+                                                            <td>{{res.Type_of_Manufacture}}</td>
+                                                            <td>{{res.Manufacture_Company_Name_}}</td>
+                                                            <td>{{res.Manufacturing_plant_address}}</a></td>
+                                                            <td>{{res.Country}}</a></td>
+                                                            <td>{{res.Telephone}}</a></td>
+                                                            <td>{{res.Email}}</a></td>
+                                                            <td>{{res.GMP_No}}</a></td>
+                                                            <td>{{res.Activity}}</td>
+                                                            <td>
+                                                                <a href="#" data-bs-toggle="tooltip"
+                                                                    data-bs-placement="top" title="Delete"><i
+                                                                        class="fas fa-trash-alt text-danger"></i> </a>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" data-bs-target="#faqsOne-3"
+                                                type="button" data-bs-toggle="collapse">
+                                                Product Details
+                                            </button>
+                                        </h2>
+                                        <div id="faqsOne-3" class="accordion-collapse collapse"
+                                            data-bs-parent="#faq-group-1">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">ProductNo</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.ProductNo}}" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">Product Name </label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.Productname}}" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">Product Class </label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.Veterinary_Classes}}" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">Types Of Manufacturers</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.Types_Of_Manufacturers}}" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">Status</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.Status}}" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">Document Date</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.Document_Date}}" readonly>
+                                                    </div>
+
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">Type of Review</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.Type_of_Review}}" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">Paid</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.Paid}}" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">Amount Payable</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="{{res.Currency_Code}} {{res.Amount_Payable}}"
+                                                            readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" data-bs-target="#faqsOne-4"
+                                                type="button" data-bs-toggle="collapse">
+                                                Product Ingredients
+                                            </button>
+                                        </h2>
+                                        <div id="faqsOne-4" class="accordion-collapse collapse"
+                                            data-bs-parent="#faq-group-1">
+                                            <div class="accordion-body">
+                                                <table
+                                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Name</th>
+                                                            <th>Ingredient Type</th>
+                                                            <th scope="col">Quantity per dose</th>
+                                                            <th scope="col">Strength</th>
+                                                            <th>Molecular Formula</th>
+                                                            <th>Molecular Weight</th>
+                                                            <th>Proportion</th>
+                                                            <th scope="col">Specification</th>
+                                                            <th>Reason For Inclusion</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for res in ingredient %}
+                                                        <tr>
+                                                            <td>{{res.Ingredient_Name}}</td>
+                                                            <td>{{res.Ingredient_Type}}</td>
+                                                            <td>{{res.Quantity_per_dose}}</td>
+                                                            <td>{{res.Strength_of_Active_Ingredients__AI__per_unit_dosage_}}
+                                                            </td>
+                                                            <td>{{res.Molecular_and_structural_formula}}</td>
+                                                            <td>{{res.Molecular_weight_for_each_active_ingredient_}}
+                                                            </td>
+                                                            <td>{{res.Proportion}}</td>
+                                                            <td>{{res.Specification_of_purity_of_the_active_substance_}}
+                                                            </td>
+                                                            <td>{{res.Reason_For_Inclusion}}</td>
+                                                            <td><a href="#" data-bs-toggle="tooltip"
+                                                                    data-bs-placement="top" title="Delete"><i
+                                                                        class="fas fa-trash-alt text-danger"></i> </a>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" data-bs-target="#faqsOne-5"
+                                                type="button" data-bs-toggle="collapse">
+                                                Marketing Authorisation in the country of origin and other countries
+                                            </button>
+                                        </h2>
+                                        <div id="faqsOne-5" class="accordion-collapse collapse"
+                                            data-bs-parent="#faq-group-1">
+                                            <div class="accordion-body">
+                                                <table
+                                                    class="display table  table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Manufacturer Type</th>
+                                                            <th scope="col">Manufacturer Name</th>
+                                                            <th scope="col">Address</th>
+                                                            <th scope="col">Country</th>
+                                                            <th scope="col">Telephone</th>
+                                                            <th scope="col">Email</th>
+                                                            <th scope="col">GMP NO</th>
+                                                            <th scope="col">Activity</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for res in manufacturer %}
+                                                        <tr>
+                                                            <td>{{res.Type_of_Manufacture}}</td>
+                                                            <td>{{res.Manufacture_Company_Name_}}</td>
+                                                            <td>{{res.Manufacturing_plant_address}}</a></td>
+                                                            <td>{{res.Country}}</a></td>
+                                                            <td>{{res.Telephone}}</a></td>
+                                                            <td>{{res.Email}}</a></td>
+                                                            <td>{{res.GMP_No}}</a></td>
+                                                            <td>{{res.Activity}}</td>
+                                                            <td>
+                                                                <a href="#" data-bs-toggle="tooltip"
+                                                                    data-bs-placement="top" title="Delete"><i
+                                                                        class="fas fa-trash-alt text-danger"></i> </a>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" data-bs-target="#faqsOne-6"
+                                                type="button" data-bs-toggle="collapse">
+                                                Additives/Impurities
+                                            </button>
+                                        </h2>
+                                        <div id="faqsOne-6" class="accordion-collapse collapse"
+                                            data-bs-parent="#faq-group-1">
+                                            <div class="accordion-body">
+                                                <table
+                                                    class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Proportion</th>
+                                                            <th scope="col">Specification</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for res in additive %}
+                                                        <tr>
+                                                            <td>{{res.Ingredient_Name_Addictives_}}</td>
+                                                            <td>{{res.Proportion_e_g_____ppm_units__Addictives_}}</td>
+                                                            <td>{{res.Purpose_of_use__Addictives_}}</td>
+                                                            <td><a href="#" data-bs-toggle="tooltip"
+                                                                    data-bs-placement="top" title="Delete"><i
+                                                                        class="fas fa-trash-alt text-danger"></i> </a>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" data-bs-target="#faqsOne-7"
+                                                type="button" data-bs-toggle="collapse">
+                                                My Attachments
+                                            </button>
+                                        </h2>
+                                        <div id="faqsOne-7" class="accordion-collapse collapse"
+                                            data-bs-parent="#faq-group-1">
+                                            <div class="accordion-body">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
