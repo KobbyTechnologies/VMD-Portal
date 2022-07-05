@@ -93,12 +93,32 @@
                     </div>
                 </div>
             </div>
+            {% if res.Paid == True %}
             <div class="col-md-3">
                 <div class="card h-100 actionCard text-center">
                     <i class="bi bi-file-earmark-bar-graph my-3"></i>
-                    <h6>Download Certificate</h6>
+                    <form action="{% url 'GenerateCertificate' res.ProductNo %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-success align-items-center" type="submit"> Generate
+                            Certificate</button>
+                    </form>
                 </div>
             </div>
+            {% endif %}
+            {% if res.Paid == True %}
+            <div class="col-md-3">
+                <div class="card h-100 actionActive actionCard  text-center">
+                    <i class="bi bi-wallet my-3"></i>
+                    <form action="{% url 'SubmitRegistration' res.ProductNo %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">
+                            Submit Application
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {% else %}
             <div class="col-md-3">
                 <div class="card h-100 actionActive actionCard  text-center">
                     <i class="bi bi-wallet my-3"></i>
@@ -109,8 +129,8 @@
                         </button>
                     </form>
                 </div>
-
             </div>
+            {% endif %}
         </div>
         {% if class == 'VETERINARY DEVICE' %}
 
@@ -225,19 +245,23 @@
 
                             <li class="nav-item">
                                 <button class="nav-link active" data-bs-toggle="tab"
-                                    data-bs-target="#profile-overview">Attachments</button>
+                                    data-bs-target="#profile-overview">Attachment</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2">
-
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
-
+                                <form action="">
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>Open this select menu</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </form>
                             </div>
                         </div><!-- End Bordered Tabs -->
-
                     </div>
                 </div>
-
             </div>
             {% else %}
             <div class="col-md-6">
@@ -273,7 +297,6 @@
             <div class="col-md-6">
                 <div class="card h-100">
                     <div class="card-body pt-3">
-                        <!-- Bordered Tabs -->
                         <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
@@ -284,10 +307,30 @@
                         <div class="tab-content pt-2">
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
-
+                                <form action="{% url 'Attachement' res.ProductNo %}" method="post"
+                                    enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label class="form-label">Document Name</label>
+                                        <select class="form-select" aria-label="Default select example" name="filename">
+                                            <option selected disabled value="">Choose...</option>
+                                            {% for attach in attach %}
+                                            {% if attach.Class == res.Veterinary_Classes %}
+                                            <option value="{{attach.code}}">{{attach.Description}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Attachment</label>
+                                        <input type="file" class="form-control" name="attachment">
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
                             </div>
-                        </div><!-- End Bordered Tabs -->
-
+                        </div>
                     </div>
                 </div>
 

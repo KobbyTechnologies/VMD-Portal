@@ -22,6 +22,15 @@ def PaymentGateway(request,pk):
                         responses = product
                         Status = product['Status']
                         productClass = product['Veterinary_Classes']
+                        paid = product['Paid']
+        if request.method == 'POST':
+            if paid == True:
+                messages.success(request,"Payment Received successfully")
+                return redirect('productDetails', pk=pk)
+            if paid == False:
+                messages.info(request,"Payment not received, Try again.")
+                return redirect('PaymentGateway', pk=pk)
+            
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)

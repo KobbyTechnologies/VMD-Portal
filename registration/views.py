@@ -5,6 +5,9 @@ import requests
 from django.contrib import messages
 import json
 from datetime import date, datetime
+import base64
+import io as BytesIO
+from django.http import HttpResponse
 # Create your views here.
 
 def registrationRequest(request):
@@ -118,6 +121,8 @@ def productDetails(request,pk):
     MarketingAuthorisation = config.O_DATA.format("/QYMarketingAuthorisation")
     FeedAdditives = config.O_DATA.format("/QYAddictives")
     Methods = config.O_DATA.format("/QYMethods")
+    Attachments = config.O_DATA.format("/QYRequiredDocuments")
+    AllAttachments = config.O_DATA.format("/QYDocumentAttachments")
 
     Products = []
     Additive = []
@@ -129,6 +134,7 @@ def productDetails(request,pk):
     responses =''
     Status=''
     productClass=''
+    Files = []
     try:
         UserID=request.session['UserID']
         LTR_Name=request.session['LTR_Name']
@@ -183,6 +189,13 @@ def productDetails(request,pk):
             if method['User_Code'] == request.session['UserID'] and method['No'] == pk:
                 output_json = json.dumps(method)
                 Method.append(json.loads(output_json))
+        AttachResponse = session.get(Attachments, timeout=10).json()
+        attach = AttachResponse['value']
+        AllAttachResponse = session.get(AllAttachments, timeout=10).json()
+        for data in AllAttachResponse['value']:
+            if data['No_'] == pk and data['Table_ID'] == 52177996:
+                output_json = json.dumps(data)
+                Files.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -199,7 +212,8 @@ def productDetails(request,pk):
     "manufacturer":Manufacturer,"country":resCountry,
     "CountriesRegister":CountriesRegister,
     "marketing":Marketing,'ingredient':Ingredient,"additive":Additive,"method":Method,
-    "UserID":UserID,"LTRName":LTR_Name,"LTR_Email":LTR_Email,"LTRCountry":LTR_Country,"LTRBsNo":LTR_BS_No}
+    "UserID":UserID,"LTRName":LTR_Name,"LTR_Email":LTR_Email,"LTRCountry":LTR_Country,
+    "LTRBsNo":LTR_BS_No,"attach":attach,"files": Files}
     return render(request,'productDetails.html',ctx)
 
 def ManufacturesParticulars(request,pk):
@@ -361,8 +375,8 @@ def makePayment(request,pk):
                 return redirect ('productDetails',pk=pk)
         except Exception as e:
             print(e)
-            messages.error(request,e)
-            return redirect('productDetails', pk=pk)
+            messages.info(request,e)
+            return redirect('PaymentGateway', pk=pk)
     return redirect('productDetails', pk=pk)
 
 def MyApplications(request):
@@ -451,3 +465,75 @@ def allApplications(request):
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
     "rejectedCount":rejectedCount,"rejected":Rejected}
     return render(request,'submitted.html',ctx)
+
+
+def SubmitRegistration(request,pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.SubmitRegistration(pk,request.session['UserID'])
+            if response == True:
+                messages.success(request,"Document submitted successfully.")
+                return redirect('productDetails', pk=pk)
+            else:
+                print("Not sent")
+                return redirect ('productDetails',pk=pk)
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('Registration')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        except Exception as e:
+            messages.error(request,e)
+            return redirect ('productDetails',pk=pk)
+    return redirect('productDetails', pk=pk)
+
+def Attachement(request, pk):
+    if request.method == "POST":
+        try:
+            attach = request.FILES.get('attachment')
+            filename = request.POST.get('filename')
+            tableID = 52177996
+            attachment = base64.b64encode(attach.read())
+
+            try:
+                response = config.CLIENT.service.Attachement(
+                    pk, filename, attachment, tableID)
+                if response == True:
+                    messages.success(request, "Upload Successful")
+                    return redirect('productDetails', pk=pk)
+                else:
+                    messages.error(request, "Failed, Try Again")
+                    return redirect('productDetails', pk=pk)
+            except Exception as e:
+                messages.error(request, e)
+                print(e)
+                return redirect('productDetails', pk=pk)
+        except Exception as e:
+            print(e)
+            return redirect('IMPDetails', pk=pk)
+           
+    return redirect('productDetails', pk=pk)
+
+def GenerateCertificate(request, pk):
+    if request.method == 'POST':
+        filenameFromApp = pk + ".pdf"
+        try:
+            response = config.CLIENT.service.PrintCertificate(
+                pk, filenameFromApp)
+            print("cert:",response)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={filenameFromApp}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('productDetails', pk=pk)

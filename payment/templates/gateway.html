@@ -20,7 +20,12 @@
                 <li class="breadcrumb-item active">Payment Gateway</li>
             </ol>
         </nav>
-    </div><!-- End Page Title -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+    </div>
     <div class="container">
         <div class="row m-0">
             <div class="col-md-6 col-12">
@@ -96,9 +101,13 @@
                                                 placeholder="cvv">
                                         </div>
                                     </div>
-                                    <a href="#" type="button" class="btn btn-primary d-block h8">Confirm Payment <span
-                                            class="ms-3 bi bi-arrow-right"></span>
-                                    </a>
+                                    <form action="{% url 'PaymentGateway' res.ProductNo %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
+                                            <span class="ms-3 bi bi-arrow-right"></span>
+                                        </button>
+                                    </form>
+
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel"
@@ -117,14 +126,15 @@
                                                 placeholder="cvv">
                                         </div>
                                     </div>
-                                    <div class="btn btn-primary d-block h8">PAY <span
-                                            class="bi bi-currency-dollar ms-2"></span>10,000<span
-                                            class="ms-3 bi bi-arrow-right"></span></div>
+                                    <form action="{% url 'PaymentGateway' res.ProductNo %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
+                                            <span class="ms-3 bi bi-arrow-right"></span>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-
-                        </div><!-- End Bordered Tabs Justified -->
-
+                        </div>
                     </div>
                 </div>
             </div>

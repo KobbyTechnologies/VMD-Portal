@@ -322,7 +322,24 @@
                                         <div id="faqsOne-7" class="accordion-collapse collapse"
                                             data-bs-parent="#faq-group-1">
                                             <div class="accordion-body">
-
+                                                <div class="row">
+                                                    {% for data in files %}
+                                                    <div class="col-md-2">
+                                                        <div class="document">
+                                                            <div class="document-body">
+                                                                <i
+                                                                    class="bi bi-file-earmark-check-fill text-success"></i>
+                                                            </div>
+                                                            <div class="document-footer">
+                                                                <span class="document-name">
+                                                                    {{data.File_Name}}.{{data.File_Extension}} </span>
+                                                                <span class="document-description"> Date Attached:
+                                                                    {{data.Attached_Date}} </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

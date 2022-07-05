@@ -13,5 +13,8 @@ urlpatterns = [
     path("marketing/authorization/<str:pk>",views.MarketingAuthorization,name='MarketingAuthorization'),
     path("makePayment/<str:pk>",views.makePayment,name='makePayment'),
     path("my/submissions", views.allApplications, name='allApplications'),
+    path("submit/<str:pk>", views.SubmitRegistration, name='SubmitRegistration'),
+    path("Attachement/<str:pk>", views.Attachement, name='Attachement'),
+    path("GenerateCertificate/<str:pk>", views.GenerateCertificate, name='GenerateCertificate'),
 
 ]
