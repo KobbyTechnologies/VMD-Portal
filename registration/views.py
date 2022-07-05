@@ -363,7 +363,7 @@ def makePayment(request,pk):
     if request.method == 'POST':
         try:
             response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
-            print(pk)
+            print("pk:",pk)
             print(request.session['UserID'])
             print("response = ",response)
 
@@ -471,6 +471,7 @@ def SubmitRegistration(request,pk):
     if request.method == 'POST':
         try:
             response = config.CLIENT.service.SubmitRegistration(pk,request.session['UserID'])
+            print(response)
             if response == True:
                 messages.success(request,"Document submitted successfully.")
                 return redirect('productDetails', pk=pk)

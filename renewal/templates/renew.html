@@ -73,14 +73,14 @@
                                     <tbody>
                                         {% for res in open %}
                                         <tr>
-                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_No}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
                                                 {{res.Description}}
                                             </td>
                                             <td>
-                                                <form action="{% url 'ApplyRenewal' res.ProductNo %}" method="post">
+                                                <form action="" method="post">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-primary"><i
                                                             class="bi bi-eye-fill"></i>
@@ -109,7 +109,7 @@
                                     <tbody>
                                         {% for res in pending %}
                                         <tr>
-                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_No}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
@@ -142,7 +142,7 @@
                                     <tbody>
                                         {% for res in approved %}
                                         <tr>
-                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_No}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
@@ -175,7 +175,7 @@
                                     <tbody>
                                         {% for res in rejected %}
                                         <tr>
-                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Product_No}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
