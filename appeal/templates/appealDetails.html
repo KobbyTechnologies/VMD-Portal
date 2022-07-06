@@ -62,15 +62,12 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card h-100 actionActive actionCard  text-center">
-                    <i class="bi bi-wallet my-3"></i>
-                    <form action="{% url 'appealPayment' res.Appeal_No_ %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">
-                            Pay $ {{res.Amount_Payable}}
-                        </button>
-                    </form>
-                </div>
+                <a href="{% url 'appealGateway' res.Appeal_No_ %}">
+                    <div class="card h-100 actionActive actionCard  text-center">
+                        <i class="bi bi-wallet my-3"></i>
+                        Pay $ {{res.Amount_Payable}}
+                    </div>
+                </a>
             </div>
         </div>
         <div class="row g-2 my-1">

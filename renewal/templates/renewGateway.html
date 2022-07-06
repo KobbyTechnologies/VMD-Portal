@@ -94,7 +94,7 @@
                                     <p>Swift Code: <span class="text-primary">NBKEKENXXXX</span></p>
                                     <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>
                                     <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
-                                    <form action="{% url 'renewGateway' res.Product_No %}" method="POST">
+                                    <form action="{% url 'renewGateway' res.Renewal_No_ %}" method="POST">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
                                             <span class="ms-3 bi bi-arrow-right"></span>
@@ -109,7 +109,7 @@
                                     <p>PayBill: <span class="text-primary">471524</span></p>
                                     <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>
                                     <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
-                                    <form action="{% url 'renewGateway' res.Product_No %}" method="POST">
+                                    <form action="{% url 'renewGateway' res.Renewal_No_ %}" method="POST">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
                                             <span class="ms-3 bi bi-arrow-right"></span>

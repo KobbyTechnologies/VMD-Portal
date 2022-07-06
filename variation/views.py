@@ -107,27 +107,6 @@ def variationDetails(request,pk):
     ctx = {"res":responses,"status":Status}
     return render(request,'variationDetails.html',ctx)
 
-def variationPayment(request,pk):
-    if request.method == 'POST':
-        try:
-            response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
-            print("pk:",pk)
-            print(request.session['UserID'])
-            print("response = ",response)
-
-            if response == True:
-                messages.success(request,"Please Make Your payment and click confirm payment.")
-                return redirect('variationGateway', pk=pk)
-            else:
-                print("Not sent")
-                messages.error(request,"Failed.")
-                return redirect ('variationDetails',pk=pk)
-        except Exception as e:
-            print(e)
-            messages.info(request,e)
-            return redirect('variationDetails', pk=pk)
-    return redirect('variationDetails', pk=pk)
-
 def variationGateway(request,pk):
     session = requests.Session()
     session.auth = config.AUTHS

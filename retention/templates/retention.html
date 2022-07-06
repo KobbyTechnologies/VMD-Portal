@@ -90,13 +90,13 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#Retention{{res.ProductNo}}"><i
+                                                    data-bs-target="#Retention{{res.Retension_No_}}"><i
                                                         class="bi bi-plus"></i>
                                                     Renew</button>
-                                                <a href="{% url 'retentionDetails' res.ProductNo %}" type="button"
+                                                <a href="{% url 'retentionDetails' res.Retension_No_ %}" type="button"
                                                     class="btn btn-success"><i class="bi bi-eye-fill"></i>
                                                     View</a></td>
-                                            <div class="modal fade" id="Retention{{res.ProductNo}}"
+                                            <div class="modal fade" id="Retention{{res.Retension_No_}}"
                                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -109,7 +109,8 @@
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{% url 'ApplyRetention' res.ProductNo %}"
+                                                            <form
+                                                                action="{% url 'ApplyRetention' res.Retension_No_ res.ProductNo %}"
                                                                 method="post">
                                                                 {% csrf_token %}
                                                                 <div class="row my-2">

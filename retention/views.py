@@ -48,11 +48,10 @@ def registrationRetention(request):
     "rejectedCount":rejectedCount,"rejected":Rejected}
     return render(request,"retention.html",ctx)
 
-def ApplyRetention(request,pk):
+def ApplyRetention(request,pk,id):
     if request.method == 'POST':
         try:
-            retNo = ''
-            myAction = 'insert'
+            myAction = 'modify'
             changesToTheProduct = request.POST.get('changesToTheProduct')
             variation = request.POST.get('variation')
             iAgree = eval(request.POST.get('iAgree'))
@@ -65,11 +64,13 @@ def ApplyRetention(request,pk):
             if not VariationNumber:
                 VariationNumber = ''
 
-            response = config.CLIENT.service.Retension(retNo,myAction,request.session['UserID'],pk,
+            response = config.CLIENT.service.Retension(pk,myAction,request.session['UserID'],id,
             VariationNumber,changesToTheProduct,variation,iAgree)
             print(response)
-            messages.success(request,"Saved Successfully")
-            return redirect('productDetails', pk=pk)
+            if response == True:
+                messages.success(request,"Saved Successfully")
+                return redirect('retentionDetails', pk=pk)
+                
         except requests.exceptions.RequestException as e:
             print(e)
             return redirect('retention')
@@ -94,7 +95,7 @@ def retentionDetails(request,pk):
                 output_json = json.dumps(res)
                 Retension.append(json.loads(output_json))
                 for product in Retension:
-                    if product['ProductNo'] == pk:
+                    if product['Retension_No_'] == pk:
                         responses = product
                         Status = product['Status']
     except requests.exceptions.RequestException as e:
@@ -109,33 +110,14 @@ def retentionDetails(request,pk):
     ctx = {"res":responses,"status":Status}
     return render(request,'RetentionDetails.html',ctx)
 
-def retentionPayment(request,pk,id):
-    if request.method == 'POST':
-        try:
-            response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
-            print("pk:",pk)
-            print(request.session['UserID'])
-            print("response = ",response)
-
-            if response == True:
-                messages.success(request,"Please Make Your payment and click confirm payment.")
-                return redirect('retentionGateway', pk=pk)
-            else:
-                print("Not sent")
-                messages.error(request,"Failed.")
-                return redirect ('retentionDetails',pk=id)
-        except Exception as e:
-            print(e)
-            messages.info(request,e)
-            return redirect('retentionDetails', pk=id)
-    return redirect('retentionDetails', pk=id)
-
-
 def retentionGateway(request,pk):
     session = requests.Session()
     session.auth = config.AUTHS
     Access_Point = config.O_DATA.format("/QYRetension")
     Products = []
+    responses = ''
+    Status = ''
+    paid = ''
     try:
         response = session.get(Access_Point, timeout=10).json()
         for res in response['value']:
@@ -143,7 +125,7 @@ def retentionGateway(request,pk):
                 output_json = json.dumps(res)
                 Products.append(json.loads(output_json))
                 for product in Products:
-                    if product['ProductNo'] == pk:
+                    if product['Retension_No_'] == pk:
                         responses = product
                         Status = product['Status']
                         paid = product['Paid']
@@ -165,3 +147,27 @@ def retentionGateway(request,pk):
         return redirect('login')
     ctx = {"res":responses,"status":Status}
     return render(request,'retentionGateway.html',ctx)
+
+def SubmitRetention(request,pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.SubmitRetention(pk,request.session['UserID'])
+            print(response)
+            if response == True:
+                messages.success(request,"Document submitted successfully.")
+                return redirect('retentionDetails', pk=pk)
+            else:
+                print("Not sent")
+                return redirect ('retentionDetails',pk=pk)
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('Registration')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        except Exception as e:
+            messages.error(request,e)
+            return redirect ('retentionDetails',pk=pk)
+    return redirect('retentionDetails', pk=pk)

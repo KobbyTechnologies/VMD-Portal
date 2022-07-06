@@ -75,15 +75,12 @@
             </div>
             {% else %}
             <div class="col-md-3">
-                <div class="card h-100 actionActive actionCard  text-center">
-                    <i class="bi bi-wallet my-3"></i>
-                    <form action="{% url 'GMPPayment' res.GMP_No_ %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">
-                            Pay $ {{res.Amount_Payable}}
-                        </button>
-                    </form>
-                </div>
+                <a href="{% url 'GMPGateway' res.GMP_No_ %}">
+                    <div class="card h-100 actionActive actionCard  text-center">
+                        <i class="bi bi-wallet my-3"></i>
+                        Pay $ {{res.Amount_Payable}}
+                    </div>
+                </a>
             </div>
             {% endif %}
         </div>

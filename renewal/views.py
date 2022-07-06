@@ -97,27 +97,6 @@ def ApplyRenewal(request,pk,id):
             return redirect('login') 
     return redirect('renew')
 
-def renewPayment(request,pk):
-    if request.method == 'POST':
-        try:
-            response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
-            print("pk:",pk)
-            print(request.session['UserID'])
-            print("response = ",response)
-
-            if response == True:
-                messages.success(request,"Please Make Your payment and click confirm payment.")
-                return redirect('renewGateway', pk=pk)
-            else:
-                print("Not sent")
-                messages.error(request,"Failed.")
-                return redirect ('renewDetails',pk=pk)
-        except Exception as e:
-            print(e)
-            messages.info(request,e)
-            return redirect('renewDetails', pk=pk)
-    return redirect('renewDetails', pk=pk)
-
 
 def renewGateway(request,pk):
     session = requests.Session()

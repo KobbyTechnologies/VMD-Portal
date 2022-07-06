@@ -7,5 +7,4 @@ urlpatterns = [
     path("ApplyAppeal/<str:pk>/<str:id>",views.ApplyAppeal,name='ApplyAppeal'),
     path("appealDetails/<str:pk>",views.appealDetails,name='appealDetails'),
     path("appealGateway/<str:pk>",views.appealGateway,name='appealGateway'),
-    path("appealPayment/<str:pk>",views.appealPayment,name='appealPayment'),
 ]

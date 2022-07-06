@@ -498,10 +498,12 @@ def Attachement(request, pk):
             filename = request.POST.get('filename')
             tableID = 52177996
             attachment = base64.b64encode(attach.read())
-
+            # print(filename)
+            # print(attachment)
             try:
                 response = config.CLIENT.service.Attachement(
                     pk, filename, attachment, tableID)
+                print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")
                     return redirect('productDetails', pk=pk)

@@ -135,24 +135,3 @@ def appealGateway(request,pk):
         return redirect('login')
     ctx = {"res":responses,"status":Status}
     return render(request,'appealGateway.html',ctx)
-
-def appealPayment(request,pk):
-    if request.method == 'POST':
-        try:
-            response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
-            print("pk:",pk)
-            print(request.session['UserID'])
-            print("response = ",response)
-
-            if response == True:
-                messages.success(request,"Please Make Your payment and click confirm payment.")
-                return redirect('appealGateway', pk=pk)
-            else:
-                print("Not sent")
-                messages.error(request,"Failed.")
-                return redirect ('appealDetails',pk=pk)
-        except Exception as e:
-            print(e)
-            messages.info(request,e)
-            return redirect('appealDetails', pk=pk)
-    return redirect('appealDetails', pk=pk)
