@@ -30,6 +30,7 @@ What is the difference between Handler vs AsyncTask vs Thread?
     No default for handling configuration changes in Android
 
 What is the difference between Activity and Context?
+
     Context is the Base Object. So every Activity same as Application derives from Context. This means that every Activity and every Application IS a Context.
     An Application context lasts, as long as your app is alive, while
     the Activity context dies with your Activity (it is not valid after onDestroy() of that Activity).
