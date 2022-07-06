@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Payment Gateway</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Payment Gateway</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'alert.html' %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row m-0">
+            <div class="col-md-6 col-12">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="row box-right">
+                            <div class="col-md-8 ps-0 ">
+                                <p class="ps-3 textmuted fw-bold h6 mb-0"><span class="bi bi-circle-fill pe-2"
+                                        style="color:#0e5a8d;"></span> Total to Pay</p>
+                                <p class="h1 fw-bold d-flex"> <span
+                                        class="bi bi-currency-dollar textmuted pe-1 h6 align-text-top mt-1"></span>
+                                    {{res.Amount_Payable}}
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="p-blue"> Total Received</p>
+                                <p class="fw-bold mb-3"><span class="bi bi-currency-dollar pe-1"></span>0000<span
+                                        class="textmuted">.00</span> </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 px-0 mb-4">
+                        <div class="box-right">
+                            <div class="d-flex pb-2">
+                                <p class="fw-bold h7">Public Note</p>
+
+                                <p class="ms-auto p-blue"> <span
+                                        class=" bg btn btn-primary bi bi-exclamation-circle"></span> </p>
+                            </div>
+                            <div class="bg-blue p-2">
+                                <P class="textmuted">VMD will never ask you for your password, PIN, CVV, or
+                                    full card details.
+                                </P>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-12 ps-md-5 p-0 ">
+                <div class="box-left">
+                    <div class="">
+                        <p class="h7 fw-bold mb-1">Make Payments</p>
+                        <p class="textmuted h8 mb-2">Choose from the payment options available to proceed. Your payment
+                            will be processed
+                            immediately.</p>
+                        <!-- Bordered Tabs Justified -->
+                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                    aria-controls="home" aria-selected="true">Bank</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                    aria-controls="profile" aria-selected="false">M-Pesa</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-5" id="borderedTabJustifiedContent">
+                            <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <div class="form">
+                                    <p>Bank: <span class="text-primary">National Bank of Kenya</span></p>
+                                    <p>Bank Name: <span class="text-primary">Veterinary Medicines Directorate</span></p>
+                                    <p>Branch: <span class="text-primary">Westlands</span></p>
+                                    <p>Swift Code: <span class="text-primary">NBKEKENXXXX</span></p>
+                                    <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>
+                                    <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
+                                    <form action="{% url 'GMPGateway' res.GMP_No_ %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
+                                            <span class="ms-3 bi bi-arrow-right"></span>
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <div class="form">
+                                    <p>PayBill: <span class="text-primary">471524</span></p>
+                                    <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>
+                                    <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
+                                    <form action="{% url 'GMPGateway' res.GMP_No_ %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
+                                            <span class="ms-3 bi bi-arrow-right"></span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% include 'footer.html' %}
+
+{% endblock %}

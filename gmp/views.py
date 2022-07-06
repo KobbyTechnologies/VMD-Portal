@@ -169,4 +169,88 @@ def linesToInspect(request,pk):
             return redirect('login')
     return redirect('GMPDetails',pk=pk)
 
+def GMPGateway(request,pk):
+    session = requests.Session()
+    session.auth = config.AUTHS
+    Access_Point = config.O_DATA.format("/QYGMP")
+    Products = []
+    paid=''
+    responses=''
+    Status = ''
+    try:
+        response = session.get(Access_Point, timeout=10).json()
+        for res in response['value']:
+            if res['User_code'] == request.session['UserID']:
+                output_json = json.dumps(res)
+                Products.append(json.loads(output_json))
+                for product in Products:
+                    if product['GMP_No_'] == pk:
+                        responses = product
+                        Status = product['Status']
+                        paid = product['Paid']
+        if request.method == 'POST':
+            if paid == True:
+                messages.success(request,"Payment Received successfully")
+                return redirect('GMPDetails', pk=pk)
+            if paid == False:
+                messages.info(request,"Payment not received, Try again.")
+                return redirect('GMPGateway', pk=pk)
+            
+    except requests.exceptions.RequestException as e:
+        messages.error(request,e)
+        print(e)
+        return redirect('Registration')
+    except KeyError as e:
+        messages.info(request,"Session Expired, Login Again")
+        print(e)
+        return redirect('login')
+    ctx = {"res":responses,"status":Status}
+    return render(request,'GMPGateway.html',ctx)
+
+
+def GMPPayment(request,pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
+            print("pk:",pk)
+            print(request.session['UserID'])
+            print("response = ",response)
+
+            if response == True:
+                messages.success(request,"Please Make Your payment and click confirm payment.")
+                return redirect('GMPGateway', pk=pk)
+            else:
+                print("Not sent")
+                messages.error(request,"Failed.")
+                return redirect ('GMPDetails',pk=pk)
+        except Exception as e:
+            print(e)
+            messages.info(request,e)
+            return redirect('GMPDetails', pk=pk)
+    return redirect('GMPDetails', pk=pk)
+
+def SubmitGMP(request,pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.SubmitGMP(pk,request.session['UserID'])
+            print(response)
+            if response == True:
+                messages.success(request,"Document submitted successfully.")
+                return redirect('GMPDetails', pk=pk)
+            else:
+                print("Not sent")
+                return redirect ('GMPDetails',pk=pk)
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('Registration')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        except Exception as e:
+            messages.error(request,e)
+            return redirect ('GMPDetails',pk=pk)
+    return redirect('GMPDetails', pk=pk)
+
     # To check against the user code to see whether there are products registered

@@ -108,7 +108,7 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <form
-                                                                            action="{% url 'ApplyVariation' res.ProductNo %}"
+                                                                            action="{% url 'ApplyVariation' res.Variation_No_ res.ProductNo %}"
                                                                             method="POST">
                                                                             {% csrf_token %}
                                                                             <div class="row my-2">

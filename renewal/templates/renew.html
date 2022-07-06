@@ -80,7 +80,8 @@
                                                 {{res.Description}}
                                             </td>
                                             <td>
-                                                <form action="" method="post">
+                                                <form action="{% url 'ApplyRenewal' res.Renewal_No_ res.Product_No %}"
+                                                    method="post">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-primary"><i
                                                             class="bi bi-eye-fill"></i>

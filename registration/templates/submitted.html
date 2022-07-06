@@ -65,7 +65,7 @@
                             <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
                                 aria-labelledby="home-tab">
                                 <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
                                     <thead>
                                         <tr>
                                             <th>Product No</th>
@@ -104,17 +104,15 @@
                             <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
                                 aria-labelledby="profile-tab">
                                 <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered w-100">
                                     <thead>
                                         <tr>
                                             <th>Product No</th>
                                             <th>Product Name</th>
                                             <th>Product Class</th>
-                                            <th>Manufacturer Type</th>
                                             <th>Status</th>
                                             <th>Document Date</th>
                                             <th>Document Stage</th>
-                                            <th>Amount Payable</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -124,13 +122,9 @@
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Productname}}</td>
                                             <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
                                             <td class="text-success">{{res.Status}}</td>
                                             <td>{{res.Document_Date}}</td>
                                             <td>{{res.DocumentStage}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
                                             <td>
                                                 <a href="{% url 'productDetails' res.ProductNo %}" type="button"
                                                     class="btn btn-success"> View <i class="bi bi-eye"></i></a>
@@ -143,17 +137,15 @@
                             <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
                                 aria-labelledby="contact-tab">
                                 <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered w-100">
                                     <thead>
                                         <tr>
                                             <th>Product No</th>
                                             <th>Product Name</th>
                                             <th>Product Class</th>
-                                            <th>Manufacturer Type</th>
                                             <th>Status</th>
                                             <th>Document Date</th>
                                             <th>Document Stage</th>
-                                            <th>Amount Payable</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -163,13 +155,9 @@
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Productname}}</td>
                                             <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
                                             <td class="text-success">{{res.Status}}</td>
                                             <td>{{res.Document_Date}}</td>
                                             <td>{{res.DocumentStage}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
                                             <td>
                                                 <a href="{% url 'productDetails' res.ProductNo %}" type="button"
                                                     class="btn btn-success"> View <i class="bi bi-eye"></i></a>
@@ -182,17 +170,15 @@
                             <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
                                 aria-labelledby="contact-tab">
                                 <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered w-100">
                                     <thead>
                                         <tr>
                                             <th>Product No</th>
                                             <th>Product Name</th>
                                             <th>Product Class</th>
-                                            <th>Manufacturer Type</th>
                                             <th>Status</th>
                                             <th>Document Date</th>
                                             <th>Document Stage</th>
-                                            <th>Amount Payable</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -202,13 +188,9 @@
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Productname}}</td>
                                             <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
                                             <td class="text-success">{{res.Status}}</td>
                                             <td>{{res.Document_Date}}</td>
                                             <td>{{res.DocumentStage}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
                                             <td>
                                                 <a href="{% url 'productDetails' res.ProductNo %}" type="button"
                                                     class="btn btn-success"> View <i class="bi bi-eye"></i></a>

@@ -49,11 +49,10 @@ def variation(request):
     "rejectedCount":rejectedCount,"rejected":Rejected}
     return render(request,"variation.html",ctx)
 
-def ApplyVariation(request,pk):
+def ApplyVariation(request,pk,id):
     if request.method == 'POST':
         try:
-            varNo = ''
-            myAction = 'insert'
+            myAction = 'modify'
             dosageForms = request.POST.get('dosageForms')
             typeofChange = request.POST.get('typeofChange')
             otherApplications = request.POST.get('otherApplications')
@@ -63,11 +62,12 @@ def ApplyVariation(request,pk):
             proposed = request.POST.get('proposed')
 
 
-            response = config.CLIENT.service.FnVariation(varNo,myAction,request.session['UserID'],dosageForms,pk,
+            response = config.CLIENT.service.FnVariation(pk,myAction,request.session['UserID'],dosageForms,id,
             typeofChange,otherApplications,scope,background,present,proposed)
             print(response)
-            messages.success(request,"Saved Successfully")
-            return redirect('productDetails', pk=pk)
+            if response == True:
+                messages.success(request,"Saved Successfully")
+                return redirect('variationDetails', pk=pk)
         except requests.exceptions.RequestException as e:
             print(e)
             return redirect('variation')
@@ -75,4 +75,95 @@ def ApplyVariation(request,pk):
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login') 
+    return redirect('variation')
+
+def variationDetails(request,pk):
+    session = requests.Session()
+    session.auth = config.AUTHS
+    Access_Point = config.O_DATA.format("/QYVariation")
+    Variation = []
+    responses =''
+    Status=''
+
+    try:
+        response = session.get(Access_Point, timeout=10).json()
+        for res in response['value']:
+            if res['User_code'] == request.session['UserID']:
+                output_json = json.dumps(res)
+                Variation.append(json.loads(output_json))
+                for product in Variation:
+                    if product['Variation_No_'] == pk:
+                        responses = product
+                        Status = product['Status']
+    except requests.exceptions.RequestException as e:
+        messages.error(request,e)
+        print(e)
+        return redirect('Registration')
+    except KeyError as e:
+        messages.info(request,"Session Expired, Login Again")
+        print(e)
+        return redirect('login')
+    
+    ctx = {"res":responses,"status":Status}
+    return render(request,'variationDetails.html',ctx)
+
+def variationPayment(request,pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
+            print("pk:",pk)
+            print(request.session['UserID'])
+            print("response = ",response)
+
+            if response == True:
+                messages.success(request,"Please Make Your payment and click confirm payment.")
+                return redirect('variationGateway', pk=pk)
+            else:
+                print("Not sent")
+                messages.error(request,"Failed.")
+                return redirect ('variationDetails',pk=pk)
+        except Exception as e:
+            print(e)
+            messages.info(request,e)
+            return redirect('variationDetails', pk=pk)
+    return redirect('variationDetails', pk=pk)
+
+def variationGateway(request,pk):
+    session = requests.Session()
+    session.auth = config.AUTHS
+    Access_Point = config.O_DATA.format("/QYVariation")
+    Products = []
+    paid=''
+    responses=''
+    Status = ''
+    try:
+        response = session.get(Access_Point, timeout=10).json()
+        for res in response['value']:
+            if res['User_code'] == request.session['UserID']:
+                output_json = json.dumps(res)
+                Products.append(json.loads(output_json))
+                for product in Products:
+                    if product['Variation_No_'] == pk:
+                        responses = product
+                        Status = product['Status']
+                        paid = product['Paid']
+        if request.method == 'POST':
+            if paid == True:
+                messages.success(request,"Payment Received successfully")
+                return redirect('variationDetails', pk=pk)
+            if paid == False:
+                messages.info(request,"Payment not received, Try again.")
+                return redirect('variationGateway', pk=pk)
+            
+    except requests.exceptions.RequestException as e:
+        messages.error(request,e)
+        print(e)
+        return redirect('Registration')
+    except KeyError as e:
+        messages.info(request,"Session Expired, Login Again")
+        print(e)
+        return redirect('login')
+    ctx = {"res":responses,"status":Status}
+    return render(request,'variationGateway.html',ctx)
+
 
