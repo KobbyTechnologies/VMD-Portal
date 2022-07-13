@@ -56,36 +56,6 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card h-100 actionCard text-center">
-                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
-                    <h6>Download Certificate</h6>
-                </div>
-            </div>
-            {% if res.Paid == True %}
-            <div class="col-md-3">
-                <div class="card h-100 actionActive actionCard  text-center">
-                    <i class="bi bi-wallet my-3"></i>
-                    <form action="{% url 'SubmitGMP' res.GMP_No_ %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">
-                            Submit Application
-                        </button>
-                    </form>
-                </div>
-            </div>
-            {% else %}
-            <div class="col-md-3">
-                <a href="{% url 'GMPGateway' res.GMP_No_ %}">
-                    <div class="card h-100 actionActive actionCard  text-center">
-                        <i class="bi bi-wallet my-3"></i>
-                        Pay $ {{res.Amount_Payable}}
-                    </div>
-                </a>
-            </div>
-            {% endif %}
-        </div>
-        <div class="row g-2 my-1">
-            <div class="col-md-12">
                 <div class="card Startcard l-bg-blue-dark h-100">
                     <div class="card-statistic-3 p-4">
                         <div class="card-icon card-icon-large"><i class="fas fa-ticket-alt"></i></div>
@@ -107,7 +77,35 @@
                     </div>
                 </div>
             </div>
-
+            {% if res.Paid == True and status == 'Open' %}
+            <div class="col-md-3">
+                <div class="card h-100 actionActive actionCard  text-center">
+                    <i class="bi bi-wallet my-3"></i>
+                    <form action="{% url 'SubmitGMP' res.GMP_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">
+                            Submit Application
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% elif res.Paid == False and status == 'Open' %}
+            <div class="col-md-3">
+                <a href="{% url 'GMPGateway' res.GMP_No_ %}">
+                    <div class="card h-100 actionActive actionCard  text-center">
+                        <i class="bi bi-wallet my-3"></i>
+                        Pay $ {{res.Amount_Payable}}
+                    </div>
+                </a>
+            </div>
+            {% elif res.Paid == True and status == 'Approved' %}
+            <div class="col-md-3">
+                <div class="card h-100 actionCard text-center">
+                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                    <h6>Download Certificate</h6>
+                </div>
+            </div>
+            {% endif %}
         </div>
         <div class="row my-3 gx-2">
             <div class="col-md-12">

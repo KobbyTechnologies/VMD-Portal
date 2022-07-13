@@ -135,3 +135,27 @@ def appealGateway(request,pk):
         return redirect('login')
     ctx = {"res":responses,"status":Status}
     return render(request,'appealGateway.html',ctx)
+
+def SubmitAppeal(request,pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.SubmitAppeal(pk,request.session['UserID'])
+            print(response)
+            if response == True:
+                messages.success(request,"Document submitted successfully.")
+                return redirect('appealDetails', pk=pk)
+            else:
+                print("Not sent")
+                return redirect ('appealDetails',pk=pk)
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('Registration')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        except Exception as e:
+            messages.error(request,e)
+            return redirect ('appealDetails',pk=pk)
+    return redirect('appealDetails', pk=pk)

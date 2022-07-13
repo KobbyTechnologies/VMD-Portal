@@ -64,9 +64,9 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Product No</th>
-                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Appeal Stage</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Description</th>
+                                            <th scope="col">Amount Payable</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -74,10 +74,11 @@
                                         {% for res in open %}
                                         <tr>
                                             <td>{{res.ProductNo}}</td>
-                                            <td>{{res.Product_name}}</td>
+                                            <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                {{res.Description}}
+                                                <span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
                                                 <form action="{% url 'ApplyAppeal' res.Appeal_No_ res.ProductNo %}"
@@ -101,9 +102,8 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Product No</th>
-                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Appeal Stage</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Description</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -111,11 +111,9 @@
                                         {% for res in pending %}
                                         <tr>
                                             <td>{{res.ProductNo}}</td>
-                                            <td>{{res.Product_name}}</td>
+                                            <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
-                                            <td>
-                                                {{res.Description}}
-                                            </td>
+
                                             <td>
                                                 <button type="button" class="btn btn-primary"><i
                                                         class="bi bi-eye-fill"></i>
@@ -134,9 +132,8 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Product No</th>
-                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Appeal Stage</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Description</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -144,11 +141,8 @@
                                         {% for res in approved %}
                                         <tr>
                                             <td>{{res.ProductNo}}</td>
-                                            <td>{{res.Product_name}}</td>
+                                            <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
-                                            <td>
-                                                {{res.Description}}
-                                            </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary"><i
                                                         class="bi bi-eye-fill"></i>
@@ -167,9 +161,8 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Product No</th>
-                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Appeal Stage</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Description</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -177,11 +170,8 @@
                                         {% for res in rejected %}
                                         <tr>
                                             <td>{{res.ProductNo}}</td>
-                                            <td>{{res.Product_name}}</td>
+                                            <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
-                                            <td>
-                                                {{res.Description}}
-                                            </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary"><i
                                                         class="bi bi-eye-fill"></i>

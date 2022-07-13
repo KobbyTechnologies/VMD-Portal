@@ -145,4 +145,26 @@ def variationGateway(request,pk):
     ctx = {"res":responses,"status":Status}
     return render(request,'variationGateway.html',ctx)
 
-
+def SubmitVariation(request,pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.SubmitVariation(pk,request.session['UserID'])
+            print(response)
+            if response == True:
+                messages.success(request,"Document submitted successfully.")
+                return redirect('variationDetails', pk=pk)
+            else:
+                print("Not sent")
+                return redirect ('variationDetails',pk=pk)
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('Registration')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        except Exception as e:
+            messages.error(request,e)
+            return redirect ('variationDetails',pk=pk)
+    return redirect('variationDetails', pk=pk)

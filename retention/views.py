@@ -43,6 +43,7 @@ def registrationRetention(request):
     pendCount = len(Pending)
     appCount = len(Approved)
     rejectedCount = len(Rejected)
+    print(pendCount)
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
     "rejectedCount":rejectedCount,"rejected":Rejected}

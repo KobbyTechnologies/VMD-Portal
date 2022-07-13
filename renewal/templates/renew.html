@@ -66,7 +66,7 @@
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Description</th>
+                                            <th scope="col">Amount Payable</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -77,7 +77,8 @@
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                {{res.Description}}
+                                                <span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
                                                 <form action="{% url 'ApplyRenewal' res.Renewal_No_ res.Product_No %}"
@@ -103,7 +104,7 @@
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Description</th>
+                                            <th scope="col">Amount Payable</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -114,12 +115,13 @@
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                {{res.Description}}
+                                                <span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary"><i
-                                                        class="bi bi-eye-fill"></i>
-                                                    View</button>
+                                                <a href="{% url 'renewDetails' res.Renewal_No_ %}" type="button"
+                                                    class="btn btn-primary"><i class="bi bi-eye-fill"></i>
+                                                    View</a>
                                             </td>
 
                                         </tr>
@@ -136,7 +138,7 @@
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Description</th>
+                                            <th scope="col">Amount Payable</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -147,12 +149,13 @@
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                {{res.Description}}
+                                                <span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary"><i
-                                                        class="bi bi-eye-fill"></i>
-                                                    View</button>
+                                                <a href="{% url 'renewDetails' res.Renewal_No_ %}" type="button"
+                                                    class="btn btn-primary"><i class="bi bi-eye-fill"></i>
+                                                    View</a>
                                             </td>
 
                                         </tr>
@@ -169,7 +172,7 @@
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Description</th>
+                                            <th scope="col">Amount Payable</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -180,13 +183,15 @@
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                {{res.Description}}
+                                                <span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary"><i
-                                                        class="bi bi-eye-fill"></i>
-                                                    View</button>
+                                                <a href="{% url 'renewDetails' res.Renewal_No_ %}" type="button"
+                                                    class="btn btn-primary"><i class="bi bi-eye-fill"></i>
+                                                    View</a>
                                             </td>
+
                                         </tr>
                                         {% endfor %}
                                     </tbody>

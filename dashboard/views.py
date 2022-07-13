@@ -23,7 +23,7 @@ def dashboard(request):
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
                 output_json = json.dumps(res)
                 OpenProducts.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Pending Approval':
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Processing':
                 output_json = json.dumps(res)
                 Pending.append(json.loads(output_json))
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':

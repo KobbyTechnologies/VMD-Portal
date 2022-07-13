@@ -3,6 +3,7 @@ import requests
 import json
 from django.contrib import messages
 from django.conf import settings as config
+import base64
 
 # Create your views here.
 def RenewalRequest(request):
@@ -51,6 +52,7 @@ def renewDetails(request,pk):
     session = requests.Session()
     session.auth = config.AUTHS
     Access_Point = config.O_DATA.format("/QYRenewal")
+    Attachments = config.O_DATA.format("/QYRequiredDocuments")
     Retension = []
     responses =''
     Status=''
@@ -65,6 +67,8 @@ def renewDetails(request,pk):
                     if product['Renewal_No_'] == pk:
                         responses = product
                         Status = product['Status']
+        AttachResponse = session.get(Attachments, timeout=10).json()
+        attach = AttachResponse['value']
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -74,7 +78,7 @@ def renewDetails(request,pk):
         print(e)
         return redirect('login')
     
-    ctx = {"res":responses,"status":Status}
+    ctx = {"res":responses,"status":Status,"attach":attach}
     return render(request,"renewDetails.html",ctx)
 
 def ApplyRenewal(request,pk,id):
@@ -158,4 +162,30 @@ def SubmitRenewal(request,pk):
         except Exception as e:
             messages.error(request,e)
             return redirect ('renewDetails',pk=pk)
+    return redirect('renewDetails', pk=pk)
+
+def RenewAttachement(request, pk):
+    if request.method == "POST":
+        try:
+            attach = request.FILES.get('attachment')
+            filename = request.POST.get('filename')
+            tableID = 52177996
+            attachment = base64.b64encode(attach.read())
+            try:
+                response = config.CLIENT.service.Attachement(
+                    pk, filename, attachment, tableID)
+                print(response)
+                if response == True:
+                    messages.success(request, "Upload Successful")
+                    return redirect('renewDetails', pk=pk)
+                else:
+                    messages.error(request, "Failed, Try Again")
+                    return redirect('renewDetails', pk=pk)
+            except Exception as e:
+                messages.error(request, e)
+                print(e)
+                return redirect('renewDetails', pk=pk)
+        except Exception as e:
+            print(e)
+            return redirect('renewDetails', pk=pk)
     return redirect('renewDetails', pk=pk)

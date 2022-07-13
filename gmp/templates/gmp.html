@@ -105,12 +105,12 @@
                             <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
                                 aria-labelledby="profile-tab">
                                 <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    class="display table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
-                                            <th>Product Name</th>
-                                            <th>Document Date</th>
-                                            <th>Types Of Manufacturers</th>
+                                            <th>GMP No</th>
+                                            <th>Product Class</th>
+                                            <th>Inspection Type</th>
                                             <th>Status</th>
                                             <th>Amount Payable</th>
                                             <th>Actions</th>
@@ -119,9 +119,9 @@
                                     <tbody>
                                         {% for res in pending %}
                                         <tr>
-                                            <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Document_Date}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td>{{res.GMP_No_}}</td>
+                                            <td>{{res.Type_of_Vertinary_Medicines}}</td>
+                                            <td>{{res.Type_Of_Inspection}}</td>
                                             <td class="text-success">{{res.Status}}</td>
                                             <td><span class="text-primary"
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
@@ -138,12 +138,12 @@
                             <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
                                 aria-labelledby="contact-tab">
                                 <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    class="display table table-striped w-100 dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
-                                            <th>Product Name</th>
-                                            <th>Document Date</th>
-                                            <th>Types Of Manufacturers</th>
+                                            <th>GMP No</th>
+                                            <th>Product Class</th>
+                                            <th>Inspection Type</th>
                                             <th>Status</th>
                                             <th>Amount Payable</th>
                                             <th>Actions</th>
@@ -152,9 +152,9 @@
                                     <tbody>
                                         {% for res in approved %}
                                         <tr>
-                                            <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Document_Date}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td>{{res.GMP_No_}}</td>
+                                            <td>{{res.Type_of_Vertinary_Medicines}}</td>
+                                            <td>{{res.Type_Of_Inspection}}</td>
                                             <td class="text-success">{{res.Status}}</td>
                                             <td><span class="text-primary"
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
@@ -171,12 +171,12 @@
                             <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
                                 aria-labelledby="contact-tab">
                                 <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                    class="display table table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
-                                            <th>Product Name</th>
-                                            <th>Document Date</th>
-                                            <th>Types Of Manufacturers</th>
+                                            <th>GMP No</th>
+                                            <th>Product Class</th>
+                                            <th>Inspection Type</th>
                                             <th>Status</th>
                                             <th>Amount Payable</th>
                                             <th>Actions</th>
@@ -185,9 +185,9 @@
                                     <tbody>
                                         {% for res in rejected %}
                                         <tr>
-                                            <td>{{res.Veterinary_Classes}}</td>
-                                            <td>{{res.Document_Date}}</td>
-                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td>{{res.GMP_No_}}</td>
+                                            <td>{{res.Type_of_Vertinary_Medicines}}</td>
+                                            <td>{{res.Type_Of_Inspection}}</td>
                                             <td class="text-success">{{res.Status}}</td>
                                             <td><span class="text-primary"
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
