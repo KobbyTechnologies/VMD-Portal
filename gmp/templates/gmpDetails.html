@@ -107,8 +107,66 @@
             </div>
             {% endif %}
         </div>
-        <div class="row my-3 gx-2">
+        <div class="row my-3">
             <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" style="border: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title" style="display:inline-block;float:right ;">Manufactures
+                                    Particulars</h5>
+                                {% if status == 'Open' %}
+                                <div class="inline mt-2" style="display:inline-block;">
+                                    <button type="button" class="btn text-danger" data-bs-toggle="modal"
+                                        data-bs-target="#createParticulars"><i class="bi bi-plus-circle"></i>
+                                        Add New</button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <table
+                            class="display table  table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Manufacturer Type</th>
+                                    <th scope="col">Manufacturer Name</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Country</th>
+                                    <th scope="col">Telephone</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">GMP NO</th>
+                                    <th scope="col">Activity</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in manufacturer %}
+                                <tr>
+                                    <td>{{res.Type_of_Manufacture}}</td>
+                                    <td>{{res.Manufacture_Company_Name_}}</td>
+                                    <td>{{res.Manufacturing_plant_address}}</a></td>
+                                    <td>{{res.Country}}</a></td>
+                                    <td>{{res.Telephone}}</a></td>
+                                    <td>{{res.Email}}</a></td>
+                                    <td>{{res.GMP_No}}</a></td>
+                                    <td>{{res.Activity}}</td>
+                                    <td>
+                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
+                                                class="fas fa-trash-alt text-danger"></i> </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-3 gx-2">
+            <div class="col-md-9">
                 <div class="card h-100">
                     <div class="card-header" style="border: none;">
                         <div class="row">
@@ -151,24 +209,117 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered my-3">
+
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab"
+                                    data-bs-target="#profile-overview">Attachments</button>
+                            </li>
+                        </ul>
+                        <form action="{% url 'GMPAttachement' res.GMP_No_ %}" method="post"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">Attachment</label>
+                                <input type="file" class="form-control" accept=".doc,.docx,.pdf" name="attachment">
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </main>
 
-
-<!-- Modals -->
-<div class="modal fade" id="submission" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
+<!-- Create Manufacturer particulars -->
+<div class="modal fade" id="createParticulars" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Full Screen Modal {{res.ProductNo}}</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Add Particulars of the Manufacturer and Activity</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <form method="POST" action="{% url 'GMPManufactures' res.GMP_No_ %}">
+                    {% csrf_token %}
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Type of Manufacturer <span class="text-danger">*</span></label>
+                            <select class="form-select" name="TypeOfManufacturer" id="TypeOfManufacturer"
+                                aria-label="Default select example" required>
+                                <option selected>Choose .. </option>
+                                <option value="1">Manufacturer of finished product</option>
+                                <option value="2">Company releasing product </option>
+                                <option value="3">Manufacturer of active ingredient</option>
+                                <option value="4">Manufacturer of inactive ingredient</option>
+                                <option value="5">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row my-2" id="manufacturerOtherRow" style="display: none;">
+                        <div class="col-md-12">
+                            <label class="form-label">Other Type of Manufacturer</label>
+                            <input type="text" class="form-control" name="manufacturerOther" id="manufacturerOther"
+                                disabled>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="manufacturerName" id="manufacturerName"
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Plant Address<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="plantAddress" required>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer Country <span class="text-danger">*</span></label>
+                            <select class="form-select" aria-label="Default select example" name="country">
+                                <option selected value="" disabled>Select Country</option>
+                                {% for res in country %}
+                                <option value="{{res.Name}}">{{res.Name}}</option>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer Telephone<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="ManufacturerTelephone" required>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer Email <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="ManufacturerEmail" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Manufacturer GMP<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="ManufacturerGMP" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Activity</label>
+                        <select class="form-select" name="activity">
+                            <option selected>Choose...</option>
+                            <option value="1">Formulation (dispensing, mixing, blending) </option>
+                            <option value="2">Processing(compression, emulsification etc)</option>
+                            <option value="3">Packaging</option>
+                            <option value="4">Quality Control</option>
+                            <option value="5">Warehousing (raw material, finished products)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success my-2">Submit</button>
+                </form>
             </div>
         </div>
     </div>

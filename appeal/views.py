@@ -10,13 +10,14 @@ def appealRequest(request):
     session = requests.Session()
     session.auth = config.AUTHS
     Retention= config.O_DATA.format("/QYAppeal")
+    Access_Point= config.O_DATA.format("/QYRegistration")
     OpenProducts = []
     Pending = []
     Approved = []
     Rejected =[]
+    ApprovedAppeal =[]
     try:
         response = session.get(Retention, timeout=10).json()
-
         for res in response['value']:
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
                 output_json = json.dumps(res)
@@ -30,7 +31,11 @@ def appealRequest(request):
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
                 output_json = json.dumps(res)
                 Rejected.append(json.loads(output_json))
-
+        AppealResponse = session.get(Access_Point, timeout=10).json()
+        for res in AppealResponse['value']:
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
+                output_json = json.dumps(res)
+                ApprovedAppeal.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -45,7 +50,7 @@ def appealRequest(request):
     rejectedCount = len(Rejected)
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected}
+    "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedAppeal}
     return render(request,'appeal.html',ctx)
 
 
@@ -80,14 +85,17 @@ def appealDetails(request,pk):
 
     return render(request,"appealDetails.html",ctx)
 
-def ApplyAppeal(request,pk,id):
+def ApplyAppeal(request):
     if request.method == 'POST':
         try:
-            myAction = 'modify'
-
-            response = config.CLIENT.service.FnAppeal(pk,myAction,request.session['UserID'],id)
+            appNo = ''
+            myAction = 'insert'
+            prodNo = request.POST.get('prodNo')
+            response = config.CLIENT.service.FnAppeal(appNo,myAction,request.session['UserID'],prodNo)
             print(response)
-            return redirect('appealDetails',pk=pk)
+            if response == True:
+                messages.success(request,"Request Successful")
+                return redirect('appeal')
         except requests.exceptions.RequestException as e:
             print(e)
             messages.error(request,e)

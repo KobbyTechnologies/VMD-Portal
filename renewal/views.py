@@ -10,10 +10,12 @@ def RenewalRequest(request):
     session = requests.Session()
     session.auth = config.AUTHS
     Retention= config.O_DATA.format("/QYRenewal")
+    Access_Point= config.O_DATA.format("/QYRegistration")
     OpenProducts = []
     Pending = []
     Approved = []
     Rejected =[]
+    ApproveRenewal =[]
     try:
         response = session.get(Retention, timeout=10).json()
 
@@ -30,6 +32,11 @@ def RenewalRequest(request):
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
                 output_json = json.dumps(res)
                 Rejected.append(json.loads(output_json))
+        RenewalResponse = session.get(Access_Point, timeout=10).json()
+        for res in RenewalResponse['value']:
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
+                output_json = json.dumps(res)
+                ApproveRenewal.append(json.loads(output_json))
 
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
@@ -45,7 +52,7 @@ def RenewalRequest(request):
     rejectedCount = len(Rejected)
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected}
+    "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApproveRenewal}
     return render (request,'renew.html',ctx)
 
 def renewDetails(request,pk):
@@ -81,17 +88,17 @@ def renewDetails(request,pk):
     ctx = {"res":responses,"status":Status,"attach":attach}
     return render(request,"renewDetails.html",ctx)
 
-def ApplyRenewal(request,pk,id):
+def ApplyRenewal(request):
     if request.method == 'POST':
         try:
-            renNo = pk
-            myAction = 'modify'
-
-            response = config.CLIENT.service.Renewal(renNo,myAction,request.session['UserID'],id)
+            renNo = ''
+            myAction = 'insert'
+            prodNo = request.POST.get('prodNo')
+            response = config.CLIENT.service.Renewal(renNo,myAction,request.session['UserID'],prodNo)
             print(response)
             if response == True:
                 messages.success(request,"Saved Successfully")
-                return redirect('renewDetails', pk=pk)
+                return redirect('renew')
         except requests.exceptions.RequestException as e:
             print(e)
             return redirect('renew')

@@ -10,13 +10,14 @@ def registrationRetention(request):
     session = requests.Session()
     session.auth = config.AUTHS
     Retention= config.O_DATA.format("/QYRetension")
+    Access_Point= config.O_DATA.format("/QYRegistration")
     OpenProducts = []
     Pending = []
     Approved = []
     Rejected =[]
+    ApprovedProd = []
     try:
         response = session.get(Retention, timeout=10).json()
-
         for res in response['value']:
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
                 output_json = json.dumps(res)
@@ -30,7 +31,11 @@ def registrationRetention(request):
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
                 output_json = json.dumps(res)
                 Rejected.append(json.loads(output_json))
-
+        RetResponse = session.get(Access_Point, timeout=10).json()
+        for res in RetResponse['value']:
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
+                output_json = json.dumps(res)
+                ApprovedProd.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -46,13 +51,15 @@ def registrationRetention(request):
     print(pendCount)
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected}
+    "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedProd}
     return render(request,"retention.html",ctx)
 
-def ApplyRetention(request,pk,id):
+def ApplyRetention(request):
     if request.method == 'POST':
         try:
-            myAction = 'modify'
+            retNo = ''
+            myAction = 'insert'
+            prodNo = request.POST.get('prodNo')
             changesToTheProduct = request.POST.get('changesToTheProduct')
             variation = request.POST.get('variation')
             iAgree = eval(request.POST.get('iAgree'))
@@ -65,13 +72,12 @@ def ApplyRetention(request,pk,id):
             if not VariationNumber:
                 VariationNumber = ''
 
-            response = config.CLIENT.service.Retension(pk,myAction,request.session['UserID'],id,
+            response = config.CLIENT.service.Retension(retNo,myAction,request.session['UserID'],prodNo,
             VariationNumber,changesToTheProduct,variation,iAgree)
             print(response)
             if response == True:
                 messages.success(request,"Saved Successfully")
-                return redirect('retentionDetails', pk=pk)
-                
+                return redirect('retention')
         except requests.exceptions.RequestException as e:
             print(e)
             return redirect('retention')

@@ -10,11 +10,13 @@ def variation(request):
     session = requests.Session()
     session.auth = config.AUTHS
     variation= config.O_DATA.format("/QYVariation")
+    Access_Point= config.O_DATA.format("/QYRegistration")
 
     OpenProducts = []
     Pending = []
     Approved = []
     Rejected =[]
+    ApprovedVariation = []
     try:
         response = session.get(variation, timeout=10).json()
 
@@ -31,6 +33,11 @@ def variation(request):
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
                 output_json = json.dumps(res)
                 Rejected.append(json.loads(output_json))
+        VarResponse = session.get(Access_Point, timeout=10).json()
+        for res in VarResponse['value']:
+            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
+                output_json = json.dumps(res)
+                ApprovedVariation.append(json.loads(output_json))
 
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
@@ -46,13 +53,15 @@ def variation(request):
     rejectedCount = len(Rejected)
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected}
+    "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedVariation}
     return render(request,"variation.html",ctx)
 
-def ApplyVariation(request,pk,id):
+def ApplyVariation(request):
     if request.method == 'POST':
         try:
-            myAction = 'modify'
+            varNo = ''
+            prodNo = request.POST.get('prodNo')
+            myAction = 'insert'
             dosageForms = request.POST.get('dosageForms')
             typeofChange = request.POST.get('typeofChange')
             otherApplications = request.POST.get('otherApplications')
@@ -62,12 +71,12 @@ def ApplyVariation(request,pk,id):
             proposed = request.POST.get('proposed')
 
 
-            response = config.CLIENT.service.FnVariation(pk,myAction,request.session['UserID'],dosageForms,id,
+            response = config.CLIENT.service.FnVariation(varNo,myAction,request.session['UserID'],dosageForms,prodNo,
             typeofChange,otherApplications,scope,background,present,proposed)
             print(response)
             if response == True:
                 messages.success(request,"Saved Successfully")
-                return redirect('variationDetails', pk=pk)
+                return redirect('variation')
         except requests.exceptions.RequestException as e:
             print(e)
             return redirect('variation')

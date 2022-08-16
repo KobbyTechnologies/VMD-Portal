@@ -12,15 +12,30 @@
 
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Appeal</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Registration</li>
-                <li class="breadcrumb-item active">Appeal</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Appeal</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Registration</li>
+                        <li class="breadcrumb-item active">Appeal</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticAppeal"
+                            style="float: right;">
+                            <i class="bi bi-plus"></i> Raise Appeal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section class="section contact">
         <div class="row">
@@ -81,14 +96,9 @@
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <form action="{% url 'ApplyAppeal' res.Appeal_No_ res.ProductNo %}"
-                                                    method="post">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-primary"><i
-                                                            class="bi bi-eye-fill"></i>
-                                                        Apply
-                                                    </button>
-                                                </form>
+                                                <a href="{% url 'appealDetails' res.Appeal_No_ %}" type="button"
+                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i>
+                                                    Next</a></td>
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -115,9 +125,9 @@
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
 
                                             <td>
-                                                <button type="button" class="btn btn-primary"><i
-                                                        class="bi bi-eye-fill"></i>
-                                                    View</button>
+                                                <a ref="{% url 'appealDetails' res.Appeal_No_ %}" type="button"
+                                                    class="btn btn-primary"><i class="bi bi-eye-fill"></i>
+                                                    View</a>
                                             </td>
 
                                         </tr>
@@ -144,9 +154,9 @@
                                             <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                <button type="button" class="btn btn-primary"><i
-                                                        class="bi bi-eye-fill"></i>
-                                                    View</button>
+                                                <a ref="{% url 'appealDetails' res.Appeal_No_ %}" type="button"
+                                                    class="btn btn-primary"><i class="bi bi-eye-fill"></i>
+                                                    View</a>
                                             </td>
 
                                         </tr>
@@ -173,9 +183,9 @@
                                             <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                <button type="button" class="btn btn-primary"><i
-                                                        class="bi bi-eye-fill"></i>
-                                                    View</button>
+                                                <a ref="{% url 'appealDetails' res.Appeal_No_ %}" type="button"
+                                                    class="btn btn-primary"><i class="bi bi-eye-fill"></i>
+                                                    View</a>
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -188,6 +198,37 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="staticAppeal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="exampleModalLabel">
+                        Raise Appeal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'ApplyAppeal' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                <label for="" class="form-label">Product</label>
+                                <select class="form-select" name="prodNo" required>
+                                    <option value="0" disabled selected>--Select Product--</option>
+                                    {% for res in product %}
+                                    <option value="{{res.ProductNo}}">{{res.ProductNo}}-{{res.Veterinary_Classes}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <p class="text-danger" id="responses"></p>
+                        <button type="submit" class="btn btn-success my-2" id="retentionSubmit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 <script>
     $(document).ready(function () {

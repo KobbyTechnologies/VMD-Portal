@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            {% if res.Paid == True and status == 'Approved' %}
+            {% if res.Paid == True and res.Status == 'Approved' %}
             <div class="col-md-3">
                 <div class="card h-100 actionCard text-center">
                     <i class="bi bi-file-earmark-bar-graph my-3"></i>
@@ -91,7 +91,7 @@
                     </form>
                 </div>
             </div>
-            {% else %}
+            {% elif res.Paid == True and status != "Open" %}
             <div class="col-md-3">
                 <div class="card l-bg-green-dark  h-100 sales-card">
                     <div class="card-body">
@@ -101,7 +101,7 @@
                                 <i class="bi bi-hand-index"></i>
                             </div>
                             <div class="ps-3">
-                                <h6> {{res.Tracking_No_}} </h6>
+                                <p style="font-size: 13px;"> {{res.Tracking_No_}} </p>
                             </div>
                         </div>
                     </div>
@@ -317,6 +317,7 @@
                         <div class="tab-content pt-2">
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                {% if res.Status != 'Approved' and res.Status != 'Rejected' %}
                                 <form action="{% url 'Attachement' res.ProductNo %}" method="post"
                                     enctype="multipart/form-data">
                                     {% csrf_token %}
@@ -329,6 +330,7 @@
                                             <option value="{{attach.Description}}">{{attach.Description}}</option>
                                             {% endif %}
                                             {% endfor %}
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -340,6 +342,23 @@
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
                                 </form>
+                                {% else %}
+                                {% for data in files %}
+                                <div class="col-md-4">
+                                    <div class="document">
+                                        <div class="document-body">
+                                            <i class="bi bi-file-earmark-check-fill text-success"></i>
+                                        </div>
+                                        <div class="document-footer">
+                                            <span class="document-name">
+                                                {{data.File_Name}}.{{data.File_Extension}} </span>
+                                            <span class="document-description"> Date Attached:
+                                                {{data.Attached_Date}} </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif%}
                             </div>
                         </div>
                     </div>

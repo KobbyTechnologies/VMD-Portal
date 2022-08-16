@@ -23,7 +23,6 @@ def registrationRequest(request):
         vet_response = session.get(Vet_Classes, timeout=10).json()
         response = session.get(Access_Point, timeout=10).json()
         product = vet_response['value']
-
         for res in response['value']:
             if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
                 output_json = json.dumps(res)
