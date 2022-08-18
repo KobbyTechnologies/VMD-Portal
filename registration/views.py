@@ -140,8 +140,7 @@ def productDetails(request,pk):
         LTR_Email=request.session['LTR_Email']
         LTR_Country=request.session['Country']
         LTR_BS_No=request.session['Business_Registration_No_'] 
-        print(LTR_Country)
-        print(LTR_BS_No)
+
         response = session.get(Access_Point, timeout=10).json()
         for res in response['value']:
             if res['User_code'] == request.session['UserID']:
@@ -421,7 +420,7 @@ def MyApplications(request):
     ctx = {"product": product,"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
     "rejectedCount":rejectedCount,"rejected":Rejected}
-    return render(request,'applications.html')
+    return render(request,'applications.html',ctx)
 
 def allApplications(request):
     session = requests.Session()
@@ -497,8 +496,6 @@ def Attachement(request, pk):
             filename = request.POST.get('filename')
             tableID = 52177996
             attachment = base64.b64encode(attach.read())
-            # print(filename)
-            # print(attachment)
             try:
                 response = config.CLIENT.service.Attachement(
                     pk, filename, attachment, tableID)
@@ -514,9 +511,7 @@ def Attachement(request, pk):
                 print(e)
                 return redirect('productDetails', pk=pk)
         except Exception as e:
-            print(e)
-            return redirect('IMPDetails', pk=pk)
-           
+            print(e)        
     return redirect('productDetails', pk=pk)
 
 def GenerateCertificate(request, pk):

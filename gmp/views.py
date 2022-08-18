@@ -107,7 +107,7 @@ def GMPDetails(request,pk):
     session.auth = config.AUTHS
     Access_Point = config.O_DATA.format("/QYGMP")
     Lines = config.O_DATA.format("/QYLinestobeInspected")
-    ManufacturesParticulars = config.O_DATA.format("/QYManufactureParticulers")
+    ManufacturesParticulars = config.O_DATA.format("/QYGmpManufactureDetails")
     Countries = config.O_DATA.format("/QYCountries")
     gmp = []
     Line = []
@@ -134,11 +134,21 @@ def GMPDetails(request,pk):
         ManufacturerResponse = session.get(ManufacturesParticulars, timeout=10).json()
         Manufacturer = []
         for manufacturer in ManufacturerResponse['value']:
-            if manufacturer['User_code'] == request.session['UserID'] and manufacturer['No'] == pk:
+            if manufacturer['AuxiliaryIndex2'] == pk:
                 output_json = json.dumps(manufacturer)
                 Manufacturer.append(json.loads(output_json))
         CountryResponse = session.get(Countries, timeout=10).json()
         resCountry = CountryResponse['value']
+        Attachments = config.O_DATA.format("/QYGMPRequiredDocuments")
+        AttachResponse = session.get(Attachments, timeout=10).json()
+        attach = AttachResponse['value']
+        AllAttachments = config.O_DATA.format("/QYDocumentAttachments")
+        Files = []
+        AllAttachResponse = session.get(AllAttachments, timeout=10).json()
+        for data in AllAttachResponse['value']:
+            if data['No_'] == pk and data['Table_ID'] == 52177996:
+                output_json = json.dumps(data)
+                Files.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -149,7 +159,7 @@ def GMPDetails(request,pk):
         return redirect('login')
     
     ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
-    "country":resCountry}
+    "country":resCountry,"files": Files,"attach":attach}
     return render(request,"gmpDetails.html",ctx)
 
 def linesToInspect(request,pk):
@@ -247,35 +257,29 @@ def GMPManufactures(request,pk):
         try:
             prodNo = pk
             myAction = "insert"
+            userId = request.session['UserID']
+            manufacturerName = request.POST.get('manufacturerName')
+            ManufacturerEmail= request.POST.get('ManufacturerEmail')
+            postalAddress = request.POST.get('postalAddress')
+            plantAddress = request.POST.get('plantAddress')
+            ManufacturerTelephone = request.POST.get('ManufacturerTelephone')
+            country = request.POST.get('country')
+            activity = int(request.POST.get('activity'))
             TypeOfManufacturer = int(request.POST.get('TypeOfManufacturer'))
             manufacturerOther = request.POST.get('manufacturerOther')
-            manufacturerName = request.POST.get('manufacturerName')
-            plantAddress = request.POST.get('plantAddress')
-            country = request.POST.get('country')
-            ManufacturerTelephone = request.POST.get('ManufacturerTelephone')
-            ManufacturerEmail= request.POST.get('ManufacturerEmail')
-            activity = int(request.POST.get('activity'))
-            ManufacturerGMP = request.POST.get('ManufacturerGMP')
-            userId = request.session['UserID']
-
             if not manufacturerOther:
                 manufacturerOther = ''
-            
-            if not ManufacturerGMP:
-                messages.info(request,"You must have a GMP Code to register a product")
-                return redirect('GMPDetails',pk=pk)
-
             try:
-                response = config.CLIENT.service.ManufacuresParticulars(prodNo,myAction,TypeOfManufacturer,
-                manufacturerOther,manufacturerName,plantAddress,country,ManufacturerTelephone,ManufacturerEmail,
-                activity,ManufacturerGMP,userId)
+                response = config.CLIENT.service.GMPManufactureDetails(prodNo,myAction,userId,
+                manufacturerName,ManufacturerEmail,postalAddress,plantAddress,ManufacturerTelephone,
+                country,activity,TypeOfManufacturer)
                 print(response)
-            #     if response == True:
-            #         messages.success(request,"Saved Successfully. Click Add New to create more  records")
-            #         return redirect('GMPDetails',pk=pk)
-            #     else:
-            #         print("Not sent")
-            #         return redirect ('GMPDetails',pk=pk)
+                if response == True:
+                    messages.success(request,"Saved Successfully. Click Add New to create more  records")
+                    return redirect('GMPDetails',pk=pk)
+                else:
+                    print("Not sent")
+                    return redirect ('GMPDetails',pk=pk)
             except requests.exceptions.RequestException as e:
                 print(e)
                 return redirect('GMPDetails', pk=pk)
@@ -289,12 +293,12 @@ def GMPAttachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            tableID = 50021
+            tableID = 50004
             attachment = base64.b64encode(attach.read())
-            fileName = request.FILES['attachment'].name
+            filename = request.POST.get('filename')
             try:
                 response = config.CLIENT.service.Attachement(
-                    pk, fileName, attachment, tableID)
+                    pk, filename, attachment, tableID)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")

@@ -194,7 +194,7 @@ def resetPassword(request):
         try:
             email = request.POST.get('email')
         except  ValueError:
-            messages.error(request,'Invalid Email')
+            messages.error(request,'Missing Input')
             return redirect('login')
         session = requests.Session()
         session.auth = config.AUTHS

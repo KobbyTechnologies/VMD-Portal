@@ -327,7 +327,7 @@
                                             <option selected disabled value="">Choose...</option>
                                             {% for attach in attach %}
                                             {% if attach.Class == res.Veterinary_Classes %}
-                                            <option value="{{attach.Description}}">{{attach.Description}}</option>
+                                            <option value="{{attach.code}}">{{attach.Description}}</option>
                                             {% endif %}
                                             {% endfor %}
                                             <option value="Other">Other</option>

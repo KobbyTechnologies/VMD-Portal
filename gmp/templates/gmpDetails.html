@@ -137,7 +137,7 @@
                                     <th scope="col">Country</th>
                                     <th scope="col">Telephone</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">GMP NO</th>
+                                    <th scope="col">Postal Address</th>
                                     <th scope="col">Activity</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -146,12 +146,12 @@
                                 {% for res in manufacturer %}
                                 <tr>
                                     <td>{{res.Type_of_Manufacture}}</td>
-                                    <td>{{res.Manufacture_Company_Name_}}</td>
-                                    <td>{{res.Manufacturing_plant_address}}</a></td>
+                                    <td>{{res.Manufacture_Name_}}</td>
+                                    <td>{{res.Manufacturing_Physical_address}}</a></td>
                                     <td>{{res.Country}}</a></td>
-                                    <td>{{res.Telephone}}</a></td>
-                                    <td>{{res.Email}}</a></td>
-                                    <td>{{res.GMP_No}}</a></td>
+                                    <td>{{res.Mobile}}</a></td>
+                                    <td>{{res.Manufacture_Email}}</a></td>
+                                    <td>{{res.Manufacture_Postal_Address}}</a></td>
                                     <td>{{res.Activity}}</td>
                                     <td>
                                         <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
@@ -166,7 +166,7 @@
             </div>
         </div>
         <div class="row my-3 gx-2">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card h-100">
                     <div class="card-header" style="border: none;">
                         <div class="row">
@@ -209,27 +209,33 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card h-100">
-                    <div class="card-body pt-3">
-                        <ul class="nav nav-tabs nav-tabs-bordered my-3">
-
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab"
-                                    data-bs-target="#profile-overview">Attachments</button>
-                            </li>
-                        </ul>
-                        <form action="{% url 'GMPAttachement' res.GMP_No_ %}" method="post"
-                            enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label class="form-label">Attachment</label>
-                                <input type="file" class="form-control" accept=".doc,.docx,.pdf" name="attachment">
+        </div>
+        <div class="row my-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-title p-3">
+                        <span class="text-primary">My Attachments</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for data in files %}
+                            <div class="col-md-2">
+                                <div class="document">
+                                    <div class="document-body">
+                                        <i class="bi bi-file-earmark-check-fill text-success"></i>
+                                    </div>
+                                    <div class="document-footer">
+                                        <span class="document-name">
+                                            {{data.File_Name}}.{{data.File_Extension}} </span>
+                                        <span class="document-description"> Date Attached:
+                                            {{data.Attached_Date}} </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn btn-success w-100" data-bs-toggle="modal"
+                            data-bs-target="#GMPAttachements">Upload Attachment</button>
                     </div>
                 </div>
             </div>
@@ -303,8 +309,9 @@
                             <input type="text" class="form-control" name="ManufacturerEmail" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Manufacturer GMP<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="ManufacturerGMP" required>
+                            <label class="form-label">Manufacturer Postal Address<span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="postalAddress" required>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -379,7 +386,39 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="GMPAttachements" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Upload Attachments</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'GMPAttachement' res.GMP_No_ %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Document Name</label>
+                        <select class="form-select" aria-label="Default select example" name="filename">
+                            <option selected disabled value="">Choose...</option>
+                            {% for attach in attach %}
+                            <option value="{{attach.code}}">{{attach.Description}}</option>
+                            {% endfor %}
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Attachment</label>
+                        <input type="file" class="form-control" accept=".doc,.docx,.pdf" name="attachment">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         $('#DosageForm').on('change', function () {
