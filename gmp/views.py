@@ -142,11 +142,11 @@ def GMPDetails(request,pk):
         Attachments = config.O_DATA.format("/QYGMPRequiredDocuments")
         AttachResponse = session.get(Attachments, timeout=10).json()
         attach = AttachResponse['value']
-        AllAttachments = config.O_DATA.format("/QYDocumentAttachments")
+        AllAttachments = config.O_DATA.format("/QYGMPAttachments")
         Files = []
         AllAttachResponse = session.get(AllAttachments, timeout=10).json()
         for data in AllAttachResponse['value']:
-            if data['No_'] == pk and data['Table_ID'] == 52177996:
+            if data['No_'] == pk and data['Table_ID'] == 50004:
                 output_json = json.dumps(data)
                 Files.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
@@ -297,7 +297,7 @@ def GMPAttachement(request, pk):
             attachment = base64.b64encode(attach.read())
             filename = request.POST.get('filename')
             try:
-                response = config.CLIENT.service.Attachement(
+                response = config.CLIENT.service.GMPAttachement(
                     pk, filename, attachment, tableID)
                 print(response)
                 if response == True:

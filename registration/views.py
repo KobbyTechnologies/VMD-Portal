@@ -516,11 +516,9 @@ def Attachement(request, pk):
 
 def GenerateCertificate(request, pk):
     if request.method == 'POST':
-        filenameFromApp = pk + ".pdf"
         try:
             response = config.CLIENT.service.PrintCertificate(
-                pk, filenameFromApp)
-            print("cert:",response)
+                pk)
             buffer = BytesIO.BytesIO()
             content = base64.b64decode(response)
             buffer.write(content)
@@ -528,7 +526,7 @@ def GenerateCertificate(request, pk):
                 buffer.getvalue(),
                 content_type="application/pdf",
             )
-            responses['Content-Disposition'] = f'inline;filename={filenameFromApp}'
+            responses['Content-Disposition'] = f'inline;filename={pk}'
             return responses
         except Exception as e:
             messages.error(request, e)
