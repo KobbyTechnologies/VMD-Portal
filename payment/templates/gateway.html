@@ -96,6 +96,12 @@
                                     <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
                                     <form action="{% url 'PaymentGateway' res.ProductNo %}" method="POST">
                                         {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="" class="form-label">Transaction/Reference Number</label>
+                                                <input type="text" class="form-control" name="refNo" required>
+                                            </div>
+                                        </div>
                                         <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
                                             <span class="ms-3 bi bi-arrow-right"></span>
                                         </button>

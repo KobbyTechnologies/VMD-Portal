@@ -9,8 +9,9 @@ from django.shortcuts import redirect, render
 def registrationRetention(request):
     session = requests.Session()
     session.auth = config.AUTHS
+    userId=request.session['UserID']
     Retention= config.O_DATA.format("/QYRetension")
-    Access_Point= config.O_DATA.format("/QYRegistration")
+    Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
     OpenProducts = []
     Pending = []
     Approved = []

@@ -9,8 +9,9 @@ from datetime import date, datetime
 def variation(request):
     session = requests.Session()
     session.auth = config.AUTHS
+    userId =request.session['UserID']
     variation= config.O_DATA.format("/QYVariation")
-    Access_Point= config.O_DATA.format("/QYRegistration")
+    Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
 
     OpenProducts = []
     Pending = []

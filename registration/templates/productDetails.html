@@ -323,14 +323,13 @@
                                     {% csrf_token %}
                                     <div class="mb-3">
                                         <label class="form-label">Document Name</label>
-                                        <select class="form-select" aria-label="Default select example" name="filename">
+                                        <select class="form-select" aria-label="Default select example" name="name">
                                             <option selected disabled value="">Choose...</option>
                                             {% for attach in attach %}
                                             {% if attach.Class == res.Veterinary_Classes %}
                                             <option value="{{attach.Description}}">{{attach.Description}}</option>
                                             {% endif %}
                                             {% endfor %}
-                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -339,7 +338,7 @@
                                             name="attachment">
                                     </div>
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="submit" class="btn btn-primary w-100">Submit</button>
                                     </div>
                                 </form>
                                 {% else %}

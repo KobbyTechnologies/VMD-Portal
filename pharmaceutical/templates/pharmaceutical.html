@@ -11,21 +11,53 @@
                         {% csrf_token %}
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                        aria-controls="flush-collapseOne">
-                                        Particulars of the Product
-                                    </button>
-                                </h2>
+                                <hr class="dropdown-divider">
+                                <h5>Particulars of the Applicant</h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Name </label>
+                                        <input type="text" class="form-control" name="companyName">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Address</label>
+                                        <input type="text" class="form-control" name="companyAddress">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Country </label>
+                                        <select name="CountryOrigin" class="form-select"
+                                            aria-label="Default select example">
+                                            <option selected value="" disabled>--Select--</option>
+                                            {% for res in country %}
+                                            <option value="{{res.Code}}">{{res.Name}}</option>
+                                            {% empty %}
+                                            <option value="KE">KENYA</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Telephone </label>
+                                        <input type="text" class="form-control" name="companyTel">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Fax </label>
+                                        <input type="text" class="form-control" name="companyFax">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Email </label>
+                                        <input type="email" class="form-control" name="companyEmail">
+                                    </div>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <h5>Particulars of the Product</h5>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse show"
                                     aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
                                         <div class="row my-2">
                                             <div class="col-md-12">
-                                                <label class="form-label">Product Name <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="prodName" required>
+                                                <label class="form-label">Product Name </label>
+                                                <input type="text" class="form-control" name="prodName">
                                                 <div class="form-text">Trade Name
                                                 </div>
                                             </div>
@@ -33,9 +65,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="mb-2">
-                                                    <label class="form-label">Pack Size <span
-                                                            class="text-danger">*</span></label>
-                                                    <textarea class="form-control" name="packSize" required
+                                                    <label class="form-label">Pack Size </label>
+                                                    <textarea class="form-control" name="packSize"
                                                         placeholder="200 ml, 500ml" rows="3"></textarea>
                                                 </div>
                                             </div>
@@ -58,13 +89,28 @@
                                         <div class="row my-2">
                                             <div class="col-md-12">
                                                 <label class="form-label">Route(s) of administration</label>
-                                                <textarea class="form-control longText" name="RouteOfAdministration"
-                                                    required></textarea>
+                                                <textarea class="form-control longText"
+                                                    name="RouteOfAdministration"></textarea>
 
                                                 <div class="form-text">
                                                     Route(s) of administration (use current list of
                                                     standard terms - European Pharmacopoeia)
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Main Indications</label>
+                                                <textarea class="form-control longText"
+                                                    name="mainIndication"></textarea>
+
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Description of the Product</label>
+                                                <textarea class="form-control longText"
+                                                    name="descriptionOfProduct"></textarea>
                                             </div>
                                         </div>
                                         <hr class="dropdown-divider">
@@ -85,14 +131,14 @@
                                         <div class="row my-2">
                                             <div class="col-md-6">
                                                 <label class="form-label">Proposed storage condition</label>
-                                                <textarea class="form-control longText" name="storageConditions"
-                                                    required></textarea>
+                                                <textarea class="form-control longText"
+                                                    name="storageConditions"></textarea>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Proposed storage conditions after first
                                                     opening</label>
-                                                <textarea class="form-control longText" name="storageAfterOpening"
-                                                    required></textarea>
+                                                <textarea class="form-control longText"
+                                                    name="storageAfterOpening"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -118,7 +164,7 @@
                                             <div class="col-md-6">
                                                 <label class="form-label">ATC Code <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="ATCCode" required>
+                                                <input type="text" class="form-control" name="ATCCode">
                                                 <div class="form-text">Please use current ATC code.
                                                 </div>
                                             </div>
@@ -129,7 +175,7 @@
                                                     <label class="form-label">Country of Origin <span
                                                             class="text-danger">*</span></label>
                                                     <select name="CountryOfOrigin" class="form-select"
-                                                        aria-label="Default select example" required>
+                                                        aria-label="Default select example">
                                                         <option selected value="" disabled>--Select--</option>
                                                         {% for res in country %}
                                                         <option value="{{res.Code}}">{{res.Name}}</option>
@@ -143,7 +189,7 @@
                                                 <div class="mb-2">
                                                     <label class="form-label">Country of Release</label>
                                                     <select name="CountryOfRelease" class="form-select"
-                                                        aria-label="Default select example" required>
+                                                        aria-label="Default select example">
                                                         <option selected value="" disabled>--Select--</option>
                                                         {% for res in country %}
                                                         <option value="{{res.Code}}">{{res.Name}}</option>
@@ -197,6 +243,16 @@
                                             </div>
                                         </div>
                                         <hr class="dropdown-divider">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="" class="form-label">Signatory Name</label>
+                                                <input type="text" class="form-control" name="signatoryName">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="" class="form-label">Signatory Position</label>
+                                                <input type="text" class="form-control" name="signatoryPosition">
+                                            </div>
+                                        </div>
                                         <div class="row my-2">
                                             <div class="col-md-12">
                                                 <div class="mb-2">

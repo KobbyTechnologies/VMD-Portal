@@ -13,8 +13,9 @@ from django.http import HttpResponse
 def registrationRequest(request):
     session = requests.Session()
     session.auth = config.AUTHS
+    userId = request.session['UserID'] 
     Vet_Classes= config.O_DATA.format("/QYVertinaryclasses")
-    Access_Point= config.O_DATA.format("/QYRegistration")
+    Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
     OpenProducts = []
     Pending = []
     Approved = []
@@ -24,16 +25,16 @@ def registrationRequest(request):
         response = session.get(Access_Point, timeout=10).json()
         product = vet_response['value']
         for res in response['value']:
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
+            if res['Status'] == 'Open':
                 output_json = json.dumps(res)
                 OpenProducts.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Processing':
+            if res['Status'] == 'Processing':
                 output_json = json.dumps(res)
                 Pending.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
+            if res['Status'] == 'Approved':
                 output_json = json.dumps(res)
                 Approved.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
+            if res['Status'] == 'Rejected':
                 output_json = json.dumps(res)
                 Rejected.append(json.loads(output_json))
 
@@ -57,7 +58,8 @@ def registrationRequest(request):
 def myApplications(request,pk):
     session = requests.Session()
     session.auth = config.AUTHS
-    Access_Point = config.O_DATA.format("/QYRegistration")
+    userId = request.session['UserID']
+    Access_Point = config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
     Country = config.O_DATA.format("/QYCountries")
     Products = []
     try:
@@ -115,7 +117,8 @@ def productClass(request):
 def productDetails(request,pk):
     session = requests.Session()
     session.auth = config.AUTHS
-    Access_Point = config.O_DATA.format("/QYRegistration")
+    userId = request.session['UserID']
+    Access_Point = config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
     ManufacturesParticulars = config.O_DATA.format("/QYManufactureParticulers")
     Countries = config.O_DATA.format("/QYCountries")
     Ingredients = config.O_DATA.format("/QYIngredients")
@@ -385,8 +388,9 @@ def makePayment(request,pk):
 def MyApplications(request):
     session = requests.Session()
     session.auth = config.AUTHS
+    userId = request.session['UserID']
     Vet_Classes= config.O_DATA.format("/QYVertinaryclasses")
-    Access_Point= config.O_DATA.format("/QYRegistration")
+    Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
     OpenProducts = []
     Pending = []
     Approved = []
@@ -430,7 +434,8 @@ def MyApplications(request):
 def allApplications(request):
     session = requests.Session()
     session.auth = config.AUTHS
-    Access_Point= config.O_DATA.format("/QYRegistration")
+    userId =request.session['UserID']
+    Access_Point=  config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
     OpenProducts = []
     Pending = []
     Approved = []
@@ -498,17 +503,14 @@ def Attachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            filename = request.POST.get('filename')
+            filename = request.FILES['attachment'].name
+            name = request.POST.get('name')
             tableID = 52177996
             attachment = base64.b64encode(attach.read())
-            
-            print(attach)
-            print(filename)
-            print(tableID)
-            print(attachment)
+
             try:
                 response = config.CLIENT.service.Attachement(
-                    pk, filename, attachment, tableID)
+                    pk, filename,name, attachment, tableID)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")

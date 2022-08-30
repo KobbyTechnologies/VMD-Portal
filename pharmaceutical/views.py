@@ -26,6 +26,17 @@ def VeterinaryPharmaceutical(request,pk):
             userId = request.session['UserID']
             CountryOfOrigin = request.POST.get('CountryOfOrigin')
             CountryOfRelease = request.POST.get('CountryOfRelease')
+            signatoryName = request.POST.get('signatoryName')
+            signatoryPosition = request.POST.get('signatoryPosition')
+            companyName = request.POST.get('companyName')
+            companyAddress = request.POST.get('companyAddress')
+            CountryOrigin = request.POST.get('CountryOrigin')
+            companyTel = request.POST.get('companyTel')
+            companyFax = request.POST.get('companyFax')
+            companyEmail = request.POST.get('companyEmail')
+            mainIndication = request.POST.get('mainIndication')
+            descriptionOfProduct = request.POST.get('descriptionOfProduct')
+
             if not iAgree:
                 iAgree = False
             if not controlledVeterinaryMedicine:
@@ -50,7 +61,8 @@ def VeterinaryPharmaceutical(request,pk):
                 storageConditions,storageAfterOpening,PharmacotherapeuticGroup
                 ,ATCCode,controlledVeterinaryMedicine,
                 prescriptionOnlyMedicine,nonPharmacy,pharmaciesOnly,userId,CountryOfOrigin,CountryOfRelease,
-                iAgree
+                iAgree,signatoryName,signatoryPosition,companyName,companyAddress,CountryOrigin,companyTel,companyFax,companyEmail,
+                mainIndication,descriptionOfProduct
                 )
                 print(response)
                 if response == True:
@@ -69,6 +81,9 @@ def VeterinaryPharmaceutical(request,pk):
         except ValueError as e:
             messages.info(request,"Invalid Input")
             print(e)
+            return redirect('applications', pk=pk)
+        except TypeError as e:
+            messages.error(request,e)
             return redirect('applications', pk=pk)
     return redirect('applications', pk=pk)
 
