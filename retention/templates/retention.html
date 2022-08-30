@@ -74,7 +74,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Product No</th>
+                                            <th scope="col">Retention No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Amount Payable</th>
                                             <th scope="col">Status</th>
@@ -85,7 +85,7 @@
                                     <tbody>
                                         {% for res in open %}
                                         <tr>
-                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Retension_No_}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="text-primary"
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}

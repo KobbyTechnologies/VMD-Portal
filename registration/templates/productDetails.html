@@ -342,21 +342,23 @@
                                     </div>
                                 </form>
                                 {% else %}
-                                {% for data in files %}
-                                <div class="col-md-4">
-                                    <div class="document">
-                                        <div class="document-body">
-                                            <i class="bi bi-file-earmark-check-fill text-success"></i>
-                                        </div>
-                                        <div class="document-footer">
-                                            <span class="document-name">
-                                                {{data.File_Name}}.{{data.File_Extension}} </span>
-                                            <span class="document-description"> Date Attached:
-                                                {{data.Attached_Date}} </span>
+                                <div class="row">
+                                    {% for data in files %}
+                                    <div class="col-md-4">
+                                        <div class="document">
+                                            <div class="document-body">
+                                                <i class="bi bi-file-earmark-check-fill text-success"></i>
+                                            </div>
+                                            <div class="document-footer">
+                                                <span class="document-name">
+                                                    {{data.File_Name}}.{{data.File_Extension}} </span>
+                                                <span class="document-description"> Date Attached:
+                                                    {{data.Attached_Date}} </span>
+                                            </div>
                                         </div>
                                     </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
                                 {% endif%}
                             </div>
                         </div>

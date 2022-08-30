@@ -33,7 +33,7 @@ def appealRequest(request):
                 Rejected.append(json.loads(output_json))
         AppealResponse = session.get(Access_Point, timeout=10).json()
         for res in AppealResponse['value']:
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
+            if res['User_code'] == request.session['UserID']:
                 output_json = json.dumps(res)
                 ApprovedAppeal.append(json.loads(output_json))
     except requests.exceptions.RequestException as e:
