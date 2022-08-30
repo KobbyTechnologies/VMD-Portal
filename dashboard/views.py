@@ -21,8 +21,8 @@ def dashboard(request):
 
         OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
         Pending = [x for x in response['value'] if x['Status'] == 'Processing']
-        Approved = [x for x in response['value'] if x['Approval_Status'] == 'Approved']
-        Rejected = [x for x in response['value'] if x['Approval_Status'] == 'Disapproved']
+        Approved = [x for x in response['value'] if x['Status'] == 'Approved']
+        Rejected = [x for x in response['value'] if x['Status'] == 'Disapproved']
 
         newsapi = NewsApiClient(api_key='5c2c534258a44addb5e6cfd97db6e9ce')
         today = date.today()
