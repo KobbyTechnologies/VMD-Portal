@@ -18,7 +18,6 @@ def VeterinaryPharmaceutical(request,pk):
             storageAfterOpening =request.POST.get('storageAfterOpening')
             PharmacotherapeuticGroup = request.POST.get('PharmacotherapeuticGroup')
             ATCCode = request.POST.get('ATCCode')
-            SubjectMedicalPrescription = request.POST.get('SubjectMedicalPrescription')
             controlledVeterinaryMedicine = request.POST.get('controlledVeterinaryMedicine')
             prescriptionOnlyMedicine = request.POST.get('prescriptionOnlyMedicine')
             nonPharmacy = request.POST.get('nonPharmacy')
@@ -43,14 +42,13 @@ def VeterinaryPharmaceutical(request,pk):
 
             nonPharmacy = eval(nonPharmacy)
             pharmaciesOnly = eval(pharmaciesOnly)
-            SubjectMedicalPrescription = eval(SubjectMedicalPrescription)
             controlledVeterinaryMedicine = eval(controlledVeterinaryMedicine)
             
             try:
                 response = config.CLIENT.service.FnPharmaceuticalCard(pk,myAction,prodName,packSize,
                 PharmaceuticalDosage,RouteOfAdministration,shelfLifeAfterDilution,shelfLifeAfterFirstOpening,
                 storageConditions,storageAfterOpening,PharmacotherapeuticGroup
-                ,ATCCode,SubjectMedicalPrescription,controlledVeterinaryMedicine,
+                ,ATCCode,controlledVeterinaryMedicine,
                 prescriptionOnlyMedicine,nonPharmacy,pharmaciesOnly,userId,CountryOfOrigin,CountryOfRelease,
                 iAgree
                 )

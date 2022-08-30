@@ -6,32 +6,26 @@ import  json
 from newsapi import NewsApiClient
 from datetime import date
 
-# Create your views here.
-def dashboard(request):
+def get_object(endpoint):
     session = requests.Session()
     session.auth = config.AUTHS
-    Access_Point= config.O_DATA.format("/QYRegistration")
-    newsapi = NewsApiClient(api_key='5c2c534258a44addb5e6cfd97db6e9ce')
-    today = date.today()
-    OpenProducts = []
-    Pending = []
-    Approved = []
-    Rejected =[]
+    response = session.get(endpoint, timeout=10).json()
+    return response
+
+# Create your views here.
+def dashboard(request):
     try:
-        response = session.get(Access_Point, timeout=10).json()
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
-                output_json = json.dumps(res)
-                OpenProducts.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Processing':
-                output_json = json.dumps(res)
-                Pending.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
-                output_json = json.dumps(res)
-                Approved.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
-                output_json = json.dumps(res)
-                Rejected.append(json.loads(output_json))
+        userId = request.session['UserID']
+        Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
+        response = get_object(Access_Point)
+
+        OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
+        Pending = [x for x in response['value'] if x['Status'] == 'Processing']
+        Approved = [x for x in response['value'] if x['Approval_Status'] == 'Approved']
+        Rejected = [x for x in response['value'] if x['Approval_Status'] == 'Disapproved']
+
+        newsapi = NewsApiClient(api_key='5c2c534258a44addb5e6cfd97db6e9ce')
+        today = date.today()
     
         all_articles = newsapi.get_everything(q='nairobi',
                                       sources='abc-news',

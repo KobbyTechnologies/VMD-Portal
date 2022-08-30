@@ -58,6 +58,7 @@ def myApplications(request,pk):
     session = requests.Session()
     session.auth = config.AUTHS
     Access_Point = config.O_DATA.format("/QYRegistration")
+    Country = config.O_DATA.format("/QYCountries")
     Products = []
     try:
         response = session.get(Access_Point, timeout=10).json()
@@ -70,6 +71,8 @@ def myApplications(request,pk):
                         responses = product
                         Status = product['Status']
                         productClass = product['Veterinary_Classes']
+        CountryResponse = session.get(Country, timeout=10).json()
+        resCountry = CountryResponse['value']
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -78,7 +81,7 @@ def myApplications(request,pk):
         messages.info(request,"Session Expired, Login Again")
         print(e)
         return redirect('login')
-    ctx = {"res":responses,"status":Status,"class":productClass}
+    ctx = {"res":responses,"status":Status,"class":productClass,"country":resCountry}
     return render(request, "applications.html",ctx)
 
 
@@ -234,8 +237,7 @@ def ManufacturesParticulars(request,pk):
                 manufacturerOther = ''
             
             if not ManufacturerGMP:
-                messages.info(request,"You must have a GMP Code to register a product")
-                return redirect('registration')
+                ManufacturerGMP = ''
 
             try:
                 response = config.CLIENT.service.ManufacuresParticulars(prodNo,myAction,TypeOfManufacturer,
@@ -274,6 +276,9 @@ def Ingredients(request,pk):
             userId = request.session['UserID']
             if not ReasonForInclusion:
                 ReasonForInclusion = ''
+
+            if not MolecularFormula:
+                MolecularFormula = ''
             try:
                 response = config.CLIENT.service.Ingredients(prodNo,myAction,ingredientName,ingredientType,ReasonForInclusion,quantityPerDose,
                 Proportion,MolecularFormula,MolecularWeight,specification,strengthOfIngredient,userId)
@@ -496,6 +501,11 @@ def Attachement(request, pk):
             filename = request.POST.get('filename')
             tableID = 52177996
             attachment = base64.b64encode(attach.read())
+            
+            print(attach)
+            print(filename)
+            print(tableID)
+            print(attachment)
             try:
                 response = config.CLIENT.service.Attachement(
                     pk, filename, attachment, tableID)

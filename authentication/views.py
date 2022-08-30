@@ -11,6 +11,19 @@ from  django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 import threading
 
+def get_object(endpoint):
+    session = requests.Session()
+    session.auth = config.AUTHS
+    response = session.get(endpoint, timeout=10).json()
+    return response
+
+def passwordCipher(password):
+    Portal_Password = base64.urlsafe_b64decode(password)
+    cipher_suite = Fernet(config.ENCRYPT_KEY)
+    decoded_text = cipher_suite.decrypt(Portal_Password).decode("ascii")
+    return decoded_text
+
+
 class EmailThread(threading.Thread):
 
     def __init__(self, email):
@@ -44,28 +57,17 @@ def send_mail(lTRMail,verificationToken,request):
 
 # Register View
 def registerRequest(request):
-    session = requests.Session()
-    session.auth = config.AUTHS
     Access_Point = config.O_DATA.format("/QYCountries")
     try:
-        response = session.get(Access_Point, timeout=10).json()
+        response = get_object(Access_Point)
         resCountry = response['value']
     except requests.exceptions.RequestException as e:
         print(e)
+        return redirect('register')
     ctx = {"country":resCountry}
     return render(request,"register.html",ctx)
 
 def registerAccount(request):
-    lTRName = ""
-    lTRMail = ""
-    countryRegionCode = ""
-    postalAddress = ""
-    postCode = ""
-    businessRegNo = ""
-    city = ""
-    myPassword = ""
-    verificationToken = ""
-    myAction = "insert"
 
     if request.method == 'POST':
         try:
@@ -78,34 +80,29 @@ def registerAccount(request):
             city = request.POST.get('city')
             Password = request.POST.get('Password')
             Password2 = request.POST.get('Password2')
-        except ValueError:
-            messages.error(request, "Not sent. Invalid Input, Try Again!!")
-            return redirect('register')
-        if len(Password) < 6:
-            messages.error(request, "Password should be at least 6 characters")
-            return redirect('register')
-        if Password != Password2:
-            messages.error(request, "Password mismatch")
-            return redirect('register')
-        nameChars = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
-                        for i in range(5))
-        verificationToken = str(nameChars)
+            myAction = "insert"
+        
+            if len(Password) < 6:
+                messages.error(request, "Password should be at least 6 characters")
+                return redirect('register')
+            if Password != Password2:
+                messages.error(request, "Password mismatch")
+                return redirect('register')
+            nameChars = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
+                            for i in range(5))
+            verificationToken = str(nameChars)
 
-        cipher_suite = Fernet(config.ENCRYPT_KEY)
-        encrypted_text = cipher_suite.encrypt(Password.encode('ascii'))
-        myPassword = base64.urlsafe_b64encode(encrypted_text).decode("ascii")
-        try:
+            myPassword = passwordCipher(Password)
+
             response = config.CLIENT.service.FnRegistrationSignup(lTRName, lTRMail, countryRegionCode,postalAddress,postCode,businessRegNo,city,myPassword,verificationToken, myAction)
             print(response)
             if response == True:
-                try:
-                    send_mail(lTRMail,verificationToken,request)
-                    messages.success(
-                    request, 'We sent you an email to verify your account')
-                except:
-                    messages.info(request,"Email not Sent, Try with Signing up with another email")
-                    return redirect('register')
-            return redirect('login')
+                send_mail(lTRMail,verificationToken,request)
+                messages.success(
+                request, 'We sent you an email to verify your account')
+                return redirect('login')
+            messages.info(request,"Email not Sent, Try with Signing up with another email")
+            return redirect('register')
         except Exception as e:
             messages.error(request, e)
             print(e)
@@ -122,27 +119,19 @@ def verifyRequest(request):
             email = request.POST.get('email')
             secret = request.POST.get('secret')
             verified = True
-        except ValueError:
-            messages.error(request,'Wrong Input')
-            return redirect('verify')
-        session = requests.Session()
-        session.auth = config.AUTHS
-        Access_Point = config.O_DATA.format("/QYLTRLogins")
-        try:
-            response = session.get(Access_Point, timeout=10).json()
+            Access_Point = config.O_DATA.format(f"/QYLTRLogins?$filter=LTR_Email%20eq%20%27{email}%27")
+            response = get_object(Access_Point)
             for res in response['value']:
-                if res['LTR_Email'] == email and res['Verification_Token'] == secret:
-                    try:
-                        response = config.CLIENT.service.FnVerified(verified, email)
-                        messages.success(request,"Verification Successful")
-                        return redirect('login')
-                    except requests.exceptions.RequestException as e:
-                        messages.error(request,e)
-                        print(e)
-                        return redirect('verify')
+                if res['Verification_Token'] == secret:
+                    response = config.CLIENT.service.FnVerified(verified, email)
+                    messages.success(request,"Verification Successful")
+                    return redirect('login')
         except requests.exceptions.RequestException as e:
             print(e)
             messages.error(request,"Not Verified. check Credentials or Register")
+            return redirect('verify')
+        except ValueError:
+            messages.error(request,'Wrong Input')
             return redirect('verify')
     return render(request,"verify.html")
 
@@ -151,41 +140,29 @@ def loginRequest(request):
         try:
             email = request.POST.get('email')
             password = request.POST.get('password')
-        except ValueError:
-            messages.error(request,'Missing Input')
-            return redirect('login')
-        session = requests.Session()
-        session.auth = config.AUTHS
-        Access_Point = config.O_DATA.format("/QYLTRLogins")
-        try:
-            response = session.get(Access_Point, timeout=10).json()
+
+            Access_Point = config.O_DATA.format(f"/QYLTRLogins?$filter=LTR_Email%20eq%20%27{email}%27")
+            response = get_object(Access_Point)            
             for res in response['value']:
-                if res['LTR_Email'] == email and res['Verified'] == True:
+                if res['Verified'] == True:
                     request.session['UserID'] = res['No']
                     request.session['LTR_Name'] = res['LTR_Name']
                     request.session['LTR_Email'] = res['LTR_Email']
                     request.session['Country'] = res['Country']
                     request.session['Business_Registration_No_'] = res['Business_Registration_No_']
-                    try:
-                        Portal_Password = base64.urlsafe_b64decode(
-                            res['MyPassword'])
-                        cipher_suite = Fernet(config.ENCRYPT_KEY)
-                        decoded_text = cipher_suite.decrypt(Portal_Password).decode("ascii")
-                        if decoded_text == password:
-                            print("User ID:",request.session['UserID'] )
-                            return redirect('dashboard')
-                        else:
-                            messages.error(request, "Invalid Password")
-                            return redirect('login')
-                    except Exception as e:
-                        messages.error(request, "Incorrect Password")
+                    decoded_text = passwordCipher(res['MyPassword'])
+                    if decoded_text == password:
+                        print("User ID:",request.session['UserID'] )
+                        return redirect('dashboard')
+                    else:
+                        messages.error(request, "Invalid Password")
                         return redirect('login')
-                # else:
-                #     messages.error(request, "Your account is not verified, check your email for a verification link or create an account.")
-                #     return redirect('login')
         except requests.exceptions.RequestException as e:
             print(e)
             messages.error(request,e)
+            return redirect('login')
+        except ValueError:
+            messages.error(request,'Missing Input')
             return redirect('login')
     return render(request,'login.html') 
 

@@ -44,13 +44,6 @@
                                 </div>
                             </div>
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingTwo">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseTwo" aria-expanded="false"
-                                        aria-controls="flush-collapseTwo">
-                                        Dosage form and route of administration
-                                    </button>
-                                </h2>
                                 <div id="flush-collapseTwo" class="accordion-collapse collapse show"
                                     aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
@@ -76,28 +69,30 @@
                                         </div>
                                         <hr class="dropdown-divider">
                                         <div class="row my-2">
-                                            <h5>Proposed shelf life (in months)</h5>
+                                            <h5>Proposed shelf life</h5>
                                             <div class="col-md-6">
                                                 <label class="form-label">Proposed shelf life (after reconstitution or
                                                     dilution)</label>
-                                                <input type="number" class="form-control" name="shelfLifeAfterDilution">
+                                                <input type="text" class="form-control" name="shelfLifeAfterDilution">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Proposed shelf life (after first opening
                                                     container)</label>
-                                                <input type="number" class="form-control"
+                                                <input type="text" class="form-control"
                                                     name="shelfLifeAfterFirstOpening">
                                             </div>
                                         </div>
                                         <div class="row my-2">
                                             <div class="col-md-6">
                                                 <label class="form-label">Proposed storage condition</label>
-                                                <input type="text" class="form-control" name="storageConditions">
+                                                <textarea class="form-control longText" name="storageConditions"
+                                                    required></textarea>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Proposed storage conditions after first
                                                     opening</label>
-                                                <input type="text" class="form-control" name="storageAfterOpening">
+                                                <textarea class="form-control longText" name="storageAfterOpening"
+                                                    required></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -133,34 +128,33 @@
                                                 <div class="mb-2">
                                                     <label class="form-label">Country of Origin <span
                                                             class="text-danger">*</span></label>
-                                                    <textarea class="form-control" name="CountryOfOrigin"
-                                                        rows="3"></textarea>
+                                                    <select name="CountryOfOrigin" class="form-select"
+                                                        aria-label="Default select example" required>
+                                                        <option selected value="" disabled>--Select--</option>
+                                                        {% for res in country %}
+                                                        <option value="{{res.Code}}">{{res.Name}}</option>
+                                                        {% empty %}
+                                                        <option value="KE">KENYA</option>
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-2">
                                                     <label class="form-label">Country of Release</label>
-                                                    <textarea class="form-control" name="CountryOfRelease"
-                                                        rows="3"></textarea>
+                                                    <select name="CountryOfRelease" class="form-select"
+                                                        aria-label="Default select example" required>
+                                                        <option selected value="" disabled>--Select--</option>
+                                                        {% for res in country %}
+                                                        <option value="{{res.Code}}">{{res.Name}}</option>
+                                                        {% empty %}
+                                                        <option value="KE">KENYA</option>
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <hr class="dropdown-divider">
-                                        <div class="row my-2">
-                                            <h5>Legal category</h5>
-                                            <div class="col-md-12">
-                                                <label class="form-label">Product is subject to medical
-                                                    prescription</label>
-                                                <select class="form-select" name="SubjectMedicalPrescription"
-                                                    id="Legal1">
-                                                    <option selected>Choose...</option>
-                                                    <option value="True">Yes</option>
-                                                    <option value="False">No</option>
-                                                    <div class="form-text">Proposed dispensing category/classification
-                                                    </div>
-                                                </select>
-                                            </div>
-                                        </div>
                                         <div class="row my-2">
                                             <div class="col-md-12">
                                                 <div class="row mt-4">
@@ -169,7 +163,7 @@
                                                             <label class="form-check-label">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="controlledVeterinaryMedicine" id="legal2"
-                                                                    value="True" disabled>
+                                                                    value="True">
                                                                 Controlled Veterinary Medicine (POM-V category IA)
                                                             </label>
                                                         </div>
@@ -177,7 +171,7 @@
                                                             <label class="form-check-label">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="prescriptionOnlyMedicine" id="legal3"
-                                                                    value="True" disabled>
+                                                                    value="True">
                                                                 Prescription Only Medicine, (IB-POM-V)
                                                             </label>
                                                         </div>
@@ -186,8 +180,7 @@
                                                         <div class="form-check">
                                                             <label class="form-check-label">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    value="True" id="legal4" name="nonPharmacy"
-                                                                    disabled>
+                                                                    value="True" id="legal4" name="nonPharmacy">
                                                                 Product Dispensed from Non-pharmacy outlets and
                                                                 pharmacies
                                                             </label>
@@ -195,8 +188,7 @@
                                                         <div class="form-check">
                                                             <label class="form-check-label">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    value="True" id="legal5" name="pharmaciesOnly"
-                                                                    disabled>
+                                                                    value="True" id="legal5" name="pharmaciesOnly">
                                                                 Pharmacies only
                                                             </label>
                                                         </div>
@@ -230,21 +222,3 @@
         </div>
     </div>
 </section>
-
-<script>
-    $(document).ready(function () {
-        $('#Legal1').on('change', function () {
-            if (this.value == "True") {
-                $('#legal2').prop('disabled', false);
-                $('#legal3').prop('disabled', false);
-                $('#legal4').prop('disabled', true);
-                $('#legal5').prop('disabled', true);
-            } else if (this.value == "False") {
-                $('#legal4').prop('disabled', false);
-                $('#legal5').prop('disabled', false);
-                $('#legal2').prop('disabled', true);
-                $('#legal3').prop('disabled', true);
-            }
-        });
-    })
-</script>
