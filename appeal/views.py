@@ -3,55 +3,65 @@ import json
 import requests
 from django.conf import settings as config
 from django.contrib import messages
-from datetime import date, datetime
+from django.views import  View
 
 # Create your views here.
-def appealRequest(request):
+
+class UserObjectMixin(object):
+    model =None
     session = requests.Session()
     session.auth = config.AUTHS
-    Retention= config.O_DATA.format("/QYAppeal")
-    Access_Point= config.O_DATA.format("/QYRegistration")
-    OpenProducts = []
-    Pending = []
-    Approved = []
-    Rejected =[]
-    ApprovedAppeal =[]
-    try:
-        response = session.get(Retention, timeout=10).json()
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
-                output_json = json.dumps(res)
-                OpenProducts.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Processing':
-                output_json = json.dumps(res)
-                Pending.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
-                output_json = json.dumps(res)
-                Approved.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
-                output_json = json.dumps(res)
-                Rejected.append(json.loads(output_json))
-        AppealResponse = session.get(Access_Point, timeout=10).json()
-        for res in AppealResponse['value']:
-            if res['User_code'] == request.session['UserID']:
-                output_json = json.dumps(res)
-                ApprovedAppeal.append(json.loads(output_json))
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    openCount = len(OpenProducts)
-    pendCount = len(Pending)
-    appCount = len(Approved)
-    rejectedCount = len(Rejected)
-    ctx = {"openCount":openCount,"open":OpenProducts,
-    "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedAppeal}
-    return render(request,'appeal.html',ctx)
+    def get_object(self,endpoint):
+        response = self.session.get(endpoint, timeout=10).json()
+        return response
+
+class appealRequest(UserObjectMixin,View):
+    def get(self,request):
+        try:
+            userID =request.session['UserID']
+            Retention= config.O_DATA.format(f"/QYAppeal?$filter=User_code%20eq%20%27{userID}%27")
+            response = self.get_object(Retention)
+            openAppeal = [x for x in response['value'] if x['Status'] == 'Open']
+            pendingAppeal = [x for x in response['value'] if x['Status'] == 'Processing']
+            approvedAppeal = [x for x in response['value'] if x['Status'] == 'Approved']
+            rejectedAppeal = [x for x in response['value'] if x['Status'] == 'Rejected']
+
+            Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userID}%27")
+            rejectedResponse = self.get_object(Access_Point)
+            Rejected = [x for x in rejectedResponse['value'] if x['Status'] == 'Rejected']
+            
+        except Exception as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('login')
+        openCount = len(openAppeal)
+        pendCount = len(pendingAppeal)
+        appCount = len(approvedAppeal)
+        rejectedCount = len(rejectedAppeal)
+        ctx = {"openCount":openCount,"open":openAppeal,
+        "pendCount":pendCount,"pending":pendingAppeal,"appCount":appCount,"approved":approvedAppeal,
+        "rejectedCount":rejectedCount,"rejected":rejectedAppeal,"product":Rejected}
+        return render(request,'appeal.html',ctx)
+    def post(self, request):
+        if request.method == 'POST':
+            try:
+                appNo = request.POST.get('appNo')
+                myAction = request.POST.get('myAction')
+                prodNo = request.POST.get('prodNo')
+                response = config.CLIENT.service.FnAppeal(appNo,myAction,request.session['UserID'],prodNo)
+                print("response:",response)
+                if response == True:
+                    messages.success(request,"Request Successful")
+                    return redirect('appeal')
+            except requests.exceptions.RequestException as e:
+                print(e)
+                messages.error(request,e)
+                return redirect('appeal')
+            except KeyError as e:
+                messages.info(request,"Session Expired, Login Again")
+                print(e)
+                return redirect('login') 
+        return redirect('appeal')
 
 
 def appealDetails(request,pk):
@@ -85,26 +95,7 @@ def appealDetails(request,pk):
 
     return render(request,"appealDetails.html",ctx)
 
-def ApplyAppeal(request):
-    if request.method == 'POST':
-        try:
-            appNo = ''
-            myAction = 'insert'
-            prodNo = request.POST.get('prodNo')
-            response = config.CLIENT.service.FnAppeal(appNo,myAction,request.session['UserID'],prodNo)
-            print(response)
-            if response == True:
-                messages.success(request,"Request Successful")
-                return redirect('appeal')
-        except requests.exceptions.RequestException as e:
-            print(e)
-            messages.error(request,e)
-            return redirect('appeal')
-        except KeyError as e:
-            messages.info(request,"Session Expired, Login Again")
-            print(e)
-            return redirect('login') 
-    return redirect('appeal')
+   
 
 def appealGateway(request,pk):
     session = requests.Session()

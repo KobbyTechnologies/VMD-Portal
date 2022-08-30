@@ -78,6 +78,7 @@
                                     class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Appeal No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Appeal Stage</th>
                                             <th scope="col">Status</th>
@@ -88,6 +89,7 @@
                                     <tbody>
                                         {% for res in open %}
                                         <tr>
+                                            <td>{{res.Appeal_No_}}</td>
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
@@ -96,9 +98,59 @@
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <a href="{% url 'appealDetails' res.Appeal_No_ %}" type="button"
-                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i>
-                                                    Next</a></td>
+                                                <div class="d-grid gap-1 d-md-flex justify-content">
+                                                    <button class="btn btn-secondary me-sm-2" type="button"
+                                                        data-toggle="tooltip" data-placement="top" title="edit"
+                                                        data-bs-toggle="modal" data-bs-target="#editAppeal">Edit <i
+                                                            class="bi bi-pencil-square"></i></button>
+                                                    <a href="{% url 'appealDetails' res.Appeal_No_ %}" type="button"
+                                                        class="btn btn-success">Next <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="modal fade" id="editAppeal" data-bs-backdrop="static"
+                                                    data-bs-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div
+                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title text-white"
+                                                                    id="exampleModalLabel">
+                                                                    Edit Appeal No. {{res.Appeal_No_}} </h5>
+                                                                <button type="button" class="btn-close btn-close-white"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{% url 'appeal' %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="appNo"
+                                                                        value="{{res.Appeal_No_}}">
+                                                                    <input type="hidden" name="myAction" value="modify">
+                                                                    <div class="row my-2">
+                                                                        <div class="col-md-12">
+                                                                            <label for=""
+                                                                                class="form-label">Product</label>
+                                                                            <select class="form-select" name="prodNo"
+                                                                                required>
+                                                                                <option value="0" disabled selected>
+                                                                                    --Select Product--</option>
+                                                                                {% for res in product %}
+                                                                                <option value="{{res.ProductNo}}">
+                                                                                    {{res.ProductNo}}-{{res.Veterinary_Classes}}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-success my-2"
+                                                                        id="retentionSubmit">Submit</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -111,6 +163,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Appeal No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Appeal Stage</th>
                                             <th scope="col">Status</th>
@@ -120,6 +173,7 @@
                                     <tbody>
                                         {% for res in pending %}
                                         <tr>
+                                            <td>{{res.Appeal_No_}}</td>
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
@@ -141,6 +195,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Appeal No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Appeal Stage</th>
                                             <th scope="col">Status</th>
@@ -150,6 +205,7 @@
                                     <tbody>
                                         {% for res in approved %}
                                         <tr>
+                                            <td>{{res.Appeal_No_}}</td>
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
@@ -170,6 +226,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Appeal No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Appeal Stage</th>
                                             <th scope="col">Status</th>
@@ -179,6 +236,7 @@
                                     <tbody>
                                         {% for res in rejected %}
                                         <tr>
+                                            <td>{{res.Appeal_No_}}</td>
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Appeal_Stage}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
@@ -203,13 +261,16 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-dark" id="exampleModalLabel">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">
                         Raise Appeal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'ApplyAppeal' %}" method="post">
+                    <form action="{% url 'appeal' %}" method="post">
                         {% csrf_token %}
+                        <input type="hidden" name="appNo" value="">
+                        <input type="hidden" name="myAction" value="insert">
                         <div class="row my-2">
                             <div class="col-md-12">
                                 <label for="" class="form-label">Product</label>
@@ -222,7 +283,7 @@
                                 </select>
                             </div>
                         </div>
-                        <p class="text-danger" id="responses"></p>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-success my-2" id="retentionSubmit">Submit</button>
                     </form>
                 </div>
@@ -230,32 +291,6 @@
         </div>
     </div>
 </main>
-<script>
-    $(document).ready(function () {
-        $('#changesToTheProduct').on('change', function () {
-            if (this.value == "True") {
-                $('#variationRow').show(1000)
-                $('#variation').prop('disabled', false);
-            } else {
-                $('#variationRow').hide()
-                $('#variation').prop('disabled', true);
-            }
-        });
-
-        $('#variation').on('change', function () {
-            if (this.value == "True") {
-                $('#VariationNumberRow').show(1000)
-                $('#VariationNumber').prop('disabled', false);
-            } else {
-                $('#VariationNumberRow').hide()
-                $('#VariationNumber').prop('disabled', true)
-                $('#responses').append('You have to do a variation first');
-                $('#retentionSubmit').prop('disabled', true)
-            }
-        });
-    })
-</script>
-
 {% include 'footer.html' %}
 
 {% endblock %}
