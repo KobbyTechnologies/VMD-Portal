@@ -70,9 +70,23 @@
                             </div>
                         </div>
                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            {% if res.Status == 'Open' %}
                             <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                                aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
                             </div>
+                            {% elif res.Status == 'Processing' %}
+                            <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
+                            </div>
+                            {% elif res.Status == 'Approved' %}
+                            <div class="progress-bar bg-success" role="progressbar" data-width="25%" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                            </div>
+                            {% elif res.Status == 'Rejected' %}
+                            <div class="progress-bar bg-danger" role="progressbar" data-width="25%" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -120,7 +134,7 @@
                                     {% csrf_token %}
                                     <div class="mb-3">
                                         <label class="form-label">Document Name</label>
-                                        <select class="form-select" aria-label="Default select example" name="filename">
+                                        <select class="form-select" aria-label="Default select example" name="name">
                                             <option selected disabled value="">Choose...</option>
                                             {% for attach in attach %}
                                             {% if attach.Class == 'RENEWAL' %}
@@ -154,8 +168,48 @@
                                 <input type="text" class="form-control" placeholder="{{res.Product_No}}" readonly>
                             </div>
                             <div class="col-md-6 mb-2">
+                                <label class="form-label">Product Name</label>
+                                <input type="text" class="form-control" placeholder="{{res.Product_name}}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Business Registration No.</label>
+                                <input type="text" class="form-control" placeholder="{{res.Business_Registration_No_}}"
+                                    readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">LTR Name</label>
+                                <input type="text" class="form-control" placeholder="{{res.LTR_Name}}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">LTR Physical Address</label>
+                                <input type="text" class="form-control" placeholder="{{res.LTR_Physical_Address}}"
+                                    readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">VMD Classification</label>
+                                <input type="text" class="form-control"
+                                    placeholder="{{res.VMD_classification__LN__No__29_of_2011_Schedule_2_Part_I_}}"
+                                    readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
                                 <label class="form-label">Renewal No </label>
                                 <input type="text" class="form-control" placeholder="{{res.Renewal_No_}}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Renewal Year </label>
+                                <input type="text" class="form-control" placeholder="{{res.Renewal_Year}}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">GMP Expiry Date</label>
+                                <input type="text" class="form-control" placeholder="{{res.GMP_Expiry_Date}}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Dosage Form</label>
+                                <input type="text" class="form-control" placeholder="{{res.Dosage_forms}}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">MAH Name</label>
+                                <input type="text" class="form-control" placeholder="{{res.MAH_Name}}" readonly>
                             </div>
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">Status</label>
@@ -173,6 +227,11 @@
                                 <label class="form-label">Amount Payable</label>
                                 <input type="text" class="form-control"
                                     placeholder="{{res.Currency_Code}} {{res.Amount_Payable}}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">VMD Registration Number</label>
+                                <input type="text" class="form-control" placeholder="{{res.VMD_Registration_Number}}"
+                                    readonly>
                             </div>
                         </div>
                     </div>

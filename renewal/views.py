@@ -49,38 +49,30 @@ class RenewalRequest(UserObjectMixin,View):
         "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApproveRenewal}
         return render (request,'renew.html',ctx)
 
-def renewDetails(request,pk):
-    session = requests.Session()
-    session.auth = config.AUTHS
-    Access_Point = config.O_DATA.format("/QYRenewal")
-    Attachments = config.O_DATA.format("/QYRequiredDocuments")
-    Retension = []
-    responses =''
-    Status=''
+class renewDetails(UserObjectMixin,View):
+    def get(self,request,pk):
+        try:
+            userID = request.session['UserID']
+            Access_Point = config.O_DATA.format(f"/QYRenewal?$filter=User_code%20eq%20%27{userID}%27%20and%20Renewal_No_%20eq%20%27{pk}%27")
+            response = self.get_object(Access_Point)
+            for res in response['value']:
+                responses = res
+                Status = res['Status']
 
-    try:
-        response = session.get(Access_Point, timeout=10).json()
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID']:
-                output_json = json.dumps(res)
-                Retension.append(json.loads(output_json))
-                for product in Retension:
-                    if product['Renewal_No_'] == pk:
-                        responses = product
-                        Status = product['Status']
-        AttachResponse = session.get(Attachments, timeout=10).json()
-        attach = AttachResponse['value']
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    
-    ctx = {"res":responses,"status":Status,"attach":attach}
-    return render(request,"renewDetails.html",ctx)
+            Attachments = config.O_DATA.format("/QYRequiredDocuments")
+            AttachResponse = self.get_object(Attachments)
+            attach = AttachResponse['value']
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('Registration')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        
+        ctx = {"res":responses,"status":Status,"attach":attach}
+        return render(request,"renewDetails.html",ctx)
 
 class  ApplyRenewal(UserObjectMixin,View):
     def post(self, request):
@@ -104,43 +96,57 @@ class  ApplyRenewal(UserObjectMixin,View):
         return redirect('renew')
 
 
-def renewGateway(request,pk):
-    session = requests.Session()
-    session.auth = config.AUTHS
-    Access_Point = config.O_DATA.format("/QYRenewal")
-    Products = []
-    paid=''
-    responses=''
-    Status = ''
-    try:
-        response = session.get(Access_Point, timeout=10).json()
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID']:
-                output_json = json.dumps(res)
-                Products.append(json.loads(output_json))
-                for product in Products:
-                    if product['Renewal_No_'] == pk:
-                        responses = product
-                        Status = product['Status']
-                        paid = product['Paid']
+class renewGateway(UserObjectMixin,View):
+    def get(self, request,pk):
+        try:
+            userID = request.session['UserID']
+            Access_Point = config.O_DATA.format(f"/QYRenewal?$filter=User_code%20eq%20%27{userID}%27%20and%20Renewal_No_%20eq%20%27{pk}%27")
+            response = self.get_object(Access_Point)
+            for res in response['value']:
+                responses = res
+                Status = res['Status']
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('renewGateway',pk=pk)
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        ctx = {"res":responses,"status":Status}
+        return render(request,'renewGateway.html',ctx)
+    def post(self, request,pk):
         if request.method == 'POST':
-            if paid == True:
-                messages.success(request,"Payment Received successfully")
-                return redirect('renewDetails', pk=pk)
-            if paid == False:
-                messages.info(request,"Payment not received, Try again.")
+            try:
+                transactionCode = request.POST.get('transactionCode')
+                currency = request.POST.get('currency')
+
+                if not transactionCode:
+                    messages.error(request, "Transaction Code can't be empty.")
+                    return redirect('renewGateway', pk=pk)
+                if not currency:
+                    messages.error(request, "Currency code missing please contact the system admin")
+                    return redirect('renewGateway', pk=pk)
+                response = config.CLIENT.service.FnConfirmPayment(transactionCode,currency,pk,request.session['UserID'])
+                print(response)
+                if response == True:
+                    messages.success(request,"Payment was successful. You can now submit your application.")
+                    return redirect('renewDetails', pk=pk)
+                else:
+                    messages.error("Payment Not sent. Try Again.")
+                    return redirect('renewGateway', pk=pk)
+            except requests.exceptions.RequestException as e:
+                messages.error(request,e)
+                print(e)
                 return redirect('renewGateway', pk=pk)
-            
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    ctx = {"res":responses,"status":Status}
-    return render(request,'renewGateway.html',ctx)
+            except KeyError as e:
+                messages.info(request,"Session Expired, Login Again")
+                print(e)
+                return redirect('login')
+            except Exception as e:
+                messages.error(request,e)
+                return redirect('renewGateway', pk=pk)
+        return redirect('renewGateway', pk=pk)
 
 def SubmitRenewal(request,pk):
     if request.method == 'POST':
@@ -170,12 +176,14 @@ def RenewAttachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            filename = request.POST.get('filename')
+            filename = request.FILES['attachment'].name
+            name = request.POST.get('name')
             tableID = 52177996
             attachment = base64.b64encode(attach.read())
+
             try:
                 response = config.CLIENT.service.Attachement(
-                    pk, filename, attachment, tableID)
+                    pk, filename,name, attachment, tableID)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")
@@ -188,6 +196,6 @@ def RenewAttachement(request, pk):
                 print(e)
                 return redirect('renewDetails', pk=pk)
         except Exception as e:
-            print(e)
-            return redirect('renewDetails', pk=pk)
+            print(e)        
     return redirect('renewDetails', pk=pk)
+    
