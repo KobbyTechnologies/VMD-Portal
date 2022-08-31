@@ -334,51 +334,38 @@ class makePayment(UserObjectMixin,View):
                 return redirect ('productDetails',pk=pk)
         return redirect('productDetails', pk=pk)
 
-def MyApplications(request):
-    session = requests.Session()
-    session.auth = config.AUTHS
-    userId = request.session['UserID']
-    Vet_Classes= config.O_DATA.format("/QYVertinaryclasses")
-    Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
-    OpenProducts = []
-    Pending = []
-    Approved = []
-    Rejected =[]
-    try:
-        vet_response = session.get(Vet_Classes, timeout=10).json()
-        response = session.get(Access_Point, timeout=10).json()
-        product = vet_response['value']
+class MyApplications(UserObjectMixin):
+    def get(self,request):
+        try:
+            userId = request.session['UserID']
 
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
-                output_json = json.dumps(res)
-                OpenProducts.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Processing':
-                output_json = json.dumps(res)
-                Pending.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
-                output_json = json.dumps(res)
-                Approved.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
-                output_json = json.dumps(res)
-                Rejected.append(json.loads(output_json))
+            Vet_Classes= config.O_DATA.format("/QYVertinaryclasses")
+            vet_response = self.get_object(Vet_Classes)
+            product = vet_response['value']
 
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    openCount = len(OpenProducts)
-    pendCount = len(Pending)
-    appCount = len(Approved)
-    rejectedCount = len(Rejected)
-    ctx = {"product": product,"openCount":openCount,"open":OpenProducts,
-    "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected}
-    return render(request,'applications.html',ctx)
+            Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
+            response = self.get_object(Access_Point)
+            OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
+            Pending = [x for x in response['value'] if x['Status'] == 'Processing']
+            Approved = [x for x in response['value'] if x['Status'] == 'Approved']
+            Rejected = [x for x in response['value'] if x['Status'] == 'Rejected']
+            
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('applications')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        openCount = len(OpenProducts)
+        pendCount = len(Pending)
+        appCount = len(Approved)
+        rejectedCount = len(Rejected)
+        ctx = {"product": product,"openCount":openCount,"open":OpenProducts,
+        "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
+        "rejectedCount":rejectedCount,"rejected":Rejected}
+        return render(request,'applications.html',ctx)
 
 def allApplications(request):
     session = requests.Session()
