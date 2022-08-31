@@ -49,17 +49,33 @@
                     </div>
                     <div class="col-12 px-0 mb-4">
                         <div class="box-right">
-                            <div class="d-flex pb-2">
-                                <p class="fw-bold h7">Public Note</p>
+                            <div class="d-flex">
+                                <p class="fw-bold h7">Confirm Payment</p>
 
                                 <p class="ms-auto p-blue"> <span
                                         class=" bg btn btn-primary bi bi-exclamation-circle"></span> </p>
                             </div>
-                            <div class="bg-blue p-2">
+                            <div class="bg-blue px-2">
                                 <P class="textmuted">VMD will never ask you for your password, PIN, CVV, or
                                     full card details.
                                 </P>
                             </div>
+                            <form action="{% url 'PaymentGateway' res.ProductNo %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="currency" value="{{res.Currency_Code}}">
+                                <div class="row my-3">
+                                    <div class="col-md-12">
+                                        <label for="" class="form-label">Reference Number <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="transactionCode" required>
+                                        <div class="form-text">Enter transaction or reference number to confirm payment
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary d-block w-100">Confirm Payment
+                                    <span class="ms-3 bi bi-arrow-right"></span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -94,19 +110,6 @@
                                     <p>Swift Code: <span class="text-primary">NBKEKENXXXX</span></p>
                                     <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>
                                     <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
-                                    <form action="{% url 'PaymentGateway' res.ProductNo %}" method="POST">
-                                        {% csrf_token %}
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label for="" class="form-label">Transaction/Reference Number</label>
-                                                <input type="text" class="form-control" name="refNo" required>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
-                                            <span class="ms-3 bi bi-arrow-right"></span>
-                                        </button>
-                                    </form>
-
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel"
@@ -115,12 +118,6 @@
                                     <p>PayBill: <span class="text-primary">471524</span></p>
                                     <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>
                                     <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
-                                    <form action="{% url 'PaymentGateway' res.ProductNo %}" method="POST">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-primary d-block h8">Confirm Payment
-                                            <span class="ms-3 bi bi-arrow-right"></span>
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
                         </div>

@@ -1,90 +1,79 @@
-from asyncio import exceptions
 from django.shortcuts import redirect, render
 from django.conf import settings as config
 import requests 
 from django.contrib import messages
 import json
-from datetime import date, datetime
+from datetime import  datetime
 import base64
 import io as BytesIO
 from django.http import HttpResponse
+from django.views import View
 # Create your views here.
 
-def registrationRequest(request):
+class UserObjectMixin(object):
+    model =None
     session = requests.Session()
     session.auth = config.AUTHS
-    userId = request.session['UserID'] 
-    Vet_Classes= config.O_DATA.format("/QYVertinaryclasses")
-    Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
-    OpenProducts = []
-    Pending = []
-    Approved = []
-    Rejected =[]
-    try:
-        vet_response = session.get(Vet_Classes, timeout=10).json()
-        response = session.get(Access_Point, timeout=10).json()
-        product = vet_response['value']
-        for res in response['value']:
-            if res['Status'] == 'Open':
-                output_json = json.dumps(res)
-                OpenProducts.append(json.loads(output_json))
-            if res['Status'] == 'Processing':
-                output_json = json.dumps(res)
-                Pending.append(json.loads(output_json))
-            if res['Status'] == 'Approved':
-                output_json = json.dumps(res)
-                Approved.append(json.loads(output_json))
-            if res['Status'] == 'Rejected':
-                output_json = json.dumps(res)
-                Rejected.append(json.loads(output_json))
+    def get_object(self,endpoint):
+        response = self.session.get(endpoint, timeout=10).json()
+        return response
 
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    openCount = len(OpenProducts)
-    pendCount = len(Pending)
-    appCount = len(Approved)
-    rejectedCount = len(Rejected)
-    ctx = {"product": product,"openCount":openCount,"open":OpenProducts,
-    "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected}
-    return render(request,'registration.html',ctx)
+class registrationRequest(UserObjectMixin,View):
+    def get(self,request):
+        try:
+            userId = request.session['UserID'] 
+            Vet_Classes= config.O_DATA.format("/QYVertinaryclasses")
+            vet_response = self.get_object(Vet_Classes)
+            product = vet_response['value']
 
-def myApplications(request,pk):
-    session = requests.Session()
-    session.auth = config.AUTHS
-    userId = request.session['UserID']
-    Access_Point = config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
-    Country = config.O_DATA.format("/QYCountries")
-    Products = []
-    try:
-        response = session.get(Access_Point, timeout=10).json()
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID']:
-                output_json = json.dumps(res)
-                Products.append(json.loads(output_json))
-                for product in Products:
-                    if product['ProductNo'] == pk:
-                        responses = product
-                        Status = product['Status']
-                        productClass = product['Veterinary_Classes']
-        CountryResponse = session.get(Country, timeout=10).json()
-        resCountry = CountryResponse['value']
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    ctx = {"res":responses,"status":Status,"class":productClass,"country":resCountry}
-    return render(request, "applications.html",ctx)
+            Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
+            response = self.get_object(Access_Point)
+            OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
+            Pending = [x for x in response['value'] if x['Status'] == 'Processing']
+            Approved = [x for x in response['value'] if x['Status'] == 'Approved']
+            Rejected = [x for x in response['value'] if x['Status'] == 'Rejected']
+
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('Registration')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        openCount = len(OpenProducts)
+        pendCount = len(Pending)
+        appCount = len(Approved)
+        rejectedCount = len(Rejected)
+        ctx = {"product": product,"openCount":openCount,"open":OpenProducts,
+        "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
+        "rejectedCount":rejectedCount,"rejected":Rejected}
+        return render(request,'registration.html',ctx)
+
+class myApplications(UserObjectMixin,View):
+    def get(self, request,pk):
+        try:
+            userId = request.session['UserID']
+            Access_Point = config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27%20and%20ProductNo%20eq%20%27{pk}%27")
+            response = self.get_object(Access_Point)
+            for res in response['value']:
+                responses = res
+                Status = res['Status']
+                productClass = res['Veterinary_Classes']
+
+            Country = config.O_DATA.format("/QYCountries")   
+            CountryResponse = self.get_object(Country)
+            resCountry = CountryResponse['value']
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('applications')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        ctx = {"res":responses,"status":Status,"class":productClass,"country":resCountry}
+        return render(request, "applications.html",ctx)
 
 
 def productClass(request):
@@ -95,15 +84,8 @@ def productClass(request):
             myAction = request.POST.get('myAction')
             userCode = request.session['UserID']
             prodNo = request.POST.get('prodNo')
-        except ValueError:
-            messages.error(request,"Missing Input")
-            return redirect('Registration')
-        except KeyError:
-            messages.info(request,"Session Expired, Login Again")
-            return redirect('login')
-        if not prodNo:
-            prodNo = ''
-        try:
+            if not prodNo:
+                prodNo = ''
             response = config.CLIENT.service.FnClass(prodNo, classCode,typeofManufacture,myAction,userCode)
             print(response)
             if response == True:
@@ -114,111 +96,79 @@ def productClass(request):
             print(e)
             return redirect('Registration')
     return redirect('Registration')
-def productDetails(request,pk):
-    session = requests.Session()
-    session.auth = config.AUTHS
-    userId = request.session['UserID']
-    Access_Point = config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
-    ManufacturesParticulars = config.O_DATA.format("/QYManufactureParticulers")
-    Countries = config.O_DATA.format("/QYCountries")
-    Ingredients = config.O_DATA.format("/QYIngredients")
-    CountriesRegistered = config.O_DATA.format("/QYCountriesRegistered")
-    MarketingAuthorisation = config.O_DATA.format("/QYMarketingAuthorisation")
-    FeedAdditives = config.O_DATA.format("/QYAddictives")
-    Methods = config.O_DATA.format("/QYMethods")
-    Attachments = config.O_DATA.format("/QYRequiredDocuments")
-    AllAttachments = config.O_DATA.format("/QYDocumentAttachments")
 
-    Products = []
-    Additive = []
-    Method = []
-    Manufacturer = []
-    Ingredient = []
-    CountriesRegister = []
-    Marketing = []
-    responses =''
-    Status=''
-    productClass=''
-    Files = []
-    try:
-        UserID=request.session['UserID']
-        LTR_Name=request.session['LTR_Name']
-        LTR_Email=request.session['LTR_Email']
-        LTR_Country=request.session['Country']
-        LTR_BS_No=request.session['Business_Registration_No_'] 
+class productDetails(UserObjectMixin,View):
+    def get(self, request,pk):
+        try:
+            UserID=request.session['UserID']
+            LTR_Name=request.session['LTR_Name']
+            LTR_Email=request.session['LTR_Email']
+            LTR_Country=request.session['Country']
+            LTR_BS_No=request.session['Business_Registration_No_'] 
+            userId = request.session['UserID']
+            Access_Point = config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27%20and%20ProductNo%20eq%20%27{pk}%27")
+            response = self.get_object(Access_Point)
+            for res in response['value']:
+                responses = res
+                Status = res['Status']
+                productClass = res['Veterinary_Classes']
+                            
+            ManufacturesParticulars = config.O_DATA.format(f"/QYManufactureParticulers?$filter=User_code%20eq%20%27{userId}%27%20and%20No%20eq%20%27{pk}%27")
+            ManufacturerResponse = self.get_object(ManufacturesParticulars)
+            Manufacturer = [x for x in ManufacturerResponse['value']]
 
-        response = session.get(Access_Point, timeout=10).json()
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID']:
-                output_json = json.dumps(res)
-                Products.append(json.loads(output_json))
-                for product in Products:
-                    if product['ProductNo'] == pk and product['I_Agree'] == True:
-                        responses = product
-                        Status = product['Status']
-                        productClass = product['Veterinary_Classes']
-                    if product['ProductNo'] == pk and product['I_Agree'] == False:
-                        messages.error(request,"You have not agreed to the terms and conditions. You can not continue with registration. Your data will be deleted")
-                        return redirect('Registration')
-        ManufacturerResponse = session.get(ManufacturesParticulars, timeout=10).json()
-        for manufacturer in ManufacturerResponse['value']:
-            if manufacturer['User_code'] == request.session['UserID'] and manufacturer['No'] == pk:
-                output_json = json.dumps(manufacturer)
-                Manufacturer.append(json.loads(output_json))
-        CountryResponse = session.get(Countries, timeout=10).json()
-        resCountry = CountryResponse['value']
-        IngredientResponse = session.get(Ingredients, timeout=10).json()
-        for ingredient in IngredientResponse['value']:
-            if ingredient['User_code'] == request.session['UserID'] and ingredient['No'] == pk:
-                output_json = json.dumps(ingredient)
-                Ingredient.append(json.loads(output_json))
-        CountriesRegisteredResponse = session.get(CountriesRegistered, timeout=10).json()
-        for country in CountriesRegisteredResponse['value']:
-            if country['User_code'] == request.session['UserID'] and country['No'] == pk:
-                output_json = json.dumps(country)
-                CountriesRegister.append(json.loads(output_json))
+            Countries = config.O_DATA.format("/QYCountries")
+            CountryResponse = self.get_object(Countries)
+            resCountry = CountryResponse['value']
 
-        MarketingAuthorisationResponse = session.get(MarketingAuthorisation, timeout=10).json()
-        for marketing in MarketingAuthorisationResponse['value']:
-            if marketing['User_code'] == request.session['UserID'] and marketing['Country_No_'] == pk:
-                output_json = json.dumps(marketing)
-                Marketing.append(json.loads(output_json))
-        AdditiveResponse = session.get(FeedAdditives, timeout=10).json()
-        for additive in AdditiveResponse['value']:
-            if additive['User_code'] == request.session['UserID'] and additive['No'] == pk:
-                output_json = json.dumps(additive)
-                Additive.append(json.loads(output_json))
-        MethodResponse = session.get(Methods, timeout=10).json()
-        for method in MethodResponse['value']:
-            if method['User_Code'] == request.session['UserID'] and method['No'] == pk:
-                output_json = json.dumps(method)
-                Method.append(json.loads(output_json))
-        AttachResponse = session.get(Attachments, timeout=10).json()
-        attach = AttachResponse['value']
-        AllAttachResponse = session.get(AllAttachments, timeout=10).json()
-        for data in AllAttachResponse['value']:
-            if data['No_'] == pk and data['Table_ID'] == 52177996:
-                output_json = json.dumps(data)
-                Files.append(json.loads(output_json))
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    except Exception as e:
-        messages.error(request,e)
-        return redirect('Registration')
-    
-    ctx = {"res":responses,"status":Status,"class":productClass,
-    "manufacturer":Manufacturer,"country":resCountry,
-    "CountriesRegister":CountriesRegister,
-    "marketing":Marketing,'ingredient':Ingredient,"additive":Additive,"method":Method,
-    "UserID":UserID,"LTRName":LTR_Name,"LTR_Email":LTR_Email,"LTRCountry":LTR_Country,
-    "LTRBsNo":LTR_BS_No,"attach":attach,"files": Files}
-    return render(request,'productDetails.html',ctx)
+            Ingredients = config.O_DATA.format(f"/QYIngredients?$filter=User_code%20eq%20%27{userId}%27%20and%20No%20eq%20%27{pk}%27")
+            IngredientResponse = self.get_object(Ingredients)
+            Ingredient = [x for x in IngredientResponse['value']]
+
+
+            CountriesRegistered = config.O_DATA.format(f"/QYCountriesRegistered?$filter=User_code%20eq%20%27{userId}%27%20and%20No%20eq%20%27{pk}%27")
+            CountriesRegisteredResponse = self.get_object(CountriesRegistered)  
+            CountriesRegister = [x for x in CountriesRegisteredResponse['value']]
+
+            MarketingAuthorisation = config.O_DATA.format(f"/QYMarketingAuthorisation?$filter=User_code%20eq%20%27{userId}%27%20and%20Country_No_%20eq%20%27{pk}%27")
+            MarketingAuthorisationResponse = self.get_object(MarketingAuthorisation)
+            Marketing = [x for x in MarketingAuthorisationResponse['value']]
+
+            FeedAdditives = config.O_DATA.format(f"/QYAddictives?$filter=User_code%20eq%20%27{userId}%27%20and%20No%20eq%20%27{pk}%27")
+            AdditiveResponse = self.get_object(FeedAdditives)
+            Additive = [x for x in AdditiveResponse['value']]
+
+            Methods = config.O_DATA.format(f"/QYMethods?$filter=User_Code%20eq%20%27{userId}%27%20and%20No%20eq%20%27{pk}%27")
+            MethodResponse = self.get_object(Methods)
+            Method = [x for x in MethodResponse['value']]
+
+            Attachments = config.O_DATA.format("/QYRequiredDocuments")
+            AttachResponse = self.get_object(Attachments)
+            attach = AttachResponse['value']
+
+            AllAttachments = config.O_DATA.format(f"/QYDocumentAttachments?$filter=No_%20eq%20%27{pk}%27%20and%20Table_ID%20eq%2052177996")
+            AllAttachResponse = self.get_object(AllAttachments)
+            Files = [x for x in AllAttachResponse['value']]
+
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('applications')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        except Exception as e:
+            messages.error(request,e)
+            return redirect('applications')
+        
+        ctx = {"res":responses,"status":Status,"class":productClass,
+        "manufacturer":Manufacturer,"country":resCountry,
+        "CountriesRegister":CountriesRegister,
+        "marketing":Marketing,'ingredient':Ingredient,"additive":Additive,"method":Method,
+        "UserID":UserID,"LTRName":LTR_Name,"LTR_Email":LTR_Email,"LTRCountry":LTR_Country,
+        "LTRBsNo":LTR_BS_No,"attach":attach,"files": Files}
+        return render(request,'productDetails.html',ctx)
 
 def ManufacturesParticulars(request,pk):
     if request.method == 'POST':
@@ -271,20 +221,15 @@ def Ingredients(request,pk):
             ingredientName = request.POST.get('ingredientName')
             quantityPerDose = request.POST.get('quantityPerDose')
             strengthOfIngredient = request.POST.get('strengthOfIngredient')
-            MolecularFormula = request.POST.get('MolecularFormula')
-            MolecularWeight = request.POST.get('MolecularWeight')
             Proportion = request.POST.get('Proportion')
             ReasonForInclusion= request.POST.get('ReasonForInclusion')
             specification = request.POST.get('specification')
             userId = request.session['UserID']
             if not ReasonForInclusion:
                 ReasonForInclusion = ''
-
-            if not MolecularFormula:
-                MolecularFormula = ''
             try:
                 response = config.CLIENT.service.Ingredients(prodNo,myAction,ingredientName,ingredientType,ReasonForInclusion,quantityPerDose,
-                Proportion,MolecularFormula,MolecularWeight,specification,strengthOfIngredient,userId)
+                Proportion,specification,strengthOfIngredient,userId)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully.")
@@ -365,25 +310,29 @@ def MarketingAuthorization(request,pk):
             return redirect('login')
     return redirect ('productDetails',pk=pk)
 
-def makePayment(request,pk):
-    if request.method == 'POST':
-        try:
-            response = config.CLIENT.service.FnRegistrationPayment(pk,request.session['UserID'])
-            print("pk:",pk)
-            print(request.session['UserID'])
-            print("response = ",response)
+class makePayment(UserObjectMixin,View):
+    def post(self, request,pk):
+        if request.method == 'POST':
+            try:
+                prodNo = pk
+                userCode = request.session['UserID']
 
-            if response == True:
-                messages.success(request,"Please Make Your payment and click confirm payment.")
-                return redirect('PaymentGateway', pk=pk)
-            else:
-                print("Not sent")
+                response = config.CLIENT.service.FnRegistrationPayment(prodNo,userCode)
+                if response == True:
+                    messages.success(request,"Please Make Your payment and click confirm payment.")
+                    return redirect('PaymentGateway', pk=pk)
+                if response == False:
+                    messages.error(request,"False")
+                    return redirect('productDetails', pk=pk)
+            except KeyError as e:
+                messages.info(request,"Session Expired, Login Again")
+                print(e)
+                return redirect('login')
+            except Exception as e:
+                print(e)
+                messages.info(request,e)
                 return redirect ('productDetails',pk=pk)
-        except Exception as e:
-            print(e)
-            messages.info(request,e)
-            return redirect('PaymentGateway', pk=pk)
-    return redirect('productDetails', pk=pk)
+        return redirect('productDetails', pk=pk)
 
 def MyApplications(request):
     session = requests.Session()

@@ -20,8 +20,9 @@ def biocidalRegistration(request,pk):
             packagingMaterial = request.POST.get('packagingMaterial')
             closureSystem = request.POST.get('closureSystem')
             packSize = request.POST.get('packSize')
-
             iAgree = eval(request.POST.get('iAgree'))
+            signatoryName = request.POST.get('signatoryName')
+            signatoryPosition = request.POST.get('signatoryPosition')
             userId = request.session['UserID']
             if not iAgree:
                 iAgree = False         
@@ -30,7 +31,7 @@ def biocidalRegistration(request,pk):
                 response = config.CLIENT.service.BiocidalCard(prodNo,myAction,prodName,otherNames,
                 chemicalName,casNumber,proposedShelfLife,
                 shelfLifeAfterFirstOpening,ShelfLifeAfterDilution,visualDescription,packagingMaterial,
-                packSize,closureSystem,userId,iAgree)
+                packSize,closureSystem,userId,iAgree,signatoryName,signatoryPosition)
                 print(response)
                 if response == True:
                     messages.success(request,"Successfully Saved")

@@ -135,7 +135,7 @@ class appealGateway(UserObjectMixin,View):
                     messages.error(request, "Transaction Code can't be empty.")
                     return redirect('appealGateway',pk=pk)
                 if not currency:
-                    messages.error(request, "Currency Code missing please contact system admin")
+                    messages.error(request, "Currency code missing please contact the system admin")
                     return redirect('appealGateway',pk=pk)
                 response = config.CLIENT.service.FnConfirmPayment(transactionCode,currency,pk,request.session['UserID'])
                 print(response)

@@ -134,9 +134,23 @@
                             </div>
                         </div>
                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            {% if res.Status == 'Open' %}
                             <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                                aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
                             </div>
+                            {% elif res.Status == 'Processing' %}
+                            <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
+                            </div>
+                            {% elif res.Status == 'Approved' %}
+                            <div class="progress-bar bg-success" role="progressbar" data-width="25%" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                            </div>
+                            {% elif res.Status == 'Rejected' %}
+                            <div class="progress-bar bg-danger" role="progressbar" data-width="25%" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -172,8 +186,6 @@
                                     <th>Ingredient Type</th>
                                     <th scope="col">Quantity per dose</th>
                                     <th scope="col">Strength</th>
-                                    <th>Molecular Formula</th>
-                                    <th>Molecular Weight</th>
                                     <th>Proportion</th>
                                     <th scope="col">Specification</th>
                                     <th>Reason For Inclusion</th>
@@ -187,8 +199,6 @@
                                     <td>{{res.Ingredient_Type}}</td>
                                     <td>{{res.Quantity_per_dose}}</td>
                                     <td>{{res.Strength_of_Active_Ingredients__AI__per_unit_dosage_}}</td>
-                                    <td>{{res.Molecular_and_structural_formula}}</td>
-                                    <td>{{res.Molecular_weight_for_each_active_ingredient_}}</td>
                                     <td>{{res.Proportion}}</td>
                                     <td>{{res.Specification_of_purity_of_the_active_substance_}}</td>
                                     <td>{{res.Reason_For_Inclusion}}</td>
@@ -669,20 +679,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-2">
-                                <label class="form-label">Molecular Formula</label>
-                                <input type="text" class="form-control" name="MolecularFormula" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-2">
-                                <label class="form-label">Molecular Weight<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="MolecularWeight" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-12">
                             <div class="mb-2">
                                 <label class="form-label">Proportion(e.g. %, ppm, units)<span
@@ -713,6 +709,7 @@
                             </div>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success my-2">Submit</button>
                 </form>
             </div>
@@ -747,6 +744,7 @@
                             </div>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success my-2">Submit</button>
                 </form>
             </div>
@@ -820,6 +818,7 @@
                             <div class="form-text">State reasons for not being authorized</div>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success my-2">Submit</button>
                 </form>
             </div>
@@ -865,6 +864,7 @@
                             </div>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success my-2">Submit</button>
                 </form>
             </div>
@@ -903,6 +903,7 @@
                             </div>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success my-2">Submit</button>
                 </form>
             </div>
