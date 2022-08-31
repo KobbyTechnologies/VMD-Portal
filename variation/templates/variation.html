@@ -80,6 +80,7 @@
                                     class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Variation No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Product Class</th>
@@ -91,6 +92,7 @@
                                     <tbody>
                                         {% for res in open %}
                                         <tr>
+                                            <td>{{res.Variation_No_}}</td>
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td>{{res.Veterinary_Classes}}</td>
@@ -100,10 +102,156 @@
                                             </td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                <a href="{% url 'variationDetails' res.Variation_No_ %}" type="button"
-                                                    class="btn btn-info">
-                                                    Next <i class="bi bi-chevron-double-right"></i></a>
-
+                                                <div class="d-grid gap-1 d-md-flex justify-content">
+                                                    <button class="btn btn-secondary me-sm-2" type="button"
+                                                        data-toggle="tooltip" data-placement="top" title="edit"
+                                                        data-bs-toggle="modal" data-bs-target="#editVariation">Edit <i
+                                                            class="bi bi-pencil-square"></i></button>
+                                                    <a href="{% url 'variationDetails' res.Variation_No_ %}"
+                                                        type="button" class="btn btn-success">Next <i
+                                                            class="bi bi-chevron-double-right"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="modal fade" id="editVariation" data-bs-backdrop="static"
+                                                    data-bs-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div
+                                                        class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title text-white"
+                                                                    id="exampleModalLabel">Edit
+                                                                    Variation {{res.Variation_No_}}
+                                                                </h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <form action="{% url 'variation' %}"
+                                                                            method="POST">
+                                                                            {% csrf_token %}
+                                                                            <input type="hidden" name="varNo"
+                                                                                value="{{res.Variation_No_}}">
+                                                                            <input type="hidden" name="myAction"
+                                                                                value="modify">
+                                                                            <div class="row my-2">
+                                                                                <div class="col-md-12">
+                                                                                    <label for=""
+                                                                                        class="form-label">Product</label>
+                                                                                    <select class="form-select"
+                                                                                        name="prodNo" required>
+                                                                                        <option value="0" disabled
+                                                                                            selected>--Select Product--
+                                                                                        </option>
+                                                                                        {% for res in product %}
+                                                                                        <option
+                                                                                            value="{{res.ProductNo}}">
+                                                                                            {{res.ProductNo}}-{{res.Veterinary_Classes}}
+                                                                                        </option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row my-2">
+                                                                                <div class="col-md-12">
+                                                                                    <label class="form-label">Dosage
+                                                                                        form</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="dosageForms">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row my-2">
+                                                                                <div class="col-md-12">
+                                                                                    <label class="form-label">Type of
+                                                                                        change(s)</label>
+                                                                                    <textarea
+                                                                                        class="form-control longText"
+                                                                                        name="typeofChange"></textarea>
+                                                                                    <div class="form-text">State which
+                                                                                        type of Variation</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row my-2">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="form-label">Other
+                                                                                        Application(s)</div>
+                                                                                    <textarea
+                                                                                        class="form-control longText"
+                                                                                        name="otherApplications"></textarea>
+                                                                                    <div class="form-text">(
+                                                                                        Provide brief information on any
+                                                                                        ongoing
+                                                                                        variation or
+                                                                                        other variation(s) submitted in
+                                                                                        parallel, or renewal
+                                                                                        application(s), or
+                                                                                        line-extension(s))</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row my-2">
+                                                                                <div class="col-md-12">
+                                                                                    <label
+                                                                                        class="form-label">Scope</label>
+                                                                                    <textarea
+                                                                                        class="form-control longText"
+                                                                                        name="scope"></textarea>
+                                                                                    <div class="form-text">Please
+                                                                                        specify scope of the change(s)
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-12">
+                                                                                <label class="form-label">Background
+                                                                                    explanation for the proposed
+                                                                                    change(s)
+                                                                                </label>
+                                                                                <textarea class="form-control longText"
+                                                                                    name="background"></textarea>
+                                                                                <div class="form-text"> Give
+                                                                                    brief background explanation for the
+                                                                                    proposed change(s) to
+                                                                                    your marketing authorization as well
+                                                                                    as a justification in case of
+                                                                                    consequential
+                                                                                    change(s)</div>
+                                                                            </div>
+                                                                            <div class="row my-2">
+                                                                                <h5></h5>
+                                                                                <div class="col-md-6">
+                                                                                    <label class="form-label">Present
+                                                                                    </label>
+                                                                                    <textarea
+                                                                                        class="form-control longText"
+                                                                                        name="present"></textarea>
+                                                                                    <div class="form-text"> (Please
+                                                                                        specify precise present wording
+                                                                                        or specification)</div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <label class="form-label">Proposed
+                                                                                    </label>
+                                                                                    <textarea
+                                                                                        class="form-control longText"
+                                                                                        name="proposed"></textarea>
+                                                                                    <div class="form-text">Please
+                                                                                        specify precise proposed wording
+                                                                                        or specification)</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <button type="button" class="btn btn-danger"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-success my-2">Submit</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -116,6 +264,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Variation No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Product Class</th>
@@ -127,6 +276,7 @@
                                     <tbody>
                                         {% for res in pending %}
                                         <tr>
+                                            <td>{{res.Variation_No_}}</td>
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td>{{res.Veterinary_Classes}}</td>
@@ -151,6 +301,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Variation No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Product Class</th>
@@ -162,6 +313,7 @@
                                     <tbody>
                                         {% for res in approved %}
                                         <tr>
+                                            <td>{{res.Variation_No_}}</td>
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td>{{res.Veterinary_Classes}}</td>
@@ -186,6 +338,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Variation No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Product Class</th>
@@ -197,6 +350,7 @@
                                     <tbody>
                                         {% for res in rejected %}
                                         <tr>
+                                            <td>{{res.Variation_No_}}</td>
                                             <td>{{res.ProductNo}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td>{{res.Veterinary_Classes}}</td>
@@ -228,16 +382,18 @@
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-dark" id="exampleModalLabel">APPLICATION FOR
-                        VARIATION
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Application for
+                        Variation
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="{% url 'ApplyVariation' %}" method="POST">
+                            <form action="{% url 'variation' %}" method="POST">
                                 {% csrf_token %}
+                                <input type="hidden" name="varNo" value="">
+                                <input type="hidden" name="myAction" value="insert">
                                 <div class="row my-2">
                                     <div class="col-md-12">
                                         <label for="" class="form-label">Product</label>
@@ -324,6 +480,7 @@
                                             or specification)</div>
                                     </div>
                                 </div>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-success my-2">Submit</button>
                             </form>
                         </div>
