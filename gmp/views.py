@@ -4,163 +4,143 @@ import requests
 import json
 from django.conf import settings as config
 from django.contrib import messages
+from django.views import View
 
 # Create your views here.
-def GMPApplication(request):
+class UserObjectMixin(object):
+    model =None
     session = requests.Session()
     session.auth = config.AUTHS
-    Retention= config.O_DATA.format("/QYGMP")
-    CountriesRegistered = config.O_DATA.format("/QYCountries")
-    OpenProducts = []
-    Pending = []
-    Approved = []
-    Rejected =[]
-    try:
-        response = session.get(Retention, timeout=10).json()
-        CountryResponse = session.get(CountriesRegistered, timeout=10).json()
-        resCountry = CountryResponse['value']
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
-                output_json = json.dumps(res)
-                OpenProducts.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Processing':
-                output_json = json.dumps(res)
-                Pending.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
-                output_json = json.dumps(res)
-                Approved.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
-                output_json = json.dumps(res)
-                Rejected.append(json.loads(output_json))
+    def get_object(self,endpoint):
+        response = self.session.get(endpoint, timeout=10).json()
+        return response
 
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    openCount = len(OpenProducts)
-    pendCount = len(Pending)
-    appCount = len(Approved)
-    rejectedCount = len(Rejected)
-    ctx = {"openCount":openCount,"open":OpenProducts,
-    "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected,
-    "country":resCountry}
-    return render(request,'gmp.html',ctx)
-
-def ApplyGMP(request):
-    if request.method == "POST":
+class GMPApplication(UserObjectMixin,View):
+    def get(self,request):
         try:
-            gmpNo = ''
-            myAction= 'insert'
-            SitePhysicalAddress = request.POST.get('SitePhysicalAddress')
-            SiteCountry = request.POST.get('SiteCountry')
-            SiteTelephone = request.POST.get('SiteTelephone')
-            SiteMobile = request.POST.get('SiteMobile')
-            SiteEmail = request.POST.get('SiteEmail')
-            isContact = request.POST.get('isContact')
-            ContactName =request.POST.get('ContactName')
-            ContactTel = request.POST.get('ContactTel')
-            ContactEmail = request.POST.get('ContactEmail')
-            VeterinaryMedicines = int(request.POST.get('VeterinaryMedicines'))
-            TypeOfInspection = int(request.POST.get('TypeOfInspection'))
-            stateOther = request.POST.get('StateOther')
-            iAgree = eval(request.POST.get('iAgree'))
+            userID = request.session['UserID']
+            Retention= config.O_DATA.format(f"/QYGMP?$filter=User_code%20eq%20%27{userID}%27")
+            response = self.get_object(Retention)
+            OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
+            Pending = [x for x in response['value'] if x['Status'] == 'Processing']
+            Approved = [x for x in response['value'] if x['Status'] == 'Approved']
+            Rejected = [x for x in response['value'] if x['Status'] == 'Rejected']
 
-            if not iAgree:
-                iAgree = False
-            if not ContactName:
-                ContactName = ''
-
-            if not ContactTel:
-                ContactTel = ''
-
-            if not ContactEmail:
-                ContactEmail = ''
-
-            if not stateOther:
-                stateOther = ''
-
-            response = config.CLIENT.service.GMP(gmpNo,myAction,request.session['UserID'],SitePhysicalAddress,
-            SiteCountry,SiteTelephone,SiteMobile,SiteEmail,isContact,ContactName,ContactTel,ContactEmail,
-            VeterinaryMedicines,TypeOfInspection,stateOther,iAgree
-            )
-            print(response)
-            if response == True:
-                messages.success(request,"Saved Successfully")
-                return redirect('gmp')
+            CountriesRegistered = config.O_DATA.format("/QYCountries")
+            CountryResponse = self.get_object(CountriesRegistered)
+            resCountry = CountryResponse['value']
 
         except requests.exceptions.RequestException as e:
+            messages.error(request,e)
             print(e)
-            return redirect('dashboard')
+            return redirect('gmp')
         except KeyError as e:
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
-    return redirect('gmp')
+        openCount = len(OpenProducts)
+        pendCount = len(Pending)
+        appCount = len(Approved)
+        rejectedCount = len(Rejected)
+        ctx = {"openCount":openCount,"open":OpenProducts,
+        "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
+        "rejectedCount":rejectedCount,"rejected":Rejected,
+        "country":resCountry}
+        return render(request,'gmp.html',ctx)
+    def post(self, request):
+        if request.method == "POST":
+            try:
+                gmpNo = request.POST.get('gmpNo')
+                myAction= request.POST.get('myAction')
+                SitePhysicalAddress = request.POST.get('SitePhysicalAddress')
+                SiteCountry = request.POST.get('SiteCountry')
+                SiteTelephone = request.POST.get('SiteTelephone')
+                SiteMobile = request.POST.get('SiteMobile')
+                SiteEmail = request.POST.get('SiteEmail')
+                isContact = request.POST.get('isContact')
+                ContactName =request.POST.get('ContactName')
+                ContactTel = request.POST.get('ContactTel')
+                ContactEmail = request.POST.get('ContactEmail')
+                VeterinaryMedicines = int(request.POST.get('VeterinaryMedicines'))
+                TypeOfInspection = int(request.POST.get('TypeOfInspection'))
+                stateOther = request.POST.get('StateOther')
+                iAgree = eval(request.POST.get('iAgree'))
 
-def GMPDetails(request,pk):
-    session = requests.Session()
-    session.auth = config.AUTHS
-    Access_Point = config.O_DATA.format("/QYGMP")
-    Lines = config.O_DATA.format("/QYLinestobeInspected")
-    ManufacturesParticulars = config.O_DATA.format("/QYGmpManufactureDetails")
-    Countries = config.O_DATA.format("/QYCountries")
-    gmp = []
-    Line = []
-    responses =''
-    Status=''
-    try:
-        response = session.get(Access_Point, timeout=10).json()
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID']:
-                output_json = json.dumps(res)
-                gmp.append(json.loads(output_json))
-                for product in gmp:
-                    if product['GMP_No_'] == pk and product['I_Agree'] == True:
-                        responses = product
-                        Status = product['Status']
-                    if product['GMP_No_'] == pk and product['I_Agree'] == False:
-                        messages.error(request,"You have not agreed to the terms and conditions. You can not continue with registration. Your data will be deleted")
-                        return redirect('gmp')
-        linesResponse = session.get(Lines, timeout=10).json()
-        for line in linesResponse['value']:
-            if line['User_code'] == request.session['UserID'] and line['No'] == pk:
-                output_json = json.dumps(line)
-                Line.append(json.loads(output_json))
-        ManufacturerResponse = session.get(ManufacturesParticulars, timeout=10).json()
-        Manufacturer = []
-        for manufacturer in ManufacturerResponse['value']:
-            if manufacturer['AuxiliaryIndex2'] == pk:
-                output_json = json.dumps(manufacturer)
-                Manufacturer.append(json.loads(output_json))
-        CountryResponse = session.get(Countries, timeout=10).json()
-        resCountry = CountryResponse['value']
-        Attachments = config.O_DATA.format("/QYGMPRequiredDocuments")
-        AttachResponse = session.get(Attachments, timeout=10).json()
-        attach = AttachResponse['value']
-        AllAttachments = config.O_DATA.format("/QYGMPAttachments")
-        Files = []
-        AllAttachResponse = session.get(AllAttachments, timeout=10).json()
-        for data in AllAttachResponse['value']:
-            if data['No_'] == pk and data['Table_ID'] == 50004:
-                output_json = json.dumps(data)
-                Files.append(json.loads(output_json))
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    
-    ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
-    "country":resCountry,"files": Files,"attach":attach}
-    return render(request,"gmpDetails.html",ctx)
+                if not iAgree:
+                    iAgree = False
+                if not ContactName:
+                    ContactName = ''
+
+                if not ContactTel:
+                    ContactTel = ''
+
+                if not ContactEmail:
+                    ContactEmail = ''
+
+                if not stateOther:
+                    stateOther = ''
+
+                response = config.CLIENT.service.GMP(gmpNo,myAction,request.session['UserID'],SitePhysicalAddress,
+                SiteCountry,SiteTelephone,SiteMobile,SiteEmail,isContact,ContactName,ContactTel,ContactEmail,
+                VeterinaryMedicines,TypeOfInspection,stateOther,iAgree
+                )
+                print(response)
+                if response == True:
+                    messages.success(request,"Saved Successfully")
+                    return redirect('gmp')
+
+            except requests.exceptions.RequestException as e:
+                print(e)
+                return redirect('gmp')
+            except KeyError as e:
+                messages.info(request,"Session Expired, Login Again")
+                print(e)
+                return redirect('login')
+        return redirect('gmp')
+
+
+class GMPDetails(UserObjectMixin,View):
+    def get(self,request,pk):
+        try:
+            userID =request.session['UserID']
+            Access_Point = config.O_DATA.format(f"/QYGMP?$filter=User_code%20eq%20%27{userID}%27%20and%20GMP_No_%20eq%20%27{pk}%27")
+            response = self.get_object(Access_Point)
+            for res in response['value']:
+                responses = res
+                Status = res['Status']
+
+            Lines = config.O_DATA.format(f"/QYLinestobeInspected?$filter=No%20eq%20%27{pk}%27%20and%20User_code%20eq%20%27{userID}%27")
+            linesResponse = self.get_object(Lines)
+            Line = [x for x in linesResponse['value']]
+
+            ManufacturesParticulars = config.O_DATA.format(f"/QYGmpManufactureDetails?$filter=AuxiliaryIndex2%20eq%20%27{pk}%27")
+            ManufacturerResponse = self.get_object(ManufacturesParticulars)
+            Manufacturer = [x for x in ManufacturerResponse['value']]
+
+            Countries = config.O_DATA.format("/QYCountries")
+            CountryResponse = self.get_object(Countries)
+            resCountry = CountryResponse['value']
+
+            Attachments = config.O_DATA.format("/QYGMPRequiredDocuments")
+            AttachResponse = self.get_object(Attachments)
+            attach = AttachResponse['value']
+
+            AllAttachments = config.O_DATA.format(f"/QYGMPAttachments?$filter=No_%20eq%20%27{pk}%27%20and%20Table_ID%20eq%2050004")
+            AllAttachResponse = self.get_object(AllAttachments)
+            Files = [x for x in AllAttachResponse['value']]
+
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('GMPDetails', pk=pk)
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        
+        ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
+        "country":resCountry,"files": Files,"attach":attach}
+        return render(request,"gmpDetails.html",ctx)
 
 def linesToInspect(request,pk):
     if request.method == "POST":
@@ -189,43 +169,57 @@ def linesToInspect(request,pk):
             return redirect('login')
     return redirect('GMPDetails',pk=pk)
 
-def GMPGateway(request,pk):
-    session = requests.Session()
-    session.auth = config.AUTHS
-    Access_Point = config.O_DATA.format("/QYGMP")
-    Products = []
-    paid=''
-    responses=''
-    Status = ''
-    try:
-        response = session.get(Access_Point, timeout=10).json()
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID']:
-                output_json = json.dumps(res)
-                Products.append(json.loads(output_json))
-                for product in Products:
-                    if product['GMP_No_'] == pk:
-                        responses = product
-                        Status = product['Status']
-                        paid = product['Paid']
+class GMPGateway(UserObjectMixin,View):
+    def get(self,request,pk):
+        try:
+            userID = request.session['UserID']
+            Access_Point = config.O_DATA.format(f"/QYGMP?$filter=User_code%20eq%20%27{userID}%27%20and%20GMP_No_%20eq%20%27{pk}%27")
+            response = self.get_object(Access_Point)
+            for res in response['value']:
+                responses = res
+                Status = res['Status']                
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('gmp')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        ctx = {"res":responses,"status":Status}
+        return render(request,'GMPGateway.html',ctx)
+    def post(self,request,pk):
         if request.method == 'POST':
-            if paid == True:
-                messages.success(request,"Payment Received successfully")
-                return redirect('GMPDetails', pk=pk)
-            if paid == False:
-                messages.info(request,"Payment not received, Try again.")
+            try:
+                transactionCode = request.POST.get('transactionCode')
+                currency = request.POST.get('currency')
+
+                if not transactionCode:
+                    messages.error(request, "Transaction Code can't be empty.")
+                    return redirect('GMPGateway', pk=pk)
+                if not currency:
+                    messages.error(request, "Currency code missing please contact the system admin")
+                    return redirect('GMPGateway', pk=pk)
+                response = config.CLIENT.service.FnConfirmPayment(transactionCode,currency,pk,request.session['UserID'])
+                print(response)
+                if response == True:
+                    messages.success(request,"Payment was successful. You can now submit your application.")
+                    return redirect('GMPDetails', pk=pk)
+                else:
+                    messages.error("Payment Not sent. Try Again.")
+                    return redirect('GMPGateway', pk=pk)
+            except requests.exceptions.RequestException as e:
+                messages.error(request,e)
+                print(e)
                 return redirect('GMPGateway', pk=pk)
-            
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    ctx = {"res":responses,"status":Status}
-    return render(request,'GMPGateway.html',ctx)
+            except KeyError as e:
+                messages.info(request,"Session Expired, Login Again")
+                print(e)
+                return redirect('login')
+            except Exception as e:
+                messages.error(request,e)
+                return redirect('GMPGateway', pk=pk)
+        return redirect('GMPGateway', pk=pk)
 
 
 def SubmitGMP(request,pk):
@@ -293,12 +287,14 @@ def GMPAttachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
+            filename = request.FILES['attachment'].name
+            name = request.POST.get('name')
             tableID = 50004
             attachment = base64.b64encode(attach.read())
-            filename = request.POST.get('filename')
+
             try:
                 response = config.CLIENT.service.GMPAttachement(
-                    pk, filename, attachment, tableID)
+                    pk, filename, attachment, tableID,name)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")
