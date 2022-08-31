@@ -100,10 +100,122 @@
                                                 {% endif %}
                                             </td>
                                             <td>
-
-                                                <a href="{% url 'retentionDetails' res.Retension_No_ %}" type="button"
-                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i>
-                                                    View</a></td>
+                                                <div class="d-grid gap-1 d-md-flex justify-content">
+                                                    <button class="btn btn-secondary me-sm-2" type="button"
+                                                        data-toggle="tooltip" data-placement="top" title="edit"
+                                                        data-bs-toggle="modal" data-bs-target="#editRetention">Edit <i
+                                                            class="bi bi-pencil-square"></i></button>
+                                                    <a href="{% url 'retentionDetails' res.Retension_No_ %}"
+                                                        type="button" class="btn btn-success">Next <i
+                                                            class="bi bi-chevron-double-right"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="modal fade" id="editRetention" data-bs-backdrop="static"
+                                                    data-bs-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div
+                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title text-white"
+                                                                    id="exampleModalLabel">
+                                                                    Edit Retention No {{res.Retension_No_}}</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{% url 'retention' %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="retNo"
+                                                                        value="{{res.Retension_No_}}">
+                                                                    <input type="hidden" name="myAction" value="modify">
+                                                                    <div class="row my-2">
+                                                                        <div class="col-md-12">
+                                                                            <label for=""
+                                                                                class="form-label">Product</label>
+                                                                            <select class="form-select" name="prodNo"
+                                                                                required>
+                                                                                <option value="0" disabled selected>
+                                                                                    --Select Product--</option>
+                                                                                {% for res in product %}
+                                                                                <option value="{{res.ProductNo}}">
+                                                                                    {{res.ProductNo}}-{{res.Veterinary_Classes}}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row my-2">
+                                                                        <div class="col-md-12">
+                                                                            <label class="form-label">Changes to
+                                                                                product since last
+                                                                                Registration/Retention</label>
+                                                                            <select class="form-select"
+                                                                                aria-label="Default select example"
+                                                                                name="changesToTheProduct"
+                                                                                id="changesToTheProduct">
+                                                                                <option value="0" disabled selected>
+                                                                                    --Select--</option>
+                                                                                <option value="True">Yes</option>
+                                                                                <option value="False">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row my-2" style="display: none;"
+                                                                        id="variationRow">
+                                                                        <div class="col-md-12">
+                                                                            <label class="form-label">Have you made a
+                                                                                variation?</label>
+                                                                            <select class="form-select"
+                                                                                aria-label="Default select example"
+                                                                                name="variation" id="variation"
+                                                                                disabled>
+                                                                                <option value="0" disabled selected>
+                                                                                    --Select--</option>
+                                                                                <option value="True">Yes</option>
+                                                                                <option value="False">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row my-2" id="VariationNumberRow"
+                                                                        style="display:none">
+                                                                        <div class="col-md-12">
+                                                                            <label class="form-label">Variation
+                                                                                Number</label>
+                                                                            <input type="text" class="form-control"
+                                                                                name="VariationNumber"
+                                                                                id="VariationNumber" disabled>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr class="dropdown-divider">
+                                                                    <div class="row my-2">
+                                                                        <div class="col-md-12">
+                                                                            <div class="mb-2">
+                                                                                <input class="form-check-input"
+                                                                                    type="checkbox" value="True"
+                                                                                    name="iAgree" checked>
+                                                                                <label
+                                                                                    class="form-check-label text-primary">
+                                                                                    I hereby apply for registration of
+                                                                                    the product detailed above and
+                                                                                    declare that all the information
+                                                                                    herein
+                                                                                    is correct
+                                                                                    and true.
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-success my-2"
+                                                                        id="retentionSubmit">Submit</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
 
                                         </tr>
                                         {% endfor %}
@@ -241,13 +353,15 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-dark" id="exampleModalLabel">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">
                         Apply Retention</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'ApplyRetention' %}" method="post">
+                    <form action="{% url 'retention' %}" method="post">
                         {% csrf_token %}
+                        <input type="hidden" name="retNo" value=" ">
+                        <input type="hidden" name="myAction" value="insert">
                         <div class="row my-2">
                             <div class="col-md-12">
                                 <label for="" class="form-label">Product</label>
@@ -308,7 +422,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="text-danger" id="responses"></p>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-success my-2" id="retentionSubmit">Submit</button>
                     </form>
                 </div>
