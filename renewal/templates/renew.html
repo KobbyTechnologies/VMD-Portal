@@ -40,7 +40,7 @@
     <section class="section contact">
         <div class="row">
             <div class="col-md-12">
-
+                {% include 'alert.html' %}
                 <div class="card">
                     <div class="card-body">
                         <!-- Bordered Tabs Justified -->
@@ -78,6 +78,7 @@
                                     class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Renewal No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Status</th>
@@ -88,6 +89,7 @@
                                     <tbody>
                                         {% for res in open %}
                                         <tr>
+                                            <td>{{res.Renewal_No_}}</td>
                                             <td>{{res.Product_No}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
@@ -96,9 +98,60 @@
                                                     style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
                                             </td>
                                             <td>
-                                                <a href="{% url 'renewDetails' res.Renewal_No_ %}" type="button"
-                                                    class="btn btn-primary">
-                                                    Next <i class="bi bi-chevron-double-right"></i></a>
+                                                <div class="d-grid gap-1 d-md-flex justify-content">
+                                                    <button class="btn btn-secondary me-sm-2" type="button"
+                                                        data-toggle="tooltip" data-placement="top" title="edit"
+                                                        data-bs-toggle="modal" data-bs-target="#editRenewal">Edit <i
+                                                            class="bi bi-pencil-square"></i></button>
+                                                    <a href="{% url 'renewDetails' res.Renewal_No_ %}" type="button"
+                                                        class="btn btn-success">Next <i
+                                                            class="bi bi-chevron-double-right"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="modal fade" id="editRenewal" data-bs-backdrop="static"
+                                                    data-bs-keyboard="false" tabindex="-1"
+                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                    <div
+                                                        class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title text-white"
+                                                                    id="exampleModalLabel">
+                                                                    Edit Renewal No. {{res.Renewal_No_}} </h5>
+                                                                <button type="button" class="btn-close btn-close-white"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{% url 'ApplyRenewal' %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="renNo"
+                                                                        value="{{res.Renewal_No_}}">
+                                                                    <input type="hidden" name="myAction" value="modify">
+                                                                    <div class="row my-2">
+                                                                        <div class="col-md-12">
+                                                                            <label for=""
+                                                                                class="form-label">Product</label>
+                                                                            <select class="form-select" name="prodNo"
+                                                                                required>
+                                                                                <option value="0" disabled selected>
+                                                                                    --Select Product--</option>
+                                                                                {% for res in product %}
+                                                                                <option value="{{res.ProductNo}}">
+                                                                                    {{res.ProductNo}}-{{res.Veterinary_Classes}}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-success my-2"
+                                                                        id="retentionSubmit">Submit</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -111,6 +164,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Renewal No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Status</th>
@@ -121,6 +175,7 @@
                                     <tbody>
                                         {% for res in pending %}
                                         <tr>
+                                            <td>{{res.Renewal_No_}}</td>
                                             <td>{{res.Product_No}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
@@ -145,6 +200,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Renewal No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Status</th>
@@ -155,6 +211,7 @@
                                     <tbody>
                                         {% for res in approved %}
                                         <tr>
+                                            <td>{{res.Renewal_No_}}</td>
                                             <td>{{res.Product_No}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
@@ -179,6 +236,7 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Renewal No</th>
                                             <th scope="col">Product No</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Status</th>
@@ -189,6 +247,7 @@
                                     <tbody>
                                         {% for res in rejected %}
                                         <tr>
+                                            <td>{{res.Renewal_No_}}</td>
                                             <td>{{res.Product_No}}</td>
                                             <td>{{res.Product_name}}</td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
@@ -218,13 +277,16 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-dark" id="exampleModalLabel">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">
                         Apply Renewal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{% url 'ApplyRenewal' %}" method="post">
                         {% csrf_token %}
+                        <input type="hidden" name="renNo" value=" ">
+                        <input type="hidden" name="myAction" value="insert">
                         <div class="row my-2">
                             <div class="col-md-12">
                                 <label for="" class="form-label">Product</label>
@@ -237,7 +299,7 @@
                                 </select>
                             </div>
                         </div>
-                        <p class="text-danger" id="responses"></p>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-success my-2" id="retentionSubmit">Submit</button>
                     </form>
                 </div>

@@ -3,8 +3,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("renew", views.RenewalRequest, name='renew'),
-    path("ApplyRenewal", views.ApplyRenewal, name='ApplyRenewal'),
+    path("renew", views.RenewalRequest.as_view(), name='renew'),
+    path("ApplyRenewal", views.ApplyRenewal.as_view(), name='ApplyRenewal'),
     path("renewDetails/<str:pk>", views.renewDetails, name='renewDetails'),
     path("renewGateway/<str:pk>", views.renewGateway, name='renewGateway'),
     path("SubmitRenewal/<str:pk>", views.SubmitRenewal, name='SubmitRenewal'),

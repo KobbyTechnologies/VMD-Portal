@@ -4,57 +4,50 @@ import json
 from django.contrib import messages
 from django.conf import settings as config
 import base64
+from django.views import View
 
 # Create your views here.
-def RenewalRequest(request):
+class UserObjectMixin(object):
+    model =None
     session = requests.Session()
     session.auth = config.AUTHS
-    userId = request.session['UserID']
-    Retention= config.O_DATA.format("/QYRenewal")
-    Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
-    OpenProducts = []
-    Pending = []
-    Approved = []
-    Rejected =[]
-    ApproveRenewal =[]
-    try:
-        response = session.get(Retention, timeout=10).json()
+    def get_object(self,endpoint):
+        response = self.session.get(endpoint, timeout=10).json()
+        return response
 
-        for res in response['value']:
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Open':
-                output_json = json.dumps(res)
-                OpenProducts.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Processing':
-                output_json = json.dumps(res)
-                Pending.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
-                output_json = json.dumps(res)
-                Approved.append(json.loads(output_json))
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Rejected':
-                output_json = json.dumps(res)
-                Rejected.append(json.loads(output_json))
-        RenewalResponse = session.get(Access_Point, timeout=10).json()
-        for res in RenewalResponse['value']:
-            if res['User_code'] == request.session['UserID'] and res['Status'] == 'Approved':
-                output_json = json.dumps(res)
-                ApproveRenewal.append(json.loads(output_json))
+class RenewalRequest(UserObjectMixin,View):
+    def get(self,request):
+        try:
+            session = requests.Session()
+            session.auth = config.AUTHS
+            userId = request.session['UserID']
+            Renewal= config.O_DATA.format(f"/QYRenewal?$filter=User_code%20eq%20%27{userId}%27")
+            response = self.get_object(Renewal)
+            OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
+            Pending = [x for x in response['value'] if x['Status'] == 'Processing']
+            Approved = [x for x in response['value'] if x['Status'] == 'Approved']
+            Rejected = [x for x in response['value'] if x['Status'] == 'Rejected']
 
-    except requests.exceptions.RequestException as e:
-        messages.error(request,e)
-        print(e)
-        return redirect('Registration')
-    except KeyError as e:
-        messages.info(request,"Session Expired, Login Again")
-        print(e)
-        return redirect('login')
-    openCount = len(OpenProducts)
-    pendCount = len(Pending)
-    appCount = len(Approved)
-    rejectedCount = len(Rejected)
-    ctx = {"openCount":openCount,"open":OpenProducts,
-    "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApproveRenewal}
-    return render (request,'renew.html',ctx)
+            Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
+            RenewalResponse = self.get_object(Access_Point)
+            ApproveRenewal = [x for x in RenewalResponse['value'] if x['Status'] == 'Approved']
+
+        except requests.exceptions.RequestException as e:
+            messages.error(request,e)
+            print(e)
+            return redirect('applications')
+        except KeyError as e:
+            messages.info(request,"Session Expired, Login Again")
+            print(e)
+            return redirect('login')
+        openCount = len(OpenProducts)
+        pendCount = len(Pending)
+        appCount = len(Approved)
+        rejectedCount = len(Rejected)
+        ctx = {"openCount":openCount,"open":OpenProducts,
+        "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
+        "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApproveRenewal}
+        return render (request,'renew.html',ctx)
 
 def renewDetails(request,pk):
     session = requests.Session()
@@ -89,25 +82,26 @@ def renewDetails(request,pk):
     ctx = {"res":responses,"status":Status,"attach":attach}
     return render(request,"renewDetails.html",ctx)
 
-def ApplyRenewal(request):
-    if request.method == 'POST':
-        try:
-            renNo = ''
-            myAction = 'insert'
-            prodNo = request.POST.get('prodNo')
-            response = config.CLIENT.service.Renewal(renNo,myAction,request.session['UserID'],prodNo)
-            print(response)
-            if response == True:
-                messages.success(request,"Saved Successfully")
+class  ApplyRenewal(UserObjectMixin,View):
+    def post(self, request):
+        if request.method == 'POST':
+            try:
+                renNo = request.POST.get('renNo')
+                myAction = request.POST.get('myAction')
+                prodNo = request.POST.get('prodNo')
+                response = config.CLIENT.service.Renewal(renNo,myAction,request.session['UserID'],prodNo)
+                print(response)
+                if response == True:
+                    messages.success(request,"Request Successful")
+                    return redirect('renew')
+            except requests.exceptions.RequestException as e:
+                print(e)
                 return redirect('renew')
-        except requests.exceptions.RequestException as e:
-            print(e)
-            return redirect('renew')
-        except KeyError as e:
-            messages.info(request,"Session Expired, Login Again")
-            print(e)
-            return redirect('login') 
-    return redirect('renew')
+            except KeyError as e:
+                messages.info(request,"Session Expired, Login Again")
+                print(e)
+                return redirect('login') 
+        return redirect('renew')
 
 
 def renewGateway(request,pk):
