@@ -1,5 +1,0 @@
-
-proposed Proposed_shelf_life remove the number to text on the Form
-proposed storage condition to be a long text
-
-
