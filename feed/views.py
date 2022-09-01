@@ -37,8 +37,7 @@ def feedRegistration(request,pk):
             
             try:
                 response = config.CLIENT.service.FeedAdditivesCard(prodNo,myAction,prodName,proposedCategory,casNumber,
-                otherNames,dosage,packSize,dosageForm,proposedShelfLife,ShelfLifeAfterDilution,
-                countryOfOrigin,visualDescription,closureSystem,shelfLifeAfterFirstOpening,
+                otherNames,dosage,packSize,dosageForm,proposedShelfLife,ShelfLifeAfterDilution,visualDescription,closureSystem,shelfLifeAfterFirstOpening,
                 userId,iAgree,signatoryName,signatoryPosition,companyName,companyAddress,CountryOrigin,companyTel,companyFax,
                 companyEmail)
                 print(response)
@@ -57,6 +56,9 @@ def feedRegistration(request,pk):
             return redirect('login')
         except ValueError as e:
             messages.info(request,"Invalid Input")
+            print(e)
+            return redirect('applications', pk=pk)
+        except Exception as e:
             print(e)
             return redirect('applications', pk=pk)
     return redirect('applications', pk=pk)

@@ -53,5 +53,8 @@ def vaccineRegistration(request,pk):
             messages.info(request,"Invalid Input")
             print(e)
             return redirect('applications', pk=pk)
+        except TypeError as e:
+            print(e)
+            return redirect('applications', pk=pk)
     return redirect('applications', pk=pk)
 
