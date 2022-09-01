@@ -24,6 +24,14 @@ def feedRegistration(request,pk):
             packSize = request.POST.get('packSize')
             iAgree = eval(request.POST.get('iAgree'))
             userId = request.session['UserID']
+            signatoryName = request.POST.get('signatoryName')
+            signatoryPosition = request.POST.get('signatoryPosition')
+            companyName = request.POST.get('companyName')
+            companyAddress = request.POST.get('companyAddress')
+            CountryOrigin = request.POST.get('CountryOrigin')
+            companyTel = request.POST.get('companyTel')
+            companyFax = request.POST.get('companyFax')
+            companyEmail = request.POST.get('companyEmail')
             if not iAgree:
                 iAgree = False         
             
@@ -31,7 +39,8 @@ def feedRegistration(request,pk):
                 response = config.CLIENT.service.FeedAdditivesCard(prodNo,myAction,prodName,proposedCategory,casNumber,
                 otherNames,dosage,packSize,dosageForm,proposedShelfLife,ShelfLifeAfterDilution,
                 countryOfOrigin,visualDescription,closureSystem,shelfLifeAfterFirstOpening,
-                userId,iAgree)
+                userId,iAgree,signatoryName,signatoryPosition,companyName,companyAddress,CountryOrigin,companyTel,companyFax,
+                companyEmail)
                 print(response)
                 if response == True:
                     messages.success(request,"Successfully Saved")

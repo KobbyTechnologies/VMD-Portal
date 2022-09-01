@@ -27,6 +27,14 @@ def devicesRegistration(request,pk):
             Manual = request.POST.get('Manual')
             iAgree = eval(request.POST.get('iAgree'))
             userId = request.session['UserID']
+            signatoryName = request.POST.get('signatoryName')
+            signatoryPosition = request.POST.get('signatoryPosition')
+            companyName = request.POST.get('companyName')
+            companyAddress = request.POST.get('companyAddress')
+            CountryOrigin = request.POST.get('CountryOrigin')
+            companyTel = request.POST.get('companyTel')
+            companyFax = request.POST.get('companyFax')
+            companyEmail = request.POST.get('companyEmail')
             if not iAgree:
                 iAgree = False         
             if not Manual:
@@ -36,7 +44,8 @@ def devicesRegistration(request,pk):
                 response = config.CLIENT.service.DevicesCard(prodNo,myAction,prodName,Classification,
                 DeviceOverview,marketingHistory,intendedUse,ImportantSafety,visualDescription,instructions,
                 diseaseDescription,hazardAlert,specialCare,Characterization,Functional,LabelsOnDevice,
-                DevicePackaging,Manual,userId,iAgree)
+                DevicePackaging,Manual,userId,iAgree,signatoryName,signatoryPosition,companyName,
+                companyAddress,CountryOrigin,companyTel,companyFax,companyEmail)
                 print(response)
                 if response == True:
                     messages.success(request,"Successfully Saved")

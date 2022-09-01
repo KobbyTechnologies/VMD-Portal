@@ -11,13 +11,45 @@
                         {% csrf_token %}
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                        aria-controls="flush-collapseOne">
-                                        Particulars of the Product
-                                    </button>
-                                </h2>
+                                <h5>Particulars of the Applicant</h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Name </label>
+                                        <input type="text" class="form-control" name="companyName">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Address</label>
+                                        <input type="text" class="form-control" name="companyAddress">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Country </label>
+                                        <select name="CountryOrigin" class="form-select"
+                                            aria-label="Default select example">
+                                            <option selected value="" disabled>--Select--</option>
+                                            {% for res in country %}
+                                            <option value="{{res.Code}}">{{res.Name}}</option>
+                                            {% empty %}
+                                            <option value="KE">KENYA</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Telephone </label>
+                                        <input type="text" class="form-control" name="companyTel">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Fax </label>
+                                        <input type="text" class="form-control" name="companyFax">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Company Email </label>
+                                        <input type="email" class="form-control" name="companyEmail">
+                                    </div>
+                                </div>
+                                <hr class="dropdown-divider">
+                                <h5>Particulars of the Product</h5>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse show"
                                     aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
@@ -70,20 +102,13 @@
                                 </div>
                             </div>
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingTwo">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseTwo" aria-expanded="false"
-                                        aria-controls="flush-collapseTwo">
-                                        Proposed shelf life (in months)
-                                    </button>
-                                </h2>
                                 <div id="flush-collapseTwo" class="accordion-collapse collapse show"
                                     aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
                                         <div class="row my-2">
                                             <div class="col-md-6">
                                                 <label class="form-label">Proposed shelf life</label>
-                                                <input type="number" class="form-control" name="proposedShelfLife">
+                                                <input type="text" class="form-control" name="proposedShelfLife">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Proposed shelf life after first
@@ -137,16 +162,19 @@
                                 </div>
                             </div>
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingThree">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseThree" aria-expanded="false"
-                                        aria-controls="flush-collapseThree">
-
-                                    </button>
-                                </h2>
                                 <div id="flush-collapseThree" class="accordion-collapse collapse show"
                                     aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="" class="form-label">Signatory Name</label>
+                                                <input type="text" class="form-control" name="signatoryName">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="" class="form-label">Signatory Position</label>
+                                                <input type="text" class="form-control" name="signatoryPosition">
+                                            </div>
+                                        </div>
                                         <div class="row my-2">
                                             <div class="col-md-12">
                                                 <div class="mb-2">

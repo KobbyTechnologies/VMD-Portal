@@ -28,6 +28,14 @@ def pesticideRegistration(request,pk):
             maximumLimit = request.POST.get('maximumLimit')
             iAgree = eval(request.POST.get('iAgree'))
             userId = request.session['UserID']
+            signatoryName = request.POST.get('signatoryName')
+            signatoryPosition = request.POST.get('signatoryPosition')
+            companyName = request.POST.get('companyName')
+            companyAddress = request.POST.get('companyAddress')
+            CountryOrigin = request.POST.get('CountryOrigin')
+            companyTel = request.POST.get('companyTel')
+            companyFax = request.POST.get('companyFax')
+            companyEmail = request.POST.get('companyEmail')
             if not iAgree:
                 iAgree = False                   
 
@@ -36,7 +44,8 @@ def pesticideRegistration(request,pk):
                 response = config.CLIENT.service.PesticideCard(prodNo,myAction,prodName,packSize,proposedShelfLife,
                 storageConditions,shelfLifeAfterFirstOpening,storageAfterOpening,tradeMark,othersIndicate,
                 visualDescription,targetAnimals,targetParasites,frequencyApplication,animalSafety,withholdingPeriod,maximumLimit,
-                formulation,userId,iAgree)
+                formulation,userId,iAgree,signatoryName,signatoryPosition,companyName,companyAddress,CountryOrigin,
+                companyTel,companyFax,companyEmail)
 
                 print(response)
                 if response == True:
