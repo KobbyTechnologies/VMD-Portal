@@ -157,6 +157,7 @@ def loginRequest(request):
             response = get_object(Access_Point)            
             for res in response['value']:
                 if res['Verified'] == True:
+                    Portal_Password = base64.urlsafe_b64decode(res['MyPassword'])
                     request.session['UserID'] = res['No']
                     request.session['LTR_Name'] = res['LTR_Name']
                     request.session['LTR_Email'] = res['LTR_Email']
@@ -164,8 +165,7 @@ def loginRequest(request):
                     request.session['Business_Registration_No_'] = res['Business_Registration_No_']
 
                     cipher_suite = Fernet(config.ENCRYPT_KEY)
-                    encrypted_text = cipher_suite.encrypt(res['MyPassword'].encode('ascii'))
-                    decoded_text = base64.urlsafe_b64encode(encrypted_text).decode("ascii")
+                    decoded_text = cipher_suite.decrypt(Portal_Password).decode("ascii")
 
                     if decoded_text == password:
                         print("User ID:",request.session['UserID'] )
@@ -189,22 +189,16 @@ def resetPassword(request):
         except  ValueError:
             messages.error(request,'Missing Input')
             return redirect('login')
-        session = requests.Session()
-        session.auth = config.AUTHS
-        Access_Point = config.O_DATA.format("/QYLTRLogins")
+        Access_Point = config.O_DATA.format(f"/QYLTRLogins?$filter=LTR_Email%20eq%20%27{email}%27")
         try:
-            response = session.get(Access_Point, timeout=10).json()
+            response = get_object(Access_Point)
             for res in response['value']:
-                try:
-                    if res['LTR_Email'] == email:
-                        request.session['resetMail'] = email
-                        send_reset_mail(email,request)
-                        messages.success(request, 'We sent you an email to reset your password')
-                        return redirect('login')
-                    else:
-                        messages.error(request,"Invalid Email")
-                        return redirect('login')
-                except:
+                if res['LTR_Email'] == email:
+                    request.session['resetMail'] = email
+                    send_reset_mail(email,request)
+                    messages.success(request, 'We sent you an email to reset your password')
+                    return redirect('login')
+                else:
                     messages.error(request,"Invalid Email")
                     return redirect('login')
         except Exception as e:
