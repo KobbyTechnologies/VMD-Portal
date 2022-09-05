@@ -126,7 +126,7 @@ WSGI_APPLICATION = 'VMD.wsgi.application'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER ='hypertextassassin3@gmail.com'
-EMAIL_HOST_PASSWORD='veydrevbvoaqpnzo'
+EMAIL_HOST_PASSWORD='msabrjccdsgwxnlu'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 

@@ -225,11 +225,14 @@ def Ingredients(request,pk):
             ReasonForInclusion= request.POST.get('ReasonForInclusion')
             specification = request.POST.get('specification')
             userId = request.session['UserID']
+            lineNo = request.POST.get('lineNo')
+            print(prodNo,myAction,ingredientType,ingredientName,quantityPerDose
+            ,strengthOfIngredient,Proportion,ReasonForInclusion,specification,userId,lineNo)
             if not ReasonForInclusion:
                 ReasonForInclusion = ''
             try:
                 response = config.CLIENT.service.Ingredients(prodNo,myAction,ingredientName,ingredientType,ReasonForInclusion,quantityPerDose,
-                Proportion,specification,strengthOfIngredient,userId)
+                Proportion,specification,strengthOfIngredient,userId,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully.")

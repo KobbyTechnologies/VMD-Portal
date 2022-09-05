@@ -202,8 +202,24 @@
                                     <td>{{res.Proportion}}</td>
                                     <td>{{res.Specification_of_purity_of_the_active_substance_}}</td>
                                     <td>{{res.Reason_For_Inclusion}}</td>
-                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'Ingredients' res.No %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="myAction" value="delete">
+                                            <input type="hidden" name="ingredientType" value="0">
+                                            <input type="hidden" name="ingredientName" value="0">
+                                            <input type="hidden" name="quantityPerDose" value="0">
+                                            <input type="hidden" name="strengthOfIngredient" value="0">
+                                            <input type="hidden" name="Proportion" value="0">
+                                            <input type="hidden" name="ReasonForInclusion" value="0">
+                                            <input type="hidden" name="specification" value="0">
+                                            <input type="hidden" name="specification" value="0">
+                                            <input type="hidden" name="lineNo" value="{{res.Active_Line_No_}}">
+
+                                            <button type="submit" type="button"><i
+                                                    class="fas fa-trash-alt text-danger"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -351,24 +367,6 @@
                                         <button type="submit" class="btn btn-primary w-100">Submit</button>
                                     </div>
                                 </form>
-                                {% else %}
-                                <div class="row">
-                                    {% for data in files %}
-                                    <div class="col-md-4">
-                                        <div class="document">
-                                            <div class="document-body">
-                                                <i class="bi bi-file-earmark-check-fill text-success"></i>
-                                            </div>
-                                            <div class="document-footer">
-                                                <span class="document-name">
-                                                    {{data.File_Name}}.{{data.File_Extension}} </span>
-                                                <span class="document-description"> Date Attached:
-                                                    {{data.Attached_Date}} </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
                                 {% endif%}
                             </div>
                         </div>
@@ -377,7 +375,32 @@
 
             </div>
             {% endif %}
-
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card p-2">
+                    <h5 class="card-title text-dark">Attached Documents</h5>
+                    <div class="row">
+                        {% for data in files %}
+                        <div class="col-md-2">
+                            <div class="document">
+                                <div class="document-body">
+                                    <i class="bi bi-file-earmark-check-fill text-success"></i>
+                                </div>
+                                <div class="document-footer">
+                                    <span class="document-name">
+                                        {{data.File_Name}}.{{data.File_Extension}} </span>
+                                    <span class="document-description"> Date Attached:
+                                        {{data.Attached_Date}} </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <span class="small text-danger">You have not attached any documents</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row my-3">
             <div class="col-md-12">
@@ -643,6 +666,7 @@
                 <form method="POST" action="{% url 'Ingredients' res.ProductNo %}">
                     {% csrf_token %}
                     <input type="hidden" name="myAction" value="insert">
+                    <input type="hidden" name="lineNo" value="">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-2">

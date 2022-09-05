@@ -85,6 +85,9 @@ def VeterinaryPharmaceutical(request,pk):
         except TypeError as e:
             messages.error(request,e)
             return redirect('applications', pk=pk)
+        except Exception as e:
+            messages.error(request,e)
+            return redirect('applications', pk=pk)
     return redirect('applications', pk=pk)
 
 
