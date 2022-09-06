@@ -16,5 +16,6 @@ urlpatterns = [
     path("submit/<str:pk>", views.SubmitRegistration, name='SubmitRegistration'),
     path("Attachement/<str:pk>", views.Attachement, name='Attachement'),
     path("GenerateCertificate/<str:pk>", views.GenerateCertificate, name='GenerateCertificate'),
+    path("FnDeleteDocumentAttachment/<str:pk>", views.FnDeleteDocumentAttachment, name='FnDeleteDocumentAttachment'),
 
 ]

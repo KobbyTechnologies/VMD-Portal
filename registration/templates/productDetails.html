@@ -10,6 +10,62 @@
 <!-- Sidebar-->
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
+
+<style>
+    .file-man-box {
+        padding: 10px;
+        border: 1px solid #e3eaef;
+        border-radius: 5px;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .file-man-box .file-close {
+        color: #f1556c;
+        position: absolute;
+        line-height: 24px;
+        font-size: 24px;
+        right: 10px;
+        top: 10px;
+        visibility: hidden
+    }
+
+    .file-man-box .file-img-box {
+        line-height: 120px;
+        text-align: center
+    }
+
+    .file-man-box .file-img-box img {
+        height: 64px
+    }
+
+    .file-man-box .file-download {
+        font-size: 30px;
+        color: #98a6ad;
+        position: absolute;
+        bottom: 5px;
+        right: 1px;
+        background: none;
+        border: none;
+    }
+
+    .file-man-box .file-download:hover {
+        color: #313a46
+    }
+
+    .file-man-box .file-man-title {
+        padding-right: 15px
+    }
+
+    .file-man-box:hover {
+        -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .06), 0 1px 0 0 rgba(0, 0, 0, .02);
+        box-shadow: 0 0 24px 0 rgba(0, 0, 0, .06), 0 1px 0 0 rgba(0, 0, 0, .02)
+    }
+
+    .file-man-box:hover .file-close {
+        visibility: visible
+    }
+</style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
     integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
 <main id="main" class="main">
@@ -317,7 +373,6 @@
                             {% for res in CountriesRegister %}
                             <li class="list-group-item bg-primary">
                                 {{res.Country_Name}}
-                                <i class="bi bi-trash-fill text-danger" style="float: right;"></i>
                             </li>
                             <hr style="color: white;">
                             {% endfor %}
@@ -382,14 +437,21 @@
                     <h5 class="card-title text-dark">Attached Documents</h5>
                     <div class="row">
                         {% for data in files %}
-                        <div class="col-md-2">
-                            <div class="document">
-                                <div class="document-body">
-                                    <i class="bi bi-file-earmark-check-fill text-success"></i>
-                                </div>
-                                <div class="document-footer">
-                                    <span class="document-name">
-                                        {{data.File_Name}}.{{data.File_Extension}} </span>
+                        <div class="col-md-3">
+                            {% for data in files %}
+                            <div class="file-man-box" id="fileMan">
+                                <form action="{% url 'FnDeleteDocumentAttachment' res.ProductNo %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="docID" value="{{data.AuxiliaryIndex2}}">
+                                    <input type="hidden" name="tableID" value="{{data.Table_ID}}">
+                                    <button class="file-close" id="file-close"><i
+                                            class="fa fa-times-circle"></i></button>
+                                </form>
+                                <div class="file-img-box"><img
+                                        src="https://coderthemes.com/highdmin/layouts/assets/images/file_icons/pdf.svg"
+                                        alt="icon"></div>
+                                <div class="file-man-title">
+                                    <h5 class="mb-0 text-overflow">{{data.File_Name}}.{{data.File_Extension}}</h5>
                                     <span class="document-description"> Date Attached:
                                         {{data.Attached_Date}} </span>
                                 </div>
@@ -449,8 +511,22 @@
                                     <td>{{res.GMP_No}}</a></td>
                                     <td>{{res.Activity}}</td>
                                     <td>
-                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a>
+                                        <form method="POST" action="{% url 'ManufacturesParticulars' res.No %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="myAction" value="delete">
+                                            <input type="hidden" name="TypeOfManufacturer" value="0">
+                                            <input type="hidden" name="manufacturerName" value="0">
+                                            <input type="hidden" name="plantAddress" value="0">
+                                            <input type="hidden" name="country" value="0">
+                                            <input type="hidden" name="ManufacturerTelephone" value="0">
+                                            <input type="hidden" name="ManufacturerEmail" value="0">
+                                            <input type="hidden" name="ManufacturerGMP" value="0">
+                                            <input type="hidden" name="activity" value="0">
+                                            <input type="hidden" name="lineNo" value="{{res.Line_No_}}">
+
+                                            <button type="submit" type="button"><i
+                                                    class="fas fa-trash-alt text-danger"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -501,8 +577,21 @@
                                     <td>{{res.Date}}</td>
                                     <td>{{res.Proprietary_name}}</td>
                                     <td>{{res.Reason}}</td>
-                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'MarketingAuthorization' res.Country_No_ %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="myAction" value="delete">
+                                            <input type="hidden" name="AuthorisationStatus" value="0">
+                                            <input type="hidden" name="MarketingCountry" value="{{res.Country}}">
+                                            <input type="hidden" name="ProprietaryName" value="0">
+                                            <input type="hidden" name="DateAuthorisation" value="2000-1-1">
+                                            <input type="hidden" name="AuthorisationNumber" value="0">
+                                            <input type="hidden" name="AuthorisationReason" value="0">
+                                            <input type="hidden" name="lineNo" value="{{res.Market_Line_No_}}">
+                                            <button type="submit" type="button"><i
+                                                    class="fas fa-trash-alt text-danger"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -548,8 +637,18 @@
                                     <td>{{res.Ingredient_Name_Addictives_}}</td>
                                     <td>{{res.Proportion_e_g_____ppm_units__Addictives_}}</td>
                                     <td>{{res.Purpose_of_use__Addictives_}}</td>
-                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'Additive' res.No %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="myAction" value="delete">
+                                            <input type="hidden" name="AdditiveName" value="0">
+                                            <input type="hidden" name="Proportion" value="0">
+                                            <input type="hidden" name="specification" value="0">
+                                            <input type="hidden" name="lineNo" value="{{res.Ad_No}}">
+                                            <button type="submit" type="button"><i
+                                                    class="fas fa-trash-alt text-danger"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -578,6 +677,7 @@
                 <form method="POST" action="{% url 'ManufacturesParticulars' res.ProductNo %}">
                     {% csrf_token %}
                     <input type="hidden" name="myAction" value="insert">
+                    <input type="hidden" name="lineNo" value="">
                     <div class="row my-2">
                         <div class="col-md-12">
                             <label class="form-label">Type of Manufacturer <span class="text-danger">*</span></label>
@@ -754,6 +854,7 @@
                 <form method="POST" action="{% url 'CountryRegistered' res.ProductNo %}">
                     {% csrf_token %}
                     <input type="hidden" name="myAction" value="insert">
+                    <input type="hidden" name="lineNo" value="">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-2">
@@ -788,6 +889,7 @@
                 <form method="POST" action="{% url 'MarketingAuthorization' res.ProductNo %}">
                     {% csrf_token %}
                     <input type="hidden" name="myAction" value="insert">
+                    <input type="hidden" name="lineNo" value="">
                     <div class="row my-2">
                         <h5>Marketing Authorisation in the country of origin and other countries</h5>
                         <div class="col-md-12">

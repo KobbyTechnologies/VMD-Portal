@@ -24,18 +24,8 @@ def dashboard(request):
         Approved = [x for x in response['value'] if x['Status'] == 'Approved']
         Rejected = [x for x in response['value'] if x['Status'] == 'Rejected']
 
-        newsapi = NewsApiClient(api_key='5c2c534258a44addb5e6cfd97db6e9ce')
-        today = date.today()
+        all = response['value']
     
-        all_articles = newsapi.get_everything(q='nairobi',
-                                      sources='abc-news',
-                                      from_param=f'{today}',
-                                      to='2017-12-12',
-                                      language='en',
-                                      sort_by='publishedAt',
-                                      page=2)
-
-        articles = all_articles['articles']
     except requests.exceptions.RequestException as e:
         messages.error(request,e)
         print(e)
@@ -50,5 +40,5 @@ def dashboard(request):
     rejectedCount = len(Rejected)
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected,"articles":articles}
+    "rejectedCount":rejectedCount,"rejected":Rejected,"all":all}
     return render (request,"dashboard.html",ctx)

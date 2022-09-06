@@ -125,8 +125,8 @@ WSGI_APPLICATION = 'VMD.wsgi.application'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER ='hypertextassassin3@gmail.com'
-EMAIL_HOST_PASSWORD='msabrjccdsgwxnlu'
+EMAIL_HOST_USER ='vmdkenya@gmail.com'
+EMAIL_HOST_PASSWORD='sirgvujkqdmyyejj'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 
@@ -192,9 +192,9 @@ django_heroku.settings(locals())
 
 AUTHS = Session()
 
-WEB_SERVICE_PWD = 'Password@312'
-BASE_URL = 'http://20.120.96.92:2047/BC200/WS/VMD%20TEST%20LIVE/Codeunit/WebPortal'
-O_DATA = "http://20.120.96.92:2048/BC200/ODataV4/Company(%27VMD%20TEST%20LIVE%27){}"
+WEB_SERVICE_PWD = 'W3C0d3@llD@y'
+BASE_URL = "http://172.16.16.17:7047/BC200/WS/Test%20copy/Codeunit/WebPortal"
+O_DATA = "http://172.16.16.17:7048/BC200/ODataV4/Company('Test%20copy'){}"
 AUTHS.auth = HTTPBasicAuth('KTL-ADMIN', WEB_SERVICE_PWD)
 
 CLIENT = Client(BASE_URL, transport=Transport(session=AUTHS))

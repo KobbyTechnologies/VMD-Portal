@@ -27,26 +27,27 @@
         <div class="card pb-3">
           <div class="card-body">
             <h5 class="card-title">Documents Pending Approval </h5>
-
             <table class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
               <thead>
                 <tr>
                   <th scope="col">Product No.</th>
+                  <th scope="col">Document Date</th>
                   <th scope="col">Product Name</th>
                   <th scope="col">Veterinary Class</th>
-                  <th scope="col">Document Date</th>
-                  <th scope="col">Document Stage</th>
+                  <th scope="col">Stage</th>
+                  <th scope="col">Previous Retention</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {% for res in pending %}
+                {% for res in all %}
                 <tr>
                   <td>{{res.ProductNo}}</td>
-                  <td>Product X</td>
-                  <td>{{res.Veterinary_Classes}}</td>
                   <td>{{res.Document_Date}}</td>
-                  <td><span class="badge bg-success">{{res.DocumentStage}}</span></td>
+                  <td>{{res.Productname}}</td>
+                  <td>{{res.Veterinary_Classes}}</td>
+                  <td>{{res.DocumentStage}}</td>
+                  <td><span class="badge bg-success">{{res.Previous_Year_Retension}}</span></td>
                   <td><a href="{% url 'productDetails' res.ProductNo %}" type="button" class="btn btn-success"> View <i
                         class="bi bi-eye"></i></a></td>
                 </tr>
@@ -57,209 +58,6 @@
         </div>
       </div>
     </div>
-    <div class="row my-3">
-      <div class="col-md-4">
-        <div class="card info-card sales-card">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
-
-          <div class="card-body">
-            <h5 class="card-title">Retention <span>| Today</span></h5>
-
-            <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-bug"></i>
-              </div>
-              <div class="ps-3">
-                <h6>145</h6>
-                <span class="text-success small pt-1 fw-bold">12%</span> <span
-                  class="text-muted small pt-2 ps-1">increase</span>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card info-card revenue-card">
-
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Retention <span>| Today</span></h5>
-
-            <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-bug"></i>
-              </div>
-              <div class="ps-3">
-                <h6>145</h6>
-                <span class="text-success small pt-1 fw-bold">12%</span> <span
-                  class="text-muted small pt-2 ps-1">increase</span>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-
-        <div class="card info-card customers-card">
-
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Retention <span>| Today</span></h5>
-
-            <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-bug"></i>
-              </div>
-              <div class="ps-3">
-                <h6>145</h6>
-                <span class="text-success small pt-1 fw-bold">12%</span> <span
-                  class="text-muted small pt-2 ps-1">increase</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-8">
-        <div class="card" style="height: 420px; width:100%;overflow: hidden;">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
-
-          <div class="card-body pb-0">
-            <h5 class="card-title">Report <span>| This Month</span></h5>
-
-            <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                  legend: {
-                    data: ['Metrics A', 'Metrics B']
-                  },
-                  radar: {
-                    // shape: 'circle',
-                    indicator: [{
-                        name: 'Registration',
-                        max: 6500
-                      },
-                      {
-                        name: 'Renewal',
-                        max: 16000
-                      },
-                      {
-                        name: 'Retention',
-                        max: 30000
-                      },
-                      {
-                        name: 'Appeal',
-                        max: 38000
-                      },
-                      {
-                        name: 'Variation',
-                        max: 52000
-                      },
-                      {
-                        name: 'Replacement of Certificates',
-                        max: 25000
-                      }
-                    ]
-                  },
-                  series: [{
-                    name: 'Budget vs spending',
-                    type: 'radar',
-                    data: [{
-                        value: [4200, 3000, 20000, 35000, 50000, 18000],
-                        name: 'Metrics A'
-                      },
-                      {
-                        value: [5000, 14000, 28000, 26000, 42000, 21000],
-                        name: 'Metrics B'
-                      }
-                    ]
-                  }]
-                });
-              });
-            </script>
-
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card" style="height: 420px; width:100%;overflow: hidden;">
-          <div class="card-body pb-0">
-            <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
-
-            <div class="updates">
-              {% for data in articles %}
-              {% if data.urlToImage %}
-              <div class="row">
-                <div class="col-md-12 mb-2">
-                  <div class="card h-100 newsCard m-2">
-                    <img src="{{data.urlToImage}}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">{{data.title}}</h5>
-                      <a href="{{data.url}}" class="btn btn-success w-100 text-warning" target="_blank">Read More <i
-                          class="bi bi-box-arrow-up-right"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {% endif %}
-              {% endfor %}
-            </div><!-- End sidebar recent posts-->
-
-          </div>
-        </div>
-      </div>
-    </div>
-
   </section>
 </main>
 

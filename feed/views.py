@@ -72,8 +72,9 @@ def Additive (request,pk):
             Proportion = request.POST.get('Proportion')
             specification = request.POST.get('specification')
             userId = request.session['UserID']
+            lineNo = request.POST.get('lineNo')
             try:
-                response = config.CLIENT.service.Addictives(prodNo,myAction,AdditiveName,Proportion,specification,userId)
+                response = config.CLIENT.service.Addictives(prodNo,myAction,AdditiveName,Proportion,specification,userId,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully.")

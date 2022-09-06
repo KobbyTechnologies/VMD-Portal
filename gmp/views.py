@@ -113,7 +113,7 @@ class GMPDetails(UserObjectMixin,View):
             linesResponse = self.get_object(Lines)
             Line = [x for x in linesResponse['value']]
 
-            ManufacturesParticulars = config.O_DATA.format(f"/QYGmpManufactureDetails?$filter=AuxiliaryIndex2%20eq%20%27{pk}%27")
+            ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=AuxiliaryIndex2%20eq%20%27{pk}%27")
             ManufacturerResponse = self.get_object(ManufacturesParticulars)
             Manufacturer = [x for x in ManufacturerResponse['value']]
 
@@ -137,7 +137,7 @@ class GMPDetails(UserObjectMixin,View):
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
-        
+
         ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
         "country":resCountry,"files": Files,"attach":attach}
         return render(request,"gmpDetails.html",ctx)
@@ -149,12 +149,13 @@ def linesToInspect(request,pk):
             DosageForm = int(request.POST.get('DosageForm'))
             otherDosage = request.POST.get('otherDosage')
             Activity = int(request.POST.get('Activity'))
+            lineNo = request.POST.get('lineNo')
 
             if not otherDosage:
                 otherDosage = ''
             try:
                 response = config.CLIENT.service.LinesInspected(pk,myAction,request.session['UserID'],DosageForm,
-                otherDosage,Activity)
+                otherDosage,Activity,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully")
@@ -261,12 +262,13 @@ def GMPManufactures(request,pk):
             activity = int(request.POST.get('activity'))
             TypeOfManufacturer = int(request.POST.get('TypeOfManufacturer'))
             manufacturerOther = request.POST.get('manufacturerOther')
+            lineNo = request.POST.get('lineNo')
             if not manufacturerOther:
                 manufacturerOther = ''
             try:
                 response = config.CLIENT.service.GMPManufactureDetails(prodNo,myAction,userId,
                 manufacturerName,ManufacturerEmail,postalAddress,plantAddress,ManufacturerTelephone,
-                country,activity,TypeOfManufacturer)
+                country,activity,TypeOfManufacturer,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully. Click Add New to create more  records")
@@ -275,6 +277,10 @@ def GMPManufactures(request,pk):
                     print("Not sent")
                     return redirect ('GMPDetails',pk=pk)
             except requests.exceptions.RequestException as e:
+                print(e)
+                return redirect('GMPDetails', pk=pk)
+            except Exception as e:
+                messages.info(request,e)
                 print(e)
                 return redirect('GMPDetails', pk=pk)
         except KeyError as e:
@@ -307,6 +313,22 @@ def GMPAttachement(request, pk):
                 print(e)
                 return redirect('GMPDetails',pk=pk)
         except Exception as e:
+            print(e)
+    return redirect('GMPDetails',pk=pk)
+
+def FnDeleteGMPDocumentAttachment(request,pk):
+    if request.method == "POST":
+        docID = int(request.POST.get('docID'))
+        tableID= int(request.POST.get('tableID'))
+        try:
+            response = config.CLIENT.service.FnDeleteGMPDocumentAttachment(
+                pk,docID,tableID)
+            print(response)
+            if response == True:
+                messages.success(request, "Deleted Successfully ")
+                return redirect('GMPDetails',pk=pk)
+        except Exception as e:
+            messages.error(request, e)
             print(e)
     return redirect('GMPDetails',pk=pk)
 

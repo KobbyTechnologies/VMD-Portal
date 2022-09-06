@@ -9,5 +9,6 @@ urlpatterns = [
     path('GMPGateway/<str:pk>', views.GMPGateway.as_view(), name='GMPGateway'),
     path('SubmitGMP/<str:pk>', views.SubmitGMP, name='SubmitGMP'),
     path('GMPAttachement/<str:pk>', views.GMPAttachement, name='GMPAttachement'),
+    path('FnDeleteGMPDocumentAttachment/<str:pk>', views.FnDeleteGMPDocumentAttachment, name='FnDeleteGMPDocumentAttachment'),
 
 ]

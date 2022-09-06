@@ -153,21 +153,20 @@ class productDetails(UserObjectMixin,View):
         except requests.exceptions.RequestException as e:
             messages.error(request,e)
             print(e)
-            return redirect('applications')
+            return redirect('login')
         except KeyError as e:
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
         except Exception as e:
             messages.error(request,e)
-            return redirect('applications')
+            return redirect('login')
         
         ctx = {"res":responses,"status":Status,"class":productClass,
-        "manufacturer":Manufacturer,"country":resCountry,
-        "CountriesRegister":CountriesRegister,
-        "marketing":Marketing,'ingredient':Ingredient,"additive":Additive,"method":Method,
-        "UserID":UserID,"LTRName":LTR_Name,"LTR_Email":LTR_Email,"LTRCountry":LTR_Country,
-        "LTRBsNo":LTR_BS_No,"attach":attach,"files": Files}
+        "manufacturer":Manufacturer,"country":resCountry,'ingredient':Ingredient,
+        "CountriesRegister":CountriesRegister,"marketing":Marketing,"additive":Additive,"method":Method,"files": Files,
+        "UserID":UserID,"LTRName":LTR_Name,"LTR_Email":LTR_Email,"LTRBsNo":LTR_BS_No,"LTRCountry":LTR_Country,"attach":attach}
+        
         return render(request,'productDetails.html',ctx)
 
 def ManufacturesParticulars(request,pk):
@@ -185,6 +184,7 @@ def ManufacturesParticulars(request,pk):
             activity = int(request.POST.get('activity'))
             ManufacturerGMP = request.POST.get('ManufacturerGMP')
             userId = request.session['UserID']
+            lineNo = request.POST.get('lineNo')
 
             if not manufacturerOther:
                 manufacturerOther = ''
@@ -195,7 +195,7 @@ def ManufacturesParticulars(request,pk):
             try:
                 response = config.CLIENT.service.ManufacuresParticulars(prodNo,myAction,TypeOfManufacturer,
                 manufacturerOther,manufacturerName,plantAddress,country,ManufacturerTelephone,ManufacturerEmail,
-                activity,ManufacturerGMP,userId)
+                activity,ManufacturerGMP,userId,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully. Click Add New to create more  records")
@@ -257,9 +257,10 @@ def CountryRegistered(request,pk):
             myAction = request.POST.get('myAction')
             country = request.POST.get('country')
             userId = request.session['UserID']
+            lineNo = request.POST.get('lineNo')
             
             try:
-                response = config.CLIENT.service.CountriesRegistered(prodNo,myAction,country,userId)
+                response = config.CLIENT.service.CountriesRegistered(prodNo,myAction,country,userId,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully. Click Add New to create more records")
@@ -287,6 +288,7 @@ def MarketingAuthorization(request,pk):
             AuthorisationNumber = request.POST.get('AuthorisationNumber')
             AuthorisationReason = request.POST.get('AuthorisationReason')
             ProprietaryName = request.POST.get('ProprietaryName')
+            lineNo = request.POST.get('lineNo')
 
             if not AuthorisationReason:
                 AuthorisationReason = ''
@@ -296,7 +298,7 @@ def MarketingAuthorization(request,pk):
                 ProprietaryName = ''
             try:
                 response = config.CLIENT.service.MarketingAuthorisation(pk,myAction,userId,AuthorisationStatus,
-                MarketingCountry,DateAuthorisation,AuthorisationNumber,AuthorisationReason,ProprietaryName)
+                MarketingCountry,DateAuthorisation,AuthorisationNumber,AuthorisationReason,ProprietaryName,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Saved Successfully")
@@ -448,6 +450,22 @@ def Attachement(request, pk):
                 return redirect('productDetails', pk=pk)
         except Exception as e:
             print(e)        
+    return redirect('productDetails', pk=pk)
+
+def FnDeleteDocumentAttachment(request,pk):
+    if request.method == "POST":
+        docID = int(request.POST.get('docID'))
+        tableID= int(request.POST.get('tableID'))
+        try:
+            response = config.CLIENT.service.FnDeleteDocumentAttachment(
+                pk,docID,tableID)
+            print(response)
+            if response == True:
+                messages.success(request, "Deleted Successfully ")
+                return redirect('productDetails', pk=pk)
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
     return redirect('productDetails', pk=pk)
 
 def GenerateCertificate(request, pk):
