@@ -77,7 +77,7 @@ def Additive (request,pk):
                 response = config.CLIENT.service.Addictives(prodNo,myAction,AdditiveName,Proportion,specification,userId,lineNo)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully.")
+                    messages.success(request,"Request Successful")
                     return redirect('productDetails',pk=pk)
                 else:
                     print("Not sent")

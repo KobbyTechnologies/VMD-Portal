@@ -66,7 +66,7 @@ class variation(UserObjectMixin,View):
                 typeofChange,otherApplications,scope,background,present,proposed)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully")
+                    messages.success(request,"Request Successful")
                     return redirect('variation')
             except requests.exceptions.RequestException as e:
                 print(e)

@@ -198,7 +198,7 @@ def ManufacturesParticulars(request,pk):
                 activity,ManufacturerGMP,userId,lineNo)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully. Click Add New to create more  records")
+                    messages.success(request,"Request Successful")
                     return redirect('productDetails',pk=pk)
                 else:
                     print("Not sent")
@@ -235,7 +235,7 @@ def Ingredients(request,pk):
                 Proportion,specification,strengthOfIngredient,userId,lineNo)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully.")
+                    messages.success(request,"Request Successful")
                     return redirect('productDetails',pk=pk)
                 else:
                     print("Not sent")
@@ -263,7 +263,7 @@ def CountryRegistered(request,pk):
                 response = config.CLIENT.service.CountriesRegistered(prodNo,myAction,country,userId,lineNo)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully. Click Add New to create more records")
+                    messages.success(request,"Request Successful")
                     return redirect('productDetails',pk=pk)
                 else:
                     print("Not sent")
@@ -301,7 +301,7 @@ def MarketingAuthorization(request,pk):
                 MarketingCountry,DateAuthorisation,AuthorisationNumber,AuthorisationReason,ProprietaryName,lineNo)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully")
+                    messages.success(request,"Request Successful")
                     return redirect('productDetails',pk=pk)
                 else:
                     print("Not sent")

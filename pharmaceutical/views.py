@@ -66,7 +66,7 @@ def VeterinaryPharmaceutical(request,pk):
                 )
                 print(response)
                 if response == True:
-                    messages.success(request,"Successfully Saved")
+                    messages.success(request,"Request Successful")
                     return redirect('productDetails', pk=pk)
                 else:
                     messages.success(request,"Not sent. Retry Again")

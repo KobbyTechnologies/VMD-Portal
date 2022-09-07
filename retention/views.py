@@ -69,7 +69,7 @@ class registrationRetention(UserObjectMixin,View):
                 VariationNumber,changesToTheProduct,variation,iAgree)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully")
+                    messages.success(request,"Request Successful")
                     return redirect('retention')
             except requests.exceptions.RequestException as e:
                 print(e)

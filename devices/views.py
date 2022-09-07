@@ -79,7 +79,7 @@ def essentialPrinciples(request,pk):
                 response = config.CLIENT.service.UsedMethods(prodNo,myAction,generalMethod,generalMethod,userId)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully")
+                    messages.success(request,"Request Successful")
                     return redirect('productDetails',pk=pk)
                 else:
                     print("Not sent")

@@ -65,6 +65,13 @@
     .file-man-box:hover .file-close {
         visibility: visible
     }
+
+    .deleteBtn {
+        float: right !important;
+        background: none;
+        outline: none;
+        border: none;
+    }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
     integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -329,32 +336,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body pt-3">
-                        <!-- Bordered Tabs -->
-                        <ul class="nav nav-tabs nav-tabs-bordered">
-
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab"
-                                    data-bs-target="#profile-overview">Attachment</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content pt-2">
-                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                <form action="">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Open this select menu</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </form>
-                            </div>
-                        </div><!-- End Bordered Tabs -->
-                    </div>
-                </div>
-            </div>
             {% else %}
             <div class="col-md-6">
                 <div class="card h-100 tile">
@@ -373,6 +354,14 @@
                             {% for res in CountriesRegister %}
                             <li class="list-group-item bg-primary">
                                 {{res.Country_Name}}
+                                <form method="POST" action="{% url 'CountryRegistered' res.No %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="myAction" value="delete">
+                                    <input type="hidden" name="lineNo" value="{{res.Country_Line_No_}}">
+                                    <input type="hidden" name="country" value="{{res.Country_Name}}">
+                                    <button type="submit" class="deleteBtn"><i
+                                            class="fas fa-trash-alt text-danger"></i></button>
+                                </form>
                             </li>
                             <hr style="color: white;">
                             {% endfor %}

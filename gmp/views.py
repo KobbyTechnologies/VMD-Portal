@@ -86,7 +86,7 @@ class GMPApplication(UserObjectMixin,View):
                 )
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully")
+                    messages.success(request,"Request Successful")
                     return redirect('gmp')
 
             except requests.exceptions.RequestException as e:
@@ -158,7 +158,7 @@ def linesToInspect(request,pk):
                 otherDosage,Activity,lineNo)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully")
+                    messages.success(request,"Request Successful")
                     return redirect('GMPDetails',pk=pk)
             except Exception as e:
                 print(e)
@@ -271,7 +271,7 @@ def GMPManufactures(request,pk):
                 country,activity,TypeOfManufacturer,lineNo)
                 print(response)
                 if response == True:
-                    messages.success(request,"Saved Successfully. Click Add New to create more  records")
+                    messages.success(request,"Request Successful")
                     return redirect('GMPDetails',pk=pk)
                 else:
                     print("Not sent")
