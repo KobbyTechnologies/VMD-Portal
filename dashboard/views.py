@@ -16,6 +16,10 @@ def get_object(endpoint):
 def dashboard(request):
     try:
         userId = request.session['UserID']
+        LTR_Email = request.session['LTR_Email']
+        LTR_Name = request.session['LTR_Name']
+        Country = request.session['Country']
+        Business_Registration_No_= request.session['Business_Registration_No_']
         Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
         response = get_object(Access_Point)
 
@@ -40,5 +44,6 @@ def dashboard(request):
     rejectedCount = len(Rejected)
     ctx = {"openCount":openCount,"open":OpenProducts,
     "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-    "rejectedCount":rejectedCount,"rejected":Rejected,"all":all}
+    "rejectedCount":rejectedCount,"rejected":Rejected,"all":all,"userID":userId,"LTR_Name":LTR_Name,"Country":Country,"LTR_Email":LTR_Email,
+        "Business_Registration_No_":Business_Registration_No_}
     return render (request,"dashboard.html",ctx)

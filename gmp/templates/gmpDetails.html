@@ -38,6 +38,12 @@
         height: 64px
     }
 
+    .deleteBtn {
+        background: none;
+        outline: none;
+        border: none;
+    }
+
     .file-man-box .file-download {
         font-size: 30px;
         color: #98a6ad;
@@ -223,8 +229,22 @@
                                     <td>{{res.Manufacture_Postal_Address}}</a></td>
                                     <td>{{res.Activity}}</td>
                                     <td>
-                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a>
+                                        <form method="POST" action="{% url 'GMPManufactures' res.AuxiliaryIndex2 %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="lineNo" value="{{res.AuxiliaryIndex1}}">
+                                            <input type="hidden" name="TypeOfManufacturer" value="0">
+                                            <input type="hidden" name="manufacturerName" value="0">
+                                            <input type="hidden" name="plantAddress" value="0">
+                                            <input type="hidden" name="country" value="0">
+                                            <input type="hidden" name="ManufacturerTelephone" value="0">
+                                            <input type="hidden" name="ManufacturerEmail" value="none@gmail.com">
+                                            <input type="hidden" name="postalAddress" value="0">
+                                            <input type="hidden" name="activity" value="0">
+                                            <input type="hidden" name="myAction" value="delete">
+                                            <button type="submit" class="deleteBtn"><i
+                                                    class="fas fa-trash-alt text-danger"></i></button>
+                                        </form>
+
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -254,7 +274,7 @@
                     </div>
                     <div class="card-body">
                         <table
-                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
                             <thead>
                                 <tr>
                                     <th scope="col">Dosage Form</th>
@@ -269,8 +289,17 @@
                                     <td>{{res.Dosage_Form}}</td>
                                     <td>{{res.Dosage_Form}}</td>
                                     <td>{{res.Activity}}</td>
-                                    <td><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i
-                                                class="fas fa-trash-alt text-danger"></i> </a></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'linesToInspect' res.No %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="lineNo" value="{{res.AuxiliaryIndex1}}">
+                                            <input type="hidden" name="myAction" value="delete">
+                                            <input type="hidden" name="DosageForm" value="0">
+                                            <input type="hidden" name="Activity" value="0">
+                                            <button type="submit" class="deleteBtn"><i
+                                                    class="fas fa-trash-alt text-danger"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -333,6 +362,7 @@
                 <form method="POST" action="{% url 'GMPManufactures' res.GMP_No_ %}">
                     {% csrf_token %}
                     <input type="hidden" name="lineNo" value="">
+                    <input type="hidden" name="myAction" value="insert">
                     <div class="row my-2">
                         <div class="col-md-12">
                             <label class="form-label">Type of Manufacturer <span class="text-danger">*</span></label>
@@ -423,6 +453,7 @@
                 <form method="POST" action="{% url 'linesToInspect' res.GMP_No_ %}">
                     {% csrf_token %}
                     <input type="hidden" name="lineNo" value="">
+                    <input type="hidden" name="myAction" value="insert">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-2">

@@ -18,6 +18,8 @@ class UserObjectMixin(object):
 class PaymentGateway(UserObjectMixin,View):
     def get(self,request,pk):
         try:
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             userID = request.session['UserID']
             Access_Point= Access_Point = config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userID}%27%20and%20ProductNo%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
@@ -33,7 +35,7 @@ class PaymentGateway(UserObjectMixin,View):
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
-        ctx = {"res":responses,"status":Status,"class":productClass}
+        ctx = {"res":responses,"status":Status,"class":productClass,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'gateway.html',ctx)
     def post(self, request,pk):
         if request.method == 'POST':

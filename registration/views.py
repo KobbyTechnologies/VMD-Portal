@@ -23,6 +23,8 @@ class registrationRequest(UserObjectMixin,View):
         try:
             userId = request.session['UserID'] 
             Vet_Classes= config.O_DATA.format("/QYVertinaryclasses")
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             vet_response = self.get_object(Vet_Classes)
             product = vet_response['value']
 
@@ -47,13 +49,15 @@ class registrationRequest(UserObjectMixin,View):
         rejectedCount = len(Rejected)
         ctx = {"product": product,"openCount":openCount,"open":OpenProducts,
         "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-        "rejectedCount":rejectedCount,"rejected":Rejected}
+        "rejectedCount":rejectedCount,"rejected":Rejected,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'registration.html',ctx)
 
 class myApplications(UserObjectMixin,View):
     def get(self, request,pk):
         try:
             userId = request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Access_Point = config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27%20and%20ProductNo%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
             for res in response['value']:
@@ -72,7 +76,7 @@ class myApplications(UserObjectMixin,View):
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
-        ctx = {"res":responses,"status":Status,"class":productClass,"country":resCountry}
+        ctx = {"res":responses,"status":Status,"class":productClass,"country":resCountry,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request, "applications.html",ctx)
 
 
@@ -165,7 +169,7 @@ class productDetails(UserObjectMixin,View):
         ctx = {"res":responses,"status":Status,"class":productClass,
         "manufacturer":Manufacturer,"country":resCountry,'ingredient':Ingredient,
         "CountriesRegister":CountriesRegister,"marketing":Marketing,"additive":Additive,"method":Method,"files": Files,
-        "UserID":UserID,"LTRName":LTR_Name,"LTR_Email":LTR_Email,"LTRBsNo":LTR_BS_No,"LTRCountry":LTR_Country,"attach":attach}
+        "UserID":UserID,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email,"LTRBsNo":LTR_BS_No,"LTRCountry":LTR_Country,"attach":attach}
         
         return render(request,'productDetails.html',ctx)
 
@@ -344,6 +348,8 @@ class MyApplications(UserObjectMixin):
     def get(self,request):
         try:
             userId = request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
 
             Vet_Classes= config.O_DATA.format("/QYVertinaryclasses")
             vet_response = self.get_object(Vet_Classes)
@@ -370,13 +376,15 @@ class MyApplications(UserObjectMixin):
         rejectedCount = len(Rejected)
         ctx = {"product": product,"openCount":openCount,"open":OpenProducts,
         "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-        "rejectedCount":rejectedCount,"rejected":Rejected}
+        "rejectedCount":rejectedCount,"rejected":Rejected,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'applications.html',ctx)
 
 class allApplications(UserObjectMixin,View):
     def get(self, request):
         try:
             userId =request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Access_Point=  config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
             response = self.get_object(Access_Point)
             OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
@@ -398,7 +406,7 @@ class allApplications(UserObjectMixin,View):
         rejectedCount = len(Rejected)
         ctx = {"openCount":openCount,"open":OpenProducts,
         "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-        "rejectedCount":rejectedCount,"rejected":Rejected}
+        "rejectedCount":rejectedCount,"rejected":Rejected,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'submitted.html',ctx)
 
 

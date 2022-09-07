@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+<style>
+    .l-bg-dark {
+        background: linear-gradient(to right, rgb(141, 139, 139), #8696b8) !important;
+    }
+</style>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>User Manual</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">User Manual</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card p-2">
+                        <div class="card-body l-bg-dark">
+                            <iframe src="../../static/manual/sample-pdf-download-10-mb.pdf" width="100%" height="700px">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% include 'footer.html' %}
+
+{% endblock %}

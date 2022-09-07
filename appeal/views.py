@@ -18,6 +18,8 @@ class UserObjectMixin(object):
 class appealRequest(UserObjectMixin,View):
     def get(self,request):
         try:
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             userID =request.session['UserID']
             Retention= config.O_DATA.format(f"/QYAppeal?$filter=User_code%20eq%20%27{userID}%27")
             response = self.get_object(Retention)
@@ -40,7 +42,7 @@ class appealRequest(UserObjectMixin,View):
         rejectedCount = len(rejectedAppeal)
         ctx = {"openCount":openCount,"open":openAppeal,
         "pendCount":pendCount,"pending":pendingAppeal,"appCount":appCount,"approved":approvedAppeal,
-        "rejectedCount":rejectedCount,"rejected":rejectedAppeal,"product":Rejected}
+        "rejectedCount":rejectedCount,"rejected":rejectedAppeal,"product":Rejected,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'appeal.html',ctx)
     def post(self, request):
         if request.method == 'POST':
@@ -67,6 +69,8 @@ class appealDetails(UserObjectMixin,View):
     def get(self, request,pk):
         try:
             userID =request.session['UserID']
+            LTR_Email = request.session['LTR_Email']
+            LTR_Name = request.session['LTR_Name']
             Access_Point= config.O_DATA.format(f"/QYAppeal?$filter=User_code%20eq%20%27{userID}%27%20and%20Appeal_No_%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
             for res in response['value']:
@@ -81,7 +85,7 @@ class appealDetails(UserObjectMixin,View):
             print(e)
             return redirect('appeal')
             
-        ctx = {"res":responses,"status":Status}
+        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"appealDetails.html",ctx)
     def post(self, request,pk):
         if request.method == 'POST':
@@ -109,7 +113,9 @@ class appealDetails(UserObjectMixin,View):
 class appealGateway(UserObjectMixin,View):
     def get(self,request,pk):
         try:
+            LTR_Email = request.session['LTR_Email']
             userID =request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
             Access_Point= config.O_DATA.format(f"/QYAppeal?$filter=User_code%20eq%20%27{userID}%27%20and%20Appeal_No_%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
             for res in response['value']:
@@ -123,7 +129,7 @@ class appealGateway(UserObjectMixin,View):
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
-        ctx = {"res":responses,"status":Status}
+        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'appealGateway.html',ctx)
     def post(self,request,pk):
         if request.method == 'POST':

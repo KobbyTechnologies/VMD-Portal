@@ -10,7 +10,11 @@
 <!-- Sidebar-->
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
-
+<style>
+  .l-bg-dark {
+    background: linear-gradient(to right, rgb(141, 139, 139), #8696b8) !important;
+  }
+</style>
 <main id="main" class="main">
   <div class="pagetitle">
     <h1>Dashboard</h1>
@@ -27,12 +31,13 @@
         <div class="card pb-3">
           <div class="card-body">
             <h5 class="card-title">Documents History</h5>
-            <table class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable">
+            <table
+              class="display table  table-striped dt-responsive table-responsive-lg table-bordered datatable  w-100">
               <thead>
                 <tr>
                   <th scope="col">Product No.</th>
                   <th scope="col">Document Date</th>
-                  <th scope="col">Veterinary Class</th>
+                  <th scope="col">Class</th>
                   <th scope="col">Stage</th>
                   <th scope="col">Previous Retention</th>
                   <th scope="col">Action</th>
@@ -52,6 +57,87 @@
                 {% endfor %}
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section profile contact">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card l-bg-dark">
+          <div class="card-title mx-2 text-white">
+            <h5>Profile and Contact Information</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-lg-6 mb-2">
+                    <div class="info-box card h-100">
+                      <i class="bi bi-geo-alt"></i>
+                      <h3>Address</h3>
+                      <p>The Pest Control Plaza<br>P.O Box 66171-00800<br>Westlands</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-2">
+                    <div class="info-box card h-100">
+                      <i class="bi bi-telephone"></i>
+                      <h3>Call Us</h3>
+                      <p> +254743795395<br> +254743795395</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-2">
+                    <div class="info-box card h-100">
+                      <i class="bi bi-envelope"></i>
+                      <h3>Email Us</h3>
+                      <p>vmd@kilimo.go.ke</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-2">
+                    <div class="info-box card h-100">
+                      <i class="bi bi-clock"></i>
+                      <h3>Open Hours</h3>
+                      <p>Monday - Friday<br>9:00AM - 05:00PM</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="card-body pt-3">
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                      <li class="nav-item">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Profile
+                          Overview</button>
+                      </li>
+                    </ul>
+                    <div class="tab-content pt-2">
+                      <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                        <div class="row my-3">
+                          <div class="col-md-6 label">LTR Name:</div>
+                          <div class="col-md-6">{{LTR_Name}}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6 label">Country:</div>
+                          <div class="col-md-6">{{Country}}</div>
+                        </div>
+                        <div class="row my-3">
+                          <div class="col-md-6 label">Email:</div>
+                          <div class="col-md-6">{{LTR_Email}}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6 label">Business Reg No.</div>
+                          <div class="col-md-6">{{Business_Registration_No_}}</div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

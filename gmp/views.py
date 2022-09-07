@@ -19,6 +19,8 @@ class GMPApplication(UserObjectMixin,View):
     def get(self,request):
         try:
             userID = request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Retention= config.O_DATA.format(f"/QYGMP?$filter=User_code%20eq%20%27{userID}%27")
             response = self.get_object(Retention)
             OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
@@ -45,7 +47,7 @@ class GMPApplication(UserObjectMixin,View):
         ctx = {"openCount":openCount,"open":OpenProducts,
         "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
         "rejectedCount":rejectedCount,"rejected":Rejected,
-        "country":resCountry}
+        "country":resCountry,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'gmp.html',ctx)
     def post(self, request):
         if request.method == "POST":
@@ -103,6 +105,8 @@ class GMPDetails(UserObjectMixin,View):
     def get(self,request,pk):
         try:
             userID =request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Access_Point = config.O_DATA.format(f"/QYGMP?$filter=User_code%20eq%20%27{userID}%27%20and%20GMP_No_%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
             for res in response['value']:
@@ -139,13 +143,13 @@ class GMPDetails(UserObjectMixin,View):
             return redirect('login')
 
         ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
-        "country":resCountry,"files": Files,"attach":attach}
+        "country":resCountry,"files": Files,"attach":attach,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"gmpDetails.html",ctx)
 
 def linesToInspect(request,pk):
     if request.method == "POST":
         try:
-            myAction= 'insert'
+            myAction= request.POST.get('myAction')
             DosageForm = int(request.POST.get('DosageForm'))
             otherDosage = request.POST.get('otherDosage')
             Activity = int(request.POST.get('Activity'))
@@ -174,6 +178,8 @@ class GMPGateway(UserObjectMixin,View):
     def get(self,request,pk):
         try:
             userID = request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Access_Point = config.O_DATA.format(f"/QYGMP?$filter=User_code%20eq%20%27{userID}%27%20and%20GMP_No_%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
             for res in response['value']:
@@ -187,7 +193,7 @@ class GMPGateway(UserObjectMixin,View):
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
-        ctx = {"res":responses,"status":Status}
+        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'GMPGateway.html',ctx)
     def post(self,request,pk):
         if request.method == 'POST':
@@ -251,7 +257,7 @@ def GMPManufactures(request,pk):
     if request.method == 'POST':
         try:
             prodNo = pk
-            myAction = "insert"
+            myAction = request.POST.get('myAction')
             userId = request.session['UserID']
             manufacturerName = request.POST.get('manufacturerName')
             ManufacturerEmail= request.POST.get('ManufacturerEmail')

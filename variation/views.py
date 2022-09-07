@@ -17,6 +17,8 @@ class UserObjectMixin(object):
 class variation(UserObjectMixin,View):
     def get(self,request):
         try:
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             session = requests.Session()
             session.auth = config.AUTHS
             userId =request.session['UserID']
@@ -45,7 +47,7 @@ class variation(UserObjectMixin,View):
         rejectedCount = len(Rejected)
         ctx = {"openCount":openCount,"open":OpenProducts,
         "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-        "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedVariation}
+        "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedVariation,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"variation.html",ctx)
     def post(self, request):
         if request.method == 'POST':
@@ -83,6 +85,8 @@ class  variationDetails(UserObjectMixin,View):
     def get(self, request,pk):
         try:
             userID = request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Access_Point = config.O_DATA.format(f"/QYVariation?$filter=User_code%20eq%20%27{userID}%27%20and%20Variation_No_%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
             
@@ -98,12 +102,14 @@ class  variationDetails(UserObjectMixin,View):
             print(e)
             return redirect('login')
         
-        ctx = {"res":responses,"status":Status}
+        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'variationDetails.html',ctx)
 
 class variationGateway(UserObjectMixin,View):
     def get(self,request,pk):
         try:
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             userID = request.session['UserID']
             Access_Point = config.O_DATA.format(f"/QYVariation?$filter=User_code%20eq%20%27{userID}%27%20and%20Variation_No_%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
@@ -118,7 +124,7 @@ class variationGateway(UserObjectMixin,View):
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
-        ctx = {"res":responses,"status":Status}
+        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'variationGateway.html',ctx)
     def post(self,request,pk):
         if request.method == 'POST':

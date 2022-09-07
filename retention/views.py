@@ -19,6 +19,8 @@ class registrationRetention(UserObjectMixin,View):
     def get(self,request):
         try:
             userId=request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Retention= config.O_DATA.format(f"/QYRetension?$filter=User_code%20eq%20%27{userId}%27")
             response = self.get_object(Retention)
             OpenProducts = [x for x in response['value'] if x['Status'] == 'Open']
@@ -45,7 +47,7 @@ class registrationRetention(UserObjectMixin,View):
         print(pendCount)
         ctx = {"openCount":openCount,"open":OpenProducts,
         "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-        "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedProd}
+        "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedProd,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"retention.html",ctx)
     def post(self,request):
         if request.method == 'POST':
@@ -85,6 +87,8 @@ class retentionDetails(UserObjectMixin,View):
     def get(self,request,pk):
         try:
             userID =request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Access_Point = config.O_DATA.format(f"/QYRetension?$filter=User_code%20eq%20%27{userID}%27%20and%20Retension_No_%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
 
@@ -100,13 +104,15 @@ class retentionDetails(UserObjectMixin,View):
             print(e)
             return redirect('login')
         
-        ctx = {"res":responses,"status":Status}
+        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'RetentionDetails.html',ctx)
 
 class retentionGateway(UserObjectMixin,View):
     def get(self,request,pk):
         try:
             userID = request.session['UserID']
+            LTR_Name = request.session['LTR_Name']
+            LTR_Email = request.session['LTR_Email']
             Access_Point = config.O_DATA.format(f"/QYRetension?$filter=User_code%20eq%20%27{userID}%27%20and%20Retension_No_%20eq%20%27{pk}%27")
             response = self.get_object(Access_Point)
             for res in response['value']:
@@ -120,7 +126,7 @@ class retentionGateway(UserObjectMixin,View):
             messages.info(request,"Session Expired, Login Again")
             print(e)
             return redirect('login')
-        ctx = {"res":responses,"status":Status}
+        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,'retentionGateway.html',ctx)
     def post(self,request,pk):
         if request.method == 'POST':
