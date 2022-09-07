@@ -323,6 +323,7 @@ class makePayment(UserObjectMixin,View):
                 userCode = request.session['UserID']
 
                 response = config.CLIENT.service.FnRegistrationPayment(prodNo,userCode)
+                print(prodNo,userCode,response)
                 if response == True:
                     messages.success(request,"Please Make Your payment and click confirm payment.")
                     return redirect('PaymentGateway', pk=pk)
