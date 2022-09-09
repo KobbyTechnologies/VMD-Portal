@@ -153,7 +153,7 @@
                                                                             <select class="form-select"
                                                                                 aria-label="Default select example"
                                                                                 name="changesToTheProduct"
-                                                                                id="changesToTheProduct">
+                                                                                id="EditchangesToTheProduct">
                                                                                 <option value="0" disabled selected>
                                                                                     --Select--</option>
                                                                                 <option value="True">Yes</option>
@@ -162,13 +162,13 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="row my-2" style="display: none;"
-                                                                        id="variationRow">
+                                                                        id="EditvariationRow">
                                                                         <div class="col-md-12">
                                                                             <label class="form-label">Have you made a
                                                                                 variation?</label>
                                                                             <select class="form-select"
                                                                                 aria-label="Default select example"
-                                                                                name="variation" id="variation"
+                                                                                name="variation" id="Editvariation"
                                                                                 disabled>
                                                                                 <option value="0" disabled selected>
                                                                                     --Select--</option>
@@ -177,14 +177,14 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row my-2" id="VariationNumberRow"
+                                                                    <div class="row my-2" id="EditVariationNumberRow"
                                                                         style="display:none">
                                                                         <div class="col-md-12">
                                                                             <label class="form-label">Variation
                                                                                 Number</label>
                                                                             <input type="text" class="form-control"
                                                                                 name="VariationNumber"
-                                                                                id="VariationNumber" disabled>
+                                                                                id="EditVariationNumber" disabled>
                                                                         </div>
                                                                     </div>
                                                                     <hr class="dropdown-divider">
@@ -209,7 +209,7 @@
                                                                     <button type="button" class="btn btn-danger"
                                                                         data-bs-dismiss="modal">Close</button>
                                                                     <button type="submit" class="btn btn-success my-2"
-                                                                        id="retentionSubmit">Submit</button>
+                                                                        id="EditretentionSubmit">Submit</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -441,6 +441,15 @@
                 $('#variation').prop('disabled', true);
             }
         });
+        $('#EditchangesToTheProduct').on('change', function () {
+            if (this.value == "True") {
+                $('#EditvariationRow').show(1000)
+                $('#Editvariation').prop('disabled', false);
+            } else {
+                $('#EditvariationRow').hide()
+                $('#Editvariation').prop('disabled', true);
+            }
+        });
 
         $('#variation').on('change', function () {
             if (this.value == "True") {
@@ -449,8 +458,17 @@
             } else {
                 $('#VariationNumberRow').hide()
                 $('#VariationNumber').prop('disabled', true)
-                $('#responses').append('You have to do a variation first');
                 $('#retentionSubmit').prop('disabled', true)
+            }
+        });
+        $('#Editvariation').on('change', function () {
+            if (this.value == "True") {
+                $('#EditVariationNumberRow').show(1000)
+                $('#EditVariationNumber').prop('disabled', false);
+            } else {
+                $('#EditVariationNumberRow').hide()
+                $('#EditVariationNumber').prop('disabled', true)
+                $('#EditretentionSubmit').prop('disabled', true)
             }
         });
     })

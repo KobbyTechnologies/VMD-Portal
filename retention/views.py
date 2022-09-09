@@ -55,17 +55,22 @@ class registrationRetention(UserObjectMixin,View):
                 retNo = request.POST.get('retNo')
                 myAction = request.POST.get('myAction')
                 prodNo = request.POST.get('prodNo')
-                changesToTheProduct = request.POST.get('changesToTheProduct')
-                variation = request.POST.get('variation')
+                changesToTheProduct = eval(request.POST.get('changesToTheProduct'))
+                variations = request.POST.get('variation')
                 iAgree = eval(request.POST.get('iAgree'))
                 VariationNumber = request.POST.get('VariationNumber')
 
                 if not iAgree:
                     iAgree = False
-                if not variation:
-                    variation = False
+                if not variations:
+                    variations = 'False'
                 if not VariationNumber:
                     VariationNumber = ''
+                
+                variation = eval(variations)
+                print(prodNo)
+                print(type(changesToTheProduct))
+                print(type(variation))
 
                 response = config.CLIENT.service.Retension(retNo,myAction,request.session['UserID'],prodNo,
                 VariationNumber,changesToTheProduct,variation,iAgree)
@@ -73,13 +78,14 @@ class registrationRetention(UserObjectMixin,View):
                 if response == True:
                     messages.success(request,"Request Successful")
                     return redirect('retention')
-            except requests.exceptions.RequestException as e:
-                print(e)
-                return redirect('retention')
             except KeyError as e:
                 messages.info(request,"Session Expired, Login Again")
                 print(e)
                 return redirect('login') 
+            except Exception as e:
+                print(e)
+                messages.error(request,e)
+                return redirect('retention')
         return redirect('retention')
     
 
