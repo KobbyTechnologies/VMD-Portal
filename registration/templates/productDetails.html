@@ -142,7 +142,7 @@
                     </form>
                 </div>
             </div>
-            {% elif res.Paid == False and status == 'Open' %}
+            {% elif res.Paid == False and status == 'Open' and res.Invoiced == False %}
             <div class="col-md-3">
                 <div class="card h-100 actionActive actionCard  text-center">
                     <i class="bi bi-wallet my-3"></i>
@@ -153,6 +153,15 @@
                         </button>
                     </form>
                 </div>
+            </div>
+            {% elif res.Paid == False and status == 'Open' and res.Invoiced == True %}
+            <div class="col-md-3">
+                <a href="{% url 'PaymentGateway' res.ProductNo %}">
+                    <div class="card h-100 actionActive actionCard  text-center">
+                        <i class="bi bi-wallet my-3"></i>
+                        Pay $ {{res.Amount_Payable}}
+                    </div>
+                </a>
             </div>
             {% elif res.Paid == True and status != "Open" %}
             <div class="col-md-3">

@@ -165,3 +165,24 @@ class appealGateway(UserObjectMixin,View):
         return redirect('appealGateway',pk=pk)
 
     
+# def SurrenderApproval(request, pk):
+#     Username = request.session['User_ID']
+#     Password = request.session['password']
+#     AUTHS = Session()
+#     AUTHS.auth = HTTPBasicAuth(Username, Password)
+#     CLIENT = Client(config.BASE_URL, transport=Transport(session=AUTHS))
+#     if request.method == 'POST':
+#         try:
+#             requisitionNo = request.POST.get('requisitionNo')
+#         except ValueError as e:
+#             return redirect('IMPSurrender', pk=pk)
+#         try:
+#             response = CLIENT.service.FnRequestPaymentApproval(
+#                 request.session['Employee_No_'], requisitionNo)
+#             messages.success(request, "Approval Request Sent Successfully")
+#             print(response)
+#             return redirect('IMPSurrender', pk=pk)
+#         except Exception as e:
+#             messages.error(request, e)
+#             print(e)
+#     return redirect('IMPSurrender', pk=pk)
