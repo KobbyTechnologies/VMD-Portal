@@ -7,4 +7,5 @@ urlpatterns = [
     path("retentionDetails/<str:pk>",views.retentionDetails.as_view(),name='retentionDetails'),
     path("retentionGateway/<str:pk>",views.retentionGateway.as_view(),name='retentionGateway'),
     path("SubmitRetention/<str:pk>",views.SubmitRetention,name='SubmitRetention'),
+    path("makeRetentionPayment/<str:pk>",views.makeRetentionPayment.as_view(),name='makeRetentionPayment'),
 ]

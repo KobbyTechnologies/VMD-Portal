@@ -68,9 +68,6 @@ class registrationRetention(UserObjectMixin,View):
                     VariationNumber = ''
                 
                 variation = eval(variations)
-                print(prodNo)
-                print(type(changesToTheProduct))
-                print(type(variation))
 
                 response = config.CLIENT.service.Retension(retNo,myAction,request.session['UserID'],prodNo,
                 VariationNumber,changesToTheProduct,variation,iAgree)
@@ -190,3 +187,27 @@ def SubmitRetention(request,pk):
             messages.error(request,e)
             return redirect ('retentionDetails',pk=pk)
     return redirect('retentionDetails', pk=pk)
+
+class makeRetentionPayment(UserObjectMixin,View):
+    def post(self, request,pk):
+        if request.method == 'POST':
+            try:
+                retNo = pk
+                userCode = request.session['UserID']
+
+                response = config.CLIENT.service.FnRetetionPayment(retNo,userCode)
+                if response == True:
+                    messages.success(request,"Please Make Your payment and click confirm payment.")
+                    return redirect('retentionGateway', pk=pk)
+                if response == False:
+                    messages.error(request,"False")
+                    return redirect('retentionDetails', pk=pk)
+            except KeyError as e:
+                messages.info(request,"Session Expired, Login Again")
+                print(e)
+                return redirect('login')
+            except Exception as e:
+                print(e)
+                messages.info(request,e)
+                return redirect ('retentionDetails',pk=pk)
+        return redirect('retentionDetails', pk=pk)

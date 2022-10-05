@@ -103,9 +103,21 @@
                     </form>
                 </div>
             </div>
-            {% elif res.Paid == False and status == 'Open' %}
+            {% elif res.Paid == False and status == 'Open' and res.Invoiced == False %}
             <div class="col-md-3">
-                <a href="{% url 'retentionGateway'  res.Retension_No_ %}">
+                <div class="card h-100 actionActive actionCard  text-center">
+                    <i class="bi bi-wallet my-3"></i>
+                    <form action="{% url 'makeRetentionPayment' res.Retension_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">
+                            Pay $ {{res.Amount_Payable}}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% elif res.Paid == False and status == 'Open' and res.Invoiced == True %}
+            <div class="col-md-3">
+                <a href="{% url 'retentionGateway' res.Retension_No_  %}">
                     <div class="card h-100 actionActive actionCard  text-center">
                         <i class="bi bi-wallet my-3"></i>
                         Pay $ {{res.Amount_Payable}}
