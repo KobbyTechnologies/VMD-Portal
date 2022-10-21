@@ -36,9 +36,7 @@
               <thead>
                 <tr>
                   <th scope="col">Product No.</th>
-                  <th scope="col">Product Name</th>
-                  <th scope="col">Document Date</th>
-                  <th scope="col">Class</th>
+                  <th scope="col">Trade Name</th>
                   <th scope="col">Stage</th>
                   <th scope="col">Previous Retention</th>
                   <th scope="col">Action</th>
@@ -49,8 +47,6 @@
                 <tr>
                   <td>{{res.ProductNo}}</td>
                   <td>{{res.Productname}}</td>
-                  <td>{{res.Document_Date}}</td>
-                  <td>{{res.Veterinary_Classes}}</td>
                   <td>{{res.DocumentStage}}</td>
                   <td><span class="badge bg-success">{{res.Previous_Year_Retension}}</span></td>
                   <td><a href="{% url 'productDetails' res.ProductNo %}" type="button" class="btn btn-success"> View <i

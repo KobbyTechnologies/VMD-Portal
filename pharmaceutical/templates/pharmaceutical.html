@@ -7,7 +7,7 @@
                     <h5 class="card-title">Registration of {{res.Veterinary_Classes}}
                         {{res.ProductNo}}
                     </h5>
-                    <form action="{% url 'VeterinaryPharmaceutical' res.ProductNo %}" method="POST">
+                    <form action="{% url 'VeterinaryPharmaceutical' res.ProductNo %}" method="POST" novalidate>
                         {% csrf_token %}
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
@@ -81,7 +81,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label class="form-label">Dosage</label>
-                                                <input type="text" class="form-control" name="PharmaceuticalDosage">
+                                                <input type="text" class="form-control" name="PharmaceuticalDosage"
+                                                    required>
                                                 <div class="form-text">Dosage form of the veterinary product</div>
                                             </div>
 

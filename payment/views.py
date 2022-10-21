@@ -4,6 +4,9 @@ import requests
 from django.contrib import messages
 import json
 from django.views import View
+import base64
+import io as BytesIO
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -69,3 +72,21 @@ class PaymentGateway(UserObjectMixin,View):
                 messages.error(request,e)
                 return redirect('PaymentGateway', pk=pk)
         return redirect('PaymentGateway', pk=pk)
+
+def FNGenerateInvoice(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FNGenerateInvoice(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('PaymentGateway', pk=pk)
