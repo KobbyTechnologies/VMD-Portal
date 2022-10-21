@@ -14,7 +14,7 @@ import threading
 def get_object(endpoint):
     session = requests.Session()
     session.auth = config.AUTHS
-    response = session.get(endpoint, timeout=10).json()
+    response = session.get(endpoint, timeout=10)
     return response
 
 
@@ -54,7 +54,11 @@ def registerRequest(request):
     Access_Point = config.O_DATA.format("/QYCountries")
     try:
         response = get_object(Access_Point)
-        resCountry = response['value']
+        if response.status_code != 200:
+            messages.error(request,f"Wrong Password/Username. Failed with status code: {response.status_code}")
+            return redirect('login') 
+        cleanedData = response.json() 
+        resCountry = cleanedData['value']
     except requests.exceptions.RequestException as e:
         print(e)
         return redirect('register')
@@ -133,7 +137,12 @@ def verifyRequest(request):
             verified = True
             Access_Point = config.O_DATA.format(f"/QYLTRLogins?$filter=LTR_Email%20eq%20%27{email}%27")
             response = get_object(Access_Point)
-            for res in response['value']:
+
+            if response.status_code != 200:
+                    messages.error(request,f"Failed with status code: {response.status_code}")
+                    return redirect('login') 
+            cleanedData = response.json() 
+            for res in cleanedData['value']:
                 if res['Verification_Token'] == secret:
                     response = config.CLIENT.service.FnVerified(verified, email)
                     messages.success(request,"Verification Successful")
@@ -154,8 +163,13 @@ def loginRequest(request):
             password = request.POST.get('password')
 
             Access_Point = config.O_DATA.format(f"/QYLTRLogins?$filter=LTR_Email%20eq%20%27{email}%27")
-            response = get_object(Access_Point)            
-            for res in response['value']:
+            response = get_object(Access_Point)
+            if response.status_code != 200:
+                    messages.error(request,f"Wrong Password/Username. Failed with status code: {response.status_code}")
+                    return redirect('login') 
+            cleanedData = response.json()  
+ 
+            for res in cleanedData['value']:
                 if res['Verified'] == True:
                     Portal_Password = base64.urlsafe_b64decode(res['MyPassword'])
                     request.session['UserID'] = res['No']
@@ -170,15 +184,22 @@ def loginRequest(request):
                     if decoded_text == password:
                         print("User ID:",request.session['UserID'] )
                         return redirect('dashboard')
-                    else:
-                        messages.error(request, "Invalid Password")
-                        return redirect('login')
+        
+                    messages.error(request, "Invalid Password")
+                    return redirect('login')
+                messages.error(request, "Email not verified")
+                return redirect('login')
+            messages.error(request, "Email not registered")
+            return redirect('login')
         except requests.exceptions.RequestException as e:
             print(e)
             messages.error(request,e)
             return redirect('login')
         except ValueError:
             messages.error(request,'Missing Input')
+            return redirect('login')
+        except Exception as e:
+            messages.error(request,e)
             return redirect('login')
     return render(request,'login.html') 
 
@@ -192,7 +213,13 @@ def resetPassword(request):
         Access_Point = config.O_DATA.format(f"/QYLTRLogins?$filter=LTR_Email%20eq%20%27{email}%27")
         try:
             response = get_object(Access_Point)
-            for res in response['value']:
+
+            if response.status_code != 200:
+                    messages.error(request,f"Failed with status code: {response.status_code}")
+                    return redirect('login') 
+            cleanedData = response.json() 
+
+            for res in cleanedData['value']:
                 if res['LTR_Email'] == email:
                     request.session['resetMail'] = email
                     send_reset_mail(email,request)

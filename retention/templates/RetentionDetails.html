@@ -28,10 +28,10 @@
 
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-currency-dollar"></i>
+                                <i class="bi bi-cash-stack"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>$ {{res.Amount_Payable}}</h6>
+                                <h6> {{res.Currency_Code}} {{res.Amount_Payable}}</h6>
                                 <span class="text-muted small pt-2 ps-1">Paid:</span>
                                 <span class="text-success small pt-1 fw-bold">{{res.Paid}}</span>
                             </div>
@@ -91,7 +91,18 @@
                     </div>
                 </div>
             </div>
-            {% if res.Paid == True and status == 'Open' %}
+            {% if res.Paid == True and res.Status == 'Approved' %}
+            <div class="col-md-3">
+                <div class="card h-100 actionCard text-center">
+                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                    <form action="{% url 'PrintRentetionCertificate' res.Retension_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-success align-items-center" type="submit"> Generate
+                            Certificate</button>
+                    </form>
+                </div>
+            </div>
+            {% elif res.Paid == True and status == 'Open' %}
             <div class="col-md-3">
                 <div class="card h-100 actionActive actionCard  text-center">
                     <i class="bi bi-wallet my-3"></i>
@@ -110,7 +121,7 @@
                     <form action="{% url 'makeRetentionPayment' res.Retension_No_ %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-secondary">
-                            Pay $ {{res.Amount_Payable}}
+                            Pay {{res.Currency_Code}} {{res.Amount_Payable}}
                         </button>
                     </form>
                 </div>
@@ -120,7 +131,7 @@
                 <a href="{% url 'retentionGateway' res.Retension_No_  %}">
                     <div class="card h-100 actionActive actionCard  text-center">
                         <i class="bi bi-wallet my-3"></i>
-                        Pay $ {{res.Amount_Payable}}
+                        Pay {{res.Currency_Code}} {{res.Amount_Payable}}
                     </div>
                 </a>
             </div>

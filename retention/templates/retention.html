@@ -188,6 +188,20 @@
                                                                         </div>
                                                                     </div>
                                                                     <hr class="dropdown-divider">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label for="" class="form-label">Signatory
+                                                                                Name</label>
+                                                                            <input type="text" class="form-control"
+                                                                                name="signatoryName">
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label for="" class="form-label">Signatory
+                                                                                Position</label>
+                                                                            <input type="text" class="form-control"
+                                                                                name="signatoryPosition">
+                                                                        </div>
+                                                                    </div>
                                                                     <div class="row my-2">
                                                                         <div class="col-md-12">
                                                                             <div class="mb-2">
@@ -228,35 +242,24 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Product No</th>
+                                            <th scope="col">Retention No</th>
                                             <th scope="col">Product Name</th>
-                                            <th scope="col">Amount Payable</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Fee Penalty</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for res in pending %}
                                         <tr>
-                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Retension_No_}}</td>
                                             <td>{{res.Product_name}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                {% if res.Penalty_Amount == 0 %}
-                                                <span class="badge bg-success">None</span>
-                                                {% else %}
-                                                <span class="text-danger">{{res.Currency_Code}}
-                                                    {{res.Penalty_Amount}}</span>
-                                                {% endif %}
+                                                <a href="{% url 'retentionDetails' res.Retension_No_ %}" type="button"
+                                                    class="btn btn-success">View <i
+                                                        class="bi bi-chevron-double-right"></i>
+                                                </a>
                                             </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary"><i
-                                                        class="bi bi-eye-fill"></i>
-                                                    View</button></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -268,35 +271,24 @@
                                     class="display table w-100  table-striped dt-responsive table-responsive-lg table-bordered datatable">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Product No</th>
+                                            <th scope="col">Retention No</th>
                                             <th scope="col">Product Name</th>
-                                            <th scope="col">Amount Payable</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Fee Penalty</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for res in approved %}
                                         <tr>
-                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Retension_No_}}</td>
                                             <td>{{res.Product_name}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
-                                            </td>
                                             <td><span class="badge bg-success">{{res.Status}}</span></td>
                                             <td>
-                                                {% if res.Penalty_Amount == 0 %}
-                                                <span class="badge bg-success">None</span>
-                                                {% else %}
-                                                <span class="text-danger">{{res.Currency_Code}}
-                                                    {{res.Penalty_Amount}}</span>
-                                                {% endif %}
+                                                <a href="{% url 'retentionDetails' res.Retension_No_ %}" type="button"
+                                                    class="btn btn-success">View <i
+                                                        class="bi bi-chevron-double-right"></i>
+                                                </a>
                                             </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary"><i
-                                                        class="bi bi-eye-fill"></i>
-                                                    View</button></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -403,11 +395,28 @@
                             <div class="col-md-12">
                                 <label class="form-label">Variation
                                     Number</label>
-                                <input type="text" class="form-control" name="VariationNumber" id="VariationNumber"
-                                    disabled>
+                                <select class="form-select" aria-label="Default select example" name="VariationNumber"
+                                    id="VariationNumber" disabled>
+                                    <option value="0" disabled selected>--Select Variation Number--</option>
+                                    {% for variation in ApprovedVariation %}
+                                    <option value="{{variation.Variation_No_}}">{{variation.Product_name}}</option>
+                                    {% empty %}
+                                    <option value="0">You have no variations in the system</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <hr class="dropdown-divider">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="" class="form-label">Signatory Name</label>
+                                <input type="text" class="form-control" name="signatoryName">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="" class="form-label">Signatory Position</label>
+                                <input type="text" class="form-control" name="signatoryPosition">
+                            </div>
+                        </div>
                         <div class="row my-2">
                             <div class="col-md-12">
                                 <div class="mb-2">

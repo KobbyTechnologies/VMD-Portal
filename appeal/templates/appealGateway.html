@@ -36,13 +36,13 @@
                                 <p class="ps-3 textmuted fw-bold h6 mb-0"><span class="bi bi-circle-fill pe-2"
                                         style="color:#0e5a8d;"></span> Total to Pay</p>
                                 <p class="h1 fw-bold d-flex"> <span
-                                        class="bi bi-currency-dollar textmuted pe-1 h6 align-text-top mt-1"></span>
-                                    {{res.Amount_Payable}}
+                                        class="bi bi-cash-stack textmuted pe-1 h6 align-text-top mt-1"></span>
+                                    {{res.Currency_Code}} {{res.Amount_Payable}}
                                 </p>
                             </div>
                             <div class="col-md-4">
                                 <p class="p-blue"> Total Received</p>
-                                <p class="fw-bold mb-3"><span class="bi bi-currency-dollar pe-1"></span>0000<span
+                                <p class="fw-bold mb-3"><span class="bi bi-cash-stack pe-1"></span>0000<span
                                         class="textmuted">.00</span> </p>
                             </div>
                         </div>
@@ -86,7 +86,12 @@
                         <p class="h7 fw-bold mb-1">Make Payments</p>
                         <p class="textmuted h8 mb-2">Choose from the payment options available to proceed. Your payment
                             will be processed
-                            immediately.</p>
+                            immediately.
+                        </p>
+                        <form action="{% url 'FNGenerateInvoice' res.Appeal_No_ %}" method="post">
+                            {% csrf_token %}
+                            <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
+                        </form>
                         <!-- Bordered Tabs Justified -->
                         <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
                             <li class="nav-item flex-fill" role="presentation">

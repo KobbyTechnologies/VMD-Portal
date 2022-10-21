@@ -5,6 +5,9 @@ import json
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.views import View
+import base64
+import io as BytesIO
+from django.http import HttpResponse
 
 # Create your views here.
 class UserObjectMixin(object):
@@ -32,6 +35,11 @@ class registrationRetention(UserObjectMixin,View):
             RetResponse = self.get_object(Access_Point)
             ApprovedProd = [x for x in RetResponse['value'] if x['Status'] == 'Approved']
 
+            variation= config.O_DATA.format(f"/QYVariation?$filter=User_code%20eq%20%27{userId}%27")
+            VariationResponse = self.get_object(variation)
+
+            ApprovedVariation = [x for x in VariationResponse['value'] if x['Status'] == 'Approved']
+
         except requests.exceptions.RequestException as e:
             messages.error(request,e)
             print(e)
@@ -45,7 +53,7 @@ class registrationRetention(UserObjectMixin,View):
         appCount = len(Approved)
         rejectedCount = len(Rejected)
         print(pendCount)
-        ctx = {"openCount":openCount,"open":OpenProducts,
+        ctx = {"openCount":openCount,"open":OpenProducts,"ApprovedVariation":ApprovedVariation,
         "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
         "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedProd,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"retention.html",ctx)
@@ -59,6 +67,8 @@ class registrationRetention(UserObjectMixin,View):
                 variations = request.POST.get('variation')
                 iAgree = eval(request.POST.get('iAgree'))
                 VariationNumber = request.POST.get('VariationNumber')
+                signatoryName = request.POST.get('signatoryName')
+                signatoryPosition = request.POST.get('signatoryPosition')
 
                 if not iAgree:
                     iAgree = False
@@ -70,7 +80,7 @@ class registrationRetention(UserObjectMixin,View):
                 variation = eval(variations)
 
                 response = config.CLIENT.service.Retension(retNo,myAction,request.session['UserID'],prodNo,
-                VariationNumber,changesToTheProduct,variation,iAgree)
+                VariationNumber,changesToTheProduct,variation,iAgree,signatoryName,signatoryPosition)
                 print(response)
                 if response == True:
                     messages.success(request,"Request Successful")
@@ -211,3 +221,39 @@ class makeRetentionPayment(UserObjectMixin,View):
                 messages.info(request,e)
                 return redirect ('retentionDetails',pk=pk)
         return redirect('retentionDetails', pk=pk)
+
+def FNGenerateRetentionInvoice(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FNGenerateRetentionInvoice(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('retentionGateway', pk=pk)
+
+def PrintRentetionCertificate(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.PrintRentetionCertificate(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('retentionDetails', pk=pk)

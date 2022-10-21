@@ -91,10 +91,10 @@
 
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-currency-dollar"></i>
+                                <i class="bi bi-cash-stack"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>$ {{res.Amount_Payable}}</h6>
+                                <h6>{{res.Currency_Code}} {{res.Amount_Payable}}</h6>
                                 <span class="text-muted small pt-2 ps-1">Paid:</span>
                                 <span class="text-success small pt-1 fw-bold">{{res.Paid}}</span>
                             </div>
@@ -149,7 +149,7 @@
                     <form action="{% url 'makePayment' res.ProductNo %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-secondary">
-                            Pay $ {{res.Amount_Payable}}
+                            Pay {{res.Currency_Code}} {{res.Amount_Payable}}
                         </button>
                     </form>
                 </div>
@@ -159,7 +159,7 @@
                 <a href="{% url 'PaymentGateway' res.ProductNo %}">
                     <div class="card h-100 actionActive actionCard  text-center">
                         <i class="bi bi-wallet my-3"></i>
-                        Pay $ {{res.Amount_Payable}}
+                        Pay {{res.Currency_Code}} {{res.Amount_Payable}}
                     </div>
                 </a>
             </div>
