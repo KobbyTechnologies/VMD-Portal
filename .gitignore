@@ -3,3 +3,5 @@ venv/
 .vscode/
 stats.txt
 notes.txt
+Pipfile
+Pipfile.lock

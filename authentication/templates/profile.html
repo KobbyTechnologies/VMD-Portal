@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+<style>
+    .l-bg-dark {
+        background: linear-gradient(to right, rgb(141, 139, 139), #8696b8) !important;
+    }
+</style>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Profile</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Profile</li>
+            </ol>
+        </nav>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
+      <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
+      <div class="a-icon mx-2">
+        {{message}}
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+    <div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
+      <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
+      <div class="a-icon mx-2">
+        {{message}}
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+    <div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
+      <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
+      <div class="a-icon mx-2">
+        {{message}}
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="container emp-profile">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="{% static 'img/Logo/ke.png'%}" alt="" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                    <h5>
+                        {{LTR_Name}}
+                    </h5>
+                    <h6>
+                        {{Business_Registration_No_}}
+                    </h6>
+                    <br><br>
+
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
+                                aria-controls="home" aria-selected="true">Profile Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
+                                aria-controls="profile" aria-selected="false">Change Password</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <!-- <a href="" class="profile-edit-btn" data-toggle="modal" data-target="#profileModal">Edit Profile</a> -->
+                <button type="button" class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#profileModal">
+                    Edit Profile
+                </button>
+                <!-- <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" /> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-work">
+                    <!-- <p>WORK LINK</p>
+                        <a href="">Website Link</a><br />
+                        <a href="">Bootsnipp Profile</a><br />
+                        <a href="">Bootply Profile</a>
+                        <p>SKILLS</p>
+                        <a href="">Web Designer</a><br />
+                        <a href="">Web Developer</a><br />
+                        <a href="">WordPress</a><br />
+                        <a href="">WooCommerce</a><br />
+                        <a href="">PHP, .Net</a><br /> -->
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Name</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{LTR_Name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Email</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{LTR_Email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Phone</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{LTR_phone}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Country</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{Country}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Business ID</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{Business_Registration_No_}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <form>
+                            {% csrf_token%}
+                            <div class="form-group">
+                                <label for="CurrentPassword">Current Password</label>
+                                <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword"
+                                    placeholder="Currrent Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="Password">New Password</label>
+                                <input type="password" class="form-control" id="Password"
+                                    placeholder="New Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Repeat Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    placeholder="New Password">
+                            </div>
+
+                            <button type="submit" class="btn btn-outline-primary btn-sm mt-3">Change Password</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalTitle">Edit Profile Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <!-- <span aria-hidden="true">&times;</span> -->
+                    </button>
+                </div>
+                <form method="post" action="{% url 'profile' %}" class="p-3">
+                    <div class="modal-body p-3">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="ltrName">LTR Name</label>
+                            <input type="text" class="form-control" id="ltrName" name="ltrName" value="{{LTR_Name}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ltraddress">Address</label>
+                            <input type="text" class="form-control" id="ltraddress" name="ltraddress" value="001">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ltrPhone">Phone</label>
+                            <input type="text" class="form-control" id="ltrPhone" name="ltrPhone" value="{{phoneNumber}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" class="form-control" id="country" name="country" value="{{Country}}">
+                        </div>
+
+                        
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger btn-sm"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-outline-primary btn-sm">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+{% include 'footer.html' %}
+
+{% endblock %}
