@@ -62,10 +62,15 @@ class variation(UserObjectMixin,View):
                 background = request.POST.get('background')
                 present = request.POST.get('background')
                 proposed = request.POST.get('proposed')
+                signatoryPosition = request.POST.get('signatoryPosition')
+                signatoryName = request.POST.get('signatoryName')
+                iAgree = eval(request.POST.get('iAgree'))             
+                
 
 
-                response = config.CLIENT.service.FnVariation(varNo,myAction,request.session['UserID'],dosageForms,prodNo,
-                typeofChange,otherApplications,scope,background,present,proposed)
+                response = config.CLIENT.service.FnVariation(varNo,myAction,request.session['UserID'],
+                        dosageForms,prodNo,typeofChange,otherApplications,scope,background,present,
+                        proposed,signatoryPosition,signatoryName,iAgree)
                 print(response)
                 if response == True:
                     messages.success(request,"Request Successful")
