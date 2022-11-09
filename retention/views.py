@@ -204,12 +204,14 @@ class makeRetentionPayment(UserObjectMixin,View):
             try:
                 retNo = pk
                 userCode = request.session['UserID']
+                print(retNo)
 
                 response = config.CLIENT.service.FnRetetionPayment(retNo,userCode)
-                if response == True:
+                print(response)
+                if response == False:
                     messages.success(request,"Please Make Your payment and click confirm payment.")
                     return redirect('retentionGateway', pk=pk)
-                if response == False:
+                if response == True:
                     messages.error(request,"False")
                     return redirect('retentionDetails', pk=pk)
             except KeyError as e:
