@@ -139,7 +139,7 @@
                                                                                     --Select Product--</option>
                                                                                 {% for res in product %}
                                                                                 <option value="{{res.ProductNo}}">
-                                                                                    {{res.ProductNo}}-{{res.Product_name}}
+                                                                                    {{res.Productname}}
                                                                                 </option>
                                                                                 {% endfor %}
                                                                             </select>
@@ -360,7 +360,7 @@
                                 <select class="form-select" name="prodNo" required>
                                     <option value="0" disabled selected>--Select Product--</option>
                                     {% for res in product %}
-                                    <option value="{{res.ProductNo}}">{{res.ProductNo}}-{{res.Product_name}}
+                                    <option value="{{res.ProductNo}}">{{res.Productname}}
                                     </option>
                                     {% endfor %}
                                 </select>
