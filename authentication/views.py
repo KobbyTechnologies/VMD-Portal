@@ -332,11 +332,10 @@ def profile(request):
             ltrPhone = request.POST.get('ltrPhone')
             country = request.POST.get('country')
             myAction = 'modify'
-            
 
             try:
                 response = config.CLIENT.service.UpdateAccountDetails(
-                   userId, ltrName, ltraddress, ltrPhone, country, myAction
+                    userId, ltrName, ltraddress, ltrPhone, country, myAction
                 )
                 print(response)
                 if response == True:

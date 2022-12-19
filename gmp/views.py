@@ -63,6 +63,7 @@ class GMPApplication(UserObjectMixin,View):
                 ContactName =request.POST.get('ContactName')
                 ContactTel = request.POST.get('ContactTel')
                 ContactEmail = request.POST.get('ContactEmail')
+                ContactEmail = request.POST.get('ContactEmail')
                 VeterinaryMedicines = int(request.POST.get('VeterinaryMedicines'))
                 TypeOfInspection = int(request.POST.get('TypeOfInspection'))
                 stateOther = request.POST.get('StateOther')
