@@ -34,6 +34,10 @@ class registrationRetention(UserObjectMixin,View):
             Access_Point= config.O_DATA.format(f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
             RetResponse = self.get_object(Access_Point)
             ApprovedProd = [x for x in RetResponse['value'] if x['Status'] == 'Approved']
+            
+            VertinaryClass = config.O_DATA.format(f"/QYVertinaryclasses")
+            VertResponse = self.get_object(VertinaryClass)
+            VertinaryClasses = [x for x in VertResponse['value']]
 
             variation= config.O_DATA.format(f"/QYVariation?$filter=User_code%20eq%20%27{userId}%27")
             VariationResponse = self.get_object(variation)
@@ -55,7 +59,8 @@ class registrationRetention(UserObjectMixin,View):
         print(pendCount)
         ctx = {"openCount":openCount,"open":OpenProducts,"ApprovedVariation":ApprovedVariation,
         "pendCount":pendCount,"pending":Pending,"appCount":appCount,"approved":Approved,
-        "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedProd,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
+        "rejectedCount":rejectedCount,"rejected":Rejected,"product":ApprovedProd,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email, 
+        "VertinaryClasses": VertinaryClasses}
         return render(request,"retention.html",ctx)
     def post(self,request):
         if request.method == 'POST':
@@ -108,6 +113,22 @@ class retentionDetails(UserObjectMixin,View):
             for res in response['value']:
                 responses = res
                 Status = res['Status']
+                prod = res['ProductNo']
+                
+            Product = config.O_DATA.format(f"/QYRegistration?$filter=ProductNo%20eq%20%27{prod}%27")
+            prod_details = self.get_object(Product)
+            for prod_No in prod_details['value']:
+                prod_res = prod_No
+                vet_class = prod_res['Veterinary_Classes']
+                print(vet_class)
+                
+                
+            VertinaryClass = config.O_DATA.format(f"/QYVertinaryclasses?$filter=Class%20eq%20%27{vet_class}%27")
+            VertResponse = self.get_object(VertinaryClass)
+            for vertinary_class in VertResponse['value']:
+                VertinaryClasses = vertinary_class
+                print(VertinaryClasses)
+            
         except requests.exceptions.RequestException as e:
             messages.error(request,e)
             print(e)
@@ -117,7 +138,8 @@ class retentionDetails(UserObjectMixin,View):
             print(e)
             return redirect('login')
         
-        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
+        ctx = {"res":responses,"status":Status,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email, 
+               "VertinaryClasses":VertinaryClasses,}
         return render(request,'RetentionDetails.html',ctx)
 
 class retentionGateway(UserObjectMixin,View):
@@ -258,4 +280,32 @@ def PrintRentetionCertificate(request, pk):
         except Exception as e:
             messages.error(request, e)
             print(e)
+    return redirect('retentionDetails', pk=pk)
+
+
+def FnRetentionAttachement(request, pk):
+    response = ''
+    if request.method == "POST":
+        try:
+            attach = request.FILES.get('attachment')
+            tableID =  52177996
+            name = request.POST.get('name')
+            fileName = request.FILES['attachment'].name
+            attachment = base64.b64encode(attach.read())
+        
+            try:
+                response = config.CLIENT.service.FnRetentionAttachement(
+                    pk, fileName,name, attachment, tableID,
+                    )
+            except Exception as e:
+                messages.error(request, e)        
+                print(e)        
+                if response == True:
+                    messages.success(request, "File(s) Upload Successful")
+                    return redirect('retentionDetails', pk=pk)
+                else:
+                    messages.error(request, "Failed, Try Again")
+                    return redirect('retentionDetails', pk=pk)
+        except Exception as e:
+            print(e)  
     return redirect('retentionDetails', pk=pk)
