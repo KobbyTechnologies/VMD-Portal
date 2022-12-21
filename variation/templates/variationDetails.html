@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </div>
-            {% status == 'Open' %}
+            {% if res.Status == 'Open' %}
             <div class="col-md-3">
                 <div class="card h-100 actionActive actionCard  text-center">
                     <i class="bi bi-wallet my-3"></i>
@@ -106,8 +106,8 @@
             {% else %}
             <div class="col-md-3">
                 <div class="card h-100 actionActive actionCard  text-center">
-                    <i class="bi bi-wallet my-3"></i>
-                    Submitted
+                    <i class="bi bi-bag-check"></i>
+                
                 </div>
             </div>
             <!-- <div class="col-md-3">
