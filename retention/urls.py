@@ -10,5 +10,5 @@ urlpatterns = [
     path("makeRetentionPayment/<str:pk>",views.makeRetentionPayment.as_view(),name='makeRetentionPayment'),
     path("FNGenerateRetentionInvoice/<str:pk>",views.FNGenerateRetentionInvoice,name='FNGenerateRetentionInvoice'),
     path("PrintRentetionCertificate/<str:pk>",views.PrintRentetionCertificate,name='PrintRentetionCertificate'),
-    path("FnRetentionAttachement/<str:pk>", views.FnRetentionAttachement, name="FnRetentionAttachement"),
+    
 ]

@@ -189,3 +189,30 @@ def SubmitVariation(request,pk):
             return redirect ('variationDetails',pk=pk)
     return redirect('variationDetails', pk=pk)
 
+
+def FnRetentionAttachement(request, pk):
+    response = ''
+    if request.method == "POST":
+        try:
+            attach = request.FILES.get('attachment')
+            tableID =  52177996
+            name = request.POST.get('name')
+            fileName = request.FILES['attachment'].name
+            attachment = base64.b64encode(attach.read())
+        
+            try:
+                response = config.CLIENT.service.FnRetentionAttachement(
+                    pk, fileName,name, attachment, tableID,
+                    )
+            except Exception as e:
+                messages.error(request, e)        
+                print(e)        
+                if response == True:
+                    messages.success(request, "File(s) Upload Successful")
+                    return redirect('variationDetails', pk=pk)
+                else:
+                    messages.error(request, "Failed, Try Again")
+                    return redirect('variationDetails', pk=pk)
+        except Exception as e:
+            print(e)  
+    return redirect('variationDetails', pk=pk)
