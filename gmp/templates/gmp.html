@@ -508,7 +508,18 @@
                             <div id="flush-collapseOne" class="accordion-collapse collapse show"
                                 aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
+                                    <div class="row my-3" id="">
+                                        <h5>Particulars of Applicant/Licence  Holder</h5>
+                                        <div class="col-md-12">
+                                            <label class="form-label">Manufacturer Type</label>
+                                            <select class="form-select" name="typeOfManufacture">
+                                                <option value="1">Local</option>
+                                                <option value="2">Foregn</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="row my-2">
+                                        <h5>Particulars of the site to be inspected</h5>
                                         <div class="col-md-6">
                                             <label class="form-label">Physical Address</label>
                                             <input type="text" class="form-control" name="SitePhysicalAddress">
@@ -579,7 +590,7 @@
                                         <div class="col-md-6">
                                             <label class="form-label">Type of Veterinary Medicines</label>
                                             <select class="form-select" aria-label="Default select example"
-                                                name="VeterinaryMedicines" required>
+                                                name="typeofVertinary" required>
                                                 <option selected disabled value="">Choose...</option>
                                                 <option value="1">Veterinary Vaccine</option>
                                                 <option value="2">Veterinary Pharmaceutical</option>
@@ -589,7 +600,7 @@
                                         <div class="col-md-6">
                                             <label class="form-label">Type of Inspection</label>
                                             <select class="form-select" aria-label="Default select example"
-                                                name="TypeOfInspection" id="TypeOfInspection" required>
+                                                name="typeOfInspection" id="TypeOfInspection" required>
                                                 <option selected disabled value="">Choose...</option>
                                                 <option value="1">First Inspection</option>
                                                 <option value="2">Re-inspection after failure</option>
@@ -599,10 +610,89 @@
                                         </div>
                                     </div>
                                     <div class="row my-3" style="display: none;" id="stateOtherRow">
+                                        
                                         <div class="col-md-12">
                                             <label class="form-label">State Other Type of Inspection </label>
                                             <input type="text" class="form-control" name="stateOther" id="stateOther"
-                                                disabled>
+                                            disabled>
+                                        </div>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <div class="row my-3">
+                                        <h5>Types of veterinary Medicine</h5>
+                                        <div class="col-md-6">
+                                            <label class="form-label">veterinary Pharmaceuticals</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="veterinaryPharmaceuticals" id="veterinaryPharmaceuticals">
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="True">True</option>
+                                                <option value="False">False</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Poisons</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="poisons" id="poisons">
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="True">True</option>
+                                                <option value="False">False</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Alternative Medicine</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="alternativeMedicines" id="alternativeMedicines">
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="True">True</option>
+                                                <option value="False">False</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Biologicals</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="biologicals" id="biologicals">
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="True">True</option>
+                                                <option value="False">False</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Equipment and Materials</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="equipmentAndMaterials" id="equipmentAndMaterials">
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="True">True</option>
+                                                <option value="False">False</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Nutrients?</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="nutrients" id="nutrients">
+                                                <option selected disabled value="">Choose...</option>
+                                                <option value="True">True</option>
+                                                <option value="False">False</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3" id="">
+                                        <h5>Product Information</h5>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Dosage Form </label>
+                                            <input type="text" class="form-control" name="dosageForm" id="dosageForm"
+                                                >
+                                        </div>
+                                    
+                                        <div class="col-md-6">
+                                            <label class="form-label">Product Category </label>
+                                            <input type="text" class="form-control" name="productCategory" id="productCategory"
+                                                >
+                                        </div>
+                                   
+                                        <div class="col-md-12">
+                                            <label class="form-label">Activity</label>
+                                            <input type="text" class="form-control" name="activity" id="activity"
+                                                >
                                         </div>
                                     </div>
                                     <hr class="dropdown-divider">

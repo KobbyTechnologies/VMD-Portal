@@ -285,96 +285,13 @@
                 </div>
             </div>
         </div>
-        <div class="row my-2 py-3">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row justify-content-between">
-                            <div class="col-3">
-                                <h4 class="card-title mb-4">
-                                    Attachments
-                                </h4>
-                            </div>
-                            <div class="col-3 d-flex align-items-center">
-                                <button class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
-                                        data-bs-target="#Attachment" type="button"> <i class="bi bi-plus-circle"></i> Upload Attachment
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            {% for data in file %}
-                            <div class="col-lg-4 col-xl-3">
-                                <div class="file-man-box">
-                                    {% if res.Status == 'Open' %}
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="docID" value="{{data.AuxiliaryIndex2}}">
-                                        <input type="hidden" name="tableID" value="{{data.Table_ID}}">
-                                        <button class="file-close" id="file-close"><i
-                                               class="fa fa-times-circle"></i></button>
-                                    </form>
-                                    {% endif %}
-                                    <div class="file-img-box"><img src="../../static/img/logo/f1.png" alt="icon"></div>
-                                    <form action="{% url 'getDocs' data.No_ data.Table_ID %}" method="POST">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="attachmentID" value="{{data.AuxiliaryIndex2}}">
-                                        <input type="hidden" name="File_Name" value="{{data.File_Name}}">
-                                        <input type="hidden" name="File_Extension" value="{{data.File_Extension}}">
-                                        <button class="file-download mx-1"><i
-                                               class="fa fa-download text-success"></i></button>
-                                    </form>
-                                    <div class="file-man-title">
-                                        <h5 class="mb-0 text-overflow">
-                                            {{data.File_Name}}.{{data.File_Extension}}</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            {% empty %}
-                            <p class="text-danger">
-                                You have not uploaded any attachments <i class="las la-file-download"></i>
-                            </p>
-                            {% endfor %}
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+       
     </section>
 </main>
 
 <!-- modal  -->
 
-<div class="modal js-upload-file fade" id="Attachment">
-    <div class="modal-dialog" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Upload Your Attachment</h5>
-                <a aria-label="Close" class="close">
-                    <clr-icon aria-hidden="true" shape="close"></clr-icon>
-                </a>
-            </div>
-            <form id="dropzone" action="{% url 'FnRetentionAttachement' res.Retension_No_ %}" class="dropzone" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-            <div class="modal-body">
 
-                    <div class="fallback mb-3">
-                        <label class="form-label">Document Name</label>
-                        <input name="name" class="form-control" type="text" />
-                    </div>
-                    <div class="fallback">
-                        <label class="form-label">Attachment</label>
-                        <input name="attachment" class="form-control" type="file" accept=".doc,.docx,.pdf" multiple />
-                    </div>
-                    
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" type="button">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 {% include 'footer.html' %}
 <script>
