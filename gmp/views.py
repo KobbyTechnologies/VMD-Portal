@@ -164,7 +164,7 @@ class GMPDetails(UserObjectMixin, View):
             attach = AttachResponse['value']
 
             AllAttachments = config.O_DATA.format(
-                f"/QYGMPAttachments?$filter=No_%20eq%20%27{pk}%27%20and%20Table_ID%20eq%2050004")
+                f"/QYDocumentAttachments?$filter=No_%20eq%20%27{pk}%27%20and%20Table_ID%20eq%2050004")
             AllAttachResponse = self.get_object(AllAttachments)
             Files = [x for x in AllAttachResponse['value']]
 
