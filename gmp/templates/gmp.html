@@ -97,14 +97,14 @@
                                                 <div class="d-grid gap-1 d-md-flex justify-content">
                                                     <button class="btn btn-secondary me-sm-2" type="button"
                                                         data-toggle="tooltip" data-placement="top" title="edit"
-                                                        data-bs-toggle="modal" data-bs-target="#editGMP">Edit <i
+                                                        data-bs-toggle="modal" data-bs-target="#editGMP-{{res.GMP_No_}}">Edit <i
                                                             class="bi bi-pencil-square"></i></button>
                                                     <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
                                                         class="btn btn-success">Next <i
                                                             class="bi bi-chevron-double-right"></i>
                                                     </a>
                                                 </div>
-                                                <div class="modal fade" id="editGMP" data-bs-backdrop="static"
+                                                <div class="modal fade" id="editGMP-{{res.GMP_No_}}" data-bs-backdrop="static"
                                                     data-bs-keyboard="false" tabindex="-1"
                                                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                     <div
@@ -234,6 +234,19 @@
                                                                                                 <option value="4">Other</option>
                                                                                             </select>
                                                                                         </div>
+                                                                                        
+                                                                                    </div>
+                                                                                    <div class="row my-3" style="display: none;" id="PrevGmpNo">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="form-label">Previous GMP Number</label>    
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="previousGMPNo" id="previousGMPNo" >
+                                                                                                <option selected value="">Choose...</option>
+                                                                                                {% for res in approved %}
+                                                                                                <option value="{{res.GMP_No_}}">{{res.GMP_No_}}</option>
+                                                                                                {% endfor %}
+                                                                                            </select>                                                        
+                                                                                        </div>
                                                                                     </div>
                                                                                     <div class="row my-3" style="display: none;" id="stateOtherRow">
                                                                                         
@@ -250,54 +263,51 @@
                                                                                             <label class="form-label">veterinary Pharmaceuticals</label>
                                                                                             <select class="form-select" aria-label="Default select example"
                                                                                                 name="veterinaryPharmaceuticals" id="veterinaryPharmaceuticals">
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                <option value="True">True</option>
+                                                                                                
                                                                                                 <option value="False">False</option>
+                                                                                                <option value="True">True</option>
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <label class="form-label">Poisons</label>
                                                                                             <select class="form-select" aria-label="Default select example"
                                                                                                 name="poisons" id="poisons">
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                <option value="True">True</option>
+                                                                                                
                                                                                                 <option value="False">False</option>
+                                                                                                <option value="True">True</option>
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <label class="form-label">Alternative Medicine</label>
                                                                                             <select class="form-select" aria-label="Default select example"
                                                                                                 name="alternativeMedicines" id="alternativeMedicines">
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                <option value="True">True</option>
                                                                                                 <option value="False">False</option>
+                                                                                                <option value="True">True</option>
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <label class="form-label">Biologicals</label>
                                                                                             <select class="form-select" aria-label="Default select example"
                                                                                                 name="biologicals" id="biologicals">
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                <option value="True">True</option>
                                                                                                 <option value="False">False</option>
+                                                                                                <option value="True">True</option>
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <label class="form-label">Equipment and Materials</label>
                                                                                             <select class="form-select" aria-label="Default select example"
                                                                                                 name="equipmentAndMaterials" id="equipmentAndMaterials">
-                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="False">False</option>                                                
                                                                                                 <option value="True">True</option>
-                                                                                                <option value="False">False</option>
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <label class="form-label">Nutrients?</label>
                                                                                             <select class="form-select" aria-label="Default select example"
                                                                                                 name="nutrients" id="nutrients">
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                <option value="True">True</option>
+                                                                                                
                                                                                                 <option value="False">False</option>
+                                                                                                <option value="True">True</option>
                                                                                             </select>
                                                                                         </div>
                                                                                     </div>
@@ -586,6 +596,20 @@
                                                 <option value="4">Other</option>
                                             </select>
                                         </div>
+                                        
+                                    </div>
+                                    <div class="row my-3" style="display: none;" id="PrevGmpNo">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Previous GMP Number</label>    
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="previousGMPNo" id="previousGMPNo" >
+                                                <option selected value="">Choose...</option>
+                                                {% for res in approved %}
+                                                <option value="{{res.GMP_No_}}">{{res.GMP_No_}}</option>
+                                                {% endfor %}
+                                            </select>                                        
+                                            
+                                        </div>
                                     </div>
                                     <div class="row my-3" style="display: none;" id="stateOtherRow">
                                         
@@ -602,54 +626,51 @@
                                             <label class="form-label">veterinary Pharmaceuticals</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="veterinaryPharmaceuticals" id="veterinaryPharmaceuticals">
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="True">True</option>
+                                                
                                                 <option value="False">False</option>
+                                                <option value="True">True</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Poisons</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="poisons" id="poisons">
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="True">True</option>
+                                                
                                                 <option value="False">False</option>
+                                                <option value="True">True</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Alternative Medicine</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="alternativeMedicines" id="alternativeMedicines">
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="True">True</option>
                                                 <option value="False">False</option>
+                                                <option value="True">True</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Biologicals</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="biologicals" id="biologicals">
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="True">True</option>
                                                 <option value="False">False</option>
+                                                <option value="True">True</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Equipment and Materials</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="equipmentAndMaterials" id="equipmentAndMaterials">
-                                                <option selected disabled value="">Choose...</option>
+                                                <option value="False">False</option>                                                
                                                 <option value="True">True</option>
-                                                <option value="False">False</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Nutrients?</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="nutrients" id="nutrients">
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="True">True</option>
+                                                
                                                 <option value="False">False</option>
+                                                <option value="True">True</option>
                                             </select>
                                         </div>
                                     </div>
@@ -723,6 +744,17 @@
                 $('#stateOther').prop('disabled', true);
             }
         });
+        
+        $('#TypeOfInspection').on('change', function () {
+            if (this.value == "3") {
+                $('#PrevGmpNo').show(1000);
+                $('#previousGMPNo').prop('disabled', false);
+            } else {
+                $('#PrevGmpNo').hide();
+                $('#previousGMPNo').prop('disabled', true);
+            }
+        });
+        
     })
 </script>
 {% include 'footer.html' %}

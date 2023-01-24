@@ -71,29 +71,29 @@ class GMPApplication(UserObjectMixin, View):
                 SiteTelephone = request.POST.get('SiteTelephone')
                 SiteMobile = request.POST.get('SiteMobile')
                 SiteEmail = request.POST.get('SiteEmail')
-                isContact = request.POST.get('isContact')
+                isContact = eval(request.POST.get('isContact'))
                 ContactName = request.POST.get('ContactName')
                 ContactTel = request.POST.get('ContactTel')
                 ContactEmail = request.POST.get('ContactEmail')
-                # typeofVertinary = request.POST.get('typeofVertinary')
+                previousGMPNo = request.POST.get('previousGMPNo')
                 typeOfInspection = request.POST.get('typeOfInspection')
                 stateOther = request.POST.get('StateOther')
-                veterinaryPharmaceuticals = request.POST.get(
-                    'veterinaryPharmaceuticals')
-                poisons = request.POST.get('poisons')
-                alternativeMedicines = request.POST.get('alternativeMedicines')
-                biologicals = request.POST.get('biologicals')
-                equipmentAndMaterials = request.POST.get(
-                    'equipmentAndMaterials')
-                nutrients = request.POST.get('nutrients')
+                veterinaryPharmaceuticals = eval(request.POST.get(
+                    'veterinaryPharmaceuticals'))
+                poisons = eval(request.POST.get('poisons'))
+                alternativeMedicines = eval(request.POST.get('alternativeMedicines'))
+                biologicals = eval(request.POST.get('biologicals'))
+                equipmentAndMaterials = eval(request.POST.get(
+                    'equipmentAndMaterials'))
+                nutrients = eval(request.POST.get('nutrients'))
                 dosageForm = request.POST.get('dosageForm')
                 productCategory = request.POST.get('productCategory')
                 activity = request.POST.get('activity')
                 iAgree = eval(request.POST.get('iAgree'))
 
-                # print(
-                #     gmpNo, myAction, userCode, typeOfManufacture, SitePhysicalAddress, SiteCountry, SiteTelephone, SiteMobile, SiteEmail, isContact, ContactName, ContactTel, ContactEmail, typeofVertinary, typeOfInspection, stateOther, veterinaryPharmaceuticals, poisons, alternativeMedicines, biologicals, equipmentAndMaterials, nutrients, dosageForm, productCategory, activity, iAgree
-                # )
+                print(
+                    gmpNo, myAction, userCode, typeOfManufacture, SitePhysicalAddress, SiteCountry, SiteTelephone, SiteMobile, SiteEmail, isContact, ContactName, ContactTel, ContactEmail, typeOfInspection, stateOther, veterinaryPharmaceuticals, poisons, alternativeMedicines, biologicals, equipmentAndMaterials, nutrients, dosageForm, productCategory, activity, iAgree, previousGMPNo
+                )
 
                 if not iAgree:
                     iAgree = False
@@ -111,8 +111,8 @@ class GMPApplication(UserObjectMixin, View):
 
                 response = config.CLIENT.service.GMP(
                     gmpNo, myAction, userCode, typeOfManufacture, SitePhysicalAddress, SiteCountry, SiteTelephone, SiteMobile, SiteEmail, isContact, ContactName, ContactTel, ContactEmail, 
-                    # typeofVertinary, 
-                    typeOfInspection, stateOther, veterinaryPharmaceuticals, poisons, alternativeMedicines, biologicals, equipmentAndMaterials, nutrients, dosageForm, productCategory, activity, iAgree
+                    typeOfInspection, stateOther, veterinaryPharmaceuticals, poisons, alternativeMedicines, biologicals, equipmentAndMaterials, nutrients, dosageForm, productCategory, activity, iAgree,
+                    previousGMPNo
                 )
                 print(response)
                 if response == True:
