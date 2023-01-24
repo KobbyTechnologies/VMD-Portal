@@ -122,235 +122,215 @@
                                                                         value="{{res.GMP_No_}}">
                                                                     <input type="hidden" name="myAction" value="modify">
                                                                     {% csrf_token %}
-                                                                    <div class="accordion accordion-flush"
-                                                                        id="accordionFlushExample">
+                                                                    <div class="accordion accordion-flush" id="accordionFlushExample">
                                                                         <div class="accordion-item">
-                                                                            <h2 class="accordion-header"
-                                                                                id="flush-headingOne">
-                                                                                <button
-                                                                                    class="accordion-button collapsed"
-                                                                                    type="button"
-                                                                                    data-bs-toggle="collapse"
-                                                                                    data-bs-target="#flush-collapseOne"
-                                                                                    aria-expanded="false"
+                                                                            <h2 class="accordion-header" id="flush-headingOne">
+                                                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
                                                                                     aria-controls="flush-collapseOne">
-                                                                                    Particulars of the site to be
-                                                                                    inspected
+                                                                                    Particulars of the site to be inspected
                                                                                 </button>
                                                                             </h2>
-                                                                            <div id="flush-collapseOne"
-                                                                                class="accordion-collapse collapse show"
-                                                                                aria-labelledby="flush-headingOne"
-                                                                                data-bs-parent="#accordionFlushExample">
+                                                                            <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                                                                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                                                                 <div class="accordion-body">
+                                                                                    <div class="row my-3" id="">
+                                                                                        <h5>Particulars of Applicant/Licence  Holder</h5>
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="form-label">Manufacturer Type</label>
+                                                                                            <select class="form-select" name="typeOfManufacture">
+                                                                                                <option value="1">Local</option>
+                                                                                                <option value="2">Foregn</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
                                                                                     <div class="row my-2">
+                                                                                        <h5>Particulars of the site to be inspected</h5>
                                                                                         <div class="col-md-6">
-                                                                                            <label
-                                                                                                class="form-label">Physical
-                                                                                                Address</label>
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                name="SitePhysicalAddress">
+                                                                                            <label class="form-label">Physical Address</label>
+                                                                                            <input type="text" class="form-control" name="SitePhysicalAddress">
                                                                                         </div>
                                                                                         <div class="col-md-6">
-                                                                                            <label
-                                                                                                class="form-label">Country</label>
-                                                                                            <select class="form-select"
-                                                                                                aria-label="Default select example"
+                                                                                            <label class="form-label">Country</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
                                                                                                 name="SiteCountry">
-                                                                                                <option selected
-                                                                                                    disabled value="">
-                                                                                                    Choose...</option>
+                                                                                                <option selected disabled value="">Choose...</option>
                                                                                                 {% for res in country %}
-                                                                                                <option
-                                                                                                    value="{{res.Code}}">
-                                                                                                    {{res.Name}}
-                                                                                                </option>
+                                                                                                <option value="{{res.Code}}">{{res.Name}}</option>
                                                                                                 {% empty %}
-                                                                                                <option value="KE">KENYA
-                                                                                                </option>
+                                                                                                <option value="KE">KENYA</option>
                                                                                                 {% endfor %}
                                                                                             </select>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row my-3">
                                                                                         <div class="col-md-4">
-                                                                                            <label
-                                                                                                class="form-label">Telephone
-                                                                                                <span
+                                                                                            <label class="form-label">Telephone <span
                                                                                                     class="text-danger">*</span></label>
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                name="SiteTelephone"
-                                                                                                required>
+                                                                                            <input type="text" class="form-control" name="SiteTelephone" required>
                                                                                         </div>
                                                                                         <div class="col-md-4">
-                                                                                            <label
-                                                                                                class="form-label">Mobile
-                                                                                                <span
-                                                                                                    class="text-danger">*</span></label>
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                name="SiteMobile"
-                                                                                                required>
+                                                                                            <label class="form-label">Mobile <span class="text-danger">*</span></label>
+                                                                                            <input type="text" class="form-control" name="SiteMobile" required>
                                                                                         </div>
                                                                                         <div class="col-md-4">
-                                                                                            <label
-                                                                                                class="form-label">Email
-                                                                                                <span
-                                                                                                    class="text-danger">*</span></label>
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                name="SiteEmail"
-                                                                                                required>
+                                                                                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                                                                                            <input type="text" class="form-control" name="SiteEmail" required>
                                                                                         </div>
                                                                                     </div>
                                                                                     <hr class="dropdown-divider">
                                                                                     <div class="row my-3">
-                                                                                        <h5>Particulars of person on
-                                                                                            site</h5>
+                                                                                        <h5>Particulars of person on site</h5>
                                                                                         <div class="col-md-12">
-                                                                                            <label
-                                                                                                class="form-label">Are
-                                                                                                you (LTR) the contact
-                                                                                                person?</label>
-                                                                                            <select class="form-select"
-                                                                                                aria-label="Default select example"
-                                                                                                name="isContact"
-                                                                                                id="isContact">
-                                                                                                <option selected
-                                                                                                    disabled value="">
-                                                                                                    Choose...</option>
-                                                                                                <option value="True">
-                                                                                                    True</option>
-                                                                                                <option value="False">
-                                                                                                    False</option>
+                                                                                            <label class="form-label">Are you (LTR) the contact person?</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="isContact" id="isContact">
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="True">True</option>
+                                                                                                <option value="False">False</option>
                                                                                             </select>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="row my-3"
-                                                                                        id="ContactRow"
-                                                                                        style="display: none;">
+                                                                                    <div class="row my-3" id="ContactRow" style="display: none;">
                                                                                         <div class="col-md-4">
-                                                                                            <label
-                                                                                                class="form-label">Name
-                                                                                                of Contact person <span
+                                                                                            <label class="form-label">Name of Contact person <span
                                                                                                     class="text-danger">*</span></label>
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                name="ContactName"
-                                                                                                id="ContactName"
+                                                                                            <input type="text" class="form-control" name="ContactName" id="ContactName"
                                                                                                 disabled>
                                                                                         </div>
                                                                                         <div class="col-md-4">
-                                                                                            <label
-                                                                                                class="form-label">Contact
-                                                                                                Person Telephone <span
+                                                                                            <label class="form-label">Contact Person Telephone <span
                                                                                                     class="text-danger">*</span></label>
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                name="ContactTel"
-                                                                                                id="ContactTel"
+                                                                                            <input type="text" class="form-control" name="ContactTel" id="ContactTel"
                                                                                                 disabled>
                                                                                         </div>
                                                                                         <div class="col-md-4">
-                                                                                            <label
-                                                                                                class="form-label">Contact
-                                                                                                Person Email <span
+                                                                                            <label class="form-label">Contact Person Email <span
                                                                                                     class="text-danger">*</span></label>
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                name="ContactEmail"
-                                                                                                id="ContactEmail"
-                                                                                                disabled>
+                                                                                            <input type="text" class="form-control" name="ContactEmail"
+                                                                                                id="ContactEmail" disabled>
                                                                                         </div>
                                                                                     </div>
                                                                                     <hr class="dropdown-divider">
                                                                                     <div class="row my-3">
-                                                                                        <div class="col-md-6">
-                                                                                            <label
-                                                                                                class="form-label">Type
-                                                                                                of Veterinary
-                                                                                                Medicines</label>
-                                                                                            <select class="form-select"
-                                                                                                aria-label="Default select example"
-                                                                                                name="VeterinaryMedicines"
-                                                                                                required>
-                                                                                                <option selected
-                                                                                                    disabled value="">
-                                                                                                    Choose...</option>
-                                                                                                <option value="1">
-                                                                                                    Veterinary Vaccine
-                                                                                                </option>
-                                                                                                <option value="2">
-                                                                                                    Veterinary
-                                                                                                    Pharmaceutical
-                                                                                                </option>
-                                                                                                <option value="3">
-                                                                                                    Veterinary Pesticide
-                                                                                                </option>
+                                                                                        <!-- <div class="col-md-6">
+                                                                                            <label class="form-label">Type of Veterinary Medicines</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="typeofVertinary" required>
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="1">Veterinary Vaccine</option>
+                                                                                                <option value="2">Veterinary Pharmaceutical</option>
+                                                                                                <option value="3">Veterinary Pesticide</option>
                                                                                             </select>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <label
-                                                                                                class="form-label">Type
-                                                                                                of Inspection</label>
-                                                                                            <select class="form-select"
-                                                                                                aria-label="Default select example"
-                                                                                                name="TypeOfInspection"
-                                                                                                id="TypeOfInspection"
-                                                                                                required>
-                                                                                                <option selected
-                                                                                                    disabled value="">
-                                                                                                    Choose...</option>
-                                                                                                <option value="1">First
-                                                                                                    Inspection</option>
-                                                                                                <option value="2">
-                                                                                                    Re-inspection after
-                                                                                                    failure</option>
-                                                                                                <option value="3">
-                                                                                                    Routine
-                                                                                                    Re-inspection
-                                                                                                </option>
-                                                                                                <option value="4">Other
-                                                                                                </option>
+                                                                                        </div> -->
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="form-label">Type of Inspection</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="typeOfInspection" id="TypeOfInspection" required>
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="1">First Inspection</option>
+                                                                                                <option value="2">Re-inspection after failure</option>
+                                                                                                <option value="3">Routine Re-inspection </option>
+                                                                                                <option value="4">Other</option>
                                                                                             </select>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="row my-3"
-                                                                                        style="display: none;"
-                                                                                        id="stateOtherRow">
+                                                                                    <div class="row my-3" style="display: none;" id="stateOtherRow">
+                                                                                        
                                                                                         <div class="col-md-12">
-                                                                                            <label
-                                                                                                class="form-label">State
-                                                                                                Other Type of Inspection
-                                                                                            </label>
-                                                                                            <input type="text"
-                                                                                                class="form-control"
-                                                                                                name="stateOther"
-                                                                                                id="stateOther"
-                                                                                                disabled>
+                                                                                            <label class="form-label">State Other Type of Inspection </label>
+                                                                                            <input type="text" class="form-control" name="stateOther" id="stateOther"
+                                                                                            disabled>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <hr class="dropdown-divider">
+                                                                                    <div class="row my-3">
+                                                                                        <h5>Types of veterinary Medicine</h5>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-label">veterinary Pharmaceuticals</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="veterinaryPharmaceuticals" id="veterinaryPharmaceuticals">
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="True">True</option>
+                                                                                                <option value="False">False</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-label">Poisons</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="poisons" id="poisons">
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="True">True</option>
+                                                                                                <option value="False">False</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-label">Alternative Medicine</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="alternativeMedicines" id="alternativeMedicines">
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="True">True</option>
+                                                                                                <option value="False">False</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-label">Biologicals</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="biologicals" id="biologicals">
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="True">True</option>
+                                                                                                <option value="False">False</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-label">Equipment and Materials</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="equipmentAndMaterials" id="equipmentAndMaterials">
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="True">True</option>
+                                                                                                <option value="False">False</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-label">Nutrients?</label>
+                                                                                            <select class="form-select" aria-label="Default select example"
+                                                                                                name="nutrients" id="nutrients">
+                                                                                                <option selected disabled value="">Choose...</option>
+                                                                                                <option value="True">True</option>
+                                                                                                <option value="False">False</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row my-3" id="">
+                                                                                        <h5>Product Information</h5>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-label">Dosage Form </label>
+                                                                                            <input type="text" class="form-control" name="dosageForm" id="dosageForm"
+                                                                                                >
+                                                                                        </div>
+                                                                                    
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-label">Product Category </label>
+                                                                                            <input type="text" class="form-control" name="productCategory" id="productCategory"
+                                                                                                >
+                                                                                        </div>
+                                                                                   
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="form-label">Activity</label>
+                                                                                            <input type="text" class="form-control" name="activity" id="activity"
+                                                                                                >
                                                                                         </div>
                                                                                     </div>
                                                                                     <hr class="dropdown-divider">
                                                                                     <div class="row my-2">
                                                                                         <div class="col-md-12">
                                                                                             <div class="mb-2">
-                                                                                                <input
-                                                                                                    class="form-check-input"
-                                                                                                    type="checkbox"
-                                                                                                    value="True"
-                                                                                                    name="iAgree"
-                                                                                                    checked>
-                                                                                                <label
-                                                                                                    class="form-check-label text-primary">
-                                                                                                    I hereby apply for
-                                                                                                    registration of
-                                                                                                    the product detailed
-                                                                                                    above and
-                                                                                                    declare that all the
-                                                                                                    information herein
-                                                                                                    is correct
+                                                                                                <input class="form-check-input" type="checkbox" value="True"
+                                                                                                    name="iAgree" checked>
+                                                                                                <label class="form-check-label text-primary">
+                                                                                                    I hereby apply for registration of
+                                                                                                    the product detailed above and
+                                                                                                    declare that all the information herein is correct
                                                                                                     and true.
                                                                                                 </label>
                                                                                             </div>
@@ -359,10 +339,8 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <button type="button" class="btn btn-danger"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-success my-2">Submit</button>
+                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-success my-2">Submit</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -587,7 +565,7 @@
                                     </div>
                                     <hr class="dropdown-divider">
                                     <div class="row my-3">
-                                        <div class="col-md-6">
+                                        <!-- <div class="col-md-6">
                                             <label class="form-label">Type of Veterinary Medicines</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="typeofVertinary" required>
@@ -596,8 +574,8 @@
                                                 <option value="2">Veterinary Pharmaceutical</option>
                                                 <option value="3">Veterinary Pesticide</option>
                                             </select>
-                                        </div>
-                                        <div class="col-md-6">
+                                        </div> -->
+                                        <div class="col-md-12">
                                             <label class="form-label">Type of Inspection</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="typeOfInspection" id="TypeOfInspection" required>

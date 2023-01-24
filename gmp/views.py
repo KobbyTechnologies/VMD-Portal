@@ -75,7 +75,7 @@ class GMPApplication(UserObjectMixin, View):
                 ContactName = request.POST.get('ContactName')
                 ContactTel = request.POST.get('ContactTel')
                 ContactEmail = request.POST.get('ContactEmail')
-                typeofVertinary = request.POST.get('typeofVertinary')
+                # typeofVertinary = request.POST.get('typeofVertinary')
                 typeOfInspection = request.POST.get('typeOfInspection')
                 stateOther = request.POST.get('StateOther')
                 veterinaryPharmaceuticals = request.POST.get(
@@ -110,7 +110,9 @@ class GMPApplication(UserObjectMixin, View):
                     stateOther = ''
 
                 response = config.CLIENT.service.GMP(
-                    gmpNo, myAction, userCode, typeOfManufacture, SitePhysicalAddress, SiteCountry, SiteTelephone, SiteMobile, SiteEmail, isContact, ContactName, ContactTel, ContactEmail, typeofVertinary, typeOfInspection, stateOther, veterinaryPharmaceuticals, poisons, alternativeMedicines, biologicals, equipmentAndMaterials, nutrients, dosageForm, productCategory, activity, iAgree
+                    gmpNo, myAction, userCode, typeOfManufacture, SitePhysicalAddress, SiteCountry, SiteTelephone, SiteMobile, SiteEmail, isContact, ContactName, ContactTel, ContactEmail, 
+                    # typeofVertinary, 
+                    typeOfInspection, stateOther, veterinaryPharmaceuticals, poisons, alternativeMedicines, biologicals, equipmentAndMaterials, nutrients, dosageForm, productCategory, activity, iAgree
                 )
                 print(response)
                 if response == True:
@@ -146,9 +148,12 @@ class GMPDetails(UserObjectMixin, View):
             Line = [x for x in linesResponse['value']]
 
             ManufacturesParticulars = config.O_DATA.format(
-                f"/QYGMPManufactureDetails?$filter=AuxiliaryIndex2%20eq%20%27{pk}%27")
+                f"/QYGMPManufactureDetails")
             ManufacturerResponse = self.get_object(ManufacturesParticulars)
-            Manufacturer = [x for x in ManufacturerResponse['value']]
+            Manufacturer = [x for x in ManufacturerResponse['value']
+                if x['AuxiliaryIndex2'] == {pk}
+            ]
+            # print(Manufacturer)
 
             Countries = config.O_DATA.format("/QYCountries")
             CountryResponse = self.get_object(Countries)
