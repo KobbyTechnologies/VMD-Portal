@@ -195,10 +195,11 @@ def FnRetentionAttachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            tableID =  52177996
-            name = request.POST.get('name')
             fileName = request.FILES['attachment'].name
+            name = request.POST.get('name')
+            tableID = 1173
             attachment = base64.b64encode(attach.read())
+
         
             try:
                 response = config.CLIENT.service.FnRetentionAttachement(
@@ -208,7 +209,7 @@ def FnRetentionAttachement(request, pk):
                 messages.error(request, e)        
                 print(e)        
                 if response == True:
-                    messages.success(request, "File(s) Upload Successful")
+                    messages.success(request, "File1 Upload Successful")
                     return redirect('variationDetails', pk=pk)
                 else:
                     messages.error(request, "Failed, Try Again")
