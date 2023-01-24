@@ -88,9 +88,9 @@
                         <h5 class="card-title">Payment<span> | {{res.Currency_Code}}</span></h5>
 
                         <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <!-- <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bi bi-currency-dollar"></i>
-                            </div>
+                            </div> -->
                             <div class="ps-3">
                                 <h6> {{res.Currecy_Code}} {{res.Amount_Payable}}</h6>
                                 <span class="text-muted small pt-2 ps-1">Paid:</span>
@@ -169,7 +169,7 @@
                 <a href="{% url 'GMPGateway' res.GMP_No_ %}">
                     <div class="card h-100 actionActive actionCard  text-center">
                         <i class="bi bi-wallet my-3"></i>
-                        Pay $ {{res.Amount_Payable}}
+                        Pay {{res.Currecy_Code}} {{res.Amount_Payable}}
                     </div>
                 </a>
             </div>
