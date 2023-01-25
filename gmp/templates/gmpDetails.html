@@ -176,13 +176,8 @@
             {% elif res.Paid == True and status == 'Approved' %}
             <div class="col-md-3">
                 <div class="card h-100 actionCard text-center">
-                    <form action="{% url 'FNGenerateGMPInvoice' res.GMP_No_ %}" method="post">
-                        {% csrf_token %}
-                        <i class="bi bi-file-earmark-bar-graph my-3"></i>
-                        <button class="btn btn-success align-items-center" type="submit"> Generate
-                            Invoice</button>
-                    </form>
-                    <!-- <h6>Download Certificate</h6> -->
+                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                    <h6>Download Certificate</h6>
                 </div>
             </div>
             {% endif %}
