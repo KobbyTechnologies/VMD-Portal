@@ -178,10 +178,17 @@ class GMPDetails(UserObjectMixin, View):
             print(e)
             return redirect('login')
 
-        ctx = {"res": responses, "status": Status, 
-        "line": Line, 
-        "manufacturer": Manufacturer,
-               "country": resCountry, "files": Files, "attach": attach, "LTR_Name": LTR_Name, "LTR_Email": LTR_Email}
+        ctx = {
+            "res": responses, 
+            "status": Status,
+            "line": Line, 
+            "manufacturer": Manufacturer,
+            "country": resCountry, 
+            "files": Files, 
+            "attach": attach, 
+            "LTR_Name": LTR_Name, 
+            "LTR_Email": LTR_Email
+        }
         return render(request, "gmpDetails.html", ctx)
 
 
@@ -320,9 +327,11 @@ def GMPManufactures(request, pk):
             if not manufacturerOther:
                 manufacturerOther = ''
             try:
-                response = config.CLIENT.service.GMPManufactureDetails(gmpMd, myAction, userId,
-                                                                       manufacturerName, ManufacturerEmail, postalAddress, plantAddress, ManufacturerTelephone,
-                                                                       country, activity, TypeOfManufacturer, gmpNo)
+                response = config.CLIENT.service.GMPManufactureDetails(
+                    gmpMd, myAction, userId,
+                    manufacturerName, ManufacturerEmail, postalAddress, plantAddress, ManufacturerTelephone,
+                    country, activity, TypeOfManufacturer, gmpNo
+                )
                 print(response)
                 if response == True:
                     messages.success(request, "Request Successful")
@@ -383,6 +392,8 @@ def FnDeleteGMPDocumentAttachment(request, pk):
             if response == True:
                 messages.success(request, "Deleted Successfully ")
                 return redirect('GMPDetails', pk=pk)
+            else:
+                messages.info(request, 'It is not Working')
         except Exception as e:
             messages.error(request, e)
             print(e)
