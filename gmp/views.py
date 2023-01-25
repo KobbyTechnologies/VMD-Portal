@@ -131,6 +131,7 @@ class GMPApplication(UserObjectMixin, View):
 
 class GMPDetails(UserObjectMixin, View):
     def get(self, request, pk):
+        print(pk)
         try:
             userID = request.session['UserID']
             LTR_Name = request.session['LTR_Name']
@@ -147,13 +148,10 @@ class GMPDetails(UserObjectMixin, View):
             linesResponse = self.get_object(Lines)
             Line = [x for x in linesResponse['value']]
 
-            ManufacturesParticulars = config.O_DATA.format(
-                f"/QYGMPManufactureDetails")
+            ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=GMP_No%20eq%20%27{pk}%27")
             ManufacturerResponse = self.get_object(ManufacturesParticulars)
-            Manufacturer = [x for x in ManufacturerResponse['value']
-                if x['AuxiliaryIndex2'] == {pk}
-            ]
-            # print(Manufacturer)
+            Manufacturer = [x for x in ManufacturerResponse['value']]
+            print(Manufacturer)
 
             Countries = config.O_DATA.format("/QYCountries")
             CountryResponse = self.get_object(Countries)
@@ -177,7 +175,9 @@ class GMPDetails(UserObjectMixin, View):
             print(e)
             return redirect('login')
 
-        ctx = {"res": responses, "status": Status, "line": Line, "manufacturer": Manufacturer,
+        ctx = {"res": responses, "status": Status, 
+        "line": Line, 
+        "manufacturer": Manufacturer,
                "country": resCountry, "files": Files, "attach": attach, "LTR_Name": LTR_Name, "LTR_Email": LTR_Email}
         return render(request, "gmpDetails.html", ctx)
 
@@ -301,7 +301,7 @@ def SubmitGMP(request, pk):
 def GMPManufactures(request, pk):
     if request.method == 'POST':
         try:
-            prodNo = pk
+            gmpNo = pk
             myAction = request.POST.get('myAction')
             userId = request.session['UserID']
             manufacturerName = request.POST.get('manufacturerName')
@@ -313,13 +313,13 @@ def GMPManufactures(request, pk):
             activity = int(request.POST.get('activity'))
             TypeOfManufacturer = int(request.POST.get('TypeOfManufacturer'))
             manufacturerOther = request.POST.get('manufacturerOther')
-            lineNo = request.POST.get('lineNo')
+            gmpMd = request.POST.get('gmpMd')
             if not manufacturerOther:
                 manufacturerOther = ''
             try:
-                response = config.CLIENT.service.GMPManufactureDetails(prodNo, myAction, userId,
+                response = config.CLIENT.service.GMPManufactureDetails(gmpMd, myAction, userId,
                                                                        manufacturerName, ManufacturerEmail, postalAddress, plantAddress, ManufacturerTelephone,
-                                                                       country, activity, TypeOfManufacturer, lineNo)
+                                                                       country, activity, TypeOfManufacturer, gmpMd)
                 print(response)
                 if response == True:
                     messages.success(request, "Request Successful")
