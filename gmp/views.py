@@ -5,7 +5,8 @@ import json
 from django.conf import settings as config
 from django.contrib import messages
 from django.views import View
-
+import io as BytesIO
+from django.http import HttpResponse
 # Create your views here.
 class UserObjectMixin(object):
     model =None
@@ -117,7 +118,7 @@ class GMPDetails(UserObjectMixin,View):
             linesResponse = self.get_object(Lines)
             Line = [x for x in linesResponse['value']]
 
-            ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=AuxiliaryIndex2%20eq%20%27{pk}%27")
+            ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=No%20eq%20%27{pk}%27")
             ManufacturerResponse = self.get_object(ManufacturesParticulars)
             Manufacturer = [x for x in ManufacturerResponse['value']]
 
@@ -145,6 +146,7 @@ class GMPDetails(UserObjectMixin,View):
         ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
         "country":resCountry,"files": Files,"attach":attach,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"gmpDetails.html",ctx)
+    
 
 def linesToInspect(request,pk):
     if request.method == "POST":
@@ -337,5 +339,23 @@ def FnDeleteGMPDocumentAttachment(request,pk):
             messages.error(request, e)
             print(e)
     return redirect('GMPDetails',pk=pk)
+
+def FNGenerateGMPInvoice(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FNGenerateGMPInvoice(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('GMPGateway', pk=pk)
 
     # To check against the user code to see whether there are products registered
