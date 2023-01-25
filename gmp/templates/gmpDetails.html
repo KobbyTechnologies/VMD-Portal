@@ -229,9 +229,9 @@
                                     <td>{{res.Manufacture_Postal_Address}}</a></td>
                                     <td>{{res.Activity}}</td>
                                     <td>
-                                        <form method="POST" action="{% url 'GMPManufactures' res.AuxiliaryIndex2 %}">
+                                        <form method="POST" action="{% url 'GMPManufactures' res.GMP_Line_No_ %}">
                                             {% csrf_token %}
-                                            <input type="hidden" name="lineNo" value="{{res.AuxiliaryIndex1}}">
+                                            <input type="hidden" name="gmpMd" value="{{res.GMP_Line_No_}}">
                                             <input type="hidden" name="TypeOfManufacturer" value="0">
                                             <input type="hidden" name="manufacturerName" value="0">
                                             <input type="hidden" name="plantAddress" value="0">
@@ -361,7 +361,7 @@
             <div class="modal-body">
                 <form method="POST" action="{% url 'GMPManufactures' res.GMP_No_ %}">
                     {% csrf_token %}
-                    <input type="hidden" name="lineNo" value="">
+                    <input type="hidden" name="gmpMd" value="">
                     <input type="hidden" name="myAction" value="insert">
                     <div class="row my-2">
                         <div class="col-md-12">
