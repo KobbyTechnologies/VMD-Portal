@@ -5,6 +5,9 @@ import json
 from django.conf import settings as config
 from django.contrib import messages
 from django.views import View
+import base64
+import io as BytesIO
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -148,7 +151,7 @@ class GMPDetails(UserObjectMixin, View):
             linesResponse = self.get_object(Lines)
             Line = [x for x in linesResponse['value']]
 
-            ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=GMP_No%20eq%20%27{pk}%27")
+            ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=No                                        %20eq%20%27{pk}%27")
             ManufacturerResponse = self.get_object(ManufacturesParticulars)
             Manufacturer = [x for x in ManufacturerResponse['value']]
             print(Manufacturer)
@@ -319,7 +322,7 @@ def GMPManufactures(request, pk):
             try:
                 response = config.CLIENT.service.GMPManufactureDetails(gmpMd, myAction, userId,
                                                                        manufacturerName, ManufacturerEmail, postalAddress, plantAddress, ManufacturerTelephone,
-                                                                       country, activity, TypeOfManufacturer, gmpMd)
+                                                                       country, activity, TypeOfManufacturer, gmpNo)
                 print(response)
                 if response == True:
                     messages.success(request, "Request Successful")
@@ -386,3 +389,23 @@ def FnDeleteGMPDocumentAttachment(request, pk):
     return redirect('GMPDetails', pk=pk)
 
     # To check against the user code to see whether there are products registered
+
+
+def FNGenerateGMPInvoice(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FNGenerateGMPInvoice(
+                pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('GMPDetails', pk=pk)
