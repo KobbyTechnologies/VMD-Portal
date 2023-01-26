@@ -164,12 +164,24 @@
                     </form>
                 </div>
             </div>
-            {% elif res.Paid == False and status == 'Open' %}
+            {% elif res.Paid == False and status == 'Open' and res.Invoiced == False %}
+            <div class="col-md-3">
+                <div class="card h-100 actionActive actionCard  text-center">
+                    <i class="bi bi-wallet my-3"></i>
+                    <form action="{% url 'FnGMPpayment' res.GMP_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">
+                            Pay {{res.Currency_Code}} {{res.Amount_Payable}}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% elif res.Paid == False and status == 'Open' and res.Invoiced == True %}
             <div class="col-md-3">
                 <a href="{% url 'GMPGateway' res.GMP_No_ %}">
                     <div class="card h-100 actionActive actionCard  text-center">
                         <i class="bi bi-wallet my-3"></i>
-                        Pay {{res.Currecy_Code}} {{res.Amount_Payable}}
+                        Pay {{res.Currency_Code}} {{res.Amount_Payable}}
                     </div>
                 </a>
             </div>

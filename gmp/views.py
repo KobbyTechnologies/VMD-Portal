@@ -388,6 +388,31 @@ def FnDeleteGMPDocumentAttachment(request, pk):
             print(e)
     return redirect('GMPDetails', pk=pk)
 
+class FnGMPpayment(UserObjectMixin,View):
+    def post(self, request,pk):
+        if request.method == 'POST':
+            try:
+                prodNo = pk
+                userCode = request.session['UserID']
+
+                response = config.CLIENT.service.FnGMPpayment(prodNo,userCode)
+                print(prodNo,userCode,response)
+                if response == True:
+                    messages.success(request,"Please Make Your payment and click confirm payment.")
+                    return redirect('GMPGateway', pk=pk)
+                if response == False:
+                    messages.error(request,"False")
+                    return redirect('GMPDetails', pk=pk)
+            except KeyError as e:
+                messages.info(request,"Session Expired, Login Again")
+                print(e)
+                return redirect('login')
+            except Exception as e:
+                print(e)
+                messages.info(request,e)
+                return redirect('GMPDetails', pk=pk)
+        return redirect('GMPDetails', pk=pk)
+
 def FNGenerateGMPInvoice(request, pk):
     if request.method == 'POST':
         try:
