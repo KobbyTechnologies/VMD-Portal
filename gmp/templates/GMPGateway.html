@@ -84,9 +84,9 @@
                 <div class="box-left">
                     <div class="">
                         <p class="h7 fw-bold mb-1">Make Payments</p>
-                        <p class="textmuted h8 mb-2">
-                            Choose from the payment options available to proceed. Your payment will be processed immediately.
-                        </p>
+                        <p class="textmuted h8 mb-2">Choose from the payment options available to proceed. Your payment
+                            will be processed
+                            immediately.</p>
                         <form action="{% url 'FNGenerateGMPInvoice' res.GMP_No_ %}" method="post">
                             {% csrf_token %}
                             <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
