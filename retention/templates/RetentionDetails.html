@@ -11,7 +11,7 @@
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
-    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
 <main id="main" class="main">
     <section class="section dashboard mt-4">
         <div class="row">
@@ -72,26 +72,64 @@
                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
                             {% if res.Status == 'Open' %}
                             <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
                             </div>
                             {% elif res.Status == 'Processing' %}
                             <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
                             </div>
                             {% elif res.Status == 'Approved' %}
                             <div class="progress-bar bg-success" role="progressbar" data-width="25%" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
                             </div>
                             {% elif res.Status == 'Rejected' %}
                             <div class="progress-bar bg-danger" role="progressbar" data-width="25%" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
                             </div>
                             {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-            {% if res.Paid == True and res.Status == 'Approved' %}
+            {% if res.Paid == True and res.Status == 'Approved'  %}
+            <div class="col-md-3">
+                <div class="card h-100 actionCard text-center">
+                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                    <form action="{% url 'PrintRentetionCertificate' res.Retension_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-success align-items-center" type="submit"> Generate
+                            Certificate</button>
+                    </form>
+                </div>
+            </div>
+
+            {% elif res.Paid == False and status == 'Open'  and VertinaryClasses.Retention_Payable == False %}
+            <div class="col-md-3">
+                <div class="card h-100 actionActive actionCard  text-center">
+                    <i class="bi bi-wallet my-3"></i>
+                    <form action="{% url 'SubmitRetention' res.Retension_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">
+                            Submit Application
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {% elif res.Paid == False and res.Status == 'Approved'  and VertinaryClasses.Retention_Payable == False %}
+            <div class="col-md-3">
+                <div class="card h-100 actionCard text-center">
+                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                    <form action="{% url 'PrintRentetionCertificate' res.Retension_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-success align-items-center" type="submit"> Generate
+                            Certificate</button>
+                    </form>
+                </div>
+            </div>
+
+            
+            {% elif res.Paid == True and res.Status == 'Approved' %}
             <div class="col-md-3">
                 <div class="card h-100 actionCard text-center">
                     <i class="bi bi-file-earmark-bar-graph my-3"></i>
@@ -153,6 +191,7 @@
                 </div>
             </div>
             {% endif %}
+
         </div>
         <div class="row my-3 gx-2">
             <div class="col-md-12">
@@ -200,12 +239,12 @@
                             <div class="col-md-12 mb-2">
                                 <label class="form-label">Main Indications</label>
                                 <textarea type="text" class="form-control" placeholder="{{res.Main_indication_s_}}"
-                                    readonly></textarea>
+                                          readonly></textarea>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label class="form-label">Product Description</label>
                                 <textarea type="text" class="form-control" placeholder="{{res.Description}}"
-                                    readonly></textarea>
+                                          readonly></textarea>
                             </div>
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">LTR Name</label>
@@ -214,12 +253,12 @@
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">Business Registration No.</label>
                                 <input type="text" class="form-control" placeholder="{{res.Business_Registration_No_}}"
-                                    readonly>
+                                       readonly>
                             </div>
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">LTR Physical Address</label>
                                 <input type="text" class="form-control" placeholder="{{res.LTR_Physical_Address}}"
-                                    readonly>
+                                       readonly>
                             </div>
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">Paid</label>
@@ -228,7 +267,7 @@
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">Penalty Amount</label>
                                 <input type="text" class="form-control"
-                                    placeholder="{{res.Currency_Code}} {{res.Penalty_Amount}}" readonly>
+                                       placeholder="{{res.Currency_Code}} {{res.Penalty_Amount}}" readonly>
                             </div>
 
                             <div class="col-md-6 mb-2">
@@ -239,15 +278,54 @@
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">Amount Payable</label>
                                 <input type="text" class="form-control"
-                                    placeholder="{{res.Currency_Code}} {{res.Amount_Payable}}" readonly>
+                                       placeholder="{{res.Currency_Code}} {{res.Amount_Payable}}" readonly>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+       
     </section>
 </main>
-{% include 'footer.html' %}
 
+<!-- modal  -->
+
+
+
+{% include 'footer.html' %}
+<script>
+    // open create folder modal
+    $('.js-upload-file-btn').on('click', function () {
+        $(".js-upload-file, .modal-backdrop").addClass("open");
+    });
+
+    // close all modal
+    $(document).on('click', '.modal .close', function () {
+        $(".modal, .modal-backdrop").removeClass("open");
+
+    });
+
+
+    Dropzone.autoDiscover = false;
+    try {
+        var myDropzone = new Dropzone("#dropzone", {
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: .5, // MB
+
+            addRemoveLinks: true,
+            dictDefaultMessage:
+                '<span class="bigger-150 bolder"><i class=" fa fa-caret-right red"></i> Drop files</span> to upload \
+                <span class="smaller-80 grey">(or click)</span> <br /> \
+                <i class="upload-icon fa fa-cloud-upload blue fa-3x"></i>'
+            ,
+            dictResponseError: 'Error while uploading file!',
+
+            //change the previewTemplate to use Bootstrap progress bars
+
+        });
+    } catch (e) {
+        //  alert('Dropzone.js does not support older browsers!');
+    }
+</script>
 {% endblock %}

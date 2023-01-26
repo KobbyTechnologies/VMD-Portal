@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 import requests
+import base64
 import json
 from django.conf import settings as config
 from django.contrib import messages
@@ -186,4 +187,33 @@ def SubmitVariation(request,pk):
         except Exception as e:
             messages.error(request,e)
             return redirect ('variationDetails',pk=pk)
+    return redirect('variationDetails', pk=pk)
+
+
+def FnRetentionAttachement(request, pk):
+    response = ''
+    if request.method == "POST":
+        try:
+            attach = request.FILES.get('attachment')
+            fileName = request.FILES['attachment'].name
+            name = request.POST.get('name')
+            tableID = 1173
+            attachment = base64.b64encode(attach.read())
+
+        
+            try:
+                response = config.CLIENT.service.FnRetentionAttachement(
+                    pk, fileName,name, attachment, tableID,
+                    )
+            except Exception as e:
+                messages.error(request, e)        
+                print(e)        
+                if response == True:
+                    messages.success(request, "File1 Upload Successful")
+                    return redirect('variationDetails', pk=pk)
+                else:
+                    messages.error(request, "Failed, Try Again")
+                    return redirect('variationDetails', pk=pk)
+        except Exception as e:
+            print(e)  
     return redirect('variationDetails', pk=pk)

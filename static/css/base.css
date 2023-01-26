@@ -165,3 +165,37 @@ body {
   .button-87:active {
     transform: scale(0.95);
   }
+
+
+
+  .modal,
+.modal-backdrop {
+	display: none;
+}
+
+.modal.open,
+.modal-backdrop.open {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.modal {
+	display: none; /* Hidden by default */
+	padding-top: 100px; /* Location of the box */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.modal-dialog{margin:auto;}
+.modal-content {
+	position: relative;
+	margin: auto;
+	animation-name: animatetop;
+	animation-duration: 0.4s
+}
+
+@keyframes animatetop {
+	from {top:-300px; opacity:0}
+	to {top:0; opacity:1}
+}
+

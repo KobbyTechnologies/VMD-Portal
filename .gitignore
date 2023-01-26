@@ -5,3 +5,4 @@ stats.txt
 notes.txt
 Pipfile
 Pipfile.lock
+__pycache__/
