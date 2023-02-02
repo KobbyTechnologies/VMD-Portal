@@ -11,8 +11,4 @@ urlpatterns = [
     path('GMPAttachement/<str:pk>', views.GMPAttachement, name='GMPAttachement'),
     path('FnDeleteGMPDocumentAttachment/<str:pk>', views.FnDeleteGMPDocumentAttachment, name='FnDeleteGMPDocumentAttachment'),
     path('FNGenerateGMPInvoice/<str:pk>', views.FNGenerateGMPInvoice, name='FNGenerateGMPInvoice'),
-<<<<<<< HEAD
-=======
-
->>>>>>> 5cf0dbb9a38a11ce0a81397824c930d9ae40a38c
 ]

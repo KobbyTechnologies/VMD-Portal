@@ -5,15 +5,8 @@ import json
 from django.conf import settings as config
 from django.contrib import messages
 from django.views import View
-<<<<<<< HEAD
-import base64
 import io as BytesIO
 from django.http import HttpResponse
-
-=======
-import io as BytesIO
-from django.http import HttpResponse
->>>>>>> 5cf0dbb9a38a11ce0a81397824c930d9ae40a38c
 # Create your views here.
 
 
@@ -156,11 +149,7 @@ class GMPDetails(UserObjectMixin, View):
             linesResponse = self.get_object(Lines)
             Line = [x for x in linesResponse['value']]
 
-<<<<<<< HEAD
-            ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=No                                        %20eq%20%27{pk}%27")
-=======
             ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=No%20eq%20%27{pk}%27")
->>>>>>> 5cf0dbb9a38a11ce0a81397824c930d9ae40a38c
             ManufacturerResponse = self.get_object(ManufacturesParticulars)
             Manufacturer = [x for x in ManufacturerResponse['value']]
             print(Manufacturer)
@@ -187,25 +176,10 @@ class GMPDetails(UserObjectMixin, View):
             print(e)
             return redirect('login')
 
-<<<<<<< HEAD
-        ctx = {
-            "res": responses, 
-            "status": Status,
-            "line": Line, 
-            "manufacturer": Manufacturer,
-            "country": resCountry, 
-            "files": Files, 
-            "attach": attach, 
-            "LTR_Name": LTR_Name, 
-            "LTR_Email": LTR_Email
-        }
-        return render(request, "gmpDetails.html", ctx)
-=======
         ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
         "country":resCountry,"files": Files,"attach":attach,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"gmpDetails.html",ctx)
     
->>>>>>> 5cf0dbb9a38a11ce0a81397824c930d9ae40a38c
 
 
 def linesToInspect(request, pk):
@@ -415,21 +389,10 @@ def FnDeleteGMPDocumentAttachment(request, pk):
             print(e)
     return redirect('GMPDetails', pk=pk)
 
-<<<<<<< HEAD
-    # To check against the user code to see whether there are products registered
-
-
-def FNGenerateGMPInvoice(request, pk):
-    if request.method == 'POST':
-        try:
-            response = config.CLIENT.service.FNGenerateGMPInvoice(
-                pk)
-=======
 def FNGenerateGMPInvoice(request, pk):
     if request.method == 'POST':
         try:
             response = config.CLIENT.service.FNGenerateGMPInvoice(pk)
->>>>>>> 5cf0dbb9a38a11ce0a81397824c930d9ae40a38c
             buffer = BytesIO.BytesIO()
             content = base64.b64decode(response)
             buffer.write(content)
@@ -442,10 +405,6 @@ def FNGenerateGMPInvoice(request, pk):
         except Exception as e:
             messages.error(request, e)
             print(e)
-<<<<<<< HEAD
-    return redirect('GMPDetails', pk=pk)
-=======
     return redirect('GMPGateway', pk=pk)
 
     # To check against the user code to see whether there are products registered
->>>>>>> 5cf0dbb9a38a11ce0a81397824c930d9ae40a38c
