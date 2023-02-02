@@ -176,6 +176,9 @@ class GMPDetails(UserObjectMixin, View):
             print(e)
             return redirect('login')
 
+
+        # responses = None
+
         ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
         "country":resCountry,"files": Files,"attach":attach,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"gmpDetails.html",ctx)
@@ -301,7 +304,7 @@ def SubmitGMP(request, pk):
 def GMPManufactures(request, pk):
     if request.method == 'POST':
         try:
-            gmpNo = pk
+            gmpMd = request.POST.get('gmpMd')
             myAction = request.POST.get('myAction')
             userId = request.session['UserID']
             manufacturerName = request.POST.get('manufacturerName')
@@ -313,7 +316,7 @@ def GMPManufactures(request, pk):
             activity = int(request.POST.get('activity'))
             TypeOfManufacturer = int(request.POST.get('TypeOfManufacturer'))
             manufacturerOther = request.POST.get('manufacturerOther')
-            gmpMd = request.POST.get('gmpMd')
+            gmpNo = pk
             if not manufacturerOther:
                 manufacturerOther = ''
             try:

@@ -948,6 +948,8 @@
         </div>
     </div>
 </div>
+
+
 <!-- Additives -->
 <div class="modal fade" id="Additives" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -962,6 +964,7 @@
                 <form method="POST" action="{% url 'Additive' res.ProductNo %}">
                     {% csrf_token %}
                     <input type="hidden" name="myAction" value="insert">
+                    <input type="hidden" name="lineNo" value="">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-2">
