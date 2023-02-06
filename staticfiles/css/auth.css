@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap');
+
+:root {
+    --first-color: #0974bd;
+    --first-color-dark: #0e5a8d;
+    --second-color: #2b87cd;
+    --font1: 'Nunito Sans', sans-serif;
+    --font2: 'Red Hat Display', sans-serif;
+    --third-color: #8696b8;
+    --green: #196F3D;
+    --red: #c81718;
+}
+.alert-success{
+    background: var(--green) !important;
+    color: white !important;
+    border-color: var(--green) !important;
+}
+.alert-danger{
+    background: var(--red) !important;
+    color: white !important;
+    border-color: var(--red) !important;
+}
+.login {
+    background: var(--first-color-dark);
+    min-height: 105vh;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .login {
+        height: auto;
+        width: 100%;
+    }
+}
+
+.loginCard {
+    background: var(--second-color) !important;
+    color: #fff;
+    border-radius: 14px !important;
+    font-family: var(--font1);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+}
+
+.loginForm .form-label {
+    color: #dfdfdf;
+    font-weight: 500;
+    text-shadow: 0 1px 0 var(--second-color);
+}
+
+.loginForm input {
+    border: 2px solid whitesmoke;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+}
+
+.loginForm input:focus {
+    border: 2px solid var(--green);
+    border-radius: 4px;
+    font-size: 16px;
+    color: black;
+    background-color: white;
+}
+
+.loginForm .inputGroupPrepend {
+    background: var(--third-color);
+    border: 2px solid var(--third-color);
+}
+
+.loginForm .startBtn {
+    background: var(--green);
+    border: var(--green);
+}
+
+.loginForm .startBtn:hover {
+    background: #196F3D;
+    border: #196F3D;
+}
+
+.loginForm .regLink {
+    color: black;
+    text-shadow: 0 1px 0 var(--second-color);
+    cursor: pointer;
+}
+
+.signUpLink {
+    background: var(--first-color) !important;
+    border-radius: 5px;
+    color: white !important;
+    text-decoration: none;
+    font-size: 20px;
+    float: right;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.Authlogo {
+    margin: 4rem 0rem 1rem 0rem;
+    border: 3px solid white;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    padding: 4px;
+}
+
+.Authlogo img {
+    height: 105px;
+    width: 105px;
+    margin: 1rem 0rem 1rem 0rem;
+}
+
+.right-text h4 {
+    color: #fff;
+    font-family: var(--font1);
+    font-weight: bolder;
+    text-shadow: 0 1px 0 var(--first-color-dark);
+    padding-top: 5rem;
+    font-size: 2.5rem;
+}
+
+.right-text p {
+    color: #b6b6b6;
+    font-family: var(--font1);
+    font-weight: 500;
+    text-shadow: 0 1px 0 var(--first-color-dark);
+    padding: 1rem 1rem 1rem 1rem;
+    z-index: 1;
+}
+
+.right-texts h4 {
+    color: #fff;
+    font-family: var(--font1);
+    font-weight: bolder;
+    text-shadow: 0 1px 0 var(--first-color-dark);
+    padding-top: 5rem;
+    font-size: 2.5rem;
+}
+
+.myImg {
+    height: 250px;
+    width: 100%;
+    border: 2px solid white;
+}
+
+.right-texts p {
+    color: #b6b6b6;
+    font-family: var(--font1);
+    font-weight: 500;
+    text-shadow: 0 1px 0 var(--first-color-dark);
+    padding: 1rem 1rem 1rem 1rem;
+    z-index: 1;
+}
+
+.myImg img {
+    width: auto;
+    height: 250px
+}
