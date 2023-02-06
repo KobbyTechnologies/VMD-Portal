@@ -219,7 +219,7 @@ def FnVariationAttachement(request, pk):
 
             try:
                 response = config.CLIENT.service.FnVariationAttachement(
-                    pk, filename, attachment, tableID, name)
+                    pk, filename, name, attachment, tableID)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")
