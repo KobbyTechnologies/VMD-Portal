@@ -234,3 +234,19 @@ def FnVariationAttachement(request, pk):
         except Exception as e:
             print(e)
     return redirect('variationDetails', pk=pk)
+
+def FnDeleteVariationAttachment(request,pk):
+    if request.method == "POST":
+        docID = int(request.POST.get('docID'))
+        tableID= int(request.POST.get('tableID'))
+        try:
+            response = config.CLIENT.service.FnDeleteDocumentAttachment(
+                pk,docID,tableID)
+            print(response)
+            if response == True:
+                messages.success(request, "Deleted Successfully ")
+                return redirect('variationDetails', pk=pk)
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('variationDetails', pk=pk)
