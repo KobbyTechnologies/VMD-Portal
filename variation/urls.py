@@ -8,4 +8,5 @@ urlpatterns = [
     path("variationGateway/<str:pk>",views.variationGateway.as_view(),name='variationGateway'),
     path("SubmitVariation/<str:pk>",views.SubmitVariation,name='SubmitVariation'),
     path("FnVariationAttachement/<str:pk>", views.FnVariationAttachement, name="FnVariationAttachement"),
+    path("FnDeleteVariationAttachment/<str:pk>", views.FnDeleteVariationAttachment, name='FnDeleteVariationAttachment'),
 ]

@@ -158,8 +158,9 @@
                         <div class="row">
                             {% for data in files %}
                             <div class="col-md-3">
+                                
                                 <div class="file-man-box" id="fileMan">
-                                    <form action="" method="POST">
+                                    <form action="{% url 'VariationAttachment' res.Variation_No_ %}" method="POST">
                                         {% csrf_token %}
                                         <input type="hidden" name="docID" value="{{data.AuxiliaryIndex2}}">
                                         <input type="hidden" name="tableID" value="{{data.Table_ID}}">

@@ -111,7 +111,7 @@ class variationDetails(UserObjectMixin, View):
                 Status = res['Status']
 
             AllAttachments = config.O_DATA.format(
-                f"/QYDocumentAttachments?$filter=No_%20eq%20%27{pk}%27%20and%20Table_ID%20eq%2050004")
+                f"/QYDocumentAttachments?$filter=No_%20eq%20%27{pk}%27%20and%20Table_ID%20eq%2052177987")
             AllAttachResponse = self.get_object(AllAttachments)
             Files = [x for x in AllAttachResponse['value']]
 
@@ -214,7 +214,7 @@ def FnVariationAttachement(request, pk):
             attach = request.FILES.get('attachment')
             filename = request.FILES['attachment'].name
             name = request.POST.get('name')
-            tableID = 1173
+            tableID = 52177987
             attachment = base64.b64encode(attach.read())
 
             try:
