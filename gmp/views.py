@@ -132,7 +132,7 @@ class GMPApplication(UserObjectMixin, View):
 
 class GMPDetails(UserObjectMixin, View):
     def get(self, request, pk):
-        print(pk)
+        # print(pk)
         try:
             userID = request.session['UserID']
             LTR_Name = request.session['LTR_Name']
@@ -143,6 +143,7 @@ class GMPDetails(UserObjectMixin, View):
             for res in response['value']:
                 responses = res
                 Status = res['Status']
+                
 
             Lines = config.O_DATA.format(
                 f"/QYLinestobeInspected?$filter=No%20eq%20%27{pk}%27%20and%20User_code%20eq%20%27{userID}%27")
@@ -177,7 +178,7 @@ class GMPDetails(UserObjectMixin, View):
             return redirect('login')
 
 
-        # responses = None
+        
 
         ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
         "country":resCountry,"files": Files,"attach":attach,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}

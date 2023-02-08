@@ -229,7 +229,7 @@
                                     <td>{{res.Manufacture_Postal_Address}}</a></td>
                                     <td>{{res.Activity}}</td>
                                     <td>
-                                        <form method="POST" action="{% url 'GMPManufactures' manufacturer.No %}">
+                                        <form method="POST" action="{% url 'GMPManufactures' res.GMP_Line_No_ %}">
                                             {% csrf_token %}
                                             <input type="hidden" name="gmpMd" value="{{res.GMP_Line_No_}}">
                                             <input type="hidden" name="TypeOfManufacturer" value="0">
