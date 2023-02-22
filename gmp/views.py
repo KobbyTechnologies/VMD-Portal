@@ -32,11 +32,11 @@ class GMPApplication(UserObjectMixin, View):
             OpenProducts = [x for x in response['value']
                             if x['Status'] == 'Open']
             Pending = [x for x in response['value']
-                       if x['Status'] == 'Processing']
+                       if x['Status'] == 'Processing' and x['GMP_Stage'] != 'Rejected']
             Approved = [x for x in response['value']
                         if x['Status'] == 'Approved']
             Rejected = [x for x in response['value']
-                        if x['Status'] == 'Rejected']
+                        if x['Status'] == 'Processing' and x['GMP_Stage'] == 'Rejected']
 
             CountriesRegistered = config.O_DATA.format("/QYCountries")
             CountryResponse = self.get_object(CountriesRegistered)
