@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.conf import settings as config
 import base64
 from django.views import View
+import io as BytesIO
+from django.http import HttpResponse
 
 # Create your views here.
 class UserObjectMixin(object):
@@ -204,4 +206,23 @@ def RenewAttachement(request, pk):
         except Exception as e:
             print(e)        
     return redirect('renewDetails', pk=pk)
+
+def FNGenerateRenewalInvoice(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FNGenerateRenewalInvoice(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('renewGateway', pk=pk)
+
     

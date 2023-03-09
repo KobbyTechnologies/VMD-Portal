@@ -5,6 +5,9 @@ import json
 from django.conf import settings as config
 from django.contrib import messages
 from django.views import View
+import io as BytesIO
+from django.http import HttpResponse
+
 
 # Create your views here.
 
@@ -250,3 +253,24 @@ def FnDeleteVariationAttachment(request,pk):
             messages.error(request, e)
             print(e)
     return redirect('variationDetails', pk=pk)
+
+
+def FNGenerateVariationInvoice(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FNGenerateVariationInvoice(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('variationGateway', pk=pk)
+
+

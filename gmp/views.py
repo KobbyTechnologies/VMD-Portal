@@ -34,7 +34,8 @@ class GMPApplication(UserObjectMixin, View):
             Pending = [x for x in response['value']
                        if x['Status'] == 'Processing' and x['GMP_Stage'] != 'Rejected']
             Approved = [x for x in response['value']
-                        if x['Status'] == 'Approved']
+                        if x['Status'] == ' Approved']
+        
             Rejected = [x for x in response['value']
                         if x['Status'] == 'Processing' and x['GMP_Stage'] == 'Rejected']
 
@@ -303,6 +304,7 @@ def SubmitGMP(request, pk):
 
 
 def GMPManufactures(request, pk):
+    response = GMPDetails
     if request.method == 'POST':
         try:
             gmpMd = request.POST.get('gmpMd')
@@ -318,6 +320,10 @@ def GMPManufactures(request, pk):
             TypeOfManufacturer = int(request.POST.get('TypeOfManufacturer'))
             manufacturerOther = request.POST.get('manufacturerOther')
             gmpNo = pk
+
+            if not gmpMd:
+                gmpMd = ''
+
             if not manufacturerOther:
                 manufacturerOther = ''
             try:
@@ -410,5 +416,25 @@ def FNGenerateGMPInvoice(request, pk):
             messages.error(request, e)
             print(e)
     return redirect('GMPGateway', pk=pk)
+
+
+def PrintGMPCertificate(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.PrintGMPCertificate(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('GMPDetails', pk=pk)
+
 
     # To check against the user code to see whether there are products registered

@@ -9,4 +9,5 @@ urlpatterns = [
     path("SubmitVariation/<str:pk>",views.SubmitVariation,name='SubmitVariation'),
     path("FnVariationAttachement/<str:pk>", views.FnVariationAttachement, name="FnVariationAttachement"),
     path("FnDeleteVariationAttachment/<str:pk>", views.FnDeleteVariationAttachment, name='FnDeleteVariationAttachment'),
+    path("FNGenerateVariationInvoice/<str:pk>", views.FNGenerateVariationInvoice, name='FNGenerateVariationInvoice'),
 ]
