@@ -115,6 +115,7 @@ class retentionDetails(UserObjectMixin,View):
                 Status = res['Status']
                 prod = res['ProductNo']
                 
+            vet_class = '' 
             Product = config.O_DATA.format(f"/QYRegistration?$filter=ProductNo%20eq%20%27{prod}%27")
             prod_details = self.get_object(Product)
             for prod_No in prod_details['value']:
@@ -181,7 +182,7 @@ class retentionGateway(UserObjectMixin,View):
                     messages.success(request,"Payment was successful. You can now submit your application.")
                     return redirect('retentionDetails', pk=pk)
                 else:
-                    messages.error("Payment Not sent. Try Again.")
+                    messages.error(request, "Payment Not sent. Try Again.")
                     return redirect('retentionGateway', pk=pk)
             except requests.exceptions.RequestException as e:
                 messages.error(request,e)
