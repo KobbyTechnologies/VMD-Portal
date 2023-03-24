@@ -32,7 +32,7 @@ class registrationRequest(UserObjectMixin, View):
             product = vet_response['value']
 
             Access_Point = config.O_DATA.format(
-                f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
+                f"/`QYRegistration`?$filter=User_code%20eq%20%27{userId}%27")
             response = self.get_object(Access_Point)
             OpenProducts = [x for x in response['value']
                             if x['Status'] == 'Open']
@@ -489,14 +489,14 @@ def Attachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            filename = request.FILES['attachment'].name
+            # filename = request.FILES['attachment'].name
             name = request.POST.get('name')
             tableID = 52177996
             attachment = base64.b64encode(attach.read())
 
             try:
                 response = config.CLIENT.service.Attachement(
-                    pk, filename, name, attachment, tableID)
+                    pk, name, attachment, tableID)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")

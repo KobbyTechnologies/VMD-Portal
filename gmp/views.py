@@ -318,12 +318,16 @@ def GMPManufactures(request, pk):
             manufacturerOther = request.POST.get('manufacturerOther')
             gmpNo = pk
 
+            print(gmpMd)
+            print(gmpNo)
+            print(myAction)
+
             if not gmpMd:
                 gmpMd = ''
 
             if not manufacturerOther:
                 manufacturerOther = ''
-            try:
+           
                 response = config.CLIENT.service.GMPManufactureDetails(
                     gmpMd, myAction, userId,
                     manufacturerName, ManufacturerEmail, postalAddress, plantAddress, ManufacturerTelephone,
@@ -337,18 +341,12 @@ def GMPManufactures(request, pk):
                     print("Not sent")
                     return redirect('GMPDetails', pk=pk)
                     
-            except requests.exceptions.RequestException as e:
-                print(e)
-                return redirect('GMPDetails', pk=pk)
-            except Exception as e:
-                messages.info(request, e)
-                print(e)
-                return redirect('GMPDetails', pk=pk)
-        except KeyError as e:
-            messages.info(request, "Session Expired, Login Again")
+           
+        except Exception as e:
+            messages.error(request, f"{e}")
             print(e)
-            return redirect('login')
-    return redirect('GMPDetails', pk=pk)
+            return redirect('GMPDetails', pk=pk)
+   
 
 
 def GMPAttachement(request, pk):
@@ -384,16 +382,14 @@ def FnDeleteGMPDocumentAttachment(request, pk):
         docID = int(request.POST.get('docID'))
         tableID = int(request.POST.get('tableID'))
         try:
-            response = config.CLIENT.service.FnDeleteGMPDocumentAttachment(
+            response = config.CLIENT.service.FnDeleteDocumentAttachment(
                 pk, docID, tableID)
             print(response)
             if response == True:
                 messages.success(request, "Deleted Successfully ")
                 return redirect('GMPDetails', pk=pk)
-            else:
-                messages.info(request, 'It is not Working')
         except Exception as e:
-            messages.error(request, e)
+            messages.error(request, f'{e}')
             print(e)
     return redirect('GMPDetails', pk=pk)
 
