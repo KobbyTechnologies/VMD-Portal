@@ -353,14 +353,14 @@ def GMPAttachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            # filename = request.FILES['attachment'].name
+            filename = request.FILES['attachment'].name
             name = request.POST.get('name')
             tableID = 50004
             attachment = base64.b64encode(attach.read())
 
             try:
                 response = config.CLIENT.service.GMPAttachement(
-                    pk, attachment, tableID, name)
+                    pk, filename, attachment, tableID, name)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")
