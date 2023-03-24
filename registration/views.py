@@ -171,7 +171,7 @@ class productDetails(UserObjectMixin, View):
                 f"/QyRegulatory?$filter%20=%20Usercode%20eq%20%27{userId}%27%20and%20ProductNo%20eq%20%27{pk}%27")
             RegulatoryResponse = self.get_object(Regulatories)
             Regulatory = [x for x in RegulatoryResponse['value']]
-            print(Regulatory)
+            # print(Regulatory)
 
             Attachments = config.O_DATA.format("/QYRequiredDocuments")
             AttachResponse = self.get_object(Attachments)
