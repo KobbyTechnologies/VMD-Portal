@@ -58,7 +58,7 @@ class PaymentGateway(UserObjectMixin,View):
                     messages.success(request,"Payment was successful. You can now submit your application.")
                     return redirect('productDetails', pk=pk)
                 else:
-                    messages.error("Payment Not sent. Try Again.")
+                    messages.error(request, "Payment Not sent. Try Again.")
                     return redirect('PaymentGateway', pk=pk)
             except requests.exceptions.RequestException as e:
                 messages.error(request,e)

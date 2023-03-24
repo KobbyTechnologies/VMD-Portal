@@ -171,7 +171,7 @@ class variationGateway(UserObjectMixin,View):
                     messages.success(request,"Payment was successful. You can now submit your application.")
                     return redirect('variationDetails', pk=pk)
                 else:
-                    messages.error("Payment Not sent. Try Again.")
+                    messages.error(request, "Payment Not sent. Try Again.")
                     return redirect('variationGateway', pk=pk)
             except requests.exceptions.RequestException as e:
                 messages.error(request,e)
@@ -215,14 +215,14 @@ def FnVariationAttachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            filename = request.FILES['attachment'].name
+            # filename = request.FILES['attachment'].name
             name = request.POST.get('name')
             tableID = 52177987
             attachment = base64.b64encode(attach.read())
 
             try:
                 response = config.CLIENT.service.FnVariationAttachement(
-                    pk, filename, name, attachment, tableID)
+                    pk, name, attachment, tableID)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")
