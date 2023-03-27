@@ -30,9 +30,9 @@ class registrationRequest(UserObjectMixin, View):
             LTR_Email = request.session['LTR_Email']
             vet_response = self.get_object(Vet_Classes)
             product = vet_response['value']
-
+            
             Access_Point = config.O_DATA.format(
-                f"/`QYRegistration`?$filter=User_code%20eq%20%27{userId}%27")
+                f"/QYRegistration?$filter=User_code%20eq%20%27{userId}%27")
             response = self.get_object(Access_Point)
             OpenProducts = [x for x in response['value']
                             if x['Status'] == 'Open']
@@ -55,6 +55,7 @@ class registrationRequest(UserObjectMixin, View):
         pendCount = len(Pending)
         appCount = len(Approved)
         rejectedCount = len(Rejected)
+
         ctx = {"product": product, "openCount": openCount, "open": OpenProducts,
                "pendCount": pendCount, "pending": Pending, "appCount": appCount, "approved": Approved,
                "rejectedCount": rejectedCount, "rejected": Rejected, "LTR_Name": LTR_Name, "LTR_Email": LTR_Email}
