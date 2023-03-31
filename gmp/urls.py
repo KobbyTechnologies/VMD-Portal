@@ -12,4 +12,5 @@ urlpatterns = [
     path('FnDeleteGMPDocumentAttachment/<str:pk>', views.FnDeleteGMPDocumentAttachment, name='FnDeleteGMPDocumentAttachment'),
     path('FNGenerateGMPInvoice/<str:pk>', views.FNGenerateGMPInvoice, name='FNGenerateGMPInvoice'),
     path('PrintGMPCertificate/<str:pk>', views.PrintGMPCertificate, name='PrintGMPCertificate'),
+    path("FnMakeGMPpayment/<str:pk>",views.FnMakeGMPpayment.as_view(),name='FnMakeGMPpayment'),
 ]

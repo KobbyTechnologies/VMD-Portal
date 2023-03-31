@@ -432,4 +432,35 @@ def PrintGMPCertificate(request, pk):
     return redirect('GMPDetails', pk=pk)
 
 
+class FnMakeGMPpayment(UserObjectMixin, View):
+    def post(self, request, pk):
+        if request.method == 'POST':
+            try:
+                gmpNo = pk
+                userCode = request.session['UserID']
+
+                response = config.CLIENT.service.FnGMPpayment(
+                    gmpNo, userCode)
+                print('gmpNo :', gmpNo)
+                print('userCode:', userCode)
+                print('response:', response)
+
+                if response == True:
+                    messages.success(
+                        request, "Please Make Your payment and click confirm payment.")
+                    return redirect('GMPGateway', pk=pk)
+                if response == False:
+                    messages.error(request, "False")
+                    return redirect('GMPDetails', pk=pk)
+            except KeyError as e:
+                messages.info(request, "Session Expired, Login Again")
+                print(e)
+                return redirect('login')
+            except Exception as e:
+                print(e)
+                messages.info(request, e)
+                return redirect('GMPDetails', pk=pk)
+        return redirect('GMPDetails', pk=pk)
+
+
     # To check against the user code to see whether there are products registered

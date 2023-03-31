@@ -164,7 +164,19 @@
                     </form>
                 </div>
             </div>
-            {% elif res.Paid == False and status == 'Open' %}
+            {% elif res.Paid == False and status == 'Open'  and res.Invoiced == False %}
+            <div class="col-md-3">
+                <div class="card h-100 actionActive actionCard  text-center">
+                    <i class="bi bi-wallet my-3"></i>
+                    <form action="{% url 'FnMakeGMPpayment' res.GMP_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">
+                            Pay {{res.Currency_Code}} {{res.Amount_Payable}}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% elif res.Paid == False and status == 'Open'  and res.Invoiced == True %}
             <div class="col-md-3">
                 <a href="{% url 'GMPGateway' res.GMP_No_ %}">
                     <div class="card h-100 actionActive actionCard  text-center">
@@ -526,7 +538,8 @@
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Document Name</label>
-                        <select class="form-select" aria-label="Default select example" name="name" id="attachment-name">
+                        <select class="form-select" aria-label="Default select example" name="name"
+                            id="attachment-name">
                             <option selected disabled value="">Choose...</option>
                             {% for attach in attach %}
                             <option value="{{attach.code}}" id="name-list">{{attach.Description}}</option>

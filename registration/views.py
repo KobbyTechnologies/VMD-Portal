@@ -356,7 +356,7 @@ def MarketingAuthorization(request, pk):
 
 
 class makePayment(UserObjectMixin, View):
-    def post(self, request, pk):
+    def post(self, request, pk):    
         if request.method == 'POST':
             try:
                 prodNo = pk

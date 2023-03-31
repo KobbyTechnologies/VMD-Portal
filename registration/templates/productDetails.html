@@ -1149,6 +1149,7 @@
                 <form method="POST" action="{% url 'essentialPrinciples' res.ProductNo %}">
                     {% csrf_token %}
                     <input type="hidden" name="myAction" value="insert">
+                    <input type="hidden" name="lineNo" value="">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-2">
