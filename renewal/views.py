@@ -87,7 +87,10 @@ class  ApplyRenewal(UserObjectMixin,View):
                 renNo = request.POST.get('renNo')
                 myAction = request.POST.get('myAction')
                 prodNo = request.POST.get('prodNo')
-                response = config.CLIENT.service.Renewal(renNo,myAction,request.session['UserID'],prodNo)
+                nameOfTheApplicant = request.POST.get('nameOfTheApplicant')
+                positionInTheCompany = request.POST.get('positionInTheCompany')
+                iAgree = request.POST.get('iAgree')
+                response = config.CLIENT.service.Renewal(renNo,myAction,request.session['UserID'],prodNo,iAgree, nameOfTheApplicant,positionInTheCompany)
                 print(response)
                 if response == True:
                     messages.success(request,"Request Successful")
