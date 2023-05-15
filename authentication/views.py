@@ -39,7 +39,7 @@ def send_reset_mail(email, request):
         from_email=config.EMAIL_HOST_USER,
         to=[email],
     )
-
+    reset_email.content_subtype = "html"
     EmailThread(reset_email).start()
 
 
@@ -61,6 +61,7 @@ def send_mail(lTRMail, verificationToken, request):
         to=[lTRMail],
     )
 
+    email.content_subtype = "html"
     EmailThread(email).start()
 
 
@@ -139,16 +140,13 @@ def registerAccount(request):
                     verificationToken,
                     myAction,
                 )
-                print(response)
                 if response == True:
                     send_mail(lTRMail, verificationToken, request)
                     messages.success(
                         request, "We sent you an email to verify your account"
                     )
                     return redirect("verify")
-                messages.info(
-                    request, "Email not Sent, Try with Signing up with another email"
-                )
+                messages.info(request, f"{response}")
                 return redirect("register")
             except requests.exceptions.RequestException as e:
                 print(e)
@@ -282,7 +280,7 @@ def resetPassword(request):
                     messages.success(
                         request, "We sent you an email to reset your password"
                     )
-                    return redirect("login")
+                    return redirect("reset")
                 else:
                     messages.error(request, "Invalid Email")
                     return redirect("login")
