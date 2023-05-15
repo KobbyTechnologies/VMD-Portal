@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.conf import settings as config
 from django.contrib import messages
 import requests
-
+import base64
 # Create your views here.
 def devicesRegistration(request,pk):
     if request.method == 'POST':
@@ -93,3 +93,30 @@ def essentialPrinciples(request,pk):
             print(e)
             return redirect('login')
     return redirect ('productDetails',pk=pk)
+
+def FnDeviceAttachement(request, pk):
+    if request.method == "POST":
+        try:
+            attach = request.FILES.get('attachment')
+            # filename = request.FILES['attachment'].name
+            # name = request.POST.get('name')
+            tableID = 52177996
+            attachment = base64.b64encode(attach.read())
+
+            try:
+                response = config.CLIENT.service.FnDeviceAttachement(
+                    pk, attachment, tableID)
+                print(response)
+                if response == True:
+                    messages.success(request, "Upload Successful")
+                    return redirect('productDetails', pk=pk)
+                else:
+                    messages.error(request, "Failed, Try Again")
+                    return redirect('productDetails', pk=pk)
+            except Exception as e:
+                messages.error(request, e)
+                print(e)
+                return redirect('productDetails', pk=pk)
+        except Exception as e:
+            print(e)
+    return redirect('productDetails', pk=pk)
