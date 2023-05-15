@@ -10,6 +10,67 @@
 <!-- Sidebar-->
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
+<style>
+    .file-man-box {
+        padding: 10px;
+        border: 1px solid #e3eaef;
+        border-radius: 5px;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .file-man-box .file-close {
+        color: #f1556c;
+        position: absolute;
+        line-height: 24px;
+        font-size: 24px;
+        right: 10px;
+        top: 10px;
+        visibility: hidden
+    }
+
+    .file-man-box .file-img-box {
+        line-height: 120px;
+        text-align: center
+    }
+
+    .file-man-box .file-img-box img {
+        height: 64px
+    }
+
+    .deleteBtn {
+        background: none;
+        outline: none;
+        border: none;
+    }
+
+    .file-man-box .file-download {
+        font-size: 30px;
+        color: #98a6ad;
+        position: absolute;
+        bottom: 5px;
+        right: 1px;
+        background: none;
+        border: none;
+    }
+
+    .file-man-box .file-download:hover {
+        color: #313a46
+    }
+
+    .file-man-box .file-man-title {
+        padding-right: 15px
+    }
+
+    .file-man-box:hover {
+        -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, .06), 0 1px 0 0 rgba(0, 0, 0, .02);
+        box-shadow: 0 0 24px 0 rgba(0, 0, 0, .06), 0 1px 0 0 rgba(0, 0, 0, .02)
+    }
+
+    .file-man-box:hover .file-close {
+        visibility: visible
+    }
+</style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
       integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
 <main id="main" class="main">
@@ -148,90 +209,83 @@
                 </div>
             </div>
         </div>
-        <div class="row my-2 py-3">
+        <div class="row my-3">
             <div class="col-md-12">
                 <div class="card">
+                    <div class="card-title p-3">
+                        <span class="text-primary">My Attachments</span>
+                    </div>
                     <div class="card-body">
-                        <div class="row justify-content-between">
-                            <div class="col-3">
-                                <h4 class="card-title mb-4">
-                                    Attachments
-                                </h4>
-                            </div>
-                            <div class="col-3 d-flex align-items-center">
-                                <button class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
-                                        data-bs-target="#Attachment" type="button"> <i class="bi bi-plus-circle"></i> Upload Attachment
-                                </button>
-                            </div>
-                        </div>
                         <div class="row">
-                            {% for data in file %}
-                            <div class="col-lg-4 col-xl-3">
-                                <div class="file-man-box">
-                                    {% if res.Status == 'Open' %}
-                                    <form action="" method="POST">
+                            {% for data in files %}
+                            <div class="col-md-3">
+                                
+                                <div class="file-man-box" id="fileMan">
+                                    <form action="{% url 'FnDeleteVariationAttachment' res.Variation_No_ %}" method="POST">
                                         {% csrf_token %}
                                         <input type="hidden" name="docID" value="{{data.AuxiliaryIndex2}}">
                                         <input type="hidden" name="tableID" value="{{data.Table_ID}}">
                                         <button class="file-close" id="file-close"><i
-                                               class="fa fa-times-circle"></i></button>
+                                                class="fa fa-times-circle"></i></button>
                                     </form>
-                                    {% endif %}
-                                    <div class="file-img-box"><img src="../../static/img/logo/f1.png" alt="icon"></div>
-                                    <form action="{% url 'getDocs' data.No_ data.Table_ID %}" method="POST">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="attachmentID" value="{{data.AuxiliaryIndex2}}">
-                                        <input type="hidden" name="File_Name" value="{{data.File_Name}}">
-                                        <input type="hidden" name="File_Extension" value="{{data.File_Extension}}">
-                                        <button class="file-download mx-1"><i
-                                               class="fa fa-download text-success"></i></button>
-                                    </form>
+                                    <div class="file-img-box"><img
+                                            src="https://coderthemes.com/highdmin/layouts/assets/images/file_icons/pdf.svg"
+                                            alt="icon"></div>
                                     <div class="file-man-title">
-                                        <h5 class="mb-0 text-overflow">
-                                            {{data.File_Name}}.{{data.File_Extension}}</h5>
+                                        <h5 class="mb-0 text-overflow">{{data.File_Name}}.{{data.File_Extension}}</h5>
+                                        <span class="document-description"> Date Attached:
+                                            {{data.Attached_Date}} </span>
                                     </div>
                                 </div>
                             </div>
                             {% empty %}
-                            <p class="text-danger">
-                                You have not uploaded any attachments <i class="las la-file-download"></i>
-                            </p>
+                            <span class="small text-danger">You have not attached any documents</span>
                             {% endfor %}
                         </div>
-
+                        <button type="button" class="btn btn-success w-100" data-bs-toggle="modal"
+                            data-bs-target="#Variationttachements">Upload Attachment</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </main>
-<div class="modal js-upload-file fade" id="Attachment">
-    <div class="modal-dialog" role="dialog" aria-hidden="true">
+
+<!-- Attachments -->
+<div class="modal fade" id="Variationttachements" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Upload Your Attachment</h5>
-                <a aria-label="Close" class="close">
-                    <clr-icon aria-hidden="true" shape="close"></clr-icon>
-                </a>
+                <h5 class="modal-title" id="staticBackdropLabel">Upload Attachments</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="dropzone" action="{% url 'FnRetentionAttachement' res.Variation_No_  %}" class="dropzone" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
             <div class="modal-body">
-
-                    <div class="fallback mb-3">
+                <form action="{% url 'FnVariationAttachement' res.Variation_No_ %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- <div class="mb-3">
                         <label class="form-label">Document Name</label>
-                        <input name="name" class="form-control" type="text" />
+                        <select class="form-select" aria-label="Default select example" name="name">
+                            <option selected disabled value="">Choose...</option>
+                            {% for attach in attach %}
+                            <option value="{{attach.code}}">{{attach.Description}}</option>
+                            {% endfor %}
+                            <option value="Other">Other</option>
+                        </select>
+                    </div> -->
+                    <div class="mb-3">
+                        <label class="form-label">Document Name</label>
+                        <input type="text" name="name", id="name" class="form-control">
                     </div>
-                    <div class="fallback">
+                    <div class="mb-3">
                         <label class="form-label">Attachment</label>
-                        <input name="attachment" class="form-control" type="file" accept=".doc,.docx,.pdf" multiple />
+                        <input type="file" class="form-control" accept=".doc,.docx,.pdf" name="attachment">
                     </div>
-                    
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" type="button">Save</button>
-                </div>
-            </form>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

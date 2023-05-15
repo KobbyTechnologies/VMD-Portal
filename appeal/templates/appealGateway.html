@@ -88,7 +88,7 @@
                             will be processed
                             immediately.
                         </p>
-                        <form action="{% url 'FNGenerateInvoice' res.Appeal_No_ %}" method="post">
+                        <form action="{% url 'FNGenerateAppealInvoice' res.Appeal_No_ %}" method="post">
                             {% csrf_token %}
                             <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
                         </form>

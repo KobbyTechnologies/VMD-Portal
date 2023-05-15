@@ -6,3 +6,5 @@ notes.txt
 Pipfile
 Pipfile.lock
 __pycache__/
+*.pyc
+.vscode

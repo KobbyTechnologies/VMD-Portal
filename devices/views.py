@@ -71,12 +71,13 @@ def essentialPrinciples(request,pk):
         try:
             prodNo = pk
             myAction = request.POST.get('myAction')
+            lineNo = request.POST.get('lineNo')
             generalMethod = request.POST.get('generalMethod')
             generalMethod = request.POST.get('essentialPrinciple')
             userId = request.session['UserID']
             
             try:
-                response = config.CLIENT.service.UsedMethods(prodNo,myAction,generalMethod,generalMethod,userId)
+                response = config.CLIENT.service.UsedMethods(prodNo,myAction,generalMethod,generalMethod,userId,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Request Successful")

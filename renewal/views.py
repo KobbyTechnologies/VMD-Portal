@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.conf import settings as config
 import base64
 from django.views import View
+import io as BytesIO
+from django.http import HttpResponse
 
 # Create your views here.
 class UserObjectMixin(object):
@@ -85,7 +87,10 @@ class  ApplyRenewal(UserObjectMixin,View):
                 renNo = request.POST.get('renNo')
                 myAction = request.POST.get('myAction')
                 prodNo = request.POST.get('prodNo')
-                response = config.CLIENT.service.Renewal(renNo,myAction,request.session['UserID'],prodNo)
+                nameOfTheApplicant = request.POST.get('nameOfTheApplicant')
+                positionInTheCompany = request.POST.get('positionInTheCompany')
+                iAgree = request.POST.get('iAgree')
+                response = config.CLIENT.service.Renewal(renNo,myAction,request.session['UserID'],prodNo,iAgree, nameOfTheApplicant,positionInTheCompany)
                 print(response)
                 if response == True:
                     messages.success(request,"Request Successful")
@@ -139,7 +144,7 @@ class renewGateway(UserObjectMixin,View):
                     messages.success(request,"Payment was successful. You can now submit your application.")
                     return redirect('renewDetails', pk=pk)
                 else:
-                    messages.error("Payment Not sent. Try Again.")
+                    messages.error(request, "Payment Not sent. Try Again.")
                     return redirect('renewGateway', pk=pk)
             except requests.exceptions.RequestException as e:
                 messages.error(request,e)
@@ -182,14 +187,14 @@ def RenewAttachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            filename = request.FILES['attachment'].name
+            # filename = request.FILES['attachment'].name
             name = request.POST.get('name')
             tableID = 52177996
             attachment = base64.b64encode(attach.read())
 
             try:
                 response = config.CLIENT.service.Attachement(
-                    pk, filename,name, attachment, tableID)
+                    pk, name, attachment, tableID)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")
@@ -204,4 +209,23 @@ def RenewAttachement(request, pk):
         except Exception as e:
             print(e)        
     return redirect('renewDetails', pk=pk)
+
+def FNGenerateRenewalInvoice(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.FNGenerateRenewalInvoice(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('renewGateway', pk=pk)
+
     

@@ -32,11 +32,12 @@ class GMPApplication(UserObjectMixin, View):
             OpenProducts = [x for x in response['value']
                             if x['Status'] == 'Open']
             Pending = [x for x in response['value']
-                       if x['Status'] == 'Processing']
+                       if x['Status'] == 'Processing' and x['GMP_Stage'] != 'Rejected']
             Approved = [x for x in response['value']
-                        if x['Status'] == 'Approved']
+                        if x['Status'] == ' Approved']
+
             Rejected = [x for x in response['value']
-                        if x['Status'] == 'Rejected']
+                        if x['Status'] == 'Processing' and x['GMP_Stage'] == 'Rejected']
 
             CountriesRegistered = config.O_DATA.format("/QYCountries")
             CountryResponse = self.get_object(CountriesRegistered)
@@ -82,7 +83,8 @@ class GMPApplication(UserObjectMixin, View):
                 veterinaryPharmaceuticals = eval(request.POST.get(
                     'veterinaryPharmaceuticals'))
                 poisons = eval(request.POST.get('poisons'))
-                alternativeMedicines = eval(request.POST.get('alternativeMedicines'))
+                alternativeMedicines = eval(
+                    request.POST.get('alternativeMedicines'))
                 biologicals = eval(request.POST.get('biologicals'))
                 equipmentAndMaterials = eval(request.POST.get(
                     'equipmentAndMaterials'))
@@ -111,7 +113,7 @@ class GMPApplication(UserObjectMixin, View):
                     stateOther = ''
 
                 response = config.CLIENT.service.GMP(
-                    gmpNo, myAction, userCode, typeOfManufacture, SitePhysicalAddress, SiteCountry, SiteTelephone, SiteMobile, SiteEmail, isContact, ContactName, ContactTel, ContactEmail, 
+                    gmpNo, myAction, userCode, typeOfManufacture, SitePhysicalAddress, SiteCountry, SiteTelephone, SiteMobile, SiteEmail, isContact, ContactName, ContactTel, ContactEmail,
                     typeOfInspection, stateOther, veterinaryPharmaceuticals, poisons, alternativeMedicines, biologicals, equipmentAndMaterials, nutrients, dosageForm, productCategory, activity, iAgree,
                     previousGMPNo
                 )
@@ -132,7 +134,7 @@ class GMPApplication(UserObjectMixin, View):
 
 class GMPDetails(UserObjectMixin, View):
     def get(self, request, pk):
-        print(pk)
+        # print(pk)
         try:
             userID = request.session['UserID']
             LTR_Name = request.session['LTR_Name']
@@ -149,9 +151,17 @@ class GMPDetails(UserObjectMixin, View):
             linesResponse = self.get_object(Lines)
             Line = [x for x in linesResponse['value']]
 
+<<<<<<< HEAD
             ManufacturesParticulars = config.O_DATA.format(f"/QYGMPManufactureDetails?$filter=No%20eq%20%27{pk}%27")
             ManufacturerResponse = self.get_object(ManufacturesParticulars)
             Manufacturer = [x for x in ManufacturerResponse['value']]
+=======
+            ManufacturesParticulars = config.O_DATA.format(
+                f"/QYGMPManufactureDetails?$filter=No%20eq%20%27{pk}%27")
+            ManufacturerResponse = self.get_object(ManufacturesParticulars)
+            Manufacturer = [x for x in ManufacturerResponse['value']]
+            # print(Manufacturer)
+>>>>>>> 32da34192e3790a42bbb895d2245f011ea422749
 
             Countries = config.O_DATA.format("/QYCountries")
             CountryResponse = self.get_object(Countries)
@@ -175,10 +185,16 @@ class GMPDetails(UserObjectMixin, View):
             print(e)
             return redirect('login')
 
+<<<<<<< HEAD
         ctx = {"res":responses,"status":Status,"line":Line,"manufacturer":Manufacturer,
         "country":resCountry,"files": Files,"attach":attach,"LTR_Name":LTR_Name,"LTR_Email":LTR_Email}
         return render(request,"gmpDetails.html",ctx)
     
+=======
+        ctx = {"res": responses, "status": Status, "line": Line, "manufacturer": Manufacturer,
+               "country": resCountry, "files": Files, "attach": attach, "LTR_Name": LTR_Name, "LTR_Email": LTR_Email}
+        return render(request, "gmpDetails.html", ctx)
+>>>>>>> 32da34192e3790a42bbb895d2245f011ea422749
 
 
 def linesToInspect(request, pk):
@@ -255,7 +271,7 @@ class GMPGateway(UserObjectMixin, View):
                         request, "Payment was successful. You can now submit your application.")
                     return redirect('GMPDetails', pk=pk)
                 else:
-                    messages.error("Payment Not sent. Try Again.")
+                    messages.error(request, "Payment Not sent. Try Again.")
                     return redirect('GMPGateway', pk=pk)
             except requests.exceptions.RequestException as e:
                 messages.error(request, e)
@@ -298,9 +314,10 @@ def SubmitGMP(request, pk):
 
 
 def GMPManufactures(request, pk):
+    response = GMPDetails
     if request.method == 'POST':
         try:
-            gmpNo = pk
+            gmpMd = request.POST.get('gmpMd')
             myAction = request.POST.get('myAction')
             userId = request.session['UserID']
             manufacturerName = request.POST.get('manufacturerName')
@@ -312,34 +329,37 @@ def GMPManufactures(request, pk):
             activity = int(request.POST.get('activity'))
             TypeOfManufacturer = int(request.POST.get('TypeOfManufacturer'))
             manufacturerOther = request.POST.get('manufacturerOther')
-            gmpMd = request.POST.get('gmpMd')
+            gmpNo = pk
+
+            print(gmpMd)
+            print(gmpNo)
+            print(myAction)
+
+            if not gmpMd:
+                gmpMd = ''
+
             if not manufacturerOther:
                 manufacturerOther = ''
-            try:
+           
                 response = config.CLIENT.service.GMPManufactureDetails(
                     gmpMd, myAction, userId,
                     manufacturerName, ManufacturerEmail, postalAddress, plantAddress, ManufacturerTelephone,
                     country, activity, TypeOfManufacturer, gmpNo
                 )
-                print(response)
+                print(response)      
                 if response == True:
                     messages.success(request, "Request Successful")
                     return redirect('GMPDetails', pk=pk)
                 else:
                     print("Not sent")
                     return redirect('GMPDetails', pk=pk)
-            except requests.exceptions.RequestException as e:
-                print(e)
-                return redirect('GMPDetails', pk=pk)
-            except Exception as e:
-                messages.info(request, e)
-                print(e)
-                return redirect('GMPDetails', pk=pk)
-        except KeyError as e:
-            messages.info(request, "Session Expired, Login Again")
+                    
+           
+        except Exception as e:
+            messages.error(request, f"{e}")
             print(e)
-            return redirect('login')
-    return redirect('GMPDetails', pk=pk)
+            return redirect('GMPDetails', pk=pk)
+   
 
 
 def GMPAttachement(request, pk):
@@ -375,19 +395,18 @@ def FnDeleteGMPDocumentAttachment(request, pk):
         docID = int(request.POST.get('docID'))
         tableID = int(request.POST.get('tableID'))
         try:
-            response = config.CLIENT.service.FnDeleteGMPDocumentAttachment(
+            response = config.CLIENT.service.FnDeleteDocumentAttachment(
                 pk, docID, tableID)
             print(response)
             if response == True:
                 messages.success(request, "Deleted Successfully ")
                 return redirect('GMPDetails', pk=pk)
-            else:
-                messages.info(request, 'It is not Working')
         except Exception as e:
-            messages.error(request, e)
+            messages.error(request, f'{e}')
             print(e)
     return redirect('GMPDetails', pk=pk)
 
+<<<<<<< HEAD
 class FnGMPpayment(UserObjectMixin,View):
     def post(self, request,pk):
         if request.method == 'POST':
@@ -413,6 +432,9 @@ class FnGMPpayment(UserObjectMixin,View):
                 return redirect('GMPDetails', pk=pk)
         return redirect('GMPDetails', pk=pk)
 
+=======
+
+>>>>>>> 32da34192e3790a42bbb895d2245f011ea422749
 def FNGenerateGMPInvoice(request, pk):
     if request.method == 'POST':
         try:
@@ -430,5 +452,56 @@ def FNGenerateGMPInvoice(request, pk):
             messages.error(request, e)
             print(e)
     return redirect('GMPGateway', pk=pk)
+
+
+def PrintGMPCertificate(request, pk):
+    if request.method == 'POST':
+        try:
+            response = config.CLIENT.service.PrintGMPCertificate(pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses['Content-Disposition'] = f'inline;filename={pk}'
+            return responses
+        except Exception as e:
+            messages.error(request, e)
+            print(e)
+    return redirect('GMPDetails', pk=pk)
+
+
+class FnMakeGMPpayment(UserObjectMixin, View):
+    def post(self, request, pk):
+        if request.method == 'POST':
+            try:
+                gmpNo = pk
+                userCode = request.session['UserID']
+
+                response = config.CLIENT.service.FnGMPpayment(
+                    gmpNo, userCode)
+                print('gmpNo :', gmpNo)
+                print('userCode:', userCode)
+                print('response:', response)
+
+                if response == True:
+                    messages.success(
+                        request, "Please Make Your payment and click confirm payment.")
+                    return redirect('GMPGateway', pk=pk)
+                if response == False:
+                    messages.error(request, "False")
+                    return redirect('GMPDetails', pk=pk)
+            except KeyError as e:
+                messages.info(request, "Session Expired, Login Again")
+                print(e)
+                return redirect('login')
+            except Exception as e:
+                print(e)
+                messages.info(request, e)
+                return redirect('GMPDetails', pk=pk)
+        return redirect('GMPDetails', pk=pk)
+
 
     # To check against the user code to see whether there are products registered

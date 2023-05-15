@@ -11,5 +11,10 @@ urlpatterns = [
     path('GMPAttachement/<str:pk>', views.GMPAttachement, name='GMPAttachement'),
     path('FnDeleteGMPDocumentAttachment/<str:pk>', views.FnDeleteGMPDocumentAttachment, name='FnDeleteGMPDocumentAttachment'),
     path('FNGenerateGMPInvoice/<str:pk>', views.FNGenerateGMPInvoice, name='FNGenerateGMPInvoice'),
+<<<<<<< HEAD
     path('FnGMPpayment/<str:pk>', views.FnGMPpayment.as_view(), name='FnGMPpayment'),
+=======
+    path('PrintGMPCertificate/<str:pk>', views.PrintGMPCertificate, name='PrintGMPCertificate'),
+    path("FnMakeGMPpayment/<str:pk>",views.FnMakeGMPpayment.as_view(),name='FnMakeGMPpayment'),
+>>>>>>> 32da34192e3790a42bbb895d2245f011ea422749
 ]
