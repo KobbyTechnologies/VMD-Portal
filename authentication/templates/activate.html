@@ -1,14 +1,51 @@
-{% autoescape off %}
+<!DOCTYPE html>
+<html>
 
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+        }
 
-Hi,
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-Please use the link and Secret Code below to verify your account.
+        .message {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+        }
 
-Secret Code: {{Secret}}
+        .signature {
+            margin-top: 20px;
+            font-weight: bold;
+        }
 
+        .logo {
+            max-width: 150px;
+        }
+    </style>
+</head>
 
-website url: https://{{domain}}{% url 'verify' %}
+<body>
+    <div class="container">
+        <img src="../../static/img/logo/2.png" class="logo" alt="Company Logo">
+        <p>Hi {{user}},</p>
+        <div class="message">
+            <p>Thanks for creating an account with us! Please use the link and Secret Code below to verify your account.
+            </p>
 
+            <p>Verification Code: {{Secret}}</p>
 
-{% endautoescape %}
+            <p><a href="https://{{domain}}{% url 'verify' %}">Verify your account now</a></p>
+        </div>
+        <p class="signature">Best regards,<br>Veterinary Medicines Directorate</p>
+    </div>
+</body>
+
+</html>
