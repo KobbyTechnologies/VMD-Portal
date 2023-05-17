@@ -155,7 +155,7 @@
                     </form>
                 </div>
             </div>
-            
+
             {% elif res.Paid == False and status == 'Open' and res.Invoiced == False %}
             <div class="col-md-3">
                 <div class="card h-100 actionActive actionCard  text-center">
@@ -194,6 +194,24 @@
 
                 </div>
             </div>
+            {% elif status == "Processing" %}
+            <div class="col-md-3">
+                <div class="card l-bg-green-dark  h-100 sales-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">Tracking Number</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-hand-index"></i>
+                            </div>
+                            <div class="ps-3">
+                                <p style="font-size: 13px;"> {{res.Tracking_No_}} </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             {% endif %}
             <div class="col-md-3">
                 <a href="#" data-bs-toggle="modal" data-bs-target="#submission">
@@ -468,8 +486,8 @@
                                     </div> -->
                                     <div class="mb-3">
                                         <label class="form-label">Attachment</label>
-                                        <input type="file" class="form-control" accept=".doc,.docx,.pdf, .png,.jpg" id="attachment"
-                                            name="attachment">
+                                        <input type="file" class="form-control" accept=".doc,.docx,.pdf, .png,.jpg"
+                                            id="attachment" name="attachment">
                                     </div>
                                     <div class="mb-3">
                                         <button type="submit" class="btn btn-primary w-100">Submit</button>
@@ -536,7 +554,7 @@
                                 <form action="{% url 'Attachement' res.ProductNo %}" method="post"
                                     enctype="multipart/form-data">
                                     {% csrf_token %}
-                                    
+
                                     <div class="mb-3">
                                         <label class="form-label">Document Name</label>
                                         <select class="form-select" aria-label="Default select example" name="name">
@@ -734,7 +752,7 @@
                 </div>
             </div>
         </div>
-        {% if class == 'FEED ADDITIVES'  %}
+        {% if class == 'FEED ADDITIVES' %}
         <div class="row my-3">
             <div class="col-md-12">
                 <div class="card h-100">
