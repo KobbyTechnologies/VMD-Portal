@@ -9,7 +9,51 @@
 <!-- Sidebar-->
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
+<style>
+    /* Hide all steps by default: */
+    .tab {
+        display: none;
+    }
 
+    button {
+        background-color: #04AA6D;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 17px;
+        font-family: Raleway;
+        cursor: pointer;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+    #prevBtn {
+        background-color: #bbbbbb;
+    }
+
+    /* Make circles that indicate the steps of the form: */
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+    .step.active {
+        opacity: 1;
+    }
+
+    /* Mark the steps that are finished and valid: */
+    .step.finish {
+        background-color: #04AA6D;
+    }
+</style>
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -47,36 +91,47 @@
                                 <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
                                     data-bs-target="#bordered-justified-home" type="button" role="tab"
                                     aria-controls="home" aria-selected="true">New
-                                    ({{openCount}})</button>
+                                    (<span class="open_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
                             </li>
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
                                     data-bs-target="#bordered-justified-profile" type="button" role="tab"
                                     aria-controls="profile" aria-selected="false"> Pending Approval
-                                    ({{pendCount}})</button>
+                                    (<span class="pending_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
                             </li>
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
                                     data-bs-target="#bordered-justified-contact" type="button" role="tab"
                                     aria-controls="contact" aria-selected="false">Approved
-                                    ({{appCount}})</button>
+                                    (<span class="approved_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
                             </li>
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
                                     data-bs-target="#bordered-justified-pending" type="button" role="tab"
                                     aria-controls="contact" aria-selected="false">Rejected
-                                    ({{rejectedCount}})</button>
+                                    (<span class="rejected_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="borderedTabJustifiedContent">
                             <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
                                 aria-labelledby="home-tab">
-                                <table
-                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                <table id="open_table"
+                                    class="table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
                                     <thead>
                                         <tr>
                                             <th>GMP No</th>
-                                            <th>Product Class</th>
                                             <th>Inspection Type</th>
                                             <th>Status</th>
                                             <th>Amount Payable</th>
@@ -84,293 +139,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for res in open %}
                                         <tr>
-                                            <td>{{res.GMP_No_}}</td>
-                                            <td>{{res.Type_of_Vertinary_Medicines}}</td>
-                                            <td>{{res.Type_Of_Inspection}}</td>
-                                            <td class="text-success">{{res.Status}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-success"></td>
+                                            <td><span class="text-primary" style="margin-right: 2px;">
                                             </td>
                                             <td>
-                                                <div class="d-grid gap-1 d-md-flex justify-content">
-                                                    <button class="btn btn-secondary me-sm-2" type="button"
-                                                        data-toggle="tooltip" data-placement="top" title="edit"
-                                                        data-bs-toggle="modal" data-bs-target="#editGMP-{{res.GMP_No_}}">Edit <i
-                                                            class="bi bi-pencil-square"></i></button>
-                                                    <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
-                                                        class="btn btn-success">Next <i
-                                                            class="bi bi-chevron-double-right"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="modal fade" id="editGMP-{{res.GMP_No_}}" data-bs-backdrop="static"
-                                                    data-bs-keyboard="false" tabindex="-1"
-                                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                    <div
-                                                        class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="staticBackdropLabel">Edit
-                                                                    GMP {{res.GMP_No_}}</h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form action="{% url 'gmp' %}" method="POST">
-                                                                    <input type="hidden" name="gmpNo"
-                                                                        value="{{res.GMP_No_}}">
-                                                                    <input type="hidden" name="myAction" value="modify">
-                                                                    {% csrf_token %}
-                                                                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                                        <div class="accordion-item">
-                                                                            <h2 class="accordion-header" id="flush-headingOne">
-                                                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                                                                    aria-controls="flush-collapseOne">
-                                                                                    Particulars of the site to be inspected
-                                                                                </button>
-                                                                            </h2>
-                                                                            <div id="flush-collapseOne" class="accordion-collapse collapse show"
-                                                                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                                                                <div class="accordion-body">
-                                                                                    <div class="row my-3" id="">
-                                                                                        <h5>Particulars of Applicant/Licence  Holder</h5>
-                                                                                        <div class="col-md-12">
-                                                                                            <label class="form-label">Manufacturer Type</label>
-                                                                                            <select class="form-select" name="typeOfManufacture">
-                                                                                                <option value="1">Local</option>
-                                                                                                <option value="2">Foregn</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="row my-2">
-                                                                                        <h5>Particulars of the site to be inspected</h5>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Physical Address</label>
-                                                                                            <input type="text" class="form-control" name="SitePhysicalAddress">
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Country</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="SiteCountry">
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                {% for res in country %}
-                                                                                                <option value="{{res.Code}}">{{res.Name}}</option>
-                                                                                                {% empty %}
-                                                                                                <option value="KE">KENYA</option>
-                                                                                                {% endfor %}
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="row my-3">
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="form-label">Telephone <span
-                                                                                                    class="text-danger">*</span></label>
-                                                                                            <input type="text" class="form-control" name="SiteTelephone" required>
-                                                                                        </div>
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="form-label">Mobile <span class="text-danger">*</span></label>
-                                                                                            <input type="text" class="form-control" name="SiteMobile" required>
-                                                                                        </div>
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="form-label">Email <span class="text-danger">*</span></label>
-                                                                                            <input type="text" class="form-control" name="SiteEmail" required>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr class="dropdown-divider">
-                                                                                    <div class="row my-3">
-                                                                                        <h5>Particulars of person on site</h5>
-                                                                                        <div class="col-md-12">
-                                                                                            <label class="form-label">Are you (LTR) the contact person?</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="isContact" id="isContact">
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                <option value="True">True</option>
-                                                                                                <option value="False">False</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="row my-3" id="ContactRow" style="display: none;">
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="form-label">Name of Contact person <span
-                                                                                                    class="text-danger">*</span></label>
-                                                                                            <input type="text" class="form-control" name="ContactName" id="ContactName"
-                                                                                                disabled>
-                                                                                        </div>
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="form-label">Contact Person Telephone <span
-                                                                                                    class="text-danger">*</span></label>
-                                                                                            <input type="text" class="form-control" name="ContactTel" id="ContactTel"
-                                                                                                disabled>
-                                                                                        </div>
-                                                                                        <div class="col-md-4">
-                                                                                            <label class="form-label">Contact Person Email <span
-                                                                                                    class="text-danger">*</span></label>
-                                                                                            <input type="text" class="form-control" name="ContactEmail"
-                                                                                                id="ContactEmail" disabled>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr class="dropdown-divider">
-                                                                                    <div class="row my-3">
-                                                                                        <!-- <div class="col-md-6">
-                                                                                            <label class="form-label">Type of Veterinary Medicines</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="typeofVertinary" required>
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                <option value="1">Veterinary Vaccine</option>
-                                                                                                <option value="2">Veterinary Pharmaceutical</option>
-                                                                                                <option value="3">Veterinary Pesticide</option>
-                                                                                            </select>
-                                                                                        </div> -->
-                                                                                        <div class="col-md-12">
-                                                                                            <label class="form-label">Type of Inspection</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="typeOfInspection" id="TypeOfInspection" required>
-                                                                                                <option selected disabled value="">Choose...</option>
-                                                                                                <option value="1">First Inspection</option>
-                                                                                                <option value="2">Re-inspection after failure</option>
-                                                                                                <option value="3">Routine Re-inspection </option>
-                                                                                                <option value="4">Other</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        
-                                                                                    </div>
-                                                                                    <div class="row my-3" style="display: none;" id="PrevGmpNo">
-                                                                                        <div class="col-md-12">
-                                                                                            <label class="form-label">Previous GMP Number</label>    
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="previousGMPNo" id="previousGMPNo" >
-                                                                                                <option selected value="">Choose...</option>
-                                                                                                {% for res in approved %}
-                                                                                                <option value="{{res.GMP_No_}}">{{res.GMP_No_}}</option>
-                                                                                                {% endfor %}
-                                                                                            </select>                                                        
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="row my-3" style="display: none;" id="stateOtherRow">
-                                                                                        
-                                                                                        <div class="col-md-12">
-                                                                                            <label class="form-label">State Other Type of Inspection </label>
-                                                                                            <input type="text" class="form-control" name="stateOther" id="stateOther"
-                                                                                            disabled>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr class="dropdown-divider">
-                                                                                    <div class="row my-3">
-                                                                                        <h5>Types of veterinary Medicine</h5>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">veterinary Pharmaceuticals</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="veterinaryPharmaceuticals" id="veterinaryPharmaceuticals">
-                                                                                                
-                                                                                                <option value="False">False</option>
-                                                                                                <option value="True">True</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Poisons</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="poisons" id="poisons">
-                                                                                                
-                                                                                                <option value="False">False</option>
-                                                                                                <option value="True">True</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Alternative Medicine</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="alternativeMedicines" id="alternativeMedicines">
-                                                                                                <option value="False">False</option>
-                                                                                                <option value="True">True</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Biologicals</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="biologicals" id="biologicals">
-                                                                                                <option value="False">False</option>
-                                                                                                <option value="True">True</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Equipment and Materials</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="equipmentAndMaterials" id="equipmentAndMaterials">
-                                                                                                <option value="False">False</option>                                                
-                                                                                                <option value="True">True</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Nutrients?</label>
-                                                                                            <select class="form-select" aria-label="Default select example"
-                                                                                                name="nutrients" id="nutrients">
-                                                                                                
-                                                                                                <option value="False">False</option>
-                                                                                                <option value="True">True</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="row my-3" id="">
-                                                                                        <h5>Product Information</h5>
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Dosage Form </label>
-                                                                                            <input type="text" class="form-control" name="dosageForm" id="dosageForm"
-                                                                                                >
-                                                                                        </div>
-                                                                                    
-                                                                                        <div class="col-md-6">
-                                                                                            <label class="form-label">Product Category </label>
-                                                                                            <input type="text" class="form-control" name="productCategory" id="productCategory"
-                                                                                                >
-                                                                                        </div>
-                                                                                   
-                                                                                        <div class="col-md-12">
-                                                                                            <label class="form-label">Activity</label>
-                                                                                            <input type="text" class="form-control" name="activity" id="activity"
-                                                                                                >
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr class="dropdown-divider">
-                                                                                    <div class="row my-2">
-                                                                                        <div class="col-md-12">
-                                                                                            <div class="mb-2">
-                                                                                                <input class="form-check-input" type="checkbox" value="True"
-                                                                                                    name="iAgree" checked>
-                                                                                                <label class="form-check-label text-primary">
-                                                                                                    I hereby apply for registration of
-                                                                                                    the product detailed above and
-                                                                                                    declare that all the information herein is correct
-                                                                                                    and true.
-                                                                                                </label>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-success my-2">Submit</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </td>
                                         </tr>
-                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                             <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
                                 aria-labelledby="profile-tab">
-                                <table
-                                    class="display table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                <table id="pending_table"
+                                    class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
                                     <thead>
                                         <tr>
                                             <th>GMP No</th>
-                                            <th>Product Class</th>
                                             <th>Inspection Type</th>
                                             <th>Status</th>
                                             <th>Amount Payable</th>
@@ -378,32 +165,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for res in pending %}
                                         <tr>
-                                            <td>{{res.GMP_No_}}</td>
-                                            <td>{{res.Type_of_Vertinary_Medicines}}</td>
-                                            <td>{{res.Type_Of_Inspection}}</td>
-                                            <td class="text-success">{{res.Status}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-success"></td>
+                                            <td><span class="text-primary" style="margin-right: 2px;">
                                             </td>
                                             <td>
-                                                <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
-                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
                                             </td>
                                         </tr>
-                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                             <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
                                 aria-labelledby="contact-tab">
-                                <table
-                                    class="display table table-striped w-100 dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                <table id="approved_table"
+                                    class="table table-striped w-100 dt-responsive table-responsive-lg table-bordered datatable w-100">
                                     <thead>
                                         <tr>
                                             <th>GMP No</th>
-                                            <th>Product Class</th>
                                             <th>Inspection Type</th>
                                             <th>Status</th>
                                             <th>Amount Payable</th>
@@ -411,32 +191,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for res in approved %}
                                         <tr>
-                                            <td>{{res.GMP_No_}}</td>
-                                            <td>{{res.Type_of_Vertinary_Medicines}}</td>
-                                            <td>{{res.Type_Of_Inspection}}</td>
-                                            <td class="text-success">{{res.Status}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-success"></td>
+                                            <td><span class="text-primary" style="margin-right: 2px;">
                                             </td>
                                             <td>
-                                                <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
-                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
                                             </td>
                                         </tr>
-                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                             <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
                                 aria-labelledby="contact-tab">
-                                <table
-                                    class="display table table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable w-100">
+                                <table id="rejected_table"
+                                    class="table table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable w-100">
                                     <thead>
                                         <tr>
                                             <th>GMP No</th>
-                                            <th>Product Class</th>
                                             <th>Inspection Type</th>
                                             <th>Status</th>
                                             <th>Amount Payable</th>
@@ -444,21 +217,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for res in rejected %}
                                         <tr>
-                                            <td>{{res.GMP_No_}}</td>
-                                            <td>{{res.Type_of_Vertinary_Medicines}}</td>
-                                            <td>{{res.Type_Of_Inspection}}</td>
-                                            <td class="text-success">{{res.Status}}</td>
-                                            <td><span class="text-primary"
-                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-success"></td>
+                                            <td><span class="text-primary" style="margin-right: 2px;">
                                             </td>
                                             <td>
-                                                <a href="{% url 'GMPDetails' res.GMP_No_ %}" type="button"
-                                                    class="btn btn-success"><i class="bi bi-eye-fill"></i> View </a>
                                             </td>
                                         </tr>
-                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -473,247 +240,257 @@
 <!-- Registration Modal -->
 <div class="modal fade" id="staticBackdropGMP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-        <div class="modal-content">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="width: 1000px !important;">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Register GMP</h5>
+                <span class="loading" id="loading" style="display: none;">
+                    <div class="dot dot1"></div>
+                    <div class="dot dot2"></div>
+                    <div class="dot dot3"></div>
+                    <!-- <span>loading..</span> -->
+                </span>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{% url 'gmp' %}" method="POST">
-                    <input type="hidden" name="gmpNo" value="">
-                    <input type="hidden" name="myAction" value="insert">
+                <form id="regForm" method="post">
                     {% csrf_token %}
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                    aria-controls="flush-collapseOne">
-                                    Particulars of the site to be inspected
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse show"
-                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">
-                                    <div class="row my-3" id="">
-                                        <h5>Particulars of Applicant/Licence  Holder</h5>
-                                        <div class="col-md-12">
-                                            <label class="form-label">Manufacturer Type</label>
-                                            <select class="form-select" name="typeOfManufacture">
-                                                <option value="1">Local</option>
-                                                <option value="2">Foregn</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row my-2">
-                                        <h5>Particulars of the site to be inspected</h5>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Physical Address</label>
-                                            <input type="text" class="form-control" name="SitePhysicalAddress">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Country</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="SiteCountry">
-                                                <option selected disabled value="">Choose...</option>
-                                                {% for res in country %}
-                                                <option value="{{res.Code}}">{{res.Name}}</option>
-                                                {% empty %}
-                                                <option value="KE">KENYA</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row my-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Telephone <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="SiteTelephone" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Mobile <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="SiteMobile" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Email <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="SiteEmail" required>
-                                        </div>
-                                    </div>
-                                    <hr class="dropdown-divider">
-                                    <div class="row my-3">
-                                        <h5>Particulars of person on site</h5>
-                                        <div class="col-md-12">
-                                            <label class="form-label">Are you (LTR) the contact person?</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="isContact" id="isContact">
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="True">True</option>
-                                                <option value="False">False</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row my-3" id="ContactRow" style="display: none;">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Name of Contact person <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="ContactName" id="ContactName"
-                                                disabled>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Contact Person Telephone <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="ContactTel" id="ContactTel"
-                                                disabled>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Contact Person Email <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="ContactEmail"
-                                                id="ContactEmail" disabled>
-                                        </div>
-                                    </div>
-                                    <hr class="dropdown-divider">
-                                    <div class="row my-3">
-                                        <!-- <div class="col-md-6">
-                                            <label class="form-label">Type of Veterinary Medicines</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="typeofVertinary" required>
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="1">Veterinary Vaccine</option>
-                                                <option value="2">Veterinary Pharmaceutical</option>
-                                                <option value="3">Veterinary Pesticide</option>
-                                            </select>
-                                        </div> -->
-                                        <div class="col-md-12">
-                                            <label class="form-label">Type of Inspection</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="typeOfInspection" id="TypeOfInspection" required>
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="1">First Inspection</option>
-                                                <option value="2">Re-inspection after failure</option>
-                                                <option value="3">Routine Re-inspection </option>
-                                                <option value="4">Other</option>
-                                            </select>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="row my-3" style="display: none;" id="PrevGmpNo">
-                                        <div class="col-md-12">
-                                            <label class="form-label">Previous GMP Number</label>    
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="previousGMPNo" id="previousGMPNo" >
-                                                <option selected value="">Choose...</option>
-                                                {% for res in approved %}
-                                                <option value="{{res.GMP_No_}}">{{res.GMP_No_}}</option>
-                                                {% endfor %}
-                                            </select>                                        
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="row my-3" style="display: none;" id="stateOtherRow">
-                                        
-                                        <div class="col-md-12">
-                                            <label class="form-label">State Other Type of Inspection </label>
-                                            <input type="text" class="form-control" name="stateOther" id="stateOther"
-                                            disabled>
-                                        </div>
-                                    </div>
-                                    <hr class="dropdown-divider">
-                                    <div class="row my-3">
-                                        <h5>Types of veterinary Medicine</h5>
-                                        <div class="col-md-6">
-                                            <label class="form-label">veterinary Pharmaceuticals</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="veterinaryPharmaceuticals" id="veterinaryPharmaceuticals">
-                                                
-                                                <option value="False">False</option>
-                                                <option value="True">True</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Poisons</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="poisons" id="poisons">
-                                                
-                                                <option value="False">False</option>
-                                                <option value="True">True</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Alternative Medicine</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="alternativeMedicines" id="alternativeMedicines">
-                                                <option value="False">False</option>
-                                                <option value="True">True</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Biologicals</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="biologicals" id="biologicals">
-                                                <option value="False">False</option>
-                                                <option value="True">True</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Equipment and Materials</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="equipmentAndMaterials" id="equipmentAndMaterials">
-                                                <option value="False">False</option>                                                
-                                                <option value="True">True</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Nutrients?</label>
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="nutrients" id="nutrients">
-                                                
-                                                <option value="False">False</option>
-                                                <option value="True">True</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row my-3" id="">
-                                        <h5>Product Information</h5>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Dosage Form </label>
-                                            <input type="text" class="form-control" name="dosageForm" id="dosageForm"
-                                                >
-                                        </div>
-                                    
-                                        <div class="col-md-6">
-                                            <label class="form-label">Product Category </label>
-                                            <input type="text" class="form-control" name="productCategory" id="productCategory"
-                                                >
-                                        </div>
-                                   
-                                        <div class="col-md-12">
-                                            <label class="form-label">Activity</label>
-                                            <input type="text" class="form-control" name="activity" id="activity"
-                                                >
-                                        </div>
-                                    </div>
-                                    <hr class="dropdown-divider">
-                                    <div class="row my-2">
-                                        <div class="col-md-12">
-                                            <div class="mb-2">
-                                                <input class="form-check-input" type="checkbox" value="True"
-                                                    name="iAgree" checked>
-                                                <label class="form-check-label text-primary">
-                                                    I hereby apply for registration of
-                                                    the product detailed above and
-                                                    declare that all the information herein is correct
-                                                    and true.
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <input type="hidden" name="gmpNo" id="gmpNo" value="">
+                    <input type="hidden" name="myAction" id="myAction" value="insert">
+                    <div class="money-spinner mx-auto text-center" id="header-spinner" style="display: none">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
+                    </div>
+                    <div class="tab">
+                        <div class="border border-success rounded p-3  my-3">
+                            <div class="row my-3">
+                                <h6 class="text-primary">Particulars of Applicant/License Holder</h6>
+                                <div class="col-md-12">
+                                    <label class="form-label">Manufacturer Type</label>
+                                    <select class="form-select" name="typeOfManufacture" id="typeOfManufacture">
+                                        <option value="0" selected disabled>--select--</option>
+                                        <option value="1">Local</option>
+                                        <option value="2">Foregn</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success my-2">Submit</button>
+                    </div>
+                    <div class="tab">
+                        <div class="border border-success rounded p-3 my-3">
+                            <div class="row my-2">
+                                <h6 class="text-primary">Particulars of the site to be inspected</h6>
+                                <div class="col-md-6">
+                                    <label class="form-label">Physical Address</label>
+                                    <input type="text" class="form-control" name="SitePhysicalAddress"
+                                        id="SitePhysicalAddress">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Country</label>
+                                    <select class="form-select" aria-label="Default select example" name="SiteCountry"
+                                        id="SiteCountry">
+                                        <option selected disabled value="0">Choose...</option>
+                                        {% for res in country %}
+                                        <option value="{{res.Code}}">{{res.Name}}</option>
+                                        {% empty %}
+                                        <option value="KE">KENYA</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Telephone <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="SiteTelephone" id="SiteTelephone"
+                                        required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Mobile <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="SiteMobile" id="SiteMobile" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="SiteEmail" id="SiteEmail" required>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab">
+                        <div class="border border-success rounded p-3 my-3">
+                            <div class="row my-3">
+                                <h6 class="text-primary">Particulars of person on site</h6>
+                                <div class="col-md-12">
+                                    <label class="form-label">Are you (LTR) the contact person?</label>
+                                    <select class="form-select" aria-label="Default select example" name="isContact"
+                                        id="isContact">
+                                        <option selected disabled value="">Choose...</option>
+                                        <option value="True">True</option>
+                                        <option value="False">False</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row my-3" id="ContactRow" style="display: none;">
+                                <div class="col-md-4">
+                                    <label class="form-label">Name of Contact person <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="ContactName" id="ContactName"
+                                        disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Contact Person Telephone <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="ContactTel" id="ContactTel" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Contact Person Email <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="ContactEmail" id="ContactEmail"
+                                        disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab">
+                        <div class="border border-success rounded p-3 my-3">
+                            <div class="row my-3">
+                                <div class="col-md-12">
+                                    <label class="form-label">Type of Inspection</label>
+                                    <select class="form-select" name="typeOfInspection" id="typeOfInspection" required>
+                                        <option selected disabled value="0">Choose...</option>
+                                        <option value="1">First Inspection</option>
+                                        <option value="2">Re-inspection after failure</option>
+                                        <option value="3">Routine Re-inspection </option>
+                                        <option value="4">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row my-3" style="display: none;" id="PrevGmpNo">
+                                <div class="col-md-12">
+                                    <label class="form-label">Previous GMP Number</label>
+                                    <select class="form-select" disabled name="previousGMPNo" id="previousGMPNo">
+                                        <option selected value="">Choose...</option>
+                                        {% for res in approved %}
+                                        <option value="{{res.GMP_No_}}">{{res.GMP_No_}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row my-3" style="display: none;" id="stateOtherRow">
+                                <div class="col-md-12">
+                                    <label class="form-label">State Other Type of Inspection </label>
+                                    <input type="text" class="form-control" name="stateOther" id="stateOther" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <div class="border border-success rounded p-3 my-3">
+                            <div class="row my-3">
+                                <h6 class="text-primary">Types of veterinary Medicine</h6>
+                                <div class="col-md-4">
+                                    <label class="form-label">veterinary Pharmaceuticals</label>
+                                    <select class="form-select" aria-label="Default select example"
+                                        name="veterinaryPharmaceuticals" id="veterinaryPharmaceuticals">
+                                        <option value="False">False</option>
+                                        <option value="True">True</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Poisons</label>
+                                    <select class="form-select" aria-label="Default select example" name="poisons"
+                                        id="poisons">
+                                        <option value="False">False</option>
+                                        <option value="True">True</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Alternative Medicine</label>
+                                    <select class="form-select" aria-label="Default select example"
+                                        name="alternativeMedicines" id="alternativeMedicines">
+                                        <option value="False">False</option>
+                                        <option value="True">True</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 my-2">
+                                    <label class="form-label">Biologicals</label>
+                                    <select class="form-select" aria-label="Default select example" name="biologicals"
+                                        id="biologicals">
+                                        <option value="False">False</option>
+                                        <option value="True">True</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 my-2">
+                                    <label class="form-label">Equipment and Materials</label>
+                                    <select class="form-select" aria-label="Default select example"
+                                        name="equipmentAndMaterials" id="equipmentAndMaterials">
+                                        <option value="False">False</option>
+                                        <option value="True">True</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 my-2">
+                                    <label class="form-label">Nutrients?</label>
+                                    <select class="form-select" aria-label="Default select example" name="nutrients"
+                                        id="nutrients">
+                                        <option value="False">False</option>
+                                        <option value="True">True</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <div class="border border-success rounded p-3 my-3">
+                            <div class="row my-3" id="">
+                                <h6 class="text-primary">Product Information</h6>
+                                <div class="col-md-6">
+                                    <label class="form-label">Dosage Form </label>
+                                    <input type="text" class="form-control" name="dosageForm" id="dosageForm">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Product Category </label>
+                                    <input type="text" class="form-control" name="productCategory" id="productCategory">
+                                </div>
+
+                                <div class="col-md-12 my-2">
+                                    <label class="form-label">Activity</label>
+                                    <input type="text" class="form-control" name="activity" id="activity">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                <div class="mb-2">
+                                    <input class="form-check-input" type="checkbox" value="True" name="iAgree"
+                                        id="iAgree" checked>
+                                    <label class="form-check-label text-primary">
+                                        I hereby apply for registration of
+                                        the product detailed above and
+                                        declare that all the information herein is correct
+                                        and true.
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-success" style="margin-bottom: -2.7rem;">Submit <i
+                                        class="bi bi-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="overflow:auto;">
+                        <div style="float:right;">
+                            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                        </div>
+                    </div>
+                    <!-- Circles which indicates the steps of the form: -->
+                    <div style="text-align:center;margin-top:40px;">
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
                     </div>
                 </form>
             </div>
@@ -721,6 +498,7 @@
     </div>
 </div>
 <script>
+    const $headerForm = $('#regForm');
     $(document).ready(function () {
         $('#isContact').on('change', function () {
             if (this.value == "True") {
@@ -735,26 +513,211 @@
                 $('#ContactEmail').prop('disabled', false);
             }
         });
-        $('#TypeOfInspection').on('change', function () {
-            if (this.value == "4") {
-                $('#stateOtherRow').show(1000);
-                $('#stateOther').prop('disabled', false);
-            } else {
-                $('#stateOtherRow').hide();
-                $('#stateOther').prop('disabled', true);
-            }
-        });
-        
-        $('#TypeOfInspection').on('change', function () {
-            if (this.value == "3") {
-                $('#PrevGmpNo').show(1000);
+        $('#typeOfInspection').on('change', function () {
+            if (this.value === "2" || this.value === '3') {
+                $('#PrevGmpNo').show(800);
                 $('#previousGMPNo').prop('disabled', false);
+                $('#stateOtherRow').hide();
+            } else if (this.value === '4') {
+                $('#stateOtherRow').show(800);
+                $('#stateOther').prop('disabled', false);
+                $('#PrevGmpNo').hide(500);
+                $('#previousGMPNo').prop('disabled', true);
             } else {
                 $('#PrevGmpNo').hide();
-                $('#previousGMPNo').prop('disabled', true);
+                $('#stateOtherRow').hide();
             }
         });
-        
+        Header_Data();
+
+        function Header_Data() {
+            $.ajax({
+                url: '/GMP',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var openTableBody = $('#open_table tbody');
+                    var pendingTableBody = $('#pending_table tbody');
+                    var approvedTableBody = $('#approved_table tbody');
+                    var rejectedTableBody = $('#rejected_table tbody');
+                    openTableBody.empty();
+                    pendingTableBody.empty();
+                    approvedTableBody.empty();
+                    rejectedTableBody.empty();
+
+                    for (var i = 0; i < data.length; i++) {
+                        var GMP_No_ = data[i].GMP_No_;
+                        var Type_Of_Inspection = data[i].Type_Of_Inspection;
+                        var Status = data[i].Status;
+                        var Currency_Code = data[i].Currecy_Code;
+                        var Amount_Payable = data[i].Amount_Payable;
+                        var GMP_Stage = data[i].GMP_Stage;
+
+                        var row = $('<tr>');
+                        row.append($('<td>').text(GMP_No_));
+                        row.append($('<td>').text(Type_Of_Inspection));
+                        row.append($('<td>').text(Status));
+                        row.append($('<td>').text(Currency_Code + " " + Amount_Payable));
+
+                        // create a link button
+                        var viewBtn = $('<a>').attr({
+                            href: "/GMPDetails/" + GMP_No_,
+                            class: "btn btn-success btn-icon-text",
+                            type: "button",
+                            "data-toggle": "tooltip",
+                            "data-placement": "top",
+                            title: "Click to View"
+                        }).text("details");
+
+
+                        // append the link button to the last <td> element
+                        row.append($('<td>').append(viewBtn));
+
+                        // add the row to the appropriate table based on its status
+                        if (Status === 'Open') {
+                            openTableBody.append(row);
+                        } else if (Status === 'Processing' && GMP_Stage != 'Rejected') {
+                            pendingTableBody.append(row);
+                        } else if (Status === 'Approved') {
+                            approvedTableBody.append(row);
+                        } else if (Status === 'Processing' && GMP_Stage === 'Rejected') {
+                            rejectedTableBody.append(row);
+                        }
+                    }
+                    // initialize DataTables for each table
+                    if (!$.fn.DataTable.isDataTable('#open_table')) {
+                        $('#open_table').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                    if (!$.fn.DataTable.isDataTable('#pending_table')) {
+                        $('#pending_table').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                    if (!$.fn.DataTable.isDataTable('#approved_table')) {
+                        $('#approved_table').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                    if (!$.fn.DataTable.isDataTable('#rejected_table')) {
+                        $('#rejected_table').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                    // update the table counts using DataTables API
+                    $('.open_count').empty().append($('#open_table').DataTable().page
+                        .info().recordsDisplay);
+                    $('.pending_count').empty().append($('#pending_table').DataTable()
+                        .page.info().recordsDisplay);
+                    $('.approved_count').empty().append($('#approved_table').DataTable()
+                        .page.info().recordsDisplay);
+                    $('.rejected_count').empty().append($('#rejected_table').DataTable()
+                        .page.info().recordsDisplay);
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
+
+        $headerForm.on('submit', (e) => {
+            e.preventDefault();
+
+            $('#header-spinner').show();
+            $('#loading').show();
+
+            $.ajax({
+                type: 'POST',
+                url: '/GMP',
+                data: {
+                    gmpNo: $("#gmpNo").val(),
+                    myAction: $("#myAction").val(),
+                    typeOfManufacture: $('#typeOfManufacture').val(),
+                    SitePhysicalAddress: $('#SitePhysicalAddress').val(),
+                    SiteCountry: $('#SiteCountry').val(),
+                    SiteTelephone: $('#SiteTelephone').val(),
+                    SiteMobile: $('#SiteMobile').val(),
+                    SiteEmail: $('#SiteEmail').val(),
+                    isContact: $('#isContact').val(),
+                    ContactName: $('#ContactName').val(),
+                    ContactTel: $('#ContactTel').val(),
+                    ContactEmail: $('#ContactEmail').val(),
+                    previousGMPNo: $('#previousGMPNo').val(),
+                    typeOfInspection: $('#typeOfInspection').val(),
+                    stateOther: $('#stateOther').val(),
+                    veterinaryPharmaceuticals: $('#veterinaryPharmaceuticals').val(),
+                    poisons: $('#poisons').val(),
+                    alternativeMedicines: $('#alternativeMedicines').val(),
+                    biologicals: $('#biologicals').val(),
+                    equipmentAndMaterials: $('#equipmentAndMaterials').val(),
+                    nutrients: $('#nutrients').val(),
+                    dosageForm: $('#dosageForm').val(),
+                    productCategory: $('#productCategory').val(),
+                    activity: $('#activity').val(),
+                    iAgree: $('#iAgree').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (response) {
+                    $('#header-spinner').hide();
+                    $('#loading').hide();
+                    Header_Data();
+                    if (response['response']) {
+                        window.location.href = "/GMPDetails/" + response['response'];
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            title: 'Yeah',
+                            message: 'GMP' + " " + response['response'] +
+                                " " +
+                                "created successfully",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                        $('#typeOfManufacture, #SitePhysicalAddress, #SiteCountry').val('');
+                        $('#SiteTelephone, #SiteMobile, #SiteEmail').val('');
+                        $('#isContact, #ContactName, #ContactTel').val('');
+                        $('#ContactEmail, #previousGMPNo, #typeOfInspection').val('');
+                        $('#stateOther, #veterinaryPharmaceuticals, #poisons').val('');
+                        $('#alternativeMedicines, #biologicals, #equipmentAndMaterials')
+                            .val(
+                                '');
+                        $('#nutrients, #dosageForm, #productCategory').val('');
+                        $('#activity, #iAgree').val('');
+
+                    } else if (response['error']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response['error'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                    $('#header-spinner').hide();
+                    $('#loading').hide();
+
+                }
+            });
+        });
     })
 </script>
 {% include 'footer.html' %}

@@ -1,4 +1,5 @@
 import base64
+import logging
 from django.shortcuts import render, redirect
 import requests
 import json
@@ -6,7 +7,11 @@ from django.conf import settings as config
 from django.contrib import messages
 from django.views import View
 import io as BytesIO
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from myRequest.views import UserObjectMixins
+from asgiref.sync import sync_to_async
+import asyncio
+import aiohttp
 
 # Create your views here.
 
@@ -21,54 +26,49 @@ class UserObjectMixin(object):
         return response
 
 
-class GMPApplication(UserObjectMixin, View):
-    def get(self, request):
+class GMPApplication(UserObjectMixins, View):
+    async def get(self, request):
         try:
-            userID = request.session["UserID"]
-            LTR_Name = request.session["LTR_Name"]
-            LTR_Email = request.session["LTR_Email"]
-            Retention = config.O_DATA.format(
-                f"/QYGMP?$filter=User_code%20eq%20%27{userID}%27"
-            )
-            response = self.get_object(Retention)
-            OpenProducts = [x for x in response["value"] if x["Status"] == "Open"]
-            Pending = [
-                x
-                for x in response["value"]
-                if x["Status"] == "Processing" and x["GMP_Stage"] != "Rejected"
-            ]
-            Approved = [x for x in response["value"] if x["Status"] == " Approved"]
+            userID = await sync_to_async(request.session.__getitem__)("UserID")
+            LTR_Name = await sync_to_async(request.session.__getitem__)("LTR_Name")
+            LTR_Email = await sync_to_async(request.session.__getitem__)("LTR_Email")
 
-            Rejected = [
-                x
-                for x in response["value"]
-                if x["Status"] == "Processing" and x["GMP_Stage"] == "Rejected"
-            ]
+            async with aiohttp.ClientSession() as session:
+                task_get_retention = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session, "/QYGMP", "User_code", "eq", userID
+                    )
+                )
+                task_get_countries = asyncio.ensure_future(
+                    self.simple_fetch_data(session, "/QYCountries")
+                )
+                response = await asyncio.gather(task_get_retention, task_get_countries)
+                gmp = [x for x in response[0]]
+                OpenProducts = [x for x in response[0] if x["Status"] == "Open"]
+                Pending = [
+                    x
+                    for x in response[0]
+                    if x["Status"] == "Processing" and x["GMP_Stage"] != "Rejected"
+                ]
+                Approved = [x for x in response[0] if x["Status"] == "Approved"]
+                Rejected = [
+                    x
+                    for x in response[0]
+                    if x["Status"] == "Processing" and x["GMP_Stage"] == "Rejected"
+                ]
+                resCountry = [x for x in response[1]]
 
-            CountriesRegistered = config.O_DATA.format("/QYCountries")
-            CountryResponse = self.get_object(CountriesRegistered)
-            resCountry = CountryResponse["value"]
-
-        except requests.exceptions.RequestException as e:
-            messages.error(request, e)
+        except Exception as e:
+            messages.info(request, f"{e}")
             print(e)
-            return redirect("gmp")
-        except KeyError as e:
-            messages.info(request, "Session Expired, Login Again")
-            print(e)
-            return redirect("login")
-        openCount = len(OpenProducts)
-        pendCount = len(Pending)
-        appCount = len(Approved)
-        rejectedCount = len(Rejected)
+            return redirect("dashboard")
+        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+            return JsonResponse(gmp, safe=False)
+
         ctx = {
-            "openCount": openCount,
             "open": OpenProducts,
-            "pendCount": pendCount,
             "pending": Pending,
-            "appCount": appCount,
             "approved": Approved,
-            "rejectedCount": rejectedCount,
             "rejected": Rejected,
             "country": resCountry,
             "LTR_Name": LTR_Name,
@@ -76,122 +76,101 @@ class GMPApplication(UserObjectMixin, View):
         }
         return render(request, "gmp.html", ctx)
 
-    def post(self, request):
-        if request.method == "POST":
-            try:
-                gmpNo = request.POST.get("gmpNo")
-                myAction = request.POST.get("myAction")
-                userCode = request.session["UserID"]
-                typeOfManufacture = request.POST.get("typeOfManufacture")
-                SitePhysicalAddress = request.POST.get("SitePhysicalAddress")
-                SiteCountry = request.POST.get("SiteCountry")
-                SiteTelephone = request.POST.get("SiteTelephone")
-                SiteMobile = request.POST.get("SiteMobile")
-                SiteEmail = request.POST.get("SiteEmail")
-                isContact = eval(request.POST.get("isContact"))
-                ContactName = request.POST.get("ContactName")
-                ContactTel = request.POST.get("ContactTel")
-                ContactEmail = request.POST.get("ContactEmail")
-                previousGMPNo = request.POST.get("previousGMPNo")
-                typeOfInspection = request.POST.get("typeOfInspection")
-                stateOther = request.POST.get("StateOther")
-                veterinaryPharmaceuticals = eval(
-                    request.POST.get("veterinaryPharmaceuticals")
-                )
-                poisons = eval(request.POST.get("poisons"))
-                alternativeMedicines = eval(request.POST.get("alternativeMedicines"))
-                biologicals = eval(request.POST.get("biologicals"))
-                equipmentAndMaterials = eval(request.POST.get("equipmentAndMaterials"))
-                nutrients = eval(request.POST.get("nutrients"))
-                dosageForm = request.POST.get("dosageForm")
-                productCategory = request.POST.get("productCategory")
-                activity = request.POST.get("activity")
-                iAgree = eval(request.POST.get("iAgree"))
+    async def post(self, request):
+        try:
+            gmpNo = request.POST.get("gmpNo")
+            myAction = request.POST.get("myAction")
+            userCode = await sync_to_async(request.session.__getitem__)("UserID")
+            typeOfManufacture = request.POST.get("typeOfManufacture")
+            SitePhysicalAddress = request.POST.get("SitePhysicalAddress")
+            SiteCountry = request.POST.get("SiteCountry")
+            SiteTelephone = request.POST.get("SiteTelephone")
+            SiteMobile = request.POST.get("SiteMobile")
+            SiteEmail = request.POST.get("SiteEmail")
+            isContact = eval(request.POST.get("isContact"))
+            ContactName = request.POST.get("ContactName")
+            ContactTel = request.POST.get("ContactTel")
+            ContactEmail = request.POST.get("ContactEmail")
+            previousGMPNo = request.POST.get("previousGMPNo")
+            typeOfInspection = request.POST.get("typeOfInspection")
+            stateOther = request.POST.get("StateOther")
+            veterinaryPharmaceuticals = eval(
+                request.POST.get("veterinaryPharmaceuticals")
+            )
+            poisons = eval(request.POST.get("poisons"))
+            alternativeMedicines = eval(request.POST.get("alternativeMedicines"))
+            biologicals = eval(request.POST.get("biologicals"))
+            equipmentAndMaterials = eval(request.POST.get("equipmentAndMaterials"))
+            nutrients = eval(request.POST.get("nutrients"))
+            dosageForm = request.POST.get("dosageForm")
+            productCategory = request.POST.get("productCategory")
+            activity = request.POST.get("activity")
+            iAgree = eval(request.POST.get("iAgree"))
 
-                print(
-                    gmpNo,
-                    myAction,
-                    userCode,
-                    typeOfManufacture,
-                    SitePhysicalAddress,
-                    SiteCountry,
-                    SiteTelephone,
-                    SiteMobile,
-                    SiteEmail,
-                    isContact,
-                    ContactName,
-                    ContactTel,
-                    ContactEmail,
-                    typeOfInspection,
-                    stateOther,
-                    veterinaryPharmaceuticals,
-                    poisons,
-                    alternativeMedicines,
-                    biologicals,
-                    equipmentAndMaterials,
-                    nutrients,
-                    dosageForm,
-                    productCategory,
-                    activity,
-                    iAgree,
-                    previousGMPNo,
-                )
+            if not iAgree:
+                iAgree = False
+            if not ContactName:
+                ContactName = ""
 
-                if not iAgree:
-                    iAgree = False
-                if not ContactName:
-                    ContactName = ""
+            if not ContactTel:
+                ContactTel = ""
 
-                if not ContactTel:
-                    ContactTel = ""
+            if not ContactEmail:
+                ContactEmail = ""
 
-                if not ContactEmail:
-                    ContactEmail = ""
+            if not stateOther:
+                stateOther = ""
 
-                if not stateOther:
-                    stateOther = ""
+            if not previousGMPNo:
+                previousGMPNo = ""
 
-                response = config.CLIENT.service.GMP(
-                    gmpNo,
-                    myAction,
-                    userCode,
-                    typeOfManufacture,
-                    SitePhysicalAddress,
-                    SiteCountry,
-                    SiteTelephone,
-                    SiteMobile,
-                    SiteEmail,
-                    isContact,
-                    ContactName,
-                    ContactTel,
-                    ContactEmail,
-                    typeOfInspection,
-                    stateOther,
-                    veterinaryPharmaceuticals,
-                    poisons,
-                    alternativeMedicines,
-                    biologicals,
-                    equipmentAndMaterials,
-                    nutrients,
-                    dosageForm,
-                    productCategory,
-                    activity,
-                    iAgree,
-                    previousGMPNo,
-                )
-                print(response)
-                if response == True:
+            response = config.CLIENT.service.GMP(
+                gmpNo,
+                myAction,
+                userCode,
+                typeOfManufacture,
+                SitePhysicalAddress,
+                SiteCountry,
+                SiteTelephone,
+                SiteMobile,
+                SiteEmail,
+                isContact,
+                ContactName,
+                ContactTel,
+                ContactEmail,
+                typeOfInspection,
+                stateOther,
+                veterinaryPharmaceuticals,
+                poisons,
+                alternativeMedicines,
+                biologicals,
+                equipmentAndMaterials,
+                nutrients,
+                dosageForm,
+                productCategory,
+                activity,
+                iAgree,
+                previousGMPNo,
+            )
+            print(response)
+            if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+                if response != None and response != "" and response != 0:
+                    return JsonResponse({"response": str(response)}, safe=False)
+                return JsonResponse({"error": str(response)}, safe=False)
+            else:
+                if response != "0" and response is not None and response != "":
                     messages.success(request, "Request Successful")
+                    return redirect("GMPDetails", pk=response)
+                else:
+                    messages.error(request, f"{response}")
                     return redirect("gmp")
-
-            except requests.exceptions.RequestException as e:
-                print(e)
+        except Exception as e:
+            logging.exception(e)
+            if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+                return JsonResponse({"error": str(e)}, safe=False)
+            else:
+                messages.error(request, f"{e}")
                 return redirect("gmp")
-            except KeyError as e:
-                messages.info(request, "Session Expired, Login Again")
-                print(e)
-                return redirect("login")
-        return redirect("gmp")
 
 
 class GMPDetails(UserObjectMixin, View):
