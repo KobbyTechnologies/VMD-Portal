@@ -17,5 +17,6 @@ urlpatterns = [
     path("Attachement/<str:pk>", views.Attachement, name='Attachement'),
     path("GenerateCertificate/<str:pk>", views.GenerateCertificate, name='GenerateCertificate'),
     path("FnDeleteDocumentAttachment/<str:pk>", views.FnDeleteDocumentAttachment, name='FnDeleteDocumentAttachment'),
+    path("FnRegulatory/<str:pk>", views.FnRegulatory, name='FnRegulatory'),
 
 ]

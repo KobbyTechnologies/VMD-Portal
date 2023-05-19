@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.conf import settings as config
 from django.contrib import messages
 import requests
-
+import base64
 # Create your views here.
 def devicesRegistration(request,pk):
     if request.method == 'POST':
@@ -71,12 +71,13 @@ def essentialPrinciples(request,pk):
         try:
             prodNo = pk
             myAction = request.POST.get('myAction')
+            lineNo = request.POST.get('lineNo')
             generalMethod = request.POST.get('generalMethod')
             generalMethod = request.POST.get('essentialPrinciple')
             userId = request.session['UserID']
             
             try:
-                response = config.CLIENT.service.UsedMethods(prodNo,myAction,generalMethod,generalMethod,userId)
+                response = config.CLIENT.service.UsedMethods(prodNo,myAction,generalMethod,generalMethod,userId,lineNo)
                 print(response)
                 if response == True:
                     messages.success(request,"Request Successful")
@@ -92,3 +93,30 @@ def essentialPrinciples(request,pk):
             print(e)
             return redirect('login')
     return redirect ('productDetails',pk=pk)
+
+def FnDeviceAttachement(request, pk):
+    if request.method == "POST":
+        try:
+            attach = request.FILES.get('attachment')
+            tableID = 52177996
+            fileName = request.FILES['attachment'].name
+            # name = request.POST.get('name')
+            attachment = base64.b64encode(attach.read())
+
+            try:
+                response = config.CLIENT.service.FnDeviceAttachement(
+                    pk, fileName, attachment, tableID)
+                print(response)
+                if response == True:
+                    messages.success(request, "Upload Successful")
+                    return redirect('productDetails', pk=pk)
+                else:
+                    messages.error(request, "Failed, Try Again")
+                    return redirect('productDetails', pk=pk)
+            except Exception as e:
+                messages.error(request, e)
+                print(e)
+                return redirect('productDetails', pk=pk)
+        except Exception as e:
+            print(e)
+    return redirect('productDetails', pk=pk)

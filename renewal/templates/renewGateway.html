@@ -87,6 +87,10 @@
                         <p class="textmuted h8 mb-2">Choose from the payment options available to proceed. Your payment
                             will be processed
                             immediately.</p>
+                        <form action="{% url 'FNGenerateRenewalInvoice' res.Renewal_No_ %}" method="post">
+                            {% csrf_token %}
+                            <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
+                        </form>
                         <!-- Bordered Tabs Justified -->
                         <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
                             <li class="nav-item flex-fill" role="presentation">
@@ -105,7 +109,7 @@
                                 aria-labelledby="home-tab">
                                 <div class="form">
                                     <p>Bank: <span class="text-primary">National Bank of Kenya</span></p>
-                                    <p>Bank Name: <span class="text-primary">Veterinary Medicines Directorate</span></p>
+                                    <p>A/C Name: <span class="text-primary">Veterinary Medicines Directorate</span></p>
                                     <p>Branch: <span class="text-primary">Westlands</span></p>
                                     <p>Swift Code: <span class="text-primary">NBKEKENXXXX</span></p>
                                     <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>

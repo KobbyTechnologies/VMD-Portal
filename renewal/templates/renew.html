@@ -298,6 +298,26 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <div class="col-md-12 mb-2">
+                                <label for="" class="form-label"> Name</label>
+                                <input type="text" name="nameOfTheApplicant" id="nameOfTheApplicant" class="form-control">
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <label for="" class="form-label">Position</label>
+                                <input type="text" name="positionInTheCompany" id="positionInTheCompany" class="form-control">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-2">
+                                    <label class="form-check-label text-primary"> 
+                                        <input class="form-check-input" type="checkbox" value="True"
+                                        name="iAgree" checked required>  
+                                          I hereby apply for renewal of registration for
+                                        the product detailed above and
+                                        declare that all the information herein is correct
+                                        and true.
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-success my-2" id="retentionSubmit">Submit</button>

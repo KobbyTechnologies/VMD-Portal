@@ -9,4 +9,5 @@ urlpatterns = [
     path("renewGateway/<str:pk>", views.renewGateway.as_view(), name='renewGateway'),
     path("SubmitRenewal/<str:pk>", views.SubmitRenewal, name='SubmitRenewal'),
     path("RenewAttachement/<str:pk>", views.RenewAttachement, name='RenewAttachement'),
+    path("FNGenerateRenewalInvoice/<str:pk>", views.FNGenerateRenewalInvoice, name='FNGenerateRenewalInvoice'),
 ]

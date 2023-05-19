@@ -1,11 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap');
+/** @format */
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Red+Hat+Display&display=swap");
 
 :root {
   --first-color: #0974bd;
   --first-color-dark: #0e5a8d;
   --second-color: #2b87cd;
-  --font1: 'Nunito Sans', sans-serif;
-  --font2: 'Red Hat Display', sans-serif;
+  --font1: "Nunito Sans", sans-serif;
+  --font2: "Red Hat Display", sans-serif;
   --third-color: #8696b8;
   --green: #12bf68;
   --vmd-grey: #b8bab5;
@@ -212,13 +214,13 @@
   color: red;
   font-size: 30px;
   border: none;
-  font-weight: 900
+  font-weight: 900;
 }
 
-.modal.fade .modal-dialog{
-  max-width: 600px !important;
+.modal.fade .modal-dialog {
+  min-width: 1000px !important;
 }
 
-.form-group{
+.form-group {
   padding-block: 5px;
 }

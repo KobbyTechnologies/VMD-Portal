@@ -1,20 +1,9 @@
-/*!
-  * Bootstrap v5.1.3 (https://getbootstrap.com/)
-  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
-  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-  */
 import * as Popper from '@popperjs/core';
 
-/**
- * --------------------------------------------------------------------------
- * Bootstrap (v5.1.3): util/index.js
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- * --------------------------------------------------------------------------
- */
+
 const MAX_UID = 1000000;
 const MILLISECONDS_MULTIPLIER = 1000;
-const TRANSITION_END = 'transitionend'; // Shoutout AngusCroll (https://goo.gl/pxwQGp)
-
+const TRANSITION_END = 'transitionend';
 const toType = obj => {
   if (obj === null || obj === undefined) {
     return `${obj}`;
@@ -22,11 +11,7 @@ const toType = obj => {
 
   return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
 };
-/**
- * --------------------------------------------------------------------------
- * Public Util Api
- * --------------------------------------------------------------------------
- */
+
 
 
 const getUID = prefix => {
@@ -41,10 +26,7 @@ const getSelector = element => {
   let selector = element.getAttribute('data-bs-target');
 
   if (!selector || selector === '#') {
-    let hrefAttr = element.getAttribute('href'); // The only valid content that could double as a selector are IDs or classes,
-    // so everything starting with `#` or `.`. If a "real" URL is used as the selector,
-    // `document.querySelector` will rightfully complain it is invalid.
-    // See https://github.com/twbs/bootstrap/issues/32273
+    let hrefAttr = element.getAttribute('href');
 
     if (!hrefAttr || !hrefAttr.includes('#') && !hrefAttr.startsWith('.')) {
       return null;
@@ -374,8 +356,8 @@ function bootstrapDelegationHandler(element, selector, fn) {
     const domElements = element.querySelectorAll(selector);
 
     for (let {
-      target
-    } = event; target && target !== this; target = target.parentNode) {
+        target
+      } = event; target && target !== this; target = target.parentNode) {
       for (let i = domElements.length; i--;) {
         if (domElements[i] === target) {
           event.delegateTarget = target;
@@ -1240,7 +1222,8 @@ class Carousel extends BaseComponent {
 
 
   _getConfig(config) {
-    config = { ...Default$a,
+    config = {
+      ...Default$a,
       ...Manipulator.getDataAttributes(this._element),
       ...(typeof config === 'object' ? config : {})
     };
@@ -1526,7 +1509,8 @@ class Carousel extends BaseComponent {
     } = data;
 
     if (typeof config === 'object') {
-      _config = { ..._config,
+      _config = {
+        ..._config,
         ...config
       };
     }
@@ -1560,7 +1544,8 @@ class Carousel extends BaseComponent {
       return;
     }
 
-    const config = { ...Manipulator.getDataAttributes(target),
+    const config = {
+      ...Manipulator.getDataAttributes(target),
       ...Manipulator.getDataAttributes(this)
     };
     const slideIndex = this.getAttribute('data-bs-slide-to');
@@ -1824,7 +1809,8 @@ class Collapse extends BaseComponent {
 
 
   _getConfig(config) {
-    config = { ...Default$9,
+    config = {
+      ...Default$9,
       ...Manipulator.getDataAttributes(this._element),
       ...config
     };
@@ -2115,7 +2101,8 @@ class Dropdown extends BaseComponent {
   }
 
   _getConfig(config) {
-    config = { ...this.constructor.Default,
+    config = {
+      ...this.constructor.Default,
       ...Manipulator.getDataAttributes(this._element),
       ...config
     };
@@ -2226,7 +2213,8 @@ class Dropdown extends BaseComponent {
       }];
     }
 
-    return { ...defaultBsPopperConfig,
+    return {
+      ...defaultBsPopperConfig,
       ...(typeof this._config.popperConfig === 'function' ? this._config.popperConfig(defaultBsPopperConfig) : this._config.popperConfig)
     };
   }
@@ -2572,7 +2560,8 @@ class Backdrop {
   }
 
   _getConfig(config) {
-    config = { ...Default$7,
+    config = {
+      ...Default$7,
       ...(typeof config === 'object' ? config : {})
     }; // use getElement() with the default "body" to get a fresh Element on each instantiation
 
@@ -2706,7 +2695,8 @@ class FocusTrap {
   }
 
   _getConfig(config) {
-    config = { ...Default$6,
+    config = {
+      ...Default$6,
       ...(typeof config === 'object' ? config : {})
     };
     typeCheckConfig(NAME$7, config, DefaultType$6);
@@ -2897,7 +2887,8 @@ class Modal extends BaseComponent {
   }
 
   _getConfig(config) {
-    config = { ...Default$5,
+    config = {
+      ...Default$5,
       ...Manipulator.getDataAttributes(this._element),
       ...(typeof config === 'object' ? config : {})
     };
@@ -3306,7 +3297,8 @@ class Offcanvas extends BaseComponent {
 
 
   _getConfig(config) {
-    config = { ...Default$4,
+    config = {
+      ...Default$4,
       ...Manipulator.getDataAttributes(this._element),
       ...(typeof config === 'object' ? config : {})
     };
@@ -3478,6 +3470,7 @@ const DefaultAllowlist = {
   u: [],
   ul: []
 };
+
 function sanitizeHtml(unsafeHtml, allowList, sanitizeFn) {
   if (!unsafeHtml.length) {
     return unsafeHtml;
@@ -3982,7 +3975,8 @@ class Tooltip extends BaseComponent {
         }
       }
     };
-    return { ...defaultBsPopperConfig,
+    return {
+      ...defaultBsPopperConfig,
       ...(typeof this._config.popperConfig === 'function' ? this._config.popperConfig(defaultBsPopperConfig) : this._config.popperConfig)
     };
   }
@@ -4018,7 +4012,8 @@ class Tooltip extends BaseComponent {
     EventHandler.on(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler);
 
     if (this._config.selector) {
-      this._config = { ...this._config,
+      this._config = {
+        ...this._config,
         trigger: 'manual',
         selector: ''
       };
@@ -4113,7 +4108,8 @@ class Tooltip extends BaseComponent {
         delete dataAttributes[dataAttr];
       }
     });
-    config = { ...this.constructor.Default,
+    config = {
+      ...this.constructor.Default,
       ...dataAttributes,
       ...(typeof config === 'object' && config ? config : {})
     };
@@ -4238,14 +4234,16 @@ const NAME$3 = 'popover';
 const DATA_KEY$3 = 'bs.popover';
 const EVENT_KEY$3 = `.${DATA_KEY$3}`;
 const CLASS_PREFIX = 'bs-popover';
-const Default$2 = { ...Tooltip.Default,
+const Default$2 = {
+  ...Tooltip.Default,
   placement: 'right',
   offset: [0, 8],
   trigger: 'click',
   content: '',
   template: '<div class="popover" role="tooltip">' + '<div class="popover-arrow"></div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div>' + '</div>'
 };
-const DefaultType$2 = { ...Tooltip.DefaultType,
+const DefaultType$2 = {
+  ...Tooltip.DefaultType,
   content: '(string|element|function)'
 };
 const Event$1 = {
@@ -4439,7 +4437,8 @@ class ScrollSpy extends BaseComponent {
 
 
   _getConfig(config) {
-    config = { ...Default$1,
+    config = {
+      ...Default$1,
       ...Manipulator.getDataAttributes(this._element),
       ...(typeof config === 'object' && config ? config : {})
     };
@@ -4906,7 +4905,8 @@ class Toast extends BaseComponent {
 
 
   _getConfig(config) {
-    config = { ...Default,
+    config = {
+      ...Default,
       ...Manipulator.getDataAttributes(this._element),
       ...(typeof config === 'object' && config ? config : {})
     };
@@ -4995,5 +4995,18 @@ enableDismissTrigger(Toast);
 
 defineJQueryPlugin(Toast);
 
-export { Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover, ScrollSpy, Tab, Toast, Tooltip };
+export {
+  Alert,
+  Button,
+  Carousel,
+  Collapse,
+  Dropdown,
+  Modal,
+  Offcanvas,
+  Popover,
+  ScrollSpy,
+  Tab,
+  Toast,
+  Tooltip
+};
 //# sourceMappingURL=bootstrap.esm.js.map

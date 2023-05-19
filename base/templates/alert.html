@@ -1,29 +1,54 @@
+<!--alert -->
 {% if messages %}
 {% for message in messages %}
 {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-<div class="alert d-flex align-items-center alert-dismissible alert-success" role="alert">
-    <i class="las la-check-double" style="color: white;font-size: 2rem"></i>
-    <div class="a-icon mx-2">
-        {{message}}
-    </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-<div class="alert d-flex align-items-center alert-dismissible alert-info" role="alert">
-    <i class="las la-exclamation-circle" style="color: white;font-size: 2rem"></i>
-    <div class="a-icon mx-2">
-        {{message}}
-    </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+<script>
+    iziToast.success({
+        backgroundColor: '#134326',
+        titleColor: 'White',
+        theme: 'dark',
+        timeout: 2500,
+        drag: true,
+        overlay: false,
+        displayMode: 'once',
+        id: 'inputs',
+        zindex: 999,
+        position: 'bottomRight',
+        message: '{{message}}'
+    });
+</script>
 {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-<div class="alert d-flex align-items-center alert-dismissible alert-danger" role="alert">
-    <i class="las la-exclamation-triangle" style="color: white;font-size: 2rem"></i>
-    <div class="a-icon mx-2">
-        {{message}}
-    </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+<script>
+    iziToast.info({
+        backgroundColor: '#000',
+        titleColor: 'White',
+        theme: 'dark',
+        timeout: 2500,
+        drag: true,
+        overlay: false,
+        displayMode: 'once',
+        id: 'inputs',
+        zindex: 999,
+        position: 'bottomRight',
+        message: '{{message}}'
+    });
+</script>
+{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+<script>
+    iziToast.error({
+        backgroundColor: '#ff0800',
+        titleColor: 'White',
+        theme: 'dark',
+        timeout: 2500,
+        drag: true,
+        overlay: false,
+        displayMode: 'once',
+        id: 'inputs',
+        zindex: 999,
+        position: 'bottomRight',
+        message: '{{message}}'
+    });
+</script>
 {% endif %}
 {% endfor %}
 {% endif %}

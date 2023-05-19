@@ -85,14 +85,11 @@
             <div class="col-md-3">
                 <div class="card h-100 info-card revenue-card">
                     <div class="card-body">
-                        <h5 class="card-title">Payment<span> | {{res.Currency_Code}}</span></h5>
+                        <h5 class="card-title">Payment<span> | {{res.Currecy_Code}}</span></h5>
 
                         <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-currency-dollar"></i>
-                            </div>
                             <div class="ps-3">
-                                <h6>$ {{res.Amount_Payable}}</h6>
+                                <h6> {{res.Currecy_Code}} {{res.Amount_Payable}}</h6>
                                 <span class="text-muted small pt-2 ps-1">Paid:</span>
                                 <span class="text-success small pt-1 fw-bold">{{res.Paid}}</span>
                             </div>
@@ -139,7 +136,7 @@
                             <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
                             </div>
-                            {% elif res.Status == 'Approved' %}
+                            {% elif res.Status == ' Approved' %}
                             <div class="progress-bar bg-success" role="progressbar" data-width="25%" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
                             </div>
@@ -164,23 +161,285 @@
                     </form>
                 </div>
             </div>
-            {% elif res.Paid == False and status == 'Open' %}
+            {% elif res.Paid == False and status == 'Open'  and res.Invoiced == False %}
+            <div class="col-md-3">
+                <div class="card h-100 actionActive actionCard  text-center">
+                    <i class="bi bi-wallet my-3"></i>
+                    <form action="{% url 'FnMakeGMPpayment' res.GMP_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">
+                            Pay {{res.Currecy_Code}} {{res.Amount_Payable}}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% elif res.Paid == False and status == 'Open'  and res.Invoiced == True %}
             <div class="col-md-3">
                 <a href="{% url 'GMPGateway' res.GMP_No_ %}">
                     <div class="card h-100 actionActive actionCard  text-center">
                         <i class="bi bi-wallet my-3"></i>
-                        Pay $ {{res.Amount_Payable}}
+                        Pay {{res.Currecy_Code}} {{res.Amount_Payable}}
                     </div>
                 </a>
             </div>
-            {% elif res.Paid == True and status == 'Approved' %}
+            {% elif res.Paid == False and status == ' Approved' %}
             <div class="col-md-3">
                 <div class="card h-100 actionCard text-center">
                     <i class="bi bi-file-earmark-bar-graph my-3"></i>
-                    <h6>Download Certificate</h6>
+                    <form action="{% url 'PrintGMPCertificate' res.GMP_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-success align-items-center" type="submit"> Generate
+                            Certificate</button>
+                    </form>
+                    <!-- <h6>Download Certificate</h6> -->
+                </div>
+            </div>
+            {% elif res.Paid == True and status == ' Approved' %}
+            <div class="col-md-3">
+                <div class="card h-100 actionCard text-center">
+                    <i class="bi bi-file-earmark-bar-graph my-3"></i>
+                    <form action="{% url 'PrintGMPCertificate' res.GMP_No_ %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-success align-items-center" type="submit"> Generate
+                            Certificate</button>
+                    </form>
+                    <!-- <h6>Download Certificate</h6> -->
                 </div>
             </div>
             {% endif %}
+        </div>
+        <div class="row my-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" style="border: none;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="card-title">GMP Details</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/GMP" id="regForm" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="gmpNo" id="gmpNo" value="{{res.GMP_No_}}">
+                            <input type="hidden" name="myAction" id="myAction" value="modify">
+                            <input type="hidden" name="iAgree" value="True">
+                            <div class="tab">
+                                <div class="border border-success rounded p-3  my-3">
+                                    <div class="row my-3">
+                                        <h6 class="text-primary">Particulars of Applicant/License Holder</h6>
+                                        <div class="col-md-12">
+                                            <label class="form-label">Manufacturer Type</label>
+                                            <select class="form-select" name="typeOfManufacture" id="typeOfManufacture"
+                                                disabled>
+                                                <option value="1">Local</option>
+                                                <option value="2">Foregn</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <div class="border border-success rounded p-3 my-3">
+                                    <div class="row my-2">
+                                        <h6 class="text-primary">Particulars of the site to be inspected</h6>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Physical Address</label>
+                                            <input type="text" class="form-control" name="SitePhysicalAddress"
+                                                id="SitePhysicalAddress" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Country</label>
+                                            <select class="form-select" name="SiteCountry" id="SiteCountry" disabled>
+                                                {% for res in country %}
+                                                <option value="{{res.Code}}">{{res.Name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Telephone <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="SiteTelephone"
+                                                id="SiteTelephone" disabled>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Mobile <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="SiteMobile" id="SiteMobile"
+                                                disabled>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="SiteEmail" id="SiteEmail"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <div class="border border-success rounded p-3 my-3">
+                                    <div class="row my-3">
+                                        <h6 class="text-primary">Particulars of person on site</h6>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Name of Contact person <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="ContactName" id="ContactName"
+                                                disabled>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Contact Person Telephone <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="ContactTel" id="ContactTel"
+                                                disabled>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Contact Person Email <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="ContactEmail"
+                                                id="ContactEmail" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <div class="border border-success rounded p-3 my-3">
+                                    <div class="row my-3">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Type of Inspection</label>
+                                            <select class="form-select" name="typeOfInspection" id="typeOfInspection"
+                                                disabled>
+                                                <option value="1">First Inspection</option>
+                                                <option value="2">Re-inspection after failure</option>
+                                                <option value="3">Routine Re-inspection </option>
+                                                <option value="4">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3" style="display: none;" id="PrevGmpNo">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Previous GMP Number</label>
+                                            <select class="form-select" disabled name="previousGMPNo" id="previousGMPNo"
+                                                disabled>
+                                                {% for approved in approved %}
+                                                <option value="{{approved.GMP_No_}}">{{approved.GMP_No_}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3" style="display: none;" id="stateOtherRow">
+                                        <div class="col-md-12">
+                                            <label class="form-label">State Other Type of Inspection </label>
+                                            <input type="text" class="form-control" name="stateOther" id="stateOther"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <div class="border border-success rounded p-3 my-3">
+                                    <div class="row my-3">
+                                        <h6 class="text-primary">Types of veterinary Medicine</h6>
+                                        <div class="col-md-4">
+                                            <label class="form-label">veterinary Pharmaceuticals</label>
+                                            <select class="form-select" name="veterinaryPharmaceuticals"
+                                                id="veterinaryPharmaceuticals" disabled>
+                                                <option value="False">False</option>
+                                                <option value="True">True</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Poisons</label>
+                                            <select class="form-select" name="poisons" id="poisons" disabled>
+                                                <option value="False">False</option>
+                                                <option value="True">True</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Alternative Medicine</label>
+                                            <select class="form-select" name="alternativeMedicines"
+                                                id="alternativeMedicines" disabled>
+                                                <option value="False">False</option>
+                                                <option value="True">True</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <label class="form-label">Biologicals</label>
+                                            <select class="form-select" name="biologicals" id="biologicals" disabled>
+                                                <option value="False">False</option>
+                                                <option value="True">True</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <label class="form-label">Equipment and Materials</label>
+                                            <select class="form-select" name="equipmentAndMaterials"
+                                                id="equipmentAndMaterials" disabled>
+                                                <option value="False">False</option>
+                                                <option value="True">True</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <label class="form-label">Nutrients?</label>
+                                            <select class="form-select" name="nutrients" id="nutrients" disabled>
+                                                <option value="False">False</option>
+                                                <option value="True">True</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <div class="border border-success rounded p-3 my-3">
+                                    <div class="row my-3" id="">
+                                        <h6 class="text-primary">Product Information</h6>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Dosage Form </label>
+                                            <input type="text" class="form-control" name="dosageForm" id="dosageForm"
+                                                disabled>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Product Category </label>
+                                            <input type="text" class="form-control" name="productCategory"
+                                                id="productCategory" disabled>
+                                        </div>
+
+                                        <div class="col-md-12 my-2">
+                                            <label class="form-label">Activity</label>
+                                            <input type="text" class="form-control" name="activity" id="activity"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                    {% if res.Status == 'Open' %}
+                                    <div class="row my-2">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-success w-100">Edit GMP</button>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+
+                            <div style="overflow:auto;">
+                                <div style="float:right;">
+                                    <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                                    <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                </div>
+                            </div>
+                            <!-- Circles which indicates the steps of the form: -->
+                            <div style="text-align:center;margin-top:40px;">
+                                <span class="step"></span>
+                                <span class="step"></span>
+                                <span class="step"></span>
+                                <span class="step"></span>
+                                <span class="step"></span>
+                                <span class="step"></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row my-3">
             <div class="col-md-12">
@@ -201,7 +460,6 @@
                         </div>
                     </div>
                     <div class="card-body">
-
                         <table
                             class="display table  table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable">
                             <thead>
@@ -229,9 +487,9 @@
                                     <td>{{res.Manufacture_Postal_Address}}</a></td>
                                     <td>{{res.Activity}}</td>
                                     <td>
-                                        <form method="POST" action="{% url 'GMPManufactures' res.AuxiliaryIndex2 %}">
+                                        <form method="POST" action="{% url 'GMPManufactures' res.No %}">
                                             {% csrf_token %}
-                                            <input type="hidden" name="lineNo" value="{{res.AuxiliaryIndex1}}">
+                                            <input type="hidden" name="gmpMd" value="{{res.GMP_Line_No_}}">
                                             <input type="hidden" name="TypeOfManufacturer" value="0">
                                             <input type="hidden" name="manufacturerName" value="0">
                                             <input type="hidden" name="plantAddress" value="0">
@@ -361,7 +619,7 @@
             <div class="modal-body">
                 <form method="POST" action="{% url 'GMPManufactures' res.GMP_No_ %}">
                     {% csrf_token %}
-                    <input type="hidden" name="lineNo" value="">
+                    <input type="hidden" name="gmpMd" value="">
                     <input type="hidden" name="myAction" value="insert">
                     <div class="row my-2">
                         <div class="col-md-12">
@@ -460,7 +718,7 @@
                                 <label class="form-label">Dosage Form <span class="text-danger">*</span></label>
                                 <select class="form-select" name="DosageForm" id="DosageForm"
                                     aria-label="Default select example" required>
-                                    <option selected>Choose .. </option>
+                                    <option selected disabled value="0">Choose .. </option>
                                     <option value="1">Tablets</option>
                                     <option value="2">Capsules</option>
                                     <option value="3">Injections</option>
@@ -509,10 +767,11 @@
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Document Name</label>
-                        <select class="form-select" aria-label="Default select example" name="name">
+                        <select class="form-select" aria-label="Default select example" name="name"
+                            id="attachment-name">
                             <option selected disabled value="">Choose...</option>
                             {% for attach in attach %}
-                            <option value="{{attach.code}}">{{attach.Description}}</option>
+                            <option value="{{attach.code}}" id="name-list">{{attach.Description}}</option>
                             {% endfor %}
                             <option value="Other">Other</option>
                         </select>
@@ -531,6 +790,145 @@
 </div>
 <script>
     $(document).ready(function () {
+        var typeOfManufacture = '{{res.Type_Of_Manufacture}}';
+        var SitePhysicalAddress = '{{res.Physical_Address}}';
+        var SiteCountry = '{{res.Country_2}}';
+        var SiteTelephone = '{{res.Telephone_2}}';
+        var SiteMobile = '{{res.Mobile_2}}';
+        var SiteEmail = '{{res.E_mail_2}}';
+        var ContactName = '{{res.Name_of_contact_person}}';
+        var ContactTel = '{{res.Tel}}';
+        var ContactEmail = '{{res.Contact_Person_E_mail}}';
+        var typeOfInspection = '{{res.Type_Of_Inspection}}';
+        var previousGMPNo = '{{res.Type_Of_Inspection}}';
+        var stateOther = '{{res.Other__please_specify_}}';
+        var veterinaryPharmaceuticals = '{{res.Veterinary_pharmaceuticals}}';
+        var poisons = '{{res.Poisons}}';
+        var alternativeMedicines = '{{res.Alternative_medicines}}';
+        var biologicals = '{{res.Biologicals}}';
+        var equipmentAndMaterials = '{{res.Equipment_and_materials}}';
+        var nutrients = '{{res.Nutrients}}';
+
+        var dosageForm = '{{res.Dosage_forms}}';
+        var productCategory = '{{res.Product_Category}}';
+        var activity = '{{res.Activity}}';
+        var Status = '{{res.Status}}';
+
+        //alert(typeOfInspection)
+
+
+        if (typeOfManufacture === 'Local') {
+            $('#typeOfManufacture option[value="1"]').prop('selected', true);
+        } else if (typeOfManufacture === 'Foreign') {
+            $('#typeOfManufacture option[value="2"]').prop('selected', true);
+        }
+
+        if (typeOfInspection === 'First Inspection') {
+            $('#typeOfInspection option[value="1"]').prop('selected', true);
+
+        } else if (typeOfInspection === 'Re-inspection after failure') {
+            $('#typeOfInspection option[value="2"]').prop('selected', true);
+            $('#previousGMPNo option[value="' + previousGMPNo + '"]').prop('selected', true);
+            $('#PrevGmpNo').show();
+
+        } else if (typeOfInspection === 'Routine Re-inspection') {
+            $('#typeOfInspection option[value="3"]').prop('selected', true);
+            $('#previousGMPNo option[value="' + previousGMPNo + '"]').prop('selected', true);
+            $('#PrevGmpNo').show();
+
+        } else if (typeOfInspection === 'Other') {
+            $('#typeOfInspection option[value="4"]').prop('selected', true);
+            $('#stateOther').val(stateOther);
+            $('#stateOtherRow').show();
+        }
+
+        if (veterinaryPharmaceuticals === 'True') {
+            $('#veterinaryPharmaceuticals option[value="True"]').prop('selected', true);
+        } else if (veterinaryPharmaceuticals === 'False') {
+            $('#veterinaryPharmaceuticals option[value="False"]').prop('selected', true);
+        }
+
+        if (poisons === 'True') {
+            $('#poisons option[value="True"]').prop('selected', true);
+        } else if (poisons === 'False') {
+            $('#poisons option[value="False"]').prop('selected', true);
+        }
+
+        if (alternativeMedicines === 'True') {
+            $('#alternativeMedicines option[value="True"]').prop('selected', true);
+        } else if (alternativeMedicines === 'False') {
+            $('#alternativeMedicines option[value="False"]').prop('selected', true);
+        }
+
+        if (biologicals === 'True') {
+            $('#biologicals option[value="True"]').prop('selected', true);
+        } else if (biologicals === 'False') {
+            $('#biologicals option[value="False"]').prop('selected', true);
+        }
+        if (equipmentAndMaterials === 'True') {
+            $('#equipmentAndMaterials option[value="True"]').prop('selected', true);
+        } else if (equipmentAndMaterials === 'False') {
+            $('#equipmentAndMaterials option[value="False"]').prop('selected', true);
+        }
+        if (nutrients === 'True') {
+            $('#nutrients option[value="True"]').prop('selected', true);
+        } else if (nutrients === 'False') {
+            $('#nutrients option[value="False"]').prop('selected', true);
+        }
+
+        $('#SitePhysicalAddress').val(SitePhysicalAddress);
+        $('#SiteCountry option[value="' + SiteCountry + '"]').prop('selected', true);
+        $('#SiteTelephone').val(SiteTelephone);
+        $('#SiteMobile').val(SiteMobile);
+        $('#SiteEmail').val(SiteEmail);
+        $('#ContactName').val(ContactName);
+        $('#ContactTel').val(ContactTel);
+        $('#ContactEmail').val(ContactEmail);
+        $('#dosageForm').val(dosageForm);
+        $('#productCategory').val(productCategory);
+        $('#activity').val(activity);
+
+        if (Status === "Open") {
+            $('#typeOfManufacture').prop('disabled', false);
+            $('#SitePhysicalAddress').prop('disabled', false);
+            $('#SiteCountry').prop('disabled', false);
+            $('#SiteTelephone').prop('disabled', false);
+            $('#SiteMobile').prop('disabled', false);
+            $('#SiteEmail').prop('disabled', false);
+
+            $('#ContactName').prop('disabled', false);
+            $('#ContactTel').prop('disabled', false);
+            $('#ContactEmail').prop('disabled', false);
+            $('#typeOfInspection').prop('disabled', false);
+            $('#previousGMPNo').prop('disabled', false);
+            $('#stateOther').prop('disabled', false);
+
+            $('#veterinaryPharmaceuticals').prop('disabled', false);
+            $('#poisons').prop('disabled', false);
+            $('#alternativeMedicines').prop('disabled', false);
+            $('#biologicals').prop('disabled', false);
+            $('#equipmentAndMaterials').prop('disabled', false);
+            $('#nutrients').prop('disabled', false);
+
+            $('#dosageForm').prop('disabled', false);
+            $('#productCategory').prop('disabled', false);
+            $('#activity').prop('disabled', false);
+
+            $('#typeOfInspection').on('change', function () {
+                if (this.value === "2" || this.value === "3") {
+                    $('#PrevGmpNo').show(800);
+                    $('#stateOtherRow').hide();
+                } else if (this.value === "4") {
+                    $('#stateOtherRow').show(800);
+                    $('#PrevGmpNo').hide();
+                } else {
+                    $('#stateOtherRow').hide();
+                    $('#PrevGmpNo').hide();
+                }
+            });
+
+        }
+
         $('#DosageForm').on('change', function () {
             if (this.value == "6") {
                 $('#otherDosageRow').show(1000);
