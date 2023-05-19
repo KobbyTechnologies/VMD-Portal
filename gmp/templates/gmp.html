@@ -9,51 +9,7 @@
 <!-- Sidebar-->
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
-<style>
-    /* Hide all steps by default: */
-    .tab {
-        display: none;
-    }
 
-    button {
-        background-color: #04AA6D;
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 17px;
-        font-family: Raleway;
-        cursor: pointer;
-    }
-
-    button:hover {
-        opacity: 0.8;
-    }
-
-    #prevBtn {
-        background-color: #bbbbbb;
-    }
-
-    /* Make circles that indicate the steps of the form: */
-    .step {
-        height: 15px;
-        width: 15px;
-        margin: 0 2px;
-        background-color: #bbbbbb;
-        border: none;
-        border-radius: 50%;
-        display: inline-block;
-        opacity: 0.5;
-    }
-
-    .step.active {
-        opacity: 1;
-    }
-
-    /* Mark the steps that are finished and valid: */
-    .step.finish {
-        background-color: #04AA6D;
-    }
-</style>
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -320,33 +276,20 @@
                         <div class="border border-success rounded p-3 my-3">
                             <div class="row my-3">
                                 <h6 class="text-primary">Particulars of person on site</h6>
-                                <div class="col-md-12">
-                                    <label class="form-label">Are you (LTR) the contact person?</label>
-                                    <select class="form-select" aria-label="Default select example" name="isContact"
-                                        id="isContact">
-                                        <option selected disabled value="">Choose...</option>
-                                        <option value="True">True</option>
-                                        <option value="False">False</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row my-3" id="ContactRow" style="display: none;">
                                 <div class="col-md-4">
                                     <label class="form-label">Name of Contact person <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="ContactName" id="ContactName"
-                                        disabled>
+                                    <input type="text" class="form-control" name="ContactName" id="ContactName">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Contact Person Telephone <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="ContactTel" id="ContactTel" disabled>
+                                    <input type="text" class="form-control" name="ContactTel" id="ContactTel">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Contact Person Email <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="ContactEmail" id="ContactEmail"
-                                        disabled>
+                                    <input type="text" class="form-control" name="ContactEmail" id="ContactEmail">
                                 </div>
                             </div>
                         </div>
@@ -500,19 +443,6 @@
 <script>
     const $headerForm = $('#regForm');
     $(document).ready(function () {
-        $('#isContact').on('change', function () {
-            if (this.value == "True") {
-                $('#ContactRow').hide();
-                $('#ContactName').prop('disabled', true);
-                $('#ContactTel').prop('disabled', true);
-                $('#ContactEmail').prop('disabled', true);
-            } else {
-                $('#ContactRow').show(1000);
-                $('#ContactName').prop('disabled', false);
-                $('#ContactTel').prop('disabled', false);
-                $('#ContactEmail').prop('disabled', false);
-            }
-        });
         $('#typeOfInspection').on('change', function () {
             if (this.value === "2" || this.value === '3') {
                 $('#PrevGmpNo').show(800);
@@ -652,7 +582,6 @@
                     SiteTelephone: $('#SiteTelephone').val(),
                     SiteMobile: $('#SiteMobile').val(),
                     SiteEmail: $('#SiteEmail').val(),
-                    isContact: $('#isContact').val(),
                     ContactName: $('#ContactName').val(),
                     ContactTel: $('#ContactTel').val(),
                     ContactEmail: $('#ContactEmail').val(),
@@ -690,7 +619,7 @@
                         });
                         $('#typeOfManufacture, #SitePhysicalAddress, #SiteCountry').val('');
                         $('#SiteTelephone, #SiteMobile, #SiteEmail').val('');
-                        $('#isContact, #ContactName, #ContactTel').val('');
+                        $('#ContactName, #ContactTel').val('');
                         $('#ContactEmail, #previousGMPNo, #typeOfInspection').val('');
                         $('#stateOther, #veterinaryPharmaceuticals, #poisons').val('');
                         $('#alternativeMedicines, #biologicals, #equipmentAndMaterials')

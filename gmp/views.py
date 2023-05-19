@@ -44,18 +44,8 @@ class GMPApplication(UserObjectMixins, View):
                 )
                 response = await asyncio.gather(task_get_retention, task_get_countries)
                 gmp = [x for x in response[0]]
-                OpenProducts = [x for x in response[0] if x["Status"] == "Open"]
-                Pending = [
-                    x
-                    for x in response[0]
-                    if x["Status"] == "Processing" and x["GMP_Stage"] != "Rejected"
-                ]
                 Approved = [x for x in response[0] if x["Status"] == "Approved"]
-                Rejected = [
-                    x
-                    for x in response[0]
-                    if x["Status"] == "Processing" and x["GMP_Stage"] == "Rejected"
-                ]
+
                 resCountry = [x for x in response[1]]
 
         except Exception as e:
@@ -66,10 +56,7 @@ class GMPApplication(UserObjectMixins, View):
             return JsonResponse(gmp, safe=False)
 
         ctx = {
-            "open": OpenProducts,
-            "pending": Pending,
             "approved": Approved,
-            "rejected": Rejected,
             "country": resCountry,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
@@ -87,13 +74,12 @@ class GMPApplication(UserObjectMixins, View):
             SiteTelephone = request.POST.get("SiteTelephone")
             SiteMobile = request.POST.get("SiteMobile")
             SiteEmail = request.POST.get("SiteEmail")
-            isContact = eval(request.POST.get("isContact"))
             ContactName = request.POST.get("ContactName")
             ContactTel = request.POST.get("ContactTel")
             ContactEmail = request.POST.get("ContactEmail")
             previousGMPNo = request.POST.get("previousGMPNo")
             typeOfInspection = request.POST.get("typeOfInspection")
-            stateOther = request.POST.get("StateOther")
+            stateOther = request.POST.get("stateOther")
             veterinaryPharmaceuticals = eval(
                 request.POST.get("veterinaryPharmaceuticals")
             )
@@ -107,22 +93,16 @@ class GMPApplication(UserObjectMixins, View):
             activity = request.POST.get("activity")
             iAgree = eval(request.POST.get("iAgree"))
 
+            print(SiteMobile, stateOther)
+
             if not iAgree:
                 iAgree = False
-            if not ContactName:
-                ContactName = ""
 
-            if not ContactTel:
-                ContactTel = ""
+            if not stateOther or stateOther == "":
+                stateOther = "None"
 
-            if not ContactEmail:
-                ContactEmail = ""
-
-            if not stateOther:
-                stateOther = ""
-
-            if not previousGMPNo:
-                previousGMPNo = ""
+            if not previousGMPNo or previousGMPNo == "":
+                previousGMPNo = "None"
 
             response = config.CLIENT.service.GMP(
                 gmpNo,
@@ -134,7 +114,6 @@ class GMPApplication(UserObjectMixins, View):
                 SiteTelephone,
                 SiteMobile,
                 SiteEmail,
-                isContact,
                 ContactName,
                 ContactTel,
                 ContactEmail,
@@ -152,7 +131,6 @@ class GMPApplication(UserObjectMixins, View):
                 iAgree,
                 previousGMPNo,
             )
-            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response != None and response != "" and response != 0:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -175,7 +153,6 @@ class GMPApplication(UserObjectMixins, View):
 
 class GMPDetails(UserObjectMixin, View):
     def get(self, request, pk):
-        # print(pk)
         try:
             userID = request.session["UserID"]
             LTR_Name = request.session["LTR_Name"]
@@ -215,6 +192,12 @@ class GMPDetails(UserObjectMixin, View):
             AllAttachResponse = self.get_object(AllAttachments)
             Files = [x for x in AllAttachResponse["value"]]
 
+            GMP = config.O_DATA.format(
+                f"/QYGMP?$filter=User_code%20eq%20%27{userID}%27%20and%20Status%20eq%20%27Approved%27"
+            )
+            prevGMPResponse = self.get_object(GMP)
+            approved = [x for x in prevGMPResponse["value"]]
+
         except requests.exceptions.RequestException as e:
             messages.error(request, e)
             print(e)
@@ -234,6 +217,7 @@ class GMPDetails(UserObjectMixin, View):
             "attach": attach,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
+            "approved": approved,
         }
         return render(request, "gmpDetails.html", ctx)
 
