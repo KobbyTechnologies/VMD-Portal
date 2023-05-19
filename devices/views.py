@@ -98,14 +98,14 @@ def FnDeviceAttachement(request, pk):
     if request.method == "POST":
         try:
             attach = request.FILES.get('attachment')
-            # filename = request.FILES['attachment'].name
-            # name = request.POST.get('name')
             tableID = 52177996
+            fileName = request.FILES['attachment'].name
+            # name = request.POST.get('name')
             attachment = base64.b64encode(attach.read())
 
             try:
                 response = config.CLIENT.service.FnDeviceAttachement(
-                    pk, attachment, tableID)
+                    pk, fileName, attachment, tableID)
                 print(response)
                 if response == True:
                     messages.success(request, "Upload Successful")
