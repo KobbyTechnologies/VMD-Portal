@@ -23,7 +23,7 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "vmd",
+        "NAME": "vmdf",
     }
 }
 
