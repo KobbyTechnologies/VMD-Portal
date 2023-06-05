@@ -39,10 +39,22 @@
       </ul>
     </li>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="{% url 'gmp' %}">
+      <a class="nav-link collapsed" href="{% url 'gmp' %}" data-bs-target="#components-nav-two" data-bs-toggle="collapse" href="#">
         <i class="bi bi-activity"></i>
         <span>Good Manufacturing Practices</span>
       </a>
+      <ul id="components-nav-two" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="{% url 'gmp' %}">
+            <i class="bi bi-circle"></i><span>GMP</span>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'newApplication' %}">
+            <i class="bi bi-circle"></i><span>new application</span>
+          </a>
+        </li>
+      </ul>
     </li>
     <li class="nav-item">
       <a class="nav-link collapsed" href="{% url 'appeal' %}">

@@ -524,4 +524,8 @@ class FnMakeGMPpayment(UserObjectMixin, View):
                 return redirect("GMPDetails", pk=pk)
         return redirect("GMPDetails", pk=pk)
 
+class NewApplication(UserObjectMixins, View):
+    def get(self, request):
+        return render(request, 'newApplication.html')
+
     # To check against the user code to see whether there are products registered

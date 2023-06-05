@@ -185,14 +185,19 @@
                                 <h4 class="step-title">Dashboard</h4>
                             </div>
                         </div>
-                        <form action="{% url 'productClass' %}" method="post">
+
+                        <div class="money-spinner mx-auto text-center" id="spinner" style="display: none">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Loading Gif" style="height: 150px;" class="img-fluid">
+                        </div>
+
+                        <form method="post" id="formSubmit">
                             {% csrf_token %}
-                            <input type="hidden" name="prodNo" value="">
-                            <input type="hidden" name="myAction" value="insert">
+                            <input type="hidden" name="prodNo" value="" id="prodNo">
+                            <input type="hidden" name="myAction" value="insert" id="myAction">
                             <div class="row mb-2">
                                 <div class="col-md-6">
                                     <label class="form-label">Product Type</label>
-                                    <select class="form-select" name="vetClass">
+                                    <select class="form-select" name="vetClass" id="vetClass" required>
                                         <option selected disabled value="">Select Product</option>
                                         {% for res in product %}
                                         <option value="{{res.Class}}">{{res.Class}}</option>
@@ -203,7 +208,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Manufacturer Type</label>
-                                    <select class="form-select" name="typeofManufacture">
+                                    <select class="form-select" name="typeofManufacture" id="typeofManufacture" required>
                                         <option value="1">Local</option>
                                         <option value="2">Foregn</option>
                                     </select>
@@ -218,5 +223,87 @@
     </section>
 </main>
 {% include 'footer.html' %}
+
+<script>
+    $(document).ready(function () {
+
+    const $headerForm = $('#formSubmit');
+    const $spinner = $('#spinner');
+
+    $headerForm.on('submit', (e) => {
+
+        e.preventDefault();
+
+        if ($('#typeofManufacture').val() === '' || $('#vetClass').val() === '') {
+            alert('Please fill in all required fields.');
+            return false;
+        }
+
+        $spinner.show();
+
+        $.ajax({
+
+            type: 'POST',
+            url: '/productClass',
+            data: {
+                typeofManufacture: $('#typeofManufacture').val(),
+                vetClass: $('#vetClass').val(),
+                prodNo: $('#prodNo').val(),
+                myAction: $('#myAction').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+
+            success: function (response) {
+
+                $('#typeofManufacture, #vetClass').val('');
+                $spinner.hide();
+
+                if (response['success'] === true) {
+
+                    iziToast.show({
+                        theme: 'dark',
+                        backgroundColor: '#239B56',
+                        icon: 'las la-check-circle',
+                        title: 'Yeah',
+                        message: response['response'] + " " + "created successfully",
+                        position: 'topRight',
+                        progressBarColor: '#F4F6F7',
+
+                    });
+
+                } else if (response['error']) {
+
+                    iziToast.show({
+                        theme: 'dark',
+                        icon: 'las la-exclamation',
+                        title: 'Error',
+                        message: response['error'],
+                        position: 'topRight',
+                        progressBarColor: '#ff0800',
+                    });
+                }
+            },
+
+            error: function (error) {
+                console.log(error)
+                $spinner.hide();
+            }
+        });
+
+    });
+
+        let form = $("#formSubmit").submit(function(e) {
+            e.preventDefault()
+            $("#spinner").css("display", "block")
+            console.log($("#vetClass").val())
+            console.log($("#typeofManufacture").val())
+        })
+        
+        if ($('#typeofManufacture').val() === '' || $('#vetClass').val() === '' ) {
+            alert('Please fill in all required fields.');
+            return false;
+        }
+})
+</script>
 
 {% endblock %}

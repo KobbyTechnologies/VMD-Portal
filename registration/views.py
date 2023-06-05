@@ -8,6 +8,8 @@ import base64
 import io as BytesIO
 from django.http import HttpResponse
 from django.views import View
+from myRequest.views import UserObjectMixins
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -92,27 +94,35 @@ class myApplications(UserObjectMixin, View):
         return render(request, "applications.html", ctx)
 
 
-def productClass(request):
-    if request.method == "POST":
+class ProductClass(UserObjectMixins, View):
+
+    def post(self, request):
         try:
-            classCode = request.POST.get('vetClass')
+            vetClass = request.POST.get('vetClass')
             typeofManufacture = int(request.POST.get('typeofManufacture'))
             myAction = request.POST.get('myAction')
             userCode = request.session['UserID']
             prodNo = request.POST.get('prodNo')
             if not prodNo:
                 prodNo = ''
-            response = config.CLIENT.service.FnClass(
-                prodNo, classCode, typeofManufacture, myAction, userCode)
-            print(response)
-            if response == True:
-                messages.success(request, "Successfully Added")
-                return redirect('Registration')
+            response = self.make_soap_request("FnClass", prodNo, vetClass, typeofManufacture, myAction, userCode)
+
+            if response != '' and response != 0 and response != None:
+                return JsonResponse({
+                    "success" : True,
+                    "response" : response
+                })
+            
+            return JsonResponse({
+                "success" : False,
+                "error" : response
+            })
+            
         except Exception as e:
-            messages.error(request, e)
-            print(e)
-            return redirect('Registration')
-    return redirect('Registration')
+            return JsonResponse({
+                "success" : False,
+                "error" : str(e)
+            })
 
 
 class productDetails(UserObjectMixin, View):

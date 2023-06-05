@@ -9,24 +9,9 @@ urlpatterns = [
     path("GMPGateway/<str:pk>", views.GMPGateway.as_view(), name="GMPGateway"),
     path("SubmitGMP/<str:pk>", views.SubmitGMP, name="SubmitGMP"),
     path("GMPAttachement/<str:pk>", views.GMPAttachement, name="GMPAttachement"),
-    path(
-        "FnDeleteGMPDocumentAttachment/<str:pk>",
-        views.FnDeleteGMPDocumentAttachment,
-        name="FnDeleteGMPDocumentAttachment",
-    ),
-    path(
-        "FNGenerateGMPInvoice/<str:pk>",
-        views.FNGenerateGMPInvoice,
-        name="FNGenerateGMPInvoice",
-    ),
-    path(
-        "PrintGMPCertificate/<str:pk>",
-        views.PrintGMPCertificate,
-        name="PrintGMPCertificate",
-    ),
-    path(
-        "FnMakeGMPpayment/<str:pk>",
-        views.FnMakeGMPpayment.as_view(),
-        name="FnMakeGMPpayment",
-    ),
+    path("FnDeleteGMPDocumentAttachment/<str:pk>", views.FnDeleteGMPDocumentAttachment, name="FnDeleteGMPDocumentAttachment"),
+    path("FNGenerateGMPInvoice/<str:pk>", views.FNGenerateGMPInvoice, name="FNGenerateGMPInvoice"),
+    path("PrintGMPCertificate/<str:pk>", views.PrintGMPCertificate, name="PrintGMPCertificate"),
+    path("FnMakeGMPpayment/<str:pk>", views.FnMakeGMPpayment.as_view(), name="FnMakeGMPpayment"),
+    path("newApplication/", views.NewApplication.as_view(), name="newApplication"),
 ]
