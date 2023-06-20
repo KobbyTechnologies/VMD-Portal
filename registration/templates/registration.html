@@ -5,130 +5,9 @@
 <!--Header-->
 {% include 'navbar.html' %}
 <!-- End Header -->
-<link rel="stylesheet"
-    href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- Sidebar-->
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
-<style>
-    /* Stepper */
-    .steps .step {
-        display: block;
-        width: 100%;
-        margin-bottom: 4rem;
-        text-align: center;
-    }
-
-    .steps .step .step-icon-wrap {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 80px;
-        text-align: center;
-    }
-
-    .steps .step .step-icon-wrap::before,
-    .steps .step .step-icon-wrap::after {
-        display: block;
-        position: absolute;
-        top: 50%;
-        width: 50%;
-        height: 3px;
-        margin-top: -1px;
-        background-color: #e1e7ec;
-        content: "";
-        z-index: 1;
-    }
-
-    .steps .step .step-icon-wrap::before {
-        left: 0;
-    }
-
-    .steps .step .step-icon-wrap::after {
-        right: 0;
-    }
-
-    .steps .step .step-icon {
-        display: inline-block;
-        position: relative;
-        width: 80px;
-        height: 80px;
-        border: 1px solid #e1e7ec;
-        border-radius: 50%;
-        background-color: #f5f5f5;
-        color: #50373d;
-        font-size: 38px;
-        line-height: 81px;
-        z-index: 5;
-    }
-
-    .steps .fas {
-        font-size: 38px;
-    }
-
-    .steps .step .step-title {
-        margin-top: 16px;
-        margin-bottom: 0;
-        color: #606975;
-        font-size: 14px;
-        font-weight: 500;
-    }
-
-    .steps .step:first-child .step-icon-wrap::before {
-        display: none;
-    }
-
-    .steps .step:last-child .step-icon-wrap::after {
-        display: none;
-    }
-
-    .steps .step.completed .step-icon-wrap::before,
-    .steps .step.completed .step-icon-wrap::after {
-        background-color: #0da9ef;
-    }
-
-    .steps .step.completed .step-icon {
-        border-color: #0da9ef;
-        background-color: #0da9ef;
-        color: #fff;
-    }
-
-    @media (max-width: 576px) {
-
-        .flex-sm-nowrap .step .step-icon-wrap::before,
-        .flex-sm-nowrap .step .step-icon-wrap::after {
-            display: none;
-        }
-    }
-
-    @media (max-width: 768px) {
-
-        .flex-md-nowrap .step .step-icon-wrap::before,
-        .flex-md-nowrap .step .step-icon-wrap::after {
-            display: none;
-        }
-
-        .section-title {
-            margin-top: 4rem !important;
-        }
-    }
-
-    @media (max-width: 991px) {
-
-        .flex-lg-nowrap .step .step-icon-wrap::before,
-        .flex-lg-nowrap .step .step-icon-wrap::after {
-            display: none;
-        }
-    }
-
-    @media (max-width: 1200px) {
-
-        .flex-xl-nowrap .step .step-icon-wrap::before,
-        .flex-xl-nowrap .step .step-icon-wrap::after {
-            display: none;
-        }
-    }
-</style>
 <main id="main" class="main">
     <div class="pagetitle">
         <div class="row">
@@ -150,72 +29,215 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">New Applications</h5>
-                        <div
-                            class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-                            <div class="step completed">
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon">
-                                        <i class="las la-user-cog"></i>
+                        <div>
+                            <form method="post" action="{% url 'productClass' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="prodNo" value="" id="prodNo">
+                                <input type="hidden" name="myAction" value="insert" id="myAction">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Product Type</label>
+                                        <select class="form-select" name="vetClass" id="vetClass" required>
+                                            <option selected disabled value="0">--Select--</option>
+                                            {% for res in product %}
+                                            <option value="{{res.Class}}">{{res.Class}}</option>
+                                            {% empty %}
+                                            <option selected disabled value="">Null</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Manufacturer Type</label>
+                                        <select class="form-select" name="typeofManufacture" id="typeofManufacture"
+                                            required>
+                                            <option selected disabled value="0">--Select--</option>
+                                            <option value="1">Local</option>
+                                            <option value="2">Foregn</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <h4 class="step-title">Start</h4>
-                            </div>
-                            <div class="step">
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon">
-                                        <i class="las la-user-lock"></i>
-                                    </div>
-                                </div>
-                                <h4 class="step-title"> Verify Account</h4>
-                            </div>
-                            <div class="step">
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon">
-                                        <i class="las la-unlock"></i>
-                                    </div>
-                                </div>
-                                <h4 class="step-title">Login</h4>
-                            </div>
-                            <div class="step">
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon">
-                                        <i class="las la-user-check"></i>
-                                    </div>
-                                </div>
-                                <h4 class="step-title">Dashboard</h4>
-                            </div>
+                                <button type="submit" class="btn button-87 my-3 w-100">Submit</button>
+                            </form>
                         </div>
 
-                        <div class="money-spinner mx-auto text-center" id="spinner" style="display: none">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Loading Gif" style="height: 150px;" class="img-fluid">
-                        </div>
-
-                        <form method="post" id="formSubmit">
-                            {% csrf_token %}
-                            <input type="hidden" name="prodNo" value="" id="prodNo">
-                            <input type="hidden" name="myAction" value="insert" id="myAction">
-                            <div class="row mb-2">
-                                <div class="col-md-6">
-                                    <label class="form-label">Product Type</label>
-                                    <select class="form-select" name="vetClass" id="vetClass" required>
-                                        <option selected disabled value="">Select Product</option>
-                                        {% for res in product %}
-                                        <option value="{{res.Class}}">{{res.Class}}</option>
-                                        {% empty %}
-                                        <option selected disabled value="">Null</option>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section contact">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">My Applications</h5>
+                        <!-- Bordered Tabs Justified -->
+                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                    aria-controls="home" aria-selected="true">New Application
+                                    ({{openCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                    aria-controls="profile" aria-selected="false"> Pending Application
+                                    ({{pendCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-contact" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Approved Products
+                                    ({{appCount}})</button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Rejected
+                                    ({{rejectedCount}})</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <table
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Product No</th>
+                                            <th>Product Name</th>
+                                            <th>Product Class</th>
+                                            <th>Manufacturer Type</th>
+                                            <th>Status</th>
+                                            <th>Document Date</th>
+                                            <th>Document Stage</th>
+                                            <th>Amount Payable</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in open %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Productname}}</td>
+                                            <td>{{res.Veterinary_Classes}}</td>
+                                            <td>{{res.Types_Of_Manufacturers}}</td>
+                                            <td class="text-success">{{res.Status}}</td>
+                                            <td>{{res.Document_Date}}</td>
+                                            <td>{{res.DocumentStage}}</td>
+                                            <td><span class="text-primary"
+                                                    style="margin-right: 2px;">{{res.Currency_Code}}</span>{{res.Amount_Payable}}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'productDetails' res.ProductNo %}" type="button"
+                                                    class="btn btn-success"> View <i class="bi bi-eye"></i></a>
+                                            </td>
+                                        </tr>
                                         {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Manufacturer Type</label>
-                                    <select class="form-select" name="typeofManufacture" id="typeofManufacture" required>
-                                        <option value="1">Local</option>
-                                        <option value="2">Foregn</option>
-                                    </select>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
-                            <button type="submit" class="btn button-87 my-3 w-100">Submit</button>
-                        </form>
+                            <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <table
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Product No</th>
+                                            <th>Product Name</th>
+                                            <th>Product Class</th>
+                                            <th>Status</th>
+                                            <th>Document Date</th>
+                                            <th>Document Stage</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in pending %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Productname}}</td>
+                                            <td>{{res.Veterinary_Classes}}</td>
+                                            <td class="text-success">{{res.Status}}</td>
+                                            <td>{{res.Document_Date}}</td>
+                                            <td>{{res.DocumentStage}}</td>
+                                            <td>
+                                                <a href="{% url 'productDetails' res.ProductNo %}" type="button"
+                                                    class="btn btn-success"> View <i class="bi bi-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Product No</th>
+                                            <th>Product Name</th>
+                                            <th>Product Class</th>
+                                            <th>Status</th>
+                                            <th>Document Date</th>
+                                            <th>Document Stage</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in approved %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Productname}}</td>
+                                            <td>{{res.Veterinary_Classes}}</td>
+                                            <td class="text-success">{{res.Status}}</td>
+                                            <td>{{res.Document_Date}}</td>
+                                            <td>{{res.DocumentStage}}</td>
+                                            <td>
+                                                <a href="{% url 'productDetails' res.ProductNo %}" type="button"
+                                                    class="btn btn-success"> View <i class="bi bi-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table
+                                    class="display table table-striped dt-responsive table-responsive-lg table-bordered w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Product No</th>
+                                            <th>Product Name</th>
+                                            <th>Product Class</th>
+                                            <th>Status</th>
+                                            <th>Document Date</th>
+                                            <th>Document Stage</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for res in rejected %}
+                                        <tr>
+                                            <td>{{res.ProductNo}}</td>
+                                            <td>{{res.Productname}}</td>
+                                            <td>{{res.Veterinary_Classes}}</td>
+                                            <td class="text-success">{{res.Status}}</td>
+                                            <td>{{res.Document_Date}}</td>
+                                            <td>{{res.DocumentStage}}</td>
+                                            <td>
+                                                <a href="{% url 'productDetails' res.ProductNo %}" type="button"
+                                                    class="btn btn-success"> View <i class="bi bi-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -227,83 +249,91 @@
 <script>
     $(document).ready(function () {
 
-    const $headerForm = $('#formSubmit');
-    const $spinner = $('#spinner');
 
-    $headerForm.on('submit', (e) => {
+        const $stepOne = $('#stepOne');
 
-        e.preventDefault();
 
-        if ($('#typeofManufacture').val() === '' || $('#vetClass').val() === '') {
-            alert('Please fill in all required fields.');
-            return false;
-        }
-
-        $spinner.show();
-
-        $.ajax({
-
-            type: 'POST',
-            url: '/productClass',
-            data: {
-                typeofManufacture: $('#typeofManufacture').val(),
-                vetClass: $('#vetClass').val(),
-                prodNo: $('#prodNo').val(),
-                myAction: $('#myAction').val(),
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-            },
-
-            success: function (response) {
-
-                $('#typeofManufacture, #vetClass').val('');
-                $spinner.hide();
-
-                if (response['success'] === true) {
-
-                    iziToast.show({
-                        theme: 'dark',
-                        backgroundColor: '#239B56',
-                        icon: 'las la-check-circle',
-                        title: 'Yeah',
-                        message: response['response'] + " " + "created successfully",
-                        position: 'topRight',
-                        progressBarColor: '#F4F6F7',
-
-                    });
-
-                } else if (response['error']) {
-
-                    iziToast.show({
-                        theme: 'dark',
-                        icon: 'las la-exclamation',
-                        title: 'Error',
-                        message: response['error'],
-                        position: 'topRight',
-                        progressBarColor: '#ff0800',
-                    });
-                }
-            },
-
-            error: function (error) {
-                console.log(error)
-                $spinner.hide();
-            }
-        });
-
-    });
-
-        let form = $("#formSubmit").submit(function(e) {
-            e.preventDefault()
-            $("#spinner").css("display", "block")
-            console.log($("#vetClass").val())
-            console.log($("#typeofManufacture").val())
-        })
+        const $alternativeStep = $('#alternativeStep');
+        const $pesticideStep = $('#pesticideStep');
+        const $feedStep = $('#feedStep');
         
-        if ($('#typeofManufacture').val() === '' || $('#vetClass').val() === '' ) {
-            alert('Please fill in all required fields.');
-            return false;
+
+
+
+
+        function filter_list(pk) {
+            var query = '/QYRegistration'
+            var filter_one = 'ProductNo'
+            var filter_two = 'User_code'
+
+            $.ajax({
+                url: "/filter_list/" + pk,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    query: query,
+                    filter_one: filter_one,
+                    filter_two: filter_two,
+                },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        $('#Veterinary_Classes').empty().append(data['data']['Veterinary_Classes']);
+                        $('#ProductNo').empty().append(data['data']['ProductNo']);
+                        if (data['data']['Veterinary_Classes'] === 'VETERINARY VACCINE') {
+                            $vaccineStep.show(200);
+                            $alternativeStep.hide();
+                            $pesticideStep.hide();
+                            $feedStep.hide();
+                            $biocidalStep.hide();
+                            $devicesStep.hide();
+                        } else if (data['data']['Veterinary_Classes'] === 'ALTERNATIVE MEDICINE' ||
+                            data['data']['Veterinary_Classes'] === 'VETERINARY PHARMACEUTICAL') {
+                            $alternativeStep.show(200);
+                            $vaccineStep.hide();
+                            $pesticideStep.hide();
+                            $feedStep.hide();
+                            $biocidalStep.hide();
+                            $devicesStep.hide();
+                        } else if (data['data']['Veterinary_Classes'] === 'VETERINARY PESTICIDE') {
+                            $pesticideStep.show(200);
+                            $vaccineStep.hide();
+                            $alternativeStep.hide();
+                            $feedStep.hide();
+                            $biocidalStep.hide();
+                            $devicesStep.hide();
+                        } else if (data['data']['Veterinary_Classes'] === 'FEED ADDITIVES') {
+                            $feedStep.show(200);
+                            $vaccineStep.hide();
+                            $alternativeStep.hide();
+                            $pesticideStep.hide();
+                            $biocidalStep.hide();
+                            $devicesStep.hide();
+                        } else if (data['data']['Veterinary_Classes'] === 'BIOCIDAL PRODUCTS') {
+                            $biocidalStep.show(200);
+                            $vaccineStep.hide();
+                            $alternativeStep.hide();
+                            $pesticideStep.hide();
+                            $feedStep.hide();
+                            $devicesStep.hide();
+                        } else if (data['data']['Veterinary_Classes'] === 'VETERINARY DEVICE') {
+                            $devicesStep.show(200);
+                            $vaccineStep.hide();
+                            $alternativeStep.hide();
+                            $pesticideStep.hide();
+                            $feedStep.hide();
+                            $biocidalStep.hide();
+                        }
+                    } else {
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+
         }
-})
+    })
 </script>
 
 {% endblock %}

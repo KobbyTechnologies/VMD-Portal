@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "renewal",
     "gmp",
     "myRequest",
+    "permit",
 ]
 
 MIDDLEWARE = [

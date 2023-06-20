@@ -1,0 +1,575 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+<main id="main" class="main">
+    <div class="pagetitle">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Wholesalers Premises Permit</h1>
+            </div>
+        </div>
+    </div><!-- End Page Title -->
+    <section class="section contact">
+        <div class="row">
+            <div class="col-md-12">
+                <div
+                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                    <div class="step completed">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Permit Form</h4>
+                    </div>
+                    <div class="step step2Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-tie"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Professionals Form</h4>
+                    </div>
+                    <div class="step step3Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-unlock"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Ingredients Form</h4>
+                    </div>
+                    <div class="step step4Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Manufacturer Form</h4>
+                    </div>
+                    <div class="step step5Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Marketing Form</h4>
+                    </div>
+                    <div class="step step6Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Countries Registered</h4>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Attachments</h4>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Payment</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="stepTwo" class="bg-white p-4" style="display: none">
+                    <div class="money-spinner mx-auto text-center" id="spinner" style="display:none">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title">
+                            Other Professionals Working in the Premise
+                        </h5>
+                        <div id="Professionals_btn" style="display: none">
+                            <button class="btn btn-secondary" id="ingredientPrev"><i
+                                    class="las la-angle-double-left"></i> Prev
+                                Step</button>
+                            <button class="btn btn-primary" id="ingredientNext">Next Step <i
+                                    class="las la-angle-double-right"></i></button>
+                        </div>
+                    </div>
+                    {% if permit.Status == 'Open' %}
+                    <form method="POST" id="ProfessionalsForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
+                        <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label class="form-label">Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="pro_name" id="pro_name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label class="form-label">Position in the Business<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="position_in_business"
+                                        id="position_in_business" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label class="form-label">Reg/Enrollment No.<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="reg_no" id="reg_no" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-2">
+                                    <label class="form-label">Qualification And Experience <span
+                                            class="text-danger">*</span></label>
+                                    <textarea class="form-control longText" name="qualificationAndExperience"
+                                        id="qualificationAndExperience"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
+                    </form>
+                    {% endif %}
+                    <table id="ProfessionalsTable"
+                        class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Position in the Business</th>
+                                <th scope="col">Reg/Enrollment No.</th>
+                                <th scope="col">Qualification And Experience </th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Wholesalers Premises Permit {{permit.PremiseNo}} Details
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <form action="{% url 'permit' %}" class="bg-white p-4" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="premiseNo" value="{{permit.PremiseNo}}">
+                                    <input type="hidden" name="myAction" id="myAction" value="modify">
+                                    <input type="hidden" name="iAgree" value="True">
+                                    <div class="tab">
+                                        <div class="border border-success rounded p-3 my-3">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Applicant Name </label>
+                                                    <input type="text" class="form-control" name="applicantName"
+                                                        id="applicantName" value="{{permit.ApplicantName}}" disabled>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Application Date</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{permit.ApplicationDate}}" disabled>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Amount Payable</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{permit.AmountPayable}}" disabled>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="border border-success rounded p-3  my-3">
+                                        <div class="row my-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Professional Registration No</label>
+                                                <input type="text" class="form-control" name="professionalRegNo"
+                                                    id="professionalRegNo" value="{{permit.ProfessionalRegNo}}"
+                                                    disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Nationality</label>
+                                                <select class="form-select" aria-label="Default select example"
+                                                    name="nationality" id="nationality" disabled>
+                                                    <option selected disabled value="0">Choose...</option>
+                                                    {% for res in country %}
+                                                    <option value="{{res.Code}}">{{res.Name}}</option>
+                                                    {% empty %}
+                                                    <option value="KE">KENYA</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">ID/Passport/Alien ID No</label>
+                                                <input type="text" class="form-control" name="iDorPassportOrAlienIDNo"
+                                                    id="iDorPassportOrAlienIDNo"
+                                                    value="{{permit.IDOrPassportOrAlienIDNo}}" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border border-success rounded p-3 my-3">
+                                        <div class="row my-2">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Premise Name</label>
+                                                <input type="text" class="form-control" name="premiseName"
+                                                    id="premiseName" value="{{permit.Premise_Name}}" disabled>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Period of Experience Working in A Veterinary
+                                                    Pharmacy</label>
+                                                <input type="text" class="form-control" name="periodOfExperience"
+                                                    id="periodOfExperience" value="{{permit.Experience}}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Qualification<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="qualification"
+                                                        id="qualification" value="{{permit.Qualification}}" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border border-success rounded p-3 my-3">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Premise Location <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="premiseLocation"
+                                                    id="premiseLocation" value="{{permit.PremiseLocation}}" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Town <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="town" id="town"
+                                                    value="{{permit.Town}}" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Road <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="road" id="road"
+                                                    value="{{permit.Road}}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Building <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="building" id="building"
+                                                    value="{{permit.Building}}" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Plot No</label>
+                                                <input type="text" class="form-control" name="plotNo" id="plotNo"
+                                                    value="{{permit.Plot_No}}" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">First Time Application <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-select" aria-label="Default select example"
+                                                    name="firstTimeApplication" id="firstTimeApplication">
+                                                    <option value="0">--select--</option>
+                                                    <option value="1">Yes</option>
+                                                    <option value="2">True</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if permit.Status == 'Open' %}
+                                    <button type="submit" class="btn button-87 my-3 w-100">Edit Form</button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include 'alert.html' %}
+            </div>
+        </div>
+
+    </section>
+</main>
+
+{% include 'footer.html' %}
+<script>
+    $(document).ready(function () {
+
+        var Nationality = '{{permit.Nationality}}';
+        var documentStatus = '{{permit.Status}}';
+        var firstTimeApplication = '{{permit.FirstTimeApplication}}';
+        var AmountPayable = '{{permit.AmountPayable}}';
+        var document_header = '{{permit.PremiseNo}}';
+
+        const $step2Icon = $('.step2Icon');
+        const $stepTwo = $('#stepTwo');
+        const $Professionals_btn = $('#Professionals_btn');
+        const $ProfessionalsForm = $('#ProfessionalsForm');
+        const $spinner = $('#spinner');
+
+        Amount_Payable = parseInt(AmountPayable)
+
+        if (Amount_Payable > 0) {
+            $stepTwo.show();
+        }
+        $('#nationality option[value="' + Nationality + '"]').prop('selected', true);
+
+        if (firstTimeApplication == 'YES') {
+            $('#firstTimeApplication option[value="1"]').prop('selected', true);
+        } else if (firstTimeApplication == 'NO') {
+            $('#firstTimeApplication option[value="2"]').prop('selected', true);
+        } else {
+            $('#firstTimeApplication option[value="0"]').prop('selected', true);
+        }
+
+        if (documentStatus === 'Open') {
+            $('#professionalRegNo').prop('disabled', false);
+            $('#nationality').prop('disabled', false);
+            $('#iDorPassportOrAlienIDNo').prop('disabled', false);
+            $('#premiseName').prop('disabled', false);
+            $('#periodOfExperience').prop('disabled', false);
+            $('#qualification').prop('disabled', false);
+            $('#town').prop('disabled', false);
+            $('#road').prop('disabled', false);
+            $('#building').prop('disabled', false);
+            $('#plotNo').prop('disabled', false);
+            $('#firstTimeApplication').prop('disabled', false);
+            $('#premiseLocation').prop('disabled', false);
+            $('#applicantName').prop('disabled', false);
+        }
+
+        $ProfessionalsForm.on('submit', (e) => {
+            e.preventDefault();
+            if ($('#pro_name').val() === '' || $('#position_in_business')
+                .val() === '' || $(
+                    '#reg_no')
+                .val() === '' || $('#qualificationAndExperience').val() === '') {
+                alert('Please fill in all required fields.');
+                return false;
+            }
+            $('#spinner').show();
+
+            $.ajax({
+                type: 'POST',
+                url: '/permit/' + document_header + "/",
+                data: {
+                    myAction: $("#Professionals_my_action").val(),
+                    lineNo: $('#Professionals_lineNo').val(),
+                    pro_name: $('#pro_name').val(),
+                    position_in_business: $('#position_in_business').val(),
+                    reg_no: $('#reg_no').val(),
+                    qualificationAndExperience: $('#qualificationAndExperience').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (response) {
+                    $('#spinner').hide();
+                    if (response['response']) {
+                        oadProfessionals(document_header);
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            title: 'Yeah',
+                            message: "created successfully",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                        $('#pro_name, #position_in_business, #reg_no')
+                            .val(
+                                '');
+                        $('#qualificationAndExperience').val('');
+                    } else if (response['error']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response['error'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                    $('#spinner').hide();
+
+                }
+            });
+        });
+
+        loadProfessionals(document_header);
+
+        function loadProfessionals(pk) {
+            $.ajax({
+                url: "/Professionals/" + pk + "/",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tableBody = $('#ProfessionalsTable tbody');
+                    tableBody.empty(); // clear existing rows if any
+                    // iterate through the data and append to the table
+                    for (var i = 0; i < data[1].length; i++) {
+                        if (data[1].length > 0) {
+                            $step2Icon.addClass('completed');
+                            $Professionals_btn.show();
+                        }
+                        var Name = data[1][i].Name;
+                        var PositionIntheBusiness = data[1][i].PositionIntheBusiness;
+                        var RegistrationNo = data[1][i].RegistrationNo;
+                        var QualificationAndExperience = data[1][i].QualificationAndExperience;
+                        let Line_No = data[1][i].LineNo;
+
+                        var row = $('<tr>');
+                        row.append($('<td>').text(Name));
+                        row.append($('<td>').text(PositionIntheBusiness));
+                        row.append($('<td>').text(RegistrationNo));
+                        row.append($('<td>').text(QualificationAndExperience));
+                        var form = $('<form>').attr({
+                            method: 'POST',
+                            action: '/permit/' + pk + '/',
+                        }).append('{% csrf_token %}');
+
+                        var pro_Name = $('<input>').attr({
+                            type: 'hidden',
+                            name: 'pro_name',
+                            value: "0"
+                        });
+                        var pro_position_in_business = $('<input>').attr({
+                            type: 'hidden',
+                            name: 'position_in_business',
+                            value: "0"
+                        });
+                        var pro_reg_no = $('<input>').attr({
+                            type: 'hidden',
+                            name: 'reg_no',
+                            value: "0"
+                        });
+                        var pro_qualificationAndExperience = $('<input>').attr({
+                            type: 'hidden',
+                            name: 'qualificationAndExperience',
+                            value: "0"
+                        });
+
+                        var pro_lineNoInput = $('<input>').attr({
+                            type: 'hidden',
+                            name: 'lineNo',
+                            value: Line_No
+                        });
+                        var pro_myActionInput = $('<input>').attr({
+                            type: 'hidden',
+                            name: 'myAction',
+                            value: 'delete'
+                        });
+                        var pro_submitBtn = $('<button>').attr({
+                            type: 'submit',
+                            class: 'btn btn-danger'
+                        }).text('delete');
+
+                        // Handle form submission
+                        form.submit(function (event) {
+                            event.preventDefault(); // prevent default form submission
+                            $.ajax({
+                                url: form.attr('action'),
+                                type: form.attr('method'),
+                                data: form.serialize(),
+                                success: function (response) {
+                                    loadProfessionals(pk);
+                                    if (response['response']) {
+                                        iziToast.show({
+                                            theme: 'dark',
+                                            backgroundColor: '#239B56',
+                                            icon: 'las la-check-circle',
+                                            message: "deleted",
+                                            position: 'topRight',
+                                            progressBarColor: '#F4F6F7',
+                                        });
+                                    } else {
+                                        iziToast.show({
+                                            theme: 'dark',
+                                            icon: 'las la-exclamation',
+                                            title: 'Error',
+                                            message: response[
+                                                'message'],
+                                            position: 'topRight',
+                                            progressBarColor: '#ff0800',
+                                        });
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log("Error:", error);
+                                    iziToast.show({
+                                        theme: 'dark',
+                                        icon: 'las la-exclamation',
+                                        title: 'Error',
+                                        message: 'CSRF verification failed. Request aborted.',
+                                        position: 'topRight',
+                                        progressBarColor: '#ff0800',
+                                    });
+                                }
+                            });
+                        });
+
+                        var td = $('<td>').append(form.append(pro_Name,
+                            pro_position_in_business,
+                            pro_reg_no,
+                            pro_qualificationAndExperience, pro_lineNoInput,
+                            pro_myActionInput, pro_submitBtn));
+                        row.append(td);
+
+                        tableBody.append(row);
+                    }
+                    // initialize DataTables for each table
+                    if (!$.fn.DataTable.isDataTable('#ProfessionalsTable')) {
+                        $('#ProfessionalsTable').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
+
+    })
+</script>
+{% endblock %}

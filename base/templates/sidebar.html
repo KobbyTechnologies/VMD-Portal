@@ -21,11 +21,6 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'allApplications' %}">
-            <i class="bi bi-circle"></i><span>My Applications</span>
-          </a>
-        </li>
-        <li>
           <a href="{% url 'retention' %}">
             <i class="bi bi-circle"></i><span>Retention</span>
           </a>
@@ -39,7 +34,8 @@
       </ul>
     </li>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="{% url 'gmp' %}" data-bs-target="#components-nav-two" data-bs-toggle="collapse" href="#">
+      <a class="nav-link collapsed" href="{% url 'gmp' %}" data-bs-target="#components-nav-two"
+        data-bs-toggle="collapse" href="#">
         <i class="bi bi-activity"></i>
         <span>Good Manufacturing Practices</span>
       </a>
@@ -66,6 +62,12 @@
       <a class="nav-link collapsed" href="{% url 'variation' %}">
         <i class="bi bi-back"></i>
         <span>Variation</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'permit' %}">
+        <i class="bi bi-back"></i>
+        <span>Wholesalers Premises Permit</span>
       </a>
     </li>
     <li class="nav-item">

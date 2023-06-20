@@ -1,275 +1,263 @@
-<section class="mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            {% include 'alert.html' %}
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Registration of {{res.Veterinary_Classes}}
-                        {{res.ProductNo}}
-                    </h5>
-                    <form action="{% url 'VeterinaryPharmaceutical' res.ProductNo %}" method="POST" novalidate>
-                        {% csrf_token %}
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                            <div class="accordion-item">
-                                <hr class="dropdown-divider">
-                                <h5>Particulars of the Applicant</h5>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label class="form-label">Company Name </label>
-                                        <input type="text" class="form-control" name="companyName">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Company Address</label>
-                                        <input type="text" class="form-control" name="companyAddress">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Company Country </label>
-                                        <select name="CountryOrigin" class="form-select"
-                                            aria-label="Default select example">
-                                            <option selected value="" disabled>--Select--</option>
-                                            {% for res in country %}
-                                            <option value="{{res.Code}}">{{res.Name}}</option>
-                                            {% empty %}
-                                            <option value="KE">KENYA</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row my-2">
-                                    <div class="col-md-4">
-                                        <label class="form-label">Company Telephone </label>
-                                        <input type="text" class="form-control" name="companyTel">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Company Fax </label>
-                                        <input type="text" class="form-control" name="companyFax">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Company Email </label>
-                                        <input type="email" class="form-control" name="companyEmail">
-                                    </div>
-                                </div>
-                                <hr class="dropdown-divider">
-                                <h5>Particulars of the Product</h5>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse show"
-                                    aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">
-                                        <div class="row my-2">
-                                            <div class="col-md-12">
-                                                <label class="form-label">Product Name </label>
-                                                <input type="text" class="form-control" name="prodName">
-                                                <div class="form-text">Trade Name
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="mb-2">
-                                                    <label class="form-label">Pack Size </label>
-                                                    <textarea class="form-control" name="packSize"
-                                                        placeholder="200 ml, 500ml" rows="3"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+<form id="pharmaceuticalForm" method="POST" novalidate>
+    {% csrf_token %}
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <hr class="dropdown-divider">
+            <h5>Particulars of the Applicant</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Company Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="companyName" id="pharmaceuticalCompanyName">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Company Address <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="companyAddress" id="pharmaceuticalCompanyAddress">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Company Country <span class="text-danger">*</span></label>
+                    <select name="CountryOrigin" id="pharmaceuticalCountryOrigin" class="form-select"
+                        aria-label="Default select example">
+                        <option selected value="" disabled>--Select--</option>
+                        {% for res in country %}
+                        <option value="{{res.Code}}">{{res.Name}}</option>
+                        {% empty %}
+                        <option value="KE">KENYA</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-md-4">
+                    <label class="form-label">Company Telephone <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="companyTel" id="pharmaceuticalCompanyTel">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Company Fax <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="companyFax" id="pharmaceuticalCompanyFax">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Company Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" name="companyEmail" id="pharmaceuticalCompanyEmail">
+                </div>
+            </div>
+            <hr class="dropdown-divider">
+            <h5>Particulars of the Product</h5>
+            <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="prodName" id="pharmaceuticalProdName">
+                            <div class="form-text">Trade Name
                             </div>
-                            <div class="accordion-item">
-                                <div id="flush-collapseTwo" class="accordion-collapse collapse show"
-                                    aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label class="form-label">Dosage</label>
-                                                <input type="text" class="form-control" name="PharmaceuticalDosage"
-                                                    required>
-                                                <div class="form-text">Dosage form of the veterinary product</div>
-                                            </div>
-
-                                        </div>
-                                        <div class="row my-2">
-                                            <div class="col-md-12">
-                                                <label class="form-label">Route(s) of administration</label>
-                                                <textarea class="form-control longText"
-                                                    name="RouteOfAdministration"></textarea>
-
-                                                <div class="form-text">
-                                                    Route(s) of administration (use current list of
-                                                    standard terms - European Pharmacopoeia)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row my-2">
-                                            <div class="col-md-12">
-                                                <label class="form-label">Main Indications</label>
-                                                <textarea class="form-control longText"
-                                                    name="mainIndication"></textarea>
-
-                                            </div>
-                                        </div>
-                                        <div class="row my-2">
-                                            <div class="col-md-12">
-                                                <label class="form-label">Description of the Product</label>
-                                                <textarea class="form-control longText"
-                                                    name="descriptionOfProduct"></textarea>
-                                            </div>
-                                        </div>
-                                        <hr class="dropdown-divider">
-                                        <div class="row my-2">
-                                            <h5>Proposed shelf life</h5>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Proposed shelf life (after reconstitution or
-                                                    dilution)</label>
-                                                <input type="text" class="form-control" name="shelfLifeAfterDilution">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Proposed shelf life (after first opening
-                                                    container)</label>
-                                                <input type="text" class="form-control"
-                                                    name="shelfLifeAfterFirstOpening">
-                                            </div>
-                                        </div>
-                                        <div class="row my-2">
-                                            <div class="col-md-6">
-                                                <label class="form-label">Proposed storage condition</label>
-                                                <textarea class="form-control longText"
-                                                    name="storageConditions"></textarea>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Proposed storage conditions after first
-                                                    opening</label>
-                                                <textarea class="form-control longText"
-                                                    name="storageAfterOpening"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h5 class="my-3">ATC and Legal category</h5>
-                                <div id="flush-collapseThree" class="accordion-collapse collapse show"
-                                    aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">
-                                        <div class="row my-2">
-                                            <h5>Pharmaceutical Dosage form and route of administration</h5>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Pharmacotherapeutic group</label>
-                                                <input type="text" class="form-control" name="PharmacotherapeuticGroup">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">ATC Code <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="ATCCode">
-                                                <div class="form-text">Please use current ATC code.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row my-2">
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label class="form-label">Country of Origin <span
-                                                            class="text-danger">*</span></label>
-                                                    <select name="CountryOfOrigin" class="form-select"
-                                                        aria-label="Default select example">
-                                                        <option selected value="" disabled>--Select--</option>
-                                                        {% for res in country %}
-                                                        <option value="{{res.Code}}">{{res.Name}}</option>
-                                                        {% empty %}
-                                                        <option value="KE">KENYA</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label class="form-label">Country of Release</label>
-                                                    <select name="CountryOfRelease" class="form-select"
-                                                        aria-label="Default select example">
-                                                        <option selected value="" disabled>--Select--</option>
-                                                        {% for res in country %}
-                                                        <option value="{{res.Code}}">{{res.Name}}</option>
-                                                        {% empty %}
-                                                        <option value="KE">KENYA</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr class="dropdown-divider">
-                                        <div class="row my-2">
-                                            <div class="col-md-12">
-                                                <div class="row mt-4">
-                                                    <div class="col-md-6">
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="controlledVeterinaryMedicine" id="legal2"
-                                                                    value="True">
-                                                                Controlled Veterinary Medicine (POM-V category IA)
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="prescriptionOnlyMedicine" id="legal3"
-                                                                    value="True">
-                                                                Prescription Only Medicine, (IB-POM-V)
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    value="True" id="legal4" name="nonPharmacy">
-                                                                Product Dispensed from Non-pharmacy outlets and
-                                                                pharmacies
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    value="True" id="legal5" name="pharmaciesOnly">
-                                                                Pharmacies only
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr class="dropdown-divider">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="" class="form-label">Signatory Name</label>
-                                                <input type="text" class="form-control" name="signatoryName">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="" class="form-label">Signatory Position</label>
-                                                <input type="text" class="form-control" name="signatoryPosition">
-                                            </div>
-                                        </div>
-                                        <div class="row my-2">
-                                            <div class="col-md-12">
-                                                <div class="mb-2">
-                                                    <input class="form-check-input" type="checkbox" value="True"
-                                                        name="iAgree" checked>
-                                                    <label class="form-check-label text-primary">
-                                                        I hereby apply for registration of
-                                                        the product detailed above and
-                                                        declare that all the information herein is correct
-                                                        and true.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-success my-2">Submit</button>
                         </div>
-                    </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Pack Size <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="packSize" id="pharmaceuticalPackSize"
+                                    placeholder="200 ml, 500ml" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="accordion-item">
+            <div id="flush-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="flush-headingTwo"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">Dosage <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="PharmaceuticalDosage"
+                                id="PharmaceuticalDosage" required>
+                            <div class="form-text">Dosage form of the veterinary product</div>
+                        </div>
+
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Route(s) of administration <span
+                                    class="text-danger">*</span></label>
+                            <textarea class="form-control longText" name="RouteOfAdministration"
+                                id="RouteOfAdministration"></textarea>
+
+                            <div class="form-text">
+                                Route(s) of administration (use current list of
+                                standard terms - European Pharmacopoeia)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Main Indications <span class="text-danger">*</span></label>
+                            <textarea class="form-control longText" name="mainIndication"
+                                id="mainIndication"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <label class="form-label">Description of the Product <span
+                                    class="text-danger">*</span></label>
+                            <textarea class="form-control longText" name="descriptionOfProduct"
+                                id="descriptionOfProduct"></textarea>
+                        </div>
+                    </div>
+                    <hr class="dropdown-divider">
+                    <div class="row my-2">
+                        <h5>Proposed shelf life</h5>
+                        <div class="col-md-6">
+                            <label class="form-label">Proposed shelf life (after reconstitution or
+                                dilution) <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="shelfLifeAfterDilution"
+                                id="shelfLifeAfterDilution">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Proposed shelf life (after first opening
+                                container) <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="shelfLifeAfterFirstOpening"
+                                id="shelfLifeAfterFirstOpening">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Proposed storage condition <span
+                                    class="text-danger">*</span></label>
+                            <textarea class="form-control longText" name="storageConditions"
+                                id="storageConditions"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Proposed storage conditions after first
+                                opening <span class="text-danger">*</span></label>
+                            <textarea class="form-control longText" name="storageAfterOpening"
+                                id="storageAfterOpening"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h5 class="my-3">ATC and Legal category</h5>
+            <div id="flush-collapseThree" class="accordion-collapse collapse show" aria-labelledby="flush-headingThree"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="row my-2">
+                        <h5>Pharmaceutical Dosage form and route of administration</h5>
+                        <div class="col-md-6">
+                            <label class="form-label">Pharmacotherapeutic group</label>
+                            <input type="text" class="form-control" name="PharmacotherapeuticGroup"
+                                id="PharmacotherapeuticGroup">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ATC Code <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="ATCCode" id="ATCCode">
+                            <div class="form-text">Please use current ATC code.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label class="form-label">Country of Origin <span class="text-danger">*</span></label>
+                                <select name="CountryOfOrigin" id="CountryOfOrigin" class="form-select"
+                                    aria-label="Default select example">
+                                    <option selected value="" disabled>--Select--</option>
+                                    {% for res in country %}
+                                    <option value="{{res.Code}}">{{res.Name}}</option>
+                                    {% empty %}
+                                    <option value="KE">KENYA</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label class="form-label">Country of Release <span class="text-danger">*</span></label>
+                                <select name="CountryOfRelease" id="CountryOfRelease" class="form-select"
+                                    aria-label="Default select example">
+                                    <option selected value="" disabled>--Select--</option>
+                                    {% for res in country %}
+                                    <option value="{{res.Code}}">{{res.Name}}</option>
+                                    {% empty %}
+                                    <option value="KE">KENYA</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="dropdown-divider">
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox"
+                                                name="controlledVeterinaryMedicine" id="legal2" value="True">
+                                            Controlled Veterinary Medicine (POM-V category IA)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox"
+                                                name="prescriptionOnlyMedicine" id="legal3" value="True">
+                                            Prescription Only Medicine, (IB-POM-V)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="True" id="legal4"
+                                                name="nonPharmacy">
+                                            Product Dispensed from Non-pharmacy outlets and
+                                            pharmacies
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="True" id="legal5"
+                                                name="pharmaciesOnly">
+                                            Pharmacies only
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="dropdown-divider">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Signatory Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="signatoryName" id="signatoryName">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Signatory Position <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="signatoryPosition" id="signatoryPosition">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <input class="form-check-input" type="checkbox" value="True" name="iAgree" id="iAgree"
+                                    checked>
+                                <label class="form-check-label text-primary">
+                                    I hereby apply for registration of
+                                    the product detailed above and
+                                    declare that all the information herein is correct
+                                    and true. <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success my-2 w-100">Submit</button>
     </div>
-</section>
+</form>
