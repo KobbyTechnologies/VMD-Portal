@@ -174,7 +174,6 @@ class PermitDetails(UserObjectMixins, View):
                 qualificationAndExperience,
                 userCode,
             )
-            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response == True:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -209,6 +208,171 @@ class Professionals(UserObjectMixins, View):
         except Exception as e:
             print(e)
             return JsonResponse({"error": str(e)}, safe=False)
+
+
+class Customer(UserObjectMixins, View):
+    async def post(self, request):
+        try:
+            premiseNo = request.POST.get("premiseNo")
+            userCode = await sync_to_async(request.session.__getitem__)("UserID")
+
+            response = self.make_soap_request(
+                "FnWholesalePremisePermitPayment",
+                premiseNo,
+                userCode,
+            )
+            if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+                if response == True:
+                    return JsonResponse({"response": str(response)}, safe=False)
+                return JsonResponse({"error": str(response)}, safe=False)
+            else:
+                if response == True:
+                    messages.success(request, "Request Successful")
+                    return redirect("PermitDetails", pk=premiseNo)
+                else:
+                    messages.error(request, f"{response}")
+                    return redirect("PermitDetails", pk=premiseNo)
+        except Exception as e:
+            logging.exception(e)
+            if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+                return JsonResponse({"error": str(e)}, safe=False)
+            else:
+                messages.error(request, f"{e}")
+                return redirect("PermitDetails", pk=premiseNo)
+
+
+class FNGenerateInvoice(UserObjectMixins, View):
+    def post(self, request):
+        try:
+            premiseNo = request.POST.get("premiseNo")
+            filenameFromApp = "invoice_" + premiseNo + ".pdf"
+            response = self.make_soap_request(
+                "FNGenerateWholesalePremiseInvoice", premiseNo
+            )
+
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses["Content-Disposition"] = f"inline;filename={filenameFromApp}"
+            return responses
+        except Exception as e:
+            messages.error(request, f"Failed, {e}")
+            logging.exception(e)
+            return redirect("PermitDetails", pk=premiseNo)
+
+
+class PermitAttachments(UserObjectMixins, View):
+    async def get(self, request, pk):
+        try:
+            Attachments = []
+            async with aiohttp.ClientSession() as session:
+                task_get_attachments = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session, "/QYDocumentAttachments", "No_", "eq", pk
+                    )
+                )
+                response = await asyncio.gather(task_get_attachments)
+
+                Attachments = [x for x in response[0]]
+                return JsonResponse(Attachments, safe=False)
+
+        except Exception as e:
+            logging.exception(e)
+            return JsonResponse({"error": str(e)}, safe=False)
+
+    async def post(self, request, pk):
+        try:
+            attachments = request.FILES.getlist("attachment")
+            tableID = 50040
+            attachment_names = []
+            response = False
+            for file in attachments:
+                fileName = file.name
+                attachment_names.append(fileName)
+                attachment = base64.b64encode(file.read())
+                response = self.make_soap_request(
+                    "FnAttachementWholesalePremisePermit",
+                    pk,
+                    fileName,
+                    attachment,
+                    tableID,
+                )
+            print(response)
+            if response is not None:
+                if response == True:
+                    message = "Uploaded {} attachments successfully".format(
+                        len(attachments)
+                    )
+                    return JsonResponse({"success": True, "message": message})
+                error = "Upload failed: {}".format(response)
+                return JsonResponse({"success": False, "error": error})
+            error = "Upload failed: Response from server was None"
+            return JsonResponse({"success": False, "error": error})
+        except Exception as e:
+            error = "Upload failed: {}".format(e)
+            logging.exception(e)
+            return JsonResponse({"success": False, "error": error})
+
+
+class RemovePermitAttachment(UserObjectMixins, View):
+    def post(self, request):
+        try:
+            docID = int(request.POST.get("docID"))
+            tableID = int(request.POST.get("tableID"))
+            leaveCode = request.POST.get("leaveCode")
+            response = self.make_soap_request(
+                "FnDeleteDocumentAttachment", leaveCode, docID, tableID
+            )
+            if response == True:
+                return JsonResponse(
+                    {"success": True, "message": "Deleted successfully"}
+                )
+            return JsonResponse({"success": False, "message": f"{response}"})
+        except Exception as e:
+            error = "Upload failed: {}".format(e)
+            logging.exception(e)
+            return JsonResponse({"success": False, "error": error})
+
+
+class SubmitWholesalePermit(UserObjectMixins, View):
+    def post(self, request, pk):
+        try:
+            userCode = request.session["UserID"]
+
+            response = self.make_soap_request("SubmitWholesalePermit", pk, userCode)
+
+            if response == True:
+                return JsonResponse({"response": str(response)}, safe=False)
+            return JsonResponse({"error": str(response)}, safe=False)
+        except Exception as e:
+            print(e)
+            return JsonResponse({"error": str(e)}, safe=False)
+
+
+class PremiseCert(UserObjectMixins, View):
+    def post(self, request, pk):
+        try:
+            filenameFromApp = "Premise_Cert_" + pk + ".pdf"
+            response = self.make_soap_request(
+                "PrintWholesalePremisePermitCertificate", pk
+            )
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses["Content-Disposition"] = f"inline;filename={filenameFromApp}"
+            return responses
+        except Exception as e:
+            messages.error(request, f"Failed, {e}")
+            logging.exception(e)
+            return redirect("PermitDetails", pk=pk)
 
 
 # QyWholesalePremisePermit

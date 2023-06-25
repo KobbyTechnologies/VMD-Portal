@@ -393,3 +393,63 @@ button:hover {
     display: none;
   }
 }
+.file-man-box {
+  padding: 10px;
+  border: 1px solid #e3eaef;
+  border-radius: 5px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.file-man-box .file-close {
+  color: #f1556c !important;
+  position: absolute !important;
+  line-height: 24px !important;
+  font-size: 24px !important;
+  right: 10px !important;
+  top: 10px !important;
+  visibility: hidden;
+}
+
+.file-man-box .file-img-box {
+  line-height: 120px;
+  text-align: center;
+}
+
+.file-man-box .file-img-box img {
+  height: 64px;
+}
+
+.deleteBtn {
+  background: none;
+  outline: none;
+  border: none;
+}
+
+.file-man-box .file-download {
+  font-size: 30px;
+  color: #98a6ad;
+  position: absolute;
+  bottom: 5px;
+  right: 1px;
+  background: none;
+  border: none;
+}
+
+.file-man-box .file-download:hover {
+  color: #313a46;
+}
+
+.file-man-box .file-man-title {
+  padding-right: 15px;
+}
+
+.file-man-box:hover {
+  -webkit-box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06),
+    0 1px 0 0 rgba(0, 0, 0, 0.02);
+  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.file-man-box:hover .file-close {
+  visibility: visible;
+}
