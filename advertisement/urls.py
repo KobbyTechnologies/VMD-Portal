@@ -12,26 +12,29 @@ urlpatterns = [
         views.AdvertisementLines.as_view(),
         name="AdvertisementLines",
     ),
-    # path("customer/", views.Customer.as_view(), name="customer"),
-    # path("invoice/", views.FNGenerateInvoice.as_view(), name="invoice"),
-    # path(
-    #     "PermitAttachments/<str:pk>/",
-    #     views.PermitAttachments.as_view(),
-    #     name="PermitAttachments",
-    # ),
-    # path(
-    #     "RemovePermitAttachment/",
-    #     views.RemovePermitAttachment.as_view(),
-    #     name="RemovePermitAttachment",
-    # ),
-    # path(
-    #     "submit/permit/<str:pk>/",
-    #     views.SubmitWholesalePermit.as_view(),
-    #     name="submitPermit",
-    # ),
-    # path(
-    #     "premise/cert/<str:pk>/",
-    #     views.PremiseCert.as_view(),
-    #     name="PremiseCert",
-    # ),
+    path(
+        "AdvertisingCustomer/",
+        views.AdvertisingCustomer.as_view(),
+        name="AdvertisingCustomer",
+    ),
+    path(
+        "AdvertisingInvoice/",
+        views.AdvertisingInvoice.as_view(),
+        name="AdvertisingInvoice",
+    ),
+    path(
+        "AdvertAttachments/<str:pk>/",
+        views.AdvertAttachments.as_view(),
+        name="AdvertAttachments",
+    ),
+    path(
+        "submit/advert/<str:pk>/",
+        views.SubmitAdvert.as_view(),
+        name="SubmitAdvert",
+    ),
+    path(
+        "premise/cert/<str:pk>/",
+        views.AdvertCert.as_view(),
+        name="AdvertCert",
+    ),
 ]

@@ -880,7 +880,7 @@
                         if (documentStatus === 'Open') {
                             var form = $('<form>').attr({
                                 method: 'POST',
-                                action: '/permit/' + pk + '/',
+                                action: '/retailer/' + pk + '/',
                             }).append('{% csrf_token %}');
 
                             var pro_Name = $('<input>').attr({

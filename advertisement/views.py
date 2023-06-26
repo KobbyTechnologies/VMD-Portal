@@ -58,14 +58,12 @@ class Advertisement(UserObjectMixins, View):
         try:
             advertisementNo = request.POST.get("advertisementNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            countryOfManufacture = request.POST.get("countryOfManufacture")
             formOfAdvertisement = request.POST.get("formOfAdvertisement")
             myAction = request.POST.get("myAction")
 
             response = self.make_soap_request(
                 "FnAdvartisementCard",
                 advertisementNo,
-                countryOfManufacture,
                 formOfAdvertisement,
                 userCode,
                 myAction,
@@ -161,17 +159,17 @@ class AdvertiseDetails(UserObjectMixins, View):
             else:
                 if response == True:
                     messages.success(request, "Request Successful")
-                    return redirect("PermitDetails", pk=pk)
+                    return redirect("AdvertiseDetails", pk=pk)
                 else:
                     messages.error(request, f"{response}")
-                    return redirect("PermitDetails", pk=pk)
+                    return redirect("AdvertiseDetails", pk=pk)
         except Exception as e:
             logging.exception(e)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 return JsonResponse({"error": str(e)}, safe=False)
             else:
                 messages.error(request, f"{e}")
-                return redirect("PermitDetails", pk=pk)
+                return redirect("AdvertiseDetails", pk=pk)
 
 
 class AdvertisementLines(UserObjectMixins, View):
@@ -188,3 +186,146 @@ class AdvertisementLines(UserObjectMixins, View):
         except Exception as e:
             print(e)
             return JsonResponse({"error": str(e)}, safe=False)
+
+
+class AdvertisingCustomer(UserObjectMixins, View):
+    async def post(self, request):
+        try:
+            advartisementNo = request.POST.get("advartisementNo")
+            userCode = await sync_to_async(request.session.__getitem__)("UserID")
+
+            response = self.make_soap_request(
+                "FnAdvartisementPayment",
+                advartisementNo,
+                userCode,
+            )
+            print(response)
+            if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+                if response == True:
+                    return JsonResponse({"response": str(response)}, safe=False)
+                return JsonResponse({"error": str(response)}, safe=False)
+            else:
+                if response == True:
+                    messages.success(request, "Request Successful")
+                    return redirect("AdvertiseDetails", pk=advartisementNo)
+                else:
+                    messages.error(request, f"{response}")
+                    return redirect("AdvertiseDetails", pk=advartisementNo)
+        except Exception as e:
+            logging.exception(e)
+            if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+                return JsonResponse({"error": str(e)}, safe=False)
+            else:
+                messages.error(request, f"{e}")
+                return redirect("AdvertiseDetails", pk=advartisementNo)
+
+
+class AdvertAttachments(UserObjectMixins, View):
+    async def get(self, request, pk):
+        try:
+            Attachments = []
+            async with aiohttp.ClientSession() as session:
+                task_get_attachments = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session, "/QYDocumentAttachments", "No_", "eq", pk
+                    )
+                )
+                response = await asyncio.gather(task_get_attachments)
+
+                Attachments = [x for x in response[0]]
+                return JsonResponse(Attachments, safe=False)
+
+        except Exception as e:
+            logging.exception(e)
+            return JsonResponse({"error": str(e)}, safe=False)
+
+    async def post(self, request, pk):
+        try:
+            attachments = request.FILES.getlist("attachment")
+            tableID = 50045
+            attachment_names = []
+            response = False
+            for file in attachments:
+                fileName = file.name
+                attachment_names.append(fileName)
+                attachment = base64.b64encode(file.read())
+                response = self.make_soap_request(
+                    "FnAttachementAdvartisement",
+                    pk,
+                    fileName,
+                    attachment,
+                    tableID,
+                )
+            if response is not None:
+                if response == True:
+                    message = "Uploaded {} attachments successfully".format(
+                        len(attachments)
+                    )
+                    return JsonResponse({"success": True, "message": message})
+                error = "Upload failed: {}".format(response)
+                return JsonResponse({"success": False, "error": error})
+            error = "Upload failed: Response from server was None"
+            return JsonResponse({"success": False, "error": error})
+        except Exception as e:
+            error = "Upload failed: {}".format(e)
+            logging.exception(e)
+            return JsonResponse({"success": False, "error": error})
+
+
+class AdvertisingInvoice(UserObjectMixins, View):
+    def post(self, request):
+        try:
+            advartisementNo = request.POST.get("advartisementNo")
+            filenameFromApp = "invoice_" + advartisementNo + ".pdf"
+            response = self.make_soap_request(
+                "FNGenerateAdvartisementInvoice", advartisementNo
+            )
+
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses["Content-Disposition"] = f"inline;filename={filenameFromApp}"
+            return responses
+        except Exception as e:
+            messages.error(request, f"Failed, {e}")
+            logging.exception(e)
+            return redirect("AdvertiseDetails", pk=advartisementNo)
+
+
+class SubmitAdvert(UserObjectMixins, View):
+    def post(self, request, pk):
+        try:
+            userCode = request.session["UserID"]
+
+            response = self.make_soap_request("SubmitAdvartisement", pk, userCode)
+
+            if response == True:
+                return JsonResponse({"response": str(response)}, safe=False)
+            return JsonResponse({"error": str(response)}, safe=False)
+        except Exception as e:
+            print(e)
+            return JsonResponse({"error": str(e)}, safe=False)
+
+
+class AdvertCert(UserObjectMixins, View):
+    def post(self, request, pk):
+        try:
+            filenameFromApp = "Advertising_Cert_" + pk + ".pdf"
+            response = self.make_soap_request("PrintAdvertisemntCertificate", pk)
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses["Content-Disposition"] = f"inline;filename={filenameFromApp}"
+            return responses
+        except Exception as e:
+            messages.error(request, f"Failed, {e}")
+            logging.exception(e)
+            return redirect("AdvertiseDetails", pk=pk)

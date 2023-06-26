@@ -48,7 +48,7 @@
                                 <i class="las la-user-tie"></i>
                             </div>
                         </div>
-                        <h4 class="step-title">Professionals Form</h4>
+                        <h4 class="step-title">Product Details Form</h4>
                     </div>
                     <div class="step step3Icon">
                         <div class="step-icon-wrap">
@@ -87,7 +87,7 @@
                     <div class="premise_data" id="premise_data">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="card-title">
-                                Other Professionals Working in the Premise
+                                Advertisement Product Details
                             </h5>
                             <div id="Professionals_btn" style="display: none">
                                 <button class="btn btn-primary" id="ProfessionalsNext">Next Step <i
@@ -305,8 +305,19 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-12 px-0 mb-4">
+                                    <div class="col-md-12 text-center cert_div bg-white pb-4" id="loading_div"
+                                        style="display: none;">
+                                        <img src="../../static/img/layers.gif" class="cert_img" alt="" srcset="">
+
+                                        <span class="loading my-3" id="loading">
+                                            <div class="dot dot1"></div>
+                                            <div class="dot dot2"></div>
+                                            <div class="dot dot3"></div>
+                                            <span class="text-dark text-small">We're Processing Your Request</span>
+                                        </span>
+                                    </div>
                                     {% if permit.Status == 'Open' %}
-                                    <div class="box-right confirm_div">
+                                    <div class="box-right confirm_div" style="display: none;">
                                         <div class="d-flex">
                                             <p class="fw-bold h7">Confirm Payment</p>
 
@@ -412,133 +423,67 @@
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                Wholesalers Premises Permit {{permit.AdvartisementNo}} Details
+                                Advertisement {{permit.AdvartisementNo}} Details
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <form action="{% url 'permit' %}" class="bg-white p-4" method="post">
+                                <form action="{% url 'advertise' %}" class="bg-white p-4" method="post">
                                     {% csrf_token %}
-                                    <input type="hidden" name="premiseNo" value="{{permit.PremiseNo}}">
+                                    <input type="hidden" name="advertisementNo" value="{{permit.AdvartisementNo}}">
                                     <input type="hidden" name="myAction" id="myAction" value="modify">
-                                    <input type="hidden" name="iAgree" value="True">
                                     <div class="tab">
                                         <div class="border border-success rounded p-3 my-3">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <label class="form-label">Applicant Name </label>
-                                                    <input type="text" class="form-control" name="applicantName"
-                                                        id="applicantName" value="{{permit.ApplicantName}}" disabled>
-                                                </div>
-                                                <div class="col-md-4">
                                                     <label class="form-label">Application Date</label>
                                                     <input type="text" class="form-control"
-                                                        value="{{permit.ApplicationDate}}" disabled>
+                                                        value="{{permit.DocumentDate}}" disabled>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label">Amount Payable</label>
                                                     <input type="text" class="form-control"
                                                         value="{{permit.AmountPayable}}" disabled>
                                                 </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Currency</label>
+                                                    <input type="text" class="form-control" value="{{permit.Currency}}"
+                                                        disabled>
+                                                </div>
                                             </div>
 
                                         </div>
                                     </div>
-                                    <div class="border border-success rounded p-3  my-3">
-                                        <div class="row my-3">
-                                            <div class="col-md-4">
-                                                <label class="form-label">Professional Registration No</label>
-                                                <input type="text" class="form-control" name="professionalRegNo"
-                                                    id="professionalRegNo" value="{{permit.ProfessionalRegNo}}"
-                                                    disabled>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">Nationality</label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="nationality" id="nationality" disabled>
-                                                    <option selected disabled value="0">Choose...</option>
-                                                    {% for res in country %}
-                                                    <option value="{{res.Code}}">{{res.Name}}</option>
-                                                    {% empty %}
-                                                    <option value="KE">KENYA</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">ID/Passport/Alien ID No</label>
-                                                <input type="text" class="form-control" name="iDorPassportOrAlienIDNo"
-                                                    id="iDorPassportOrAlienIDNo"
-                                                    value="{{permit.IDOrPassportOrAlienIDNo}}" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="border border-success rounded p-3 my-3">
                                         <div class="row my-2">
                                             <div class="col-md-6">
-                                                <label class="form-label">Premise Name</label>
-                                                <input type="text" class="form-control" name="premiseName"
-                                                    id="premiseName" value="{{permit.Premise_Name}}" disabled>
+                                                <label class="form-label">Application Status</label>
+                                                <input type="text" class="form-control" value="{{permit.Status}}"
+                                                    disabled>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label">Period of Experience Working in A Veterinary
-                                                    Pharmacy</label>
-                                                <input type="text" class="form-control" name="periodOfExperience"
-                                                    id="periodOfExperience" value="{{permit.Experience}}" disabled>
+                                                <label class="form-label">Paid</label>
+                                                <input type="text" class="form-control" value="{{permit.Paid}}"
+                                                    disabled>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="mb-2">
-                                                    <label class="form-label">Qualification<span
+                                                    <label class="form-label">Form Of Advertisement<span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="qualification"
-                                                        id="qualification" value="{{permit.Qualification}}" disabled>
+                                                    <input type="text" class="form-control" name="formOfAdvertisement"
+                                                        id="formOfAdvertisement" value="{{permit.FormOfAdvertisement}}"
+                                                        disabled>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="border border-success rounded p-3 my-3">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label class="form-label">Premise Location <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="premiseLocation"
-                                                    id="premiseLocation" value="{{permit.PremiseLocation}}" disabled>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">Town <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="town" id="town"
-                                                    value="{{permit.Town}}" disabled>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">Road <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="road" id="road"
-                                                    value="{{permit.Road}}" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="col-md-4">
-                                                <label class="form-label">Building <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="building" id="building"
-                                                    value="{{permit.Building}}" disabled>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">Plot No</label>
-                                                <input type="text" class="form-control" name="plotNo" id="plotNo"
-                                                    value="{{permit.Plot_No}}" disabled>
-                                            </div>
-                                            <div class="col-md-4">
-                                            </div>
-                                        </div>
-                                        {% if permit.Status == 'Open' %}
-                                        <button type="submit" class="btn button-87 my-3 w-100">Edit Form</button>
-                                        {% endif %}
+                                    {% if permit.Status == 'Open' %}
+                                    <button type="submit" class="btn button-87 my-3 w-100">Edit Form</button>
+                                    {% endif %}
                                 </form>
                             </div>
                         </div>
@@ -554,8 +499,6 @@
 {% include 'footer.html' %}
 <script>
     $(document).ready(function () {
-
-        var Nationality = '{{permit.Nationality}}';
         var documentStatus = '{{permit.Status}}';
         var AmountPayable = '{{permit.AmountPayable}}';
         var document_header = '{{permit.AdvartisementNo}}';
@@ -596,9 +539,9 @@
                 $spinner.show();
                 $.ajax({
                     type: 'POST',
-                    url: '/customer/',
+                    url: '/AdvertisingCustomer/',
                     data: {
-                        premiseNo: document_header,
+                        advartisementNo: document_header,
                         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                     },
                     success: function (response) {
@@ -644,20 +587,8 @@
             $stepThree.show();
         })
 
-        $('#nationality option[value="' + Nationality + '"]').prop('selected', true);
         if (documentStatus === 'Open') {
-            $('#professionalRegNo').prop('disabled', false);
-            $('#nationality').prop('disabled', false);
-            $('#iDorPassportOrAlienIDNo').prop('disabled', false);
-            $('#premiseName').prop('disabled', false);
-            $('#periodOfExperience').prop('disabled', false);
-            $('#qualification').prop('disabled', false);
-            $('#town').prop('disabled', false);
-            $('#road').prop('disabled', false);
-            $('#building').prop('disabled', false);
-            $('#plotNo').prop('disabled', false);
-            $('#premiseLocation').prop('disabled', false);
-            $('#applicantName').prop('disabled', false);
+            $('#formOfAdvertisement').prop('disabled', false);
         }
 
         $AttachmentsPrev.click(function () {
@@ -752,7 +683,7 @@
             }
 
             $.ajax({
-                url: "/PermitAttachments/" + document_header + "/",
+                url: "/AdvertAttachments/" + document_header + "/",
                 type: "POST",
                 data: formData,
                 processData: false,
@@ -796,7 +727,7 @@
 
         function Load_Attachments(pk) {
             $.ajax({
-                url: "/PermitAttachments/" + document_header + "/",
+                url: "/AdvertAttachments/" + pk + "/",
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -938,7 +869,7 @@
                         var CountryOfManufactureName = data[1][i].CountryOfManufactureName;
                         var TargetAudience = data[1][i].TargetAudience;
                         var Uses = data[1][i].Users;
-                        let Line_No = data[1][i].PremiseLineNo;
+                        let Line_No = data[1][i].ADVProdDNo;
 
                         var row = $('<tr>');
                         row.append($('<td>').text(Name));
@@ -951,7 +882,7 @@
                         if (documentStatus === 'Open') {
                             var form = $('<form>').attr({
                                 method: 'POST',
-                                action: '/permit/' + pk + '/',
+                                action: '/advertise/' + pk + '/',
                             }).append('{% csrf_token %}');
 
                             var pro_Name = $('<input>').attr({
@@ -969,12 +900,26 @@
                                 name: 'formulation',
                                 value: "0"
                             });
-                            var pro_qualificationAndExperience = $('<input>').attr({
+                            var pro_category = $('<input>').attr({
                                 type: 'hidden',
-                                name: 'qualificationAndExperience',
+                                name: 'category',
                                 value: "0"
                             });
-
+                            var pro_targetAudience = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'targetAudience',
+                                value: "0"
+                            });
+                            var pro_uses = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'uses',
+                                value: "0"
+                            });
+                            var pro_countryOfManufacture = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'countryOfManufacture',
+                                value: "0"
+                            });
                             var pro_lineNoInput = $('<input>').attr({
                                 type: 'hidden',
                                 name: 'lineNo',
@@ -1040,7 +985,8 @@
                             var td = $('<td>').append(form.append(pro_Name,
                                 pro_marketingAuthorizationNo,
                                 pro_formulation,
-                                pro_qualificationAndExperience, pro_lineNoInput,
+                                pro_category, pro_targetAudience, pro_uses,
+                                pro_countryOfManufacture, pro_lineNoInput,
                                 pro_myActionInput, pro_submitBtn));
                             row.append(td);
                         }
@@ -1068,9 +1014,9 @@
             $invoice_spinner.show();
             $.ajax({
                 type: 'POST',
-                url: '/invoice/',
+                url: '/AdvertisingInvoice/',
                 data: {
-                    premiseNo: document_header,
+                    advartisementNo: document_header,
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 xhrFields: {
@@ -1116,8 +1062,8 @@
         filter_list(document_header);
 
         function filter_list(pk) {
-            var query = '/QyWholesalePremisePermit'
-            var filter_one = 'PremiseNo'
+            var query = '/QyAdvertisement'
+            var filter_one = 'AdvartisementNo'
             var filter_two = 'UserCode'
 
 
@@ -1138,18 +1084,29 @@
                             $payment_state.empty().append("Paid");
                             $(".pesa_paid").addClass('text-success');
                         }
-                        if (data['data']['Status'] != 'Open') {
-                            $step5con.addClass('completed');
+
+                        if (data['data']['Status'] === 'Approved') {
+                            $('#cert_card').show();
                             $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
                             $ProfessionalsForm.hide();
                             $attachmentForm.hide();
-                            $("#confirm_div").hide();
+                            $(".confirm_div").hide();
                             $stepTwo.hide();
                             $stepThree.hide();
                             $stepFour.show();
-                        }
-                        if (data['data']['Status'] === 'Approved') {
-                            $('#cert_card').show();
+                        } else if (data['data']['Status'] === 'Open') {
+                            $(".confirm_div").show();
+                        } else if (data['data']['Status'] === 'Processing') {
+                            $("#loading_div").show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
                         }
                     } else {
 
@@ -1167,7 +1124,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/submit/permit/' + document_header + "/",
+                url: '/submit/advert/' + document_header + "/",
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
@@ -1209,7 +1166,7 @@
             $("#download_spinner").show();
             $.ajax({
                 type: 'POST',
-                url: '/premise/cert/' + document_header + '/',
+                url: '/advert/cert/' + document_header + '/',
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
@@ -1224,7 +1181,7 @@
                     const urls = window.URL.createObjectURL(blob_cert);
                     const links = document.createElement('a');
                     links.href = urls;
-                    links.download = 'Premise_Certificate.pdf';
+                    links.download = 'Advertising_Certificate.pdf';
                     links.click();
                     window.URL.revokeObjectURL(urls);
 

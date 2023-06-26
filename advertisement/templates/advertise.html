@@ -251,11 +251,11 @@
                         // add the row to the appropriate table based on its status
                         if (Status === 'Open') {
                             openTableBody.append(row);
-                        } else if (Status === 'Processing' && GMP_Stage != 'Rejected') {
+                        } else if (Status === 'Processing') {
                             pendingTableBody.append(row);
                         } else if (Status === 'Approved') {
                             approvedTableBody.append(row);
-                        } else if (Status === 'Processing' && GMP_Stage === 'Rejected') {
+                        } else if (Status === 'Rejected') {
                             rejectedTableBody.append(row);
                         }
                     }
