@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     "gmp",
     "myRequest",
     "permit",
+    "retailers",
+    "advertisement",
 ]
 
 MIDDLEWARE = [

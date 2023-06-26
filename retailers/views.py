@@ -14,8 +14,7 @@ import asyncio
 import aiohttp
 
 
-# Create your views here.
-class Permit(UserObjectMixins, View):
+class RetailersPermit(UserObjectMixins, View):
     async def get(self, request):
         try:
             userID = await sync_to_async(request.session.__getitem__)("UserID")
@@ -25,7 +24,11 @@ class Permit(UserObjectMixins, View):
             async with aiohttp.ClientSession() as session:
                 task_get_permits = asyncio.ensure_future(
                     self.simple_one_filtered_data(
-                        session, "/QyWholesalePremisePermit", "UserCode", "eq", userID
+                        session,
+                        "/QyRetailDealersPremisePermit",
+                        "UserCode",
+                        "eq",
+                        userID,
                     )
                 )
                 task_get_countries = asyncio.ensure_future(
@@ -52,11 +55,11 @@ class Permit(UserObjectMixins, View):
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
         }
-        return render(request, "permit.html", ctx)
+        return render(request, "retailer.html", ctx)
 
     async def post(self, request):
         try:
-            premiseNo = request.POST.get("premiseNo")
+            retailDealersNo = request.POST.get("retailDealersNo")
             professionalRegNo = request.POST.get("professionalRegNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
             iDorPassportOrAlienIDNo = request.POST.get("iDorPassportOrAlienIDNo")
@@ -64,21 +67,19 @@ class Permit(UserObjectMixins, View):
             premiseName = request.POST.get("premiseName")
             qualification = request.POST.get("qualification")
             periodOfExperience = request.POST.get("periodOfExperience")
-            premiseLocation = request.POST.get("premiseLocation")
+            # premiseLocation = request.POST.get("premiseLocation")
             town = request.POST.get("town")
             road = request.POST.get("road")
             building = request.POST.get("building")
             applicantName = request.POST.get("applicantName")
-            plotNo = request.POST.get("plotNo")
-            firstTimeApplication = int(request.POST.get("firstTimeApplication"))
             iAgree = eval(request.POST.get("iAgree"))
             myAction = request.POST.get("myAction")
             if not iAgree:
                 iAgree = False
 
             response = self.make_soap_request(
-                "FnWholesalePremisePermit",
-                premiseNo,
+                "FnRetailDealersPremisePermit",
+                retailDealersNo,
                 professionalRegNo,
                 userCode,
                 iDorPassportOrAlienIDNo,
@@ -86,16 +87,15 @@ class Permit(UserObjectMixins, View):
                 premiseName,
                 qualification,
                 periodOfExperience,
-                premiseLocation,
+                building,
                 town,
                 road,
                 building,
                 applicantName,
-                plotNo,
-                firstTimeApplication,
                 iAgree,
                 myAction,
             )
+
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response != None and response != "" and response != 0:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -103,20 +103,20 @@ class Permit(UserObjectMixins, View):
             else:
                 if response != "0" and response is not None and response != "":
                     messages.success(request, "Request Successful")
-                    return redirect("PermitDetails", pk=response)
+                    return redirect("RetailerPermitDetails", pk=response)
                 else:
                     messages.error(request, f"{response}")
-                    return redirect("permit")
+                    return redirect("RetailerPermitDetails", pk=response)
         except Exception as e:
             logging.exception(e)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 return JsonResponse({"error": str(e)}, safe=False)
             else:
                 messages.error(request, f"{e}")
-                return redirect("permit")
+                return redirect("RetailerPermitDetails", pk=response)
 
 
-class PermitDetails(UserObjectMixins, View):
+class RetailerPermitDetails(UserObjectMixins, View):
     async def get(self, request, pk):
         try:
             userID = await sync_to_async(request.session.__getitem__)("UserID")
@@ -127,7 +127,11 @@ class PermitDetails(UserObjectMixins, View):
             async with aiohttp.ClientSession() as session:
                 task_get_permit = asyncio.ensure_future(
                     self.simple_one_filtered_data(
-                        session, "/QyWholesalePremisePermit", "PremiseNo", "eq", pk
+                        session,
+                        "/QyRetailDealersPremisePermit",
+                        "RetailDealersNo",
+                        "eq",
+                        pk,
                     )
                 )
                 task_get_countries = asyncio.ensure_future(
@@ -151,7 +155,7 @@ class PermitDetails(UserObjectMixins, View):
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
         }
-        return render(request, "permit-detail.html", ctx)
+        return render(request, "retailer-detail.html", ctx)
 
     async def post(self, request, pk):
         try:
@@ -164,7 +168,7 @@ class PermitDetails(UserObjectMixins, View):
             qualificationAndExperience = request.POST.get("qualificationAndExperience")
 
             response = self.make_soap_request(
-                "FnWholesalePremiseLine",
+                "FnRetailDealersLine",
                 pk,
                 myAction,
                 lineNo,
@@ -181,25 +185,25 @@ class PermitDetails(UserObjectMixins, View):
             else:
                 if response == True:
                     messages.success(request, "Request Successful")
-                    return redirect("PermitDetails", pk=pk)
+                    return redirect("RetailerPermitDetails", pk=pk)
                 else:
                     messages.error(request, f"{response}")
-                    return redirect("PermitDetails", pk=pk)
+                    return redirect("RetailerPermitDetails", pk=pk)
         except Exception as e:
             logging.exception(e)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 return JsonResponse({"error": str(e)}, safe=False)
             else:
                 messages.error(request, f"{e}")
-                return redirect("PermitDetails", pk=pk)
+                return redirect("RetailerPermitDetails", pk=pk)
 
 
-class Professionals(UserObjectMixins, View):
+class RetailProfessionals(UserObjectMixins, View):
     def get(self, request, pk):
         try:
             PermitLines = self.one_filter(
-                "/QyWholesalePremisePermitLines",
-                "PremiseNo",
+                "/QyRetailDealersPremiseLines",
+                "RetailDealersNo",
                 "eq",
                 pk,
             )
@@ -210,17 +214,18 @@ class Professionals(UserObjectMixins, View):
             return JsonResponse({"error": str(e)}, safe=False)
 
 
-class Customer(UserObjectMixins, View):
+class RetailCustomer(UserObjectMixins, View):
     async def post(self, request):
         try:
-            premiseNo = request.POST.get("premiseNo")
+            RetailDealersNo = request.POST.get("RetailDealersNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
 
             response = self.make_soap_request(
-                "FnWholesalePremisePermitPayment",
-                premiseNo,
+                "FnRetailDealersPremisePermitPayment",
+                RetailDealersNo,
                 userCode,
             )
+            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response == True:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -228,44 +233,20 @@ class Customer(UserObjectMixins, View):
             else:
                 if response == True:
                     messages.success(request, "Request Successful")
-                    return redirect("PermitDetails", pk=premiseNo)
+                    return redirect("RetailerPermitDetails", pk=RetailDealersNo)
                 else:
                     messages.error(request, f"{response}")
-                    return redirect("PermitDetails", pk=premiseNo)
+                    return redirect("RetailerPermitDetails", pk=RetailDealersNo)
         except Exception as e:
             logging.exception(e)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 return JsonResponse({"error": str(e)}, safe=False)
             else:
                 messages.error(request, f"{e}")
-                return redirect("PermitDetails", pk=premiseNo)
+                return redirect("RetailerPermitDetails", pk=RetailDealersNo)
 
 
-class FNGenerateInvoice(UserObjectMixins, View):
-    def post(self, request):
-        try:
-            premiseNo = request.POST.get("premiseNo")
-            filenameFromApp = "invoice_" + premiseNo + ".pdf"
-            response = self.make_soap_request(
-                "FNGenerateWholesalePremiseInvoice", premiseNo
-            )
-
-            buffer = BytesIO.BytesIO()
-            content = base64.b64decode(response)
-            buffer.write(content)
-            responses = HttpResponse(
-                buffer.getvalue(),
-                content_type="application/pdf",
-            )
-            responses["Content-Disposition"] = f"inline;filename={filenameFromApp}"
-            return responses
-        except Exception as e:
-            messages.error(request, f"Failed, {e}")
-            logging.exception(e)
-            return redirect("PermitDetails", pk=premiseNo)
-
-
-class PermitAttachments(UserObjectMixins, View):
+class RetailPermitAttachments(UserObjectMixins, View):
     async def get(self, request, pk):
         try:
             Attachments = []
@@ -287,7 +268,7 @@ class PermitAttachments(UserObjectMixins, View):
     async def post(self, request, pk):
         try:
             attachments = request.FILES.getlist("attachment")
-            tableID = 50040
+            tableID = 50050
             attachment_names = []
             response = False
             for file in attachments:
@@ -295,12 +276,13 @@ class PermitAttachments(UserObjectMixins, View):
                 attachment_names.append(fileName)
                 attachment = base64.b64encode(file.read())
                 response = self.make_soap_request(
-                    "FnAttachementWholesalePremisePermit",
+                    "FnAttachementRetailDealersPremisePermit",
                     pk,
                     fileName,
                     attachment,
                     tableID,
                 )
+            print(response)
             if response is not None:
                 if response == True:
                     message = "Uploaded {} attachments successfully".format(
@@ -317,7 +299,7 @@ class PermitAttachments(UserObjectMixins, View):
             return JsonResponse({"success": False, "error": error})
 
 
-class RemovePermitAttachment(UserObjectMixins, View):
+class RemoveRetailAttachment(UserObjectMixins, View):
     def post(self, request):
         try:
             docID = int(request.POST.get("docID"))
@@ -337,12 +319,36 @@ class RemovePermitAttachment(UserObjectMixins, View):
             return JsonResponse({"success": False, "error": error})
 
 
-class SubmitWholesalePermit(UserObjectMixins, View):
+class RetailerInvoice(UserObjectMixins, View):
+    def post(self, request):
+        try:
+            premiseNo = request.POST.get("premiseNo")
+            filenameFromApp = "invoice_" + premiseNo + ".pdf"
+            response = self.make_soap_request(
+                "FNGenerateRetailDealersPremiseInvoice", premiseNo
+            )
+
+            buffer = BytesIO.BytesIO()
+            content = base64.b64decode(response)
+            buffer.write(content)
+            responses = HttpResponse(
+                buffer.getvalue(),
+                content_type="application/pdf",
+            )
+            responses["Content-Disposition"] = f"inline;filename={filenameFromApp}"
+            return responses
+        except Exception as e:
+            messages.error(request, f"Failed, {e}")
+            logging.exception(e)
+            return redirect("RetailerPermitDetails", pk=premiseNo)
+
+
+class SubmitRetailPermit(UserObjectMixins, View):
     def post(self, request, pk):
         try:
             userCode = request.session["UserID"]
 
-            response = self.make_soap_request("SubmitWholesalePermit", pk, userCode)
+            response = self.make_soap_request("SubmitRetailDealersPermit", pk, userCode)
 
             if response == True:
                 return JsonResponse({"response": str(response)}, safe=False)
@@ -352,12 +358,12 @@ class SubmitWholesalePermit(UserObjectMixins, View):
             return JsonResponse({"error": str(e)}, safe=False)
 
 
-class PremiseCert(UserObjectMixins, View):
+class RetailPremiseCert(UserObjectMixins, View):
     def post(self, request, pk):
         try:
             filenameFromApp = "Premise_Cert_" + pk + ".pdf"
             response = self.make_soap_request(
-                "PrintWholesalePremisePermitCertificate", pk
+                "PrintRetailDealersPremisePermitCertificate", pk
             )
             buffer = BytesIO.BytesIO()
             content = base64.b64decode(response)
@@ -371,11 +377,4 @@ class PremiseCert(UserObjectMixins, View):
         except Exception as e:
             messages.error(request, f"Failed, {e}")
             logging.exception(e)
-            return redirect("PermitDetails", pk=pk)
-
-
-#
-# QyAdvertisement
-# QyManufacturingLicence
-# QyManufacturingLicenceLines
-# QyInspectorateRequiredDocument
+            return redirect("RetailerPermitDetails", pk=pk)
