@@ -25,7 +25,7 @@
     <div class="pagetitle">
         <div class="row">
             <div class="col-md-12">
-                <h1>Wholesalers Premises Permit</h1>
+                <h1>Premise Permit For Veterinary Pharmacy</h1>
             </div>
         </div>
     </div><!-- End Page Title -->
@@ -94,6 +94,7 @@
                                         class="las la-angle-double-right"></i></button>
                             </div>
                         </div>
+                        {% if permit.Status == 'Open' %}
                         <form method="POST" id="ProfessionalsForm">
                             {% csrf_token %}
                             <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
@@ -133,6 +134,7 @@
                             </div>
                             <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
                         </form>
+                        {% endif %}
                         <table id="ProfessionalsTable"
                             class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
@@ -369,15 +371,15 @@
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                Wholesalers Premises Permit {{permit.PremiseNo}} Details
+                                Veterinary Pharmacy Premises Permit {{permit.VeterinaryPharmacyNo}} Details
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <form action="{% url 'permit' %}" class="bg-white p-4" method="post">
+                                <form action="{% url 'VeterinaryPharmacy' %}" class="bg-white p-4" method="post">
                                     {% csrf_token %}
-                                    <input type="hidden" name="premiseNo" value="{{permit.PremiseNo}}">
+                                    <input type="hidden" name="vetPharmacyNo" value="{{permit.VeterinaryPharmacyNo}}">
                                     <input type="hidden" name="myAction" id="myAction" value="modify">
                                     <input type="hidden" name="iAgree" value="True">
                                     <div class="tab">
@@ -436,7 +438,7 @@
                                             <div class="col-md-6">
                                                 <label class="form-label">Premise Name</label>
                                                 <input type="text" class="form-control" name="premiseName"
-                                                    id="premiseName" value="{{permit.Premise_Name}}" disabled>
+                                                    id="premiseName" value="{{permit.PremiseName}}" disabled>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Period of Experience Working in A Veterinary
@@ -479,26 +481,16 @@
                                             </div>
                                         </div>
                                         <div class="row mt-2">
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Building <span
                                                         class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="building" id="building"
                                                     value="{{permit.Building}}" disabled>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Plot No</label>
                                                 <input type="text" class="form-control" name="plotNo" id="plotNo"
                                                     value="{{permit.Plot_No}}" disabled>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">First Time Application <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="firstTimeApplication" id="firstTimeApplication">
-                                                    <option value="0">--select--</option>
-                                                    <option value="1">Yes</option>
-                                                    <option value="2">True</option>
-                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -523,13 +515,10 @@
 
         var Nationality = '{{permit.Nationality}}';
         var documentStatus = '{{permit.Status}}';
-        var firstTimeApplication = '{{permit.FirstTimeApplication}}';
         var AmountPayable = '{{permit.AmountPayable}}';
-        var document_header = '{{permit.PremiseNo}}';
+        var document_header = '{{permit.VeterinaryPharmacyNo}}';
         var Invoiced = '{{permit.Invoiced}}';
         var Paid = '{{permit.Paid}}';
-
-        console.log(document_header)
 
         const $step2Icon = $('.step2Icon');
         const $stepTwo = $('#stepTwo');
@@ -565,9 +554,9 @@
                 $spinner.show();
                 $.ajax({
                     type: 'POST',
-                    url: '/customer/',
+                    url: '/PharmacyCustomer/',
                     data: {
-                        premiseNo: document_header,
+                        vetPharmacyNo: document_header,
                         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                     },
                     success: function (response) {
@@ -615,14 +604,6 @@
 
         $('#nationality option[value="' + Nationality + '"]').prop('selected', true);
 
-        if (firstTimeApplication == 'YES') {
-            $('#firstTimeApplication option[value="1"]').prop('selected', true);
-        } else if (firstTimeApplication == 'NO') {
-            $('#firstTimeApplication option[value="2"]').prop('selected', true);
-        } else {
-            $('#firstTimeApplication option[value="0"]').prop('selected', true);
-        }
-
         if (documentStatus === 'Open') {
             $('#professionalRegNo').prop('disabled', false);
             $('#nationality').prop('disabled', false);
@@ -634,7 +615,6 @@
             $('#road').prop('disabled', false);
             $('#building').prop('disabled', false);
             $('#plotNo').prop('disabled', false);
-            $('#firstTimeApplication').prop('disabled', false);
             $('#premiseLocation').prop('disabled', false);
             $('#applicantName').prop('disabled', false);
         }
@@ -664,7 +644,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/permit/' + document_header + "/",
+                url: '/pharmacy/' + document_header + "/",
                 data: {
                     myAction: $("#Professionals_my_action").val(),
                     lineNo: $('#Professionals_lineNo').val(),
@@ -886,7 +866,7 @@
 
         function loadProfessionals(pk) {
             $.ajax({
-                url: "/Professionals/" + pk + "/",
+                url: "/PharmacyProfessionals/" + pk + "/",
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -905,7 +885,7 @@
                         var PositionIntheBusiness = data[1][i].PositionIntheBusiness;
                         var RegistrationNo = data[1][i].RegistrationNo;
                         var QualificationAndExperience = data[1][i].QualificationAndExperience;
-                        let Line_No = data[1][i].PremiseLineNo;
+                        let Line_No = data[1][i].VeterinaryPharmacyLineNo;
 
                         var row = $('<tr>');
                         row.append($('<td>').text(Name));
@@ -915,7 +895,7 @@
                         if (documentStatus === 'Open') {
                             var form = $('<form>').attr({
                                 method: 'POST',
-                                action: '/permit/' + pk + '/',
+                                action: '/pharmacy/' + pk + '/',
                             }).append('{% csrf_token %}');
 
                             var pro_Name = $('<input>').attr({
@@ -1034,7 +1014,7 @@
                 type: 'POST',
                 url: '/invoice/',
                 data: {
-                    premiseNo: document_header,
+                    vetPharmacyNo: document_header,
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 xhrFields: {
@@ -1079,9 +1059,11 @@
         });
         filter_list(document_header);
 
+        console.log(document_header);
+
         function filter_list(pk) {
-            var query = '/QyWholesalePremisePermit'
-            var filter_one = 'PremiseNo'
+            var query = '/QyVeterinaryPharmacy'
+            var filter_one = 'vetPharmacyNo'
             var filter_two = 'UserCode'
 
 
@@ -1102,18 +1084,29 @@
                             $payment_state.empty().append("Paid");
                             $(".pesa_paid").addClass('text-success');
                         }
-                        if (data['data']['Status'] != 'Open') {
-                            $step5con.addClass('completed');
+                        if (data['data']['Status'] === 'Approved') {
+                            $('#cert_card').show();
                             $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
                             $ProfessionalsForm.hide();
                             $attachmentForm.hide();
-                            $("#confirm_div").hide();
+                            $(".confirm_div").hide();
                             $stepTwo.hide();
                             $stepThree.hide();
                             $stepFour.show();
-                        }
-                        if (data['data']['Status'] === 'Approved') {
-                            $('#cert_card').show();
+                        } else if (data['data']['Status'] === 'Open') {
+                            $(".confirm_div").show();
+                            $stepTwo.show();
+                        } else if (data['data']['Status'] === 'Processing') {
+                            $("#loading_div").show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
                         }
                     } else {
 

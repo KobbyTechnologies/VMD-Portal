@@ -33,7 +33,7 @@ urlpatterns = [
         name="SubmitAdvert",
     ),
     path(
-        "premise/cert/<str:pk>/",
+        "advert/cert/<str:pk>/",
         views.AdvertCert.as_view(),
         name="AdvertCert",
     ),

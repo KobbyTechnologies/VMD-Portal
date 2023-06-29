@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "permit",
     "retailers",
     "advertisement",
+    "pharmacy_permit",
 ]
 
 MIDDLEWARE = [

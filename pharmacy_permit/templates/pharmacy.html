@@ -12,7 +12,7 @@
     <div class="pagetitle">
         <div class="row">
             <div class="col-md-12">
-                <h1>Wholesalers Premises Permit Application Form</h1>
+                <h1>Premise Permit For Veterinary Pharmacy</h1>
             </div>
         </div>
     </div><!-- End Page Title -->
@@ -20,9 +20,9 @@
         <div class="row">
             <div class="col-md-12">
                 {% include 'alert.html' %}
-                <form id="regForm" class="bg-white p-4" method="post" novalidate>
+                <form id="regForm" class="bg-white p-4" method="post">
                     {% csrf_token %}
-                    <input type="hidden" name="premiseNo" id="premiseNo" value="">
+                    <input type="hidden" name="vetPharmacyNo" id="vetPharmacyNo" value="">
                     <input type="hidden" name="myAction" id="myAction" value="insert">
                     <div class="money-spinner mx-auto text-center" id="header-spinner" style="display:none">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
@@ -95,13 +95,23 @@
                             </div>
                         </div>
                         <div class="row my-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="form-label">Building <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="building" id="building" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="form-label">Plot No</label>
                                 <input type="text" class="form-control" name="plotNo" id="plotNo">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">First Time Application <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" aria-label="Default select example"
+                                    name="firstTimeApplication" id="firstTimeApplication">
+                                    <option value="0">--select--</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2">True</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -302,7 +312,7 @@
 
         function Header_Data() {
             $.ajax({
-                url: '/permit/',
+                url: '/pharmacy/',
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -316,16 +326,16 @@
                     rejectedTableBody.empty();
 
                     for (var i = 0; i < data.length; i++) {
-                        var PremiseNo = data[i].PremiseNo;
+                        var vetPharmacyNo = data[i].VeterinaryPharmacyNo;
                         var ProfessionalRegNo = data[i].ProfessionalRegNo;
                         var Status = data[i].Status;
-                        var Premise_Name = data[i].Premise_Name;
+                        var Premise_Name = data[i].PremiseName;
                         var Currency = data[i].Currency;
                         var AmountPayable = data[i].AmountPayable;
                         var Paid = data[i].Paid;
 
                         var row = $('<tr>');
-                        row.append($('<td>').text(PremiseNo));
+                        row.append($('<td>').text(vetPharmacyNo));
                         row.append($('<td>').text(Premise_Name));
                         row.append($('<td>').text(ProfessionalRegNo));
                         row.append($('<td>').text(Currency + " " + AmountPayable));
@@ -334,7 +344,7 @@
 
                         // create a link button
                         var viewBtn = $('<a>').attr({
-                            href: "/permit/" + PremiseNo + "/",
+                            href: "/pharmacy/" + vetPharmacyNo + "/",
                             class: "btn btn-success btn-icon-text",
                             type: "button",
                             "data-toggle": "tooltip",
@@ -433,9 +443,9 @@
             $headerForm.hide();
             $.ajax({
                 type: 'POST',
-                url: '/permit/',
+                url: '/pharmacy/',
                 data: {
-                    premiseNo: $("#premiseNo").val(),
+                    vetPharmacyNo: $("#vetPharmacyNo").val(),
                     professionalRegNo: $('#professionalRegNo').val(),
                     iDorPassportOrAlienIDNo: $('#iDorPassportOrAlienIDNo').val(),
                     nationality: $('#nationality').val(),
@@ -459,7 +469,7 @@
                     $('#header-spinner').hide();
                     Header_Data();
                     if (response['response']) {
-                        window.location.href = "/permit/" + response['response'] + "/";
+                        window.location.href = "/pharmacy/" + response['response'] + "/";
                         iziToast.show({
                             theme: 'dark',
                             backgroundColor: '#239B56',
