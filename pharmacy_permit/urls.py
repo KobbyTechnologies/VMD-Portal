@@ -19,24 +19,24 @@ urlpatterns = [
         views.PharmacyCustomer.as_view(),
         name="PharmacyCustomer",
     ),
-    # path(
-    #     "AdvertisingInvoice/",
-    #     views.AdvertisingInvoice.as_view(),
-    #     name="AdvertisingInvoice",
-    # ),
-    # path(
-    #     "AdvertAttachments/<str:pk>/",
-    #     views.AdvertAttachments.as_view(),
-    #     name="AdvertAttachments",
-    # ),
-    # path(
-    #     "submit/advert/<str:pk>/",
-    #     views.SubmitAdvert.as_view(),
-    #     name="SubmitAdvert",
-    # ),
-    # path(
-    #     "advert/cert/<str:pk>/",
-    #     views.AdvertCert.as_view(),
-    #     name="AdvertCert",
-    # ),
+    path(
+        "PharmacyInvoice/",
+        views.PharmacyInvoice.as_view(),
+        name="PharmacyInvoice",
+    ),
+    path(
+        "PharmacyAttachments/<str:pk>/",
+        views.PharmacyAttachments.as_view(),
+        name="PharmacyAttachments",
+    ),
+    path(
+        "submit/pharmacy/<str:pk>/",
+        views.SubmitPharmacy.as_view(),
+        name="SubmitPharmacy",
+    ),
+    path(
+        "pharmacy/cert/<str:pk>/",
+        views.PharmacyCert.as_view(),
+        name="PharmacyCert",
+    ),
 ]

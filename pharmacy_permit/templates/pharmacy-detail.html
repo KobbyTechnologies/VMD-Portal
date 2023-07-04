@@ -702,7 +702,7 @@
             }
 
             $.ajax({
-                url: "/PermitAttachments/" + document_header + "/",
+                url: "/PharmacyAttachments/" + document_header + "/",
                 type: "POST",
                 data: formData,
                 processData: false,
@@ -746,7 +746,7 @@
 
         function Load_Attachments(pk) {
             $.ajax({
-                url: "/PermitAttachments/" + document_header + "/",
+                url: "/PharmacyAttachments/" + document_header + "/",
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -1012,7 +1012,7 @@
             $invoice_spinner.show();
             $.ajax({
                 type: 'POST',
-                url: '/invoice/',
+                url: '/PharmacyInvoice/',
                 data: {
                     vetPharmacyNo: document_header,
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
@@ -1059,11 +1059,9 @@
         });
         filter_list(document_header);
 
-        console.log(document_header);
-
         function filter_list(pk) {
             var query = '/QyVeterinaryPharmacy'
-            var filter_one = 'vetPharmacyNo'
+            var filter_one = 'VeterinaryPharmacyNo'
             var filter_two = 'UserCode'
 
 
@@ -1118,13 +1116,13 @@
             });
 
         }
+
         $payment_submit_form.on('submit', (e) => {
             e.preventDefault();
             $submit_spinner.show();
-
             $.ajax({
                 type: 'POST',
-                url: '/submit/permit/' + document_header + "/",
+                url: '/submit/pharmacy/' + document_header + "/",
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
@@ -1166,7 +1164,7 @@
             $("#download_spinner").show();
             $.ajax({
                 type: 'POST',
-                url: '/premise/cert/' + document_header + '/',
+                url: '/pharmacy/cert/' + document_header + '/',
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
@@ -1181,7 +1179,7 @@
                     const urls = window.URL.createObjectURL(blob_cert);
                     const links = document.createElement('a');
                     links.href = urls;
-                    links.download = 'Premise_Certificate.pdf';
+                    links.download = 'Pharmacy_Certificate.pdf';
                     links.click();
                     window.URL.revokeObjectURL(urls);
 

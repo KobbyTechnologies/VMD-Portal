@@ -223,7 +223,6 @@ class PharmacyCustomer(UserObjectMixins, View):
                 vetPharmacyNo,
                 userCode,
             )
-            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response == True:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -244,7 +243,7 @@ class PharmacyCustomer(UserObjectMixins, View):
                 return redirect("PharmacyDetails", pk=vetPharmacyNo)
 
 
-class AdvertAttachments(UserObjectMixins, View):
+class PharmacyAttachments(UserObjectMixins, View):
     async def get(self, request, pk):
         try:
             Attachments = []
@@ -266,7 +265,7 @@ class AdvertAttachments(UserObjectMixins, View):
     async def post(self, request, pk):
         try:
             attachments = request.FILES.getlist("attachment")
-            tableID = 50045
+            tableID = 50061
             attachment_names = []
             response = False
             for file in attachments:
@@ -274,7 +273,7 @@ class AdvertAttachments(UserObjectMixins, View):
                 attachment_names.append(fileName)
                 attachment = base64.b64encode(file.read())
                 response = self.make_soap_request(
-                    "FnAttachementAdvartisement",
+                    "FnAttachementVeterinaryPharmacyPremisePermit",
                     pk,
                     fileName,
                     attachment,
@@ -296,13 +295,13 @@ class AdvertAttachments(UserObjectMixins, View):
             return JsonResponse({"success": False, "error": error})
 
 
-class AdvertisingInvoice(UserObjectMixins, View):
+class PharmacyInvoice(UserObjectMixins, View):
     def post(self, request):
         try:
-            advartisementNo = request.POST.get("advartisementNo")
-            filenameFromApp = "invoice_" + advartisementNo + ".pdf"
+            vetPharmacyNo = request.POST.get("vetPharmacyNo")
+            filenameFromApp = "invoice_" + vetPharmacyNo + ".pdf"
             response = self.make_soap_request(
-                "FNGenerateAdvartisementInvoice", advartisementNo
+                "FNGenerateVeterinaryPharmacyPremiseInvoice", vetPharmacyNo
             )
 
             buffer = BytesIO.BytesIO()
@@ -317,15 +316,17 @@ class AdvertisingInvoice(UserObjectMixins, View):
         except Exception as e:
             messages.error(request, f"Failed, {e}")
             logging.exception(e)
-            return redirect("PharmacyDetails", pk=advartisementNo)
+            return redirect("PharmacyDetails", pk=vetPharmacyNo)
 
 
-class SubmitAdvert(UserObjectMixins, View):
+class SubmitPharmacy(UserObjectMixins, View):
     def post(self, request, pk):
         try:
             userCode = request.session["UserID"]
 
-            response = self.make_soap_request("SubmitAdvartisement", pk, userCode)
+            response = self.make_soap_request(
+                "SubmitVeterinaryPharmacyPermit", pk, userCode
+            )
 
             if response == True:
                 return JsonResponse({"response": str(response)}, safe=False)
@@ -335,11 +336,13 @@ class SubmitAdvert(UserObjectMixins, View):
             return JsonResponse({"error": str(e)}, safe=False)
 
 
-class AdvertCert(UserObjectMixins, View):
+class PharmacyCert(UserObjectMixins, View):
     def post(self, request, pk):
         try:
-            filenameFromApp = "Advertising_Cert_" + pk + ".pdf"
-            response = self.make_soap_request("PrintAdvertisemntCertificate", pk)
+            filenameFromApp = "Pharmacy_Cert_" + pk + ".pdf"
+            response = self.make_soap_request(
+                "PrintVeterinaryPharmacyPremisePermitCertificate", pk
+            )
             buffer = BytesIO.BytesIO()
             content = base64.b64decode(response)
             buffer.write(content)
