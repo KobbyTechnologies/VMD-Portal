@@ -1,0 +1,423 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+<main id="main" class="main">
+    <div class="pagetitle">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Disposal Request</h1>
+            </div>
+        </div>
+    </div><!-- End Page Title -->
+    <section class="section contact">
+        <div class="row">
+            <div class="col-md-12">
+                {% include 'alert.html' %}
+                <form id="regForm" class="bg-white p-4" method="post" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="disposalNo" id="disposalNo" value="">
+                    <input type="hidden" name="myAction" id="myAction" value="insert">
+                    <div class="money-spinner mx-auto text-center" id="header-spinner" style="display:none">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
+                    </div>
+                    <div class="border border-success rounded p-3  my-3">
+                        <div class="row my-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Reason For Destruction Or Disposition <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" aria-label="Default select example"
+                                    name="reasonForDestruction" id="reasonForDestruction">
+                                    <option selected disabled value="0">Choose...</option>
+                                    <option value="1">Expired</option>
+                                    <option value="2">Improperly Labelled</option>
+                                    <option value="3">Improperly Sealed</option>
+                                    <option value="4">Counterfeit Or Substandard And Adulterated</option>
+                                    <option value="5">Damaged</option>
+                                    <option value="6">Prohibited</option>
+                                    <option value="7">Other</option>
+                                    <option value="8">Out Of Specification</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Name Of The Destruction Company<span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="nameOfTheDestructionCompany"
+                                    id="nameOfTheDestructionCompany">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-success rounded p-3 my-3">
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                <label class="form-label">Place Of Disposal <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="placeOfDisposal" id="placeOfDisposal">
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                <div class="mb-2">
+                                    <input class="form-check-input" type="checkbox" value="True" name="iAgree"
+                                        id="iAgree" checked>
+                                    <label class="form-check-label text-primary">
+                                        I hereby apply for registration of
+                                        the product detailed above and
+                                        declare that all the information herein is correct
+                                        and true.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn button-87 my-3 w-100">Submit</button>
+                </form>
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">My Applications</h5>
+                        <!-- Bordered Tabs Justified -->
+                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                    aria-controls="home" aria-selected="true">New
+                                    (<span class="open_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                    aria-controls="profile" aria-selected="false"> Pending Approval
+                                    (<span class="pending_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-contact" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Approved
+                                    (<span class="approved_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Rejected
+                                    (<span class="rejected_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <table id="open_table"
+                                    class="table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Reason For Destruction</th>
+                                            <th>Place Of Disposal</th>
+                                            <th>Amount Payable</th>
+                                            <th>Paid</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <table id="pending_table"
+                                    class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Reason For Destruction</th>
+                                            <th>Place Of Disposal</th>
+                                            <th>Amount Payable</th>
+                                            <th>Paid</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table id="approved_table"
+                                    class="table table-striped w-100 dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Reason For Destruction</th>
+                                            <th>Place Of Disposal</th>
+                                            <th>Amount Payable</th>
+                                            <th>Paid</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table id="rejected_table"
+                                    class="table table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Reason For Destruction</th>
+                                            <th>Place Of Disposal</th>
+                                            <th>Amount Payable</th>
+                                            <th>Paid</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% include 'footer.html' %}
+<script>
+    const $headerForm = $('#regForm');
+    $(document).ready(function () {
+        Header_Data();
+
+        function Header_Data() {
+            $.ajax({
+                url: '/Disposal/',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var openTableBody = $('#open_table tbody');
+                    var pendingTableBody = $('#pending_table tbody');
+                    var approvedTableBody = $('#approved_table tbody');
+                    var rejectedTableBody = $('#rejected_table tbody');
+                    openTableBody.empty();
+                    pendingTableBody.empty();
+                    approvedTableBody.empty();
+                    rejectedTableBody.empty();
+
+                    for (var i = 0; i < data.length; i++) {
+                        var disposalNo = data[i].DisposalNo;
+                        var Reasons_for_Destruction_Disposition = data[i]
+                            .Reasons_for_Destruction_Disposition;
+                        var Status = data[i].Status;
+                        var NameOfTheDestructionCompany = data[i].NameOfTheDestructionCompany;
+                        var Place_Of_Disposal = data[i].Place_Of_Disposal;
+                        var Currency = data[i].Currency;
+                        var AmountPayable = data[i].AmountPayable;
+                        var Paid = data[i].Paid;
+
+                        var row = $('<tr>');
+                        row.append($('<td>').text(disposalNo));
+                        row.append($('<td>').text(Reasons_for_Destruction_Disposition));
+                        row.append($('<td>').text(Place_Of_Disposal));
+                        row.append($('<td>').text(Currency + " " + AmountPayable));
+                        row.append($('<td>').text(Paid));
+                        row.append($('<td>').text(Status));
+
+                        // create a link button
+                        var viewBtn = $('<a>').attr({
+                            href: "/Disposal/" + disposalNo + "/",
+                            class: "btn btn-success btn-icon-text",
+                            type: "button",
+                            "data-toggle": "tooltip",
+                            "data-placement": "top",
+                            title: "Click to View"
+                        }).text("details");
+
+
+                        // append the link button to the last <td> element
+                        row.append($('<td>').append(viewBtn));
+
+                        // add the row to the appropriate table based on its status
+                        if (Status === 'Open') {
+                            openTableBody.append(row);
+                        } else if (Status === 'Processing') {
+                            pendingTableBody.append(row);
+                        } else if (Status === 'Approved') {
+                            approvedTableBody.append(row);
+                        } else if (Status === 'Rejected') {
+                            rejectedTableBody.append(row);
+                        }
+                    }
+                    // initialize DataTables for each table
+                    if (!$.fn.DataTable.isDataTable('#open_table')) {
+                        $('#open_table').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                    if (!$.fn.DataTable.isDataTable('#pending_table')) {
+                        $('#pending_table').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                    if (!$.fn.DataTable.isDataTable('#approved_table')) {
+                        $('#approved_table').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                    if (!$.fn.DataTable.isDataTable('#rejected_table')) {
+                        $('#rejected_table').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                    // update the table counts using DataTables API
+                    $('.open_count').empty().append($('#open_table').DataTable().page
+                        .info().recordsDisplay);
+                    $('.pending_count').empty().append($('#pending_table').DataTable()
+                        .page.info().recordsDisplay);
+                    $('.approved_count').empty().append($('#approved_table').DataTable()
+                        .page.info().recordsDisplay);
+                    $('.rejected_count').empty().append($('#rejected_table').DataTable()
+                        .page.info().recordsDisplay);
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
+
+        $headerForm.on('submit', (e) => {
+            e.preventDefault();
+
+            if ($('#reasonForDestruction')
+                .val() === '' || $(
+                    '#nameOfTheDestructionCompany')
+                .val() === '' || $('#placeOfDisposal').val() === '') {
+                alert('Please fill in all required fields.');
+                return false;
+            }
+
+            $('#header-spinner').show();
+            $.ajax({
+                type: 'POST',
+                url: '/Disposal/',
+                data: {
+                    disposalNo: $("#disposalNo").val(),
+                    reasonForDestruction: $('#reasonForDestruction').val(),
+                    nameOfTheDestructionCompany: $('#nameOfTheDestructionCompany').val(),
+                    placeOfDisposal: $('#placeOfDisposal').val(),
+                    iAgree: $('#iAgree').val(),
+                    myAction: $("#myAction").val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (response) {
+                    $('#header-spinner').hide();
+                    Header_Data();
+                    if (response['response']) {
+                        window.location.href = "/Disposal/" + response['response'] + "/";
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            title: 'Yeah',
+                            message: response['response'] +
+                                " " +
+                                "created successfully",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                        $('#nameOfTheDestructionCompany, #reasonForDestruction')
+                            .val(
+                                '');
+                        $('#placeOfDisposal').val('');
+                    } else if (response['error']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response['error'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                    $('#header-spinner').hide();
+                }
+            });
+        });
+    })
+</script>
+{% endblock %}
