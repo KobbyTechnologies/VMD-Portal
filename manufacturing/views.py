@@ -1,8 +1,6 @@
 import base64
 import logging
 from django.shortcuts import render, redirect
-import requests
-import json
 from django.conf import settings as config
 from django.contrib import messages
 from django.views import View
@@ -12,10 +10,11 @@ from myRequest.views import UserObjectMixins
 from asgiref.sync import sync_to_async
 import asyncio
 import aiohttp
+from datetime import datetime
 
 
 # Create your views here.
-class Permit(UserObjectMixins, View):
+class ManufacturingLicense(UserObjectMixins, View):
     async def get(self, request):
         try:
             userID = await sync_to_async(request.session.__getitem__)("UserID")
@@ -25,19 +24,14 @@ class Permit(UserObjectMixins, View):
             async with aiohttp.ClientSession() as session:
                 task_get_permits = asyncio.ensure_future(
                     self.simple_one_filtered_data(
-                        session, "/QyWholesalePremisePermit", "UserCode", "eq", userID
+                        session, "/QyManufacturingLicence", "UserCode", "eq", userID
                     )
                 )
-                task_get_countries = asyncio.ensure_future(
-                    self.simple_fetch_data(session, "/QYCountries")
-                )
 
-                response = await asyncio.gather(task_get_permits, task_get_countries)
+                response = await asyncio.gather(task_get_permits)
 
                 permits = [x for x in response[0]]
                 Approved = [x for x in response[0] if x["Status"] == "Approved"]
-
-                resCountry = [x for x in response[1]]
 
         except Exception as e:
             messages.info(request, f"{e}")
@@ -48,55 +42,33 @@ class Permit(UserObjectMixins, View):
 
         ctx = {
             "approved": Approved,
-            "country": resCountry,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
         }
-        return render(request, "permit.html", ctx)
+        return render(request, "manufacture.html", ctx)
 
     async def post(self, request):
         try:
-            premiseNo = request.POST.get("premiseNo")
-            professionalRegNo = request.POST.get("professionalRegNo")
+            manufacturingNo = request.POST.get("manufacturingNo")
+            gMPStandards = request.POST.get("gMPStandards")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            iDorPassportOrAlienIDNo = request.POST.get("iDorPassportOrAlienIDNo")
-            nationality = request.POST.get("nationality")
-            premiseName = request.POST.get("premiseName")
-            qualification = request.POST.get("qualification")
-            periodOfExperience = request.POST.get("periodOfExperience")
-            premiseLocation = request.POST.get("premiseLocation")
-            town = request.POST.get("town")
-            road = request.POST.get("road")
-            building = request.POST.get("building")
-            applicantName = request.POST.get("applicantName")
-            plotNo = request.POST.get("plotNo")
-            firstTimeApplication = int(request.POST.get("firstTimeApplication"))
+            date = "2023-07-09"
             iAgree = eval(request.POST.get("iAgree"))
             myAction = request.POST.get("myAction")
             if not iAgree:
                 iAgree = False
 
+            defaultDate = datetime.strptime((date), "%Y-%m-%d").date()
+
             response = self.make_soap_request(
-                "FnWholesalePremisePermit",
-                premiseNo,
-                professionalRegNo,
-                userCode,
-                iDorPassportOrAlienIDNo,
-                nationality,
-                premiseName,
-                qualification,
-                periodOfExperience,
-                premiseLocation,
-                town,
-                road,
-                building,
-                applicantName,
-                plotNo,
-                firstTimeApplication,
+                "FnManufacturingLicenceCard",
+                manufacturingNo,
+                gMPStandards,
+                defaultDate,
                 iAgree,
+                userCode,
                 myAction,
             )
-            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response != None and response != "" and response != 0:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -104,20 +76,20 @@ class Permit(UserObjectMixins, View):
             else:
                 if response != "0" and response is not None and response != "":
                     messages.success(request, "Request Successful")
-                    return redirect("PermitDetails", pk=response)
+                    return redirect("ManufacturingLicenseDetails", pk=response)
                 else:
                     messages.error(request, f"{response}")
-                    return redirect("permit")
+                    return redirect("ManufacturingLicense")
         except Exception as e:
             logging.exception(e)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 return JsonResponse({"error": str(e)}, safe=False)
             else:
                 messages.error(request, f"{e}")
-                return redirect("permit")
+                return redirect("ManufacturingLicense")
 
 
-class PermitDetails(UserObjectMixins, View):
+class ManufacturingLicenseDetails(UserObjectMixins, View):
     async def get(self, request, pk):
         try:
             userID = await sync_to_async(request.session.__getitem__)("UserID")
@@ -129,58 +101,49 @@ class PermitDetails(UserObjectMixins, View):
                 task_get_permit = asyncio.ensure_future(
                     self.simple_one_filtered_data(
                         session,
-                        "/QyWholesalePremisePermit",
-                        "PremiseNo",
+                        "/QyManufacturingLicence",
+                        "ManufacturingNo",
                         "eq",
                         pk,
                     )
                 )
-                task_get_countries = asyncio.ensure_future(
-                    self.simple_fetch_data(session, "/QYCountries")
-                )
-                response = await asyncio.gather(task_get_permit, task_get_countries)
+                response = await asyncio.gather(task_get_permit)
                 for permit in response[0]:
                     if permit["UserCode"] == userID:
                         permit = permit
-                resCountry = [x for x in response[1]]
-                print(permit)
-                print(pk)
         except Exception as e:
             messages.info(request, f"{e}")
             print(e)
             return redirect("dashboard")
-        # if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-        #     return JsonResponse(permit, safe=False)
-
         ctx = {
             "permit": permit,
-            "country": resCountry,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
         }
-        return render(request, "permit-detail.html", ctx)
+        return render(request, "manufacture-detail.html", ctx)
 
     async def post(self, request, pk):
         try:
             myAction = request.POST.get("myAction")
             lineNo = request.POST.get("lineNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            pro_name = request.POST.get("pro_name")
-            position_in_business = request.POST.get("position_in_business")
-            reg_no = request.POST.get("reg_no")
-            qualificationAndExperience = request.POST.get("qualificationAndExperience")
+            veterinaryMedicineName = request.POST.get("veterinaryMedicineName")
+            medicineComposition = request.POST.get("medicineComposition")
+            directPersonalSupervisor = request.POST.get("directPersonalSupervisor")
+            supervisorQualifications = request.POST.get("supervisorQualifications")
 
             response = self.make_soap_request(
-                "FnWholesalePremiseLine",
+                "FnManufacturingLcenecLines",
                 pk,
-                myAction,
                 lineNo,
-                pro_name,
-                position_in_business,
-                reg_no,
-                qualificationAndExperience,
+                veterinaryMedicineName,
+                medicineComposition,
+                directPersonalSupervisor,
+                supervisorQualifications,
                 userCode,
+                myAction,
             )
+            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response == True:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -188,25 +151,25 @@ class PermitDetails(UserObjectMixins, View):
             else:
                 if response == True:
                     messages.success(request, "Request Successful")
-                    return redirect("PermitDetails", pk=pk)
+                    return redirect("ManufacturingLicenseDetails", pk=pk)
                 else:
                     messages.error(request, f"{response}")
-                    return redirect("PermitDetails", pk=pk)
+                    return redirect("ManufacturingLicenseDetails", pk=pk)
         except Exception as e:
             logging.exception(e)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 return JsonResponse({"error": str(e)}, safe=False)
             else:
                 messages.error(request, f"{e}")
-                return redirect("PermitDetails", pk=pk)
+                return redirect("ManufacturingLicenseDetails", pk=pk)
 
 
-class Professionals(UserObjectMixins, View):
+class ManufacturingLicenseLines(UserObjectMixins, View):
     def get(self, request, pk):
         try:
             PermitLines = self.one_filter(
-                "/QyWholesalePremisePermitLines",
-                "PremiseNo",
+                "/QyManufacturingLicenceLines",
+                "ManufacturingNo",
                 "eq",
                 pk,
             )
@@ -217,15 +180,15 @@ class Professionals(UserObjectMixins, View):
             return JsonResponse({"error": str(e)}, safe=False)
 
 
-class Customer(UserObjectMixins, View):
+class ManufacturingLicenseCustomer(UserObjectMixins, View):
     async def post(self, request):
         try:
-            premiseNo = request.POST.get("premiseNo")
+            manufacturingNo = request.POST.get("manufacturingNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
 
             response = self.make_soap_request(
-                "FnWholesalePremisePermitPayment",
-                premiseNo,
+                "FnManufacturingLicencePayment",
+                manufacturingNo,
                 userCode,
             )
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -235,26 +198,26 @@ class Customer(UserObjectMixins, View):
             else:
                 if response == True:
                     messages.success(request, "Request Successful")
-                    return redirect("PermitDetails", pk=premiseNo)
+                    return redirect("ManufacturingLicenseDetails", pk=manufacturingNo)
                 else:
                     messages.error(request, f"{response}")
-                    return redirect("PermitDetails", pk=premiseNo)
+                    return redirect("ManufacturingLicenseDetails", pk=manufacturingNo)
         except Exception as e:
             logging.exception(e)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 return JsonResponse({"error": str(e)}, safe=False)
             else:
                 messages.error(request, f"{e}")
-                return redirect("PermitDetails", pk=premiseNo)
+                return redirect("ManufacturingLicenseDetails", pk=manufacturingNo)
 
 
-class FNGenerateInvoice(UserObjectMixins, View):
+class ManufacturingLicenseInvoice(UserObjectMixins, View):
     def post(self, request):
         try:
-            premiseNo = request.POST.get("premiseNo")
-            filenameFromApp = "invoice_" + premiseNo + ".pdf"
+            manufacturingNo = request.POST.get("manufacturingNo")
+            filenameFromApp = "invoice_" + manufacturingNo + ".pdf"
             response = self.make_soap_request(
-                "FNGenerateWholesalePremiseInvoice", premiseNo
+                "FNGenerateManufacturingLicenceInvoice", manufacturingNo
             )
 
             buffer = BytesIO.BytesIO()
@@ -269,10 +232,10 @@ class FNGenerateInvoice(UserObjectMixins, View):
         except Exception as e:
             messages.error(request, f"Failed, {e}")
             logging.exception(e)
-            return redirect("PermitDetails", pk=premiseNo)
+            return redirect("ManufacturingLicenseDetails", pk=manufacturingNo)
 
 
-class PermitAttachments(UserObjectMixins, View):
+class ManufacturingLicenseAttachments(UserObjectMixins, View):
     async def get(self, request, pk):
         try:
             Attachments = []
@@ -302,7 +265,7 @@ class PermitAttachments(UserObjectMixins, View):
                 attachment_names.append(fileName)
                 attachment = base64.b64encode(file.read())
                 response = self.make_soap_request(
-                    "FnAttachementWholesalePremisePermit",
+                    "FnAttachementManufacturingLicence",
                     pk,
                     fileName,
                     attachment,
@@ -324,32 +287,14 @@ class PermitAttachments(UserObjectMixins, View):
             return JsonResponse({"success": False, "error": error})
 
 
-class RemovePermitAttachment(UserObjectMixins, View):
-    def post(self, request):
-        try:
-            docID = int(request.POST.get("docID"))
-            tableID = int(request.POST.get("tableID"))
-            leaveCode = request.POST.get("leaveCode")
-            response = self.make_soap_request(
-                "FnDeleteDocumentAttachment", leaveCode, docID, tableID
-            )
-            if response == True:
-                return JsonResponse(
-                    {"success": True, "message": "Deleted successfully"}
-                )
-            return JsonResponse({"success": False, "message": f"{response}"})
-        except Exception as e:
-            error = "Upload failed: {}".format(e)
-            logging.exception(e)
-            return JsonResponse({"success": False, "error": error})
-
-
-class SubmitWholesalePermit(UserObjectMixins, View):
+class SubmitManufacturingLicense(UserObjectMixins, View):
     def post(self, request, pk):
         try:
             userCode = request.session["UserID"]
 
-            response = self.make_soap_request("SubmitWholesalePermit", pk, userCode)
+            response = self.make_soap_request(
+                "SubmitManufacturingLicence", pk, userCode
+            )
 
             if response == True:
                 return JsonResponse({"response": str(response)}, safe=False)
@@ -359,12 +304,12 @@ class SubmitWholesalePermit(UserObjectMixins, View):
             return JsonResponse({"error": str(e)}, safe=False)
 
 
-class PremiseCert(UserObjectMixins, View):
+class ManufacturingLicenseCert(UserObjectMixins, View):
     def post(self, request, pk):
         try:
-            filenameFromApp = "Premise_Cert_" + pk + ".pdf"
+            filenameFromApp = "Manufacturing_License_Cert_" + pk + ".pdf"
             response = self.make_soap_request(
-                "PrintWholesalePremisePermitCertificate", pk
+                "PrintManufacturingLicenceCertificate", pk
             )
             buffer = BytesIO.BytesIO()
             content = base64.b64decode(response)
@@ -378,11 +323,4 @@ class PremiseCert(UserObjectMixins, View):
         except Exception as e:
             messages.error(request, f"Failed, {e}")
             logging.exception(e)
-            return redirect("PermitDetails", pk=pk)
-
-
-#
-# QyAdvertisement
-# QyManufacturingLicence
-# QyManufacturingLicenceLines
-# QyInspectorateRequiredDocument
+            return redirect("ManufacturingLicenseDetails", pk=pk)

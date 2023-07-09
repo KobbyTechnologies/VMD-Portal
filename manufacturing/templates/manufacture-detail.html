@@ -1,0 +1,1090 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<!--Header-->
+{% include 'navbar.html' %}
+<!-- End Header -->
+<!-- Sidebar-->
+{% include 'sidebar.html' %}
+<!-- End Sidebar -->
+<style>
+    .cert_img {
+        height: 190px !important;
+        width: 190px !important;
+        margin-bottom: 1rem;
+
+    }
+
+    .cert_div {
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Manufacturing License</h1>
+            </div>
+        </div>
+    </div><!-- End Page Title -->
+    <section class="section contact">
+        <div class="row">
+            <div class="col-md-12">
+                <div
+                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                    <div class="step completed">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Application Form</h4>
+                    </div>
+                    <div class="step step2Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-tie"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Lines Form</h4>
+                    </div>
+                    <div class="step step3Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-upload"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Attachments</h4>
+                    </div>
+                    <div class="step step4con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-coins"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Payment</h4>
+                    </div>
+                    <div class="step step5con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check-double"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Submit</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="stepTwo" class="bg-white p-4" style="display: none">
+                    <div class="money-spinner mx-auto text-center" id="spinner" style="display:none">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
+                    </div>
+                    <div class="premise_data" id="premise_data">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">
+                                Manufacturing License Lines
+                            </h5>
+                            <div id="Professionals_btn" style="display: none">
+                                <button class="btn btn-primary" id="ProfessionalsNext">Next Step <i
+                                        class="las la-angle-double-right"></i></button>
+                            </div>
+                        </div>
+                        <form method="POST" id="ProfessionalsForm">
+                            {% csrf_token %}
+                            <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
+                            <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-2">
+                                        <label class="form-label">Veterinary Medicine Name <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="veterinaryMedicineName"
+                                            id="veterinaryMedicineName" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-2">
+                                        <label class="form-label">Medicine Composition<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="medicineComposition"
+                                            id="medicineComposition" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-2">
+                                        <label class="form-label">Direct Personal Supervisor<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="directPersonalSupervisor"
+                                            id="directPersonalSupervisor" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-2">
+                                        <label class="form-label">Supervisor Qualifications <span
+                                                class="text-danger">*</span></label>
+                                        <textarea class="form-control longText" name="supervisorQualifications"
+                                            id="supervisorQualifications"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
+                        </form>
+                        <table id="ProfessionalsTable"
+                            class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Veterinary Medicine Name</th>
+                                    <th scope="col">Medicine Composition</th>
+                                    <th scope="col">Direct Personal Supervisor</th>
+                                    <th scope="col">Supervisor Qualifications</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="stepThree" id="stepThree" style="display: none">
+                    <div class="row m-0 bg-white p-4">
+                        <div class="Attachment_data" id="Attachment_data">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title">
+                                    Attachment
+                                </h5>
+                                <div id="AttachmentsBtns">
+                                    <button class="btn btn-secondary" id="AttachmentsPrev"><i
+                                            class="las la-angle-double-left"></i> Prev
+                                        Step</button>
+                                    <button class="btn btn-primary" id="AttachmentsNext">Next Step <i
+                                            class="las la-angle-double-right"></i></button>
+                                </div>
+                            </div>
+                            <div class="money-spinner mx-auto text-center" id="attachment_spinner" style="display:none">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+                                    alt="Loading Gif" style="height: 100px;" class="img-fluid">
+                            </div>
+                            {% if permit.Status == 'Open' %}
+                            <form method="POST" id="attachmentForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
+                                <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-2">
+                                            <label class="form-label">Upload Attachment <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="file" class="form-control" name="attachments" id="attachments"
+                                                accept=".doc,.docx,.pdf">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn button-87 my-2 w-100">Upload</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="row my-3" id="attachments-container">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="stepFour" id="stepFour" style="display: none">
+                    <div class="row my-2">
+
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-md-12 bg-white my-2">
+                            <div class="d-flex justify-content-end align-items-center my-3">
+                                <div class="money-spinner" id="submit_spinner" style="display:none">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+                                        alt="Loading Gif" style="height: 70px;" class="img-fluid">
+                                </div>
+                                <div id="payment_btn">
+                                    <button class="btn btn-secondary" id="paymentPrev"><i
+                                            class="las la-angle-double-left"></i> Prev
+                                        Step</button>
+                                    <form method="post" id="payment_submit_form" style="display:none">
+                                        {% csrf_token %}
+                                        <button class="btn btn-warning" id="payment_submit">Submit </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <div class="row box-right">
+                                        <div class="col-md-8 ps-0 ">
+                                            <p class="ps-3 textmuted fw-bold h6 mb-2"><span
+                                                    class="bi bi-circle-fill pe-2" style="color:#0e5a8d;"></span> <span
+                                                    id="payment_state">Total
+                                                    to Pay</span></p>
+                                            <p class="h1 fw-bold d-flex"> <span
+                                                    class="las la-coins textmuted pe-1 h6 align-text-top mt-2"></span>
+                                                <span class="pesa_paid">{{permit.Currency}}
+                                                    {{permit.AmountPayable}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% if permit.Status == 'Approved' %}
+                                    <div class="row box-right my-3" id="cert_card" style="display:none">
+                                        <div class="money-spinner text-center" id="download_spinner"
+                                            style="display:none">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+                                                alt="Loading Gif" style="height: 70px;" class="img-fluid">
+                                        </div>
+
+                                        <div class="col-md-12 text-center cert_div">
+                                            <img src="../../static/img/certificate.png" class="img-fluid cert_img"
+                                                alt="">
+                                            <form id="PremiseCertForm" method="post">
+                                                {% csrf_token %}
+                                                <button type="submit" class="button-87">
+                                                    <i class="las la-download"></i> Download Wholesale Premise Permit
+                                                    Certificate
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12 px-0 mb-4">
+                                    {% if permit.Status == 'Open' %}
+                                    <div class="box-right confirm_div">
+                                        <div class="d-flex">
+                                            <p class="fw-bold h7">Confirm Payment</p>
+
+                                            <p class="ms-auto p-blue"> <span
+                                                    class=" bg btn btn-primary bi bi-exclamation-circle"></span>
+                                            </p>
+                                        </div>
+                                        <div class="bg-blue px-2">
+                                            <P class="textmuted">VMD will never ask you for your password, PIN, CVV,
+                                                or
+                                                full card details.
+                                            </P>
+                                        </div>
+                                        <form action="#" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="currency" value="{{res.Currency_Code}}">
+                                            <div class="row my-3">
+                                                <div class="col-md-12">
+                                                    <label for="" class="form-label">Reference Number <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="transactionCode"
+                                                        required>
+                                                    <div class="form-text">Enter transaction or reference number to
+                                                        confirm payment
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary d-block w-100">Confirm
+                                                Payment
+                                                <span class="ms-3 bi bi-arrow-right"></span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 ps-md-5 p-0 ">
+                            <div class="box-left">
+                                <div class="">
+                                    <p class="h7 fw-bold mb-1">Make Payments</p>
+                                    <p class="textmuted h8 mb-2">Choose from the payment options available to proceed.
+                                        Your payment
+                                        will be processed
+                                        immediately.
+                                    </p>
+                                    <div class="money-spinner mx-auto text-center" id="invoice_spinner"
+                                        style="display:none">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+                                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
+                                    </div>
+                                    <form id="FNGenerateInvoice" method="post">
+                                        {% csrf_token %}
+                                        <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
+                                    </form>
+                                    <!-- Bordered Tabs Justified -->
+                                    <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified"
+                                        role="tablist">
+                                        <li class="nav-item flex-fill" role="presentation">
+                                            <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                                data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                                aria-controls="home" aria-selected="true">Bank</button>
+                                        </li>
+                                        <li class="nav-item flex-fill" role="presentation">
+                                            <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                                data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                                aria-controls="profile" aria-selected="false">M-Pesa</button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content pt-5" id="borderedTabJustifiedContent">
+                                        <div class="tab-pane fade show active" id="bordered-justified-home"
+                                            role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="form">
+                                                <p>Bank: <span class="text-primary">National Bank of Kenya</span></p>
+                                                <p>Bank Name: <span class="text-primary">Veterinary Medicines
+                                                        Directorate</span></p>
+                                                <p>Branch: <span class="text-primary">Westlands</span></p>
+                                                <p>Swift Code: <span class="text-primary">NBKEKENXXXX</span></p>
+                                                <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>
+                                                <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel"
+                                            aria-labelledby="profile-tab">
+                                            <div class="form">
+                                                <p>PayBill: <span class="text-primary">471524</span></p>
+                                                <p>Kshs A/C No.: <span class="text-primary">01071203347300</span></p>
+                                                <p>USD A/C No.<span class="text-primary">02071203347300</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Manufacturing License {{permit.ManufacturingNo}} Details
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <form action="{% url 'ManufacturingLicense' %}" class="bg-white p-4" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="manufacturingNo" value="{{permit.ManufacturingNo}}">
+                                    <input type="hidden" name="myAction" id="myAction" value="modify">
+                                    <input type="hidden" name="iAgree" value="True">
+                                    <div class="tab">
+                                        <div class="border border-success rounded p-3 my-3">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label class="form-label">GMP Standards <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="gMPStandards"
+                                                        id="gMPStandards" value="{{permit.GMPStandards}}" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if permit.Status == 'Open' %}
+                                    <button type="submit" class="btn button-87 my-3 w-100">Edit Form</button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include 'alert.html' %}
+            </div>
+        </div>
+
+    </section>
+</main>
+
+{% include 'footer.html' %}
+<script>
+    $(document).ready(function () {
+
+        var documentStatus = '{{permit.Status}}';
+        var AmountPayable = '{{permit.AmountPayable}}';
+        var document_header = '{{permit.ManufacturingNo}}';
+        var Invoiced = '{{permit.Invoiced}}';
+        var Paid = '{{permit.Paid}}';
+
+        console.log(document_header)
+
+        const $step2Icon = $('.step2Icon');
+        const $stepTwo = $('#stepTwo');
+        const $Professionals_btn = $('#Professionals_btn');
+        const $ProfessionalsNext = $('#ProfessionalsNext');
+        const $ProfessionalsForm = $('#ProfessionalsForm');
+        const $spinner = $('#spinner');
+
+        const $stepThree = $('#stepThree');
+        const $FNGenerateInvoice = $('#FNGenerateInvoice');
+        const $invoice_spinner = $('#invoice_spinner');
+        const $attachmentForm = $('#attachmentForm');
+        const $AttachmentsPrev = $('#AttachmentsPrev');
+        const $AttachmentsNext = $('#AttachmentsNext');
+        const $stepFour = $('#stepFour');
+        const $paymentPrev = $('#paymentPrev');
+        const $payment_submit_form = $('#payment_submit_form');
+        const $step4con = $('.step4con');
+        const $step5con = $('.step5con');
+        const $submit_spinner = $('#submit_spinner');
+        const $payment_state = $('#payment_state');
+        const $PremiseCertForm = $('#PremiseCertForm');
+
+        Amount_Payable = parseInt(AmountPayable)
+
+        if (Amount_Payable > 0) {
+            $stepTwo.show();
+        }
+
+        $ProfessionalsNext.click(function () {
+            if (Invoiced === 'False' && Paid === 'False') {
+                $('#premise_data').hide();
+                $spinner.show();
+                $.ajax({
+                    type: 'POST',
+                    url: '/ManufacturingLicenseCustomer/',
+                    data: {
+                        manufacturingNo: document_header,
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function (response) {
+                        if (response['response']) {
+                            iziToast.show({
+                                theme: 'dark',
+                                backgroundColor: '#239B56',
+                                icon: 'las la-check-circle',
+                                title: 'Yeah',
+                                message: "Pay" + " " + AmountPayable,
+                                position: 'topRight',
+                                progressBarColor: '#F4F6F7',
+                            });
+                            $stepTwo.hide();
+                            $stepThree.show();
+                            $spinner.hide();
+                        } else if (response['error']) {
+                            iziToast.show({
+                                theme: 'dark',
+                                icon: 'las la-exclamation',
+                                title: 'Error',
+                                message: response['error'],
+                                position: 'topRight',
+                                progressBarColor: '#ff0800',
+                            });
+                            $("#premise_data").show();
+                            $spinner.hide();
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error)
+
+                    }
+                });
+            } else {
+                $stepTwo.hide();
+                $stepThree.show();
+            }
+        })
+
+        $paymentPrev.click(function () {
+            $stepFour.hide();
+            $stepThree.show();
+        })
+
+        if (documentStatus === 'Open') {
+            $('#gMPStandards').prop('disabled', false);
+        }
+
+        $AttachmentsPrev.click(function () {
+            $stepTwo.show();
+            $stepThree.hide();
+        })
+
+        $AttachmentsNext.click(function () {
+            $stepFour.show();
+            $stepThree.hide();
+            $(".step3Icon").addClass('completed');
+
+        })
+
+        $ProfessionalsForm.on('submit', (e) => {
+            e.preventDefault();
+            if ($('#veterinaryMedicineName').val() === '' || $('#medicineComposition')
+                .val() === '' || $(
+                    '#directPersonalSupervisor')
+                .val() === '' || $('#supervisorQualifications').val() === '') {
+                alert('Please fill in all required fields.');
+                return false;
+            }
+            $('#spinner').show();
+
+            $.ajax({
+                type: 'POST',
+                url: '/ManufacturingLicense/' + document_header + "/",
+                data: {
+                    myAction: $("#Professionals_my_action").val(),
+                    lineNo: $('#Professionals_lineNo').val(),
+                    veterinaryMedicineName: $('#veterinaryMedicineName').val(),
+                    medicineComposition: $('#medicineComposition').val(),
+                    directPersonalSupervisor: $('#directPersonalSupervisor').val(),
+                    supervisorQualifications: $('#supervisorQualifications').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (response) {
+                    $('#spinner').hide();
+                    if (response['response']) {
+                        loadProfessionals(document_header);
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            title: 'Yeah',
+                            message: "created successfully",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                        $('#veterinaryMedicineName, #medicineComposition, #directPersonalSupervisor')
+                            .val(
+                                '');
+                        $('#supervisorQualifications').val('');
+                    } else if (response['error']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response['error'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                    $('#spinner').hide();
+
+                }
+            });
+        });
+
+        $attachmentForm.on("submit", (e) => {
+            e.preventDefault();
+
+            $("#attachment_spinner").show();
+            var formData = new FormData($attachmentForm[0]);
+
+            let attachments = $('#attachments')[0];
+            for (let i = 0; i < attachments.files.length; i++) {
+                formData.append('attachment', attachments.files[i]);
+            }
+
+            $.ajax({
+                url: "/ManufacturingLicenseAttachments/" + document_header + "/",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()
+                },
+                success: function (data) {
+
+                    $('#attachments').val('');
+                    $("#attachment_spinner").hide();
+                    if (data['success'] == true) {
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            title: 'Yeah',
+                            message: "Uploaded successfully",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                        Load_Attachments(document_header);
+                    } else {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: "Upload failed: " + data,
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log(xhr.responseText);
+                    $("#attachment_spinner").hide();
+                }
+            });
+        });
+        Load_Attachments(document_header);
+
+        function Load_Attachments(pk) {
+            $.ajax({
+                url: "/ManufacturingLicenseAttachments/" + document_header + "/",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var containerDiv = $("#attachments-container");
+                    containerDiv.empty(); // clear the container div
+                    for (var i = 0; i < data.length; i++) {
+                        if (data.length > 0) {
+                            $(".step3Icon").addClass('completed');
+                        }
+                        var docID = data[i].AuxiliaryIndex2;
+                        var tableID = data[i].Table_ID;
+                        var attachmentID = data[i].AuxiliaryIndex2;
+                        var File_Name = data[i].File_Name;
+                        var File_Extension = data[i].File_Extension;
+                        // create a new div for this attachment
+                        var attachmentDiv = $("<div>", {
+                            class: "col-lg-4 col-xl-3"
+                        });
+                        var fileManBoxDiv = $("<div>", {
+                            class: "file-man-box"
+                        });
+                        // create the form for deleting the attachment
+                        if (documentStatus === 'Open') {
+                            var deleteForm = $("<form>", {
+                                method: "POST"
+                            });
+                            deleteForm.append($("<input>", {
+                                type: "hidden",
+                                name: "docID",
+                                value: docID
+                            }));
+                            deleteForm.append($("<input>", {
+                                type: "hidden",
+                                name: "tableID",
+                                value: tableID
+                            }));
+                            var deleteButton = $("<button>", {
+                                class: "file-close",
+                                id: "file-close",
+                                style: "background-color: white !important;"
+                            }).append($("<i>", {
+                                class: "las la-times-circle",
+                            }));
+                            deleteButton.on("click", function (event) {
+                                event.preventDefault();
+                                $("#attachment_spinner").show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "/RemovePermitAttachment/",
+                                    data: {
+                                        docID: docID,
+                                        tableID: tableID,
+                                        leaveCode: pk,
+                                        csrfmiddlewaretoken: $(
+                                                'input[name=csrfmiddlewaretoken]')
+                                            .val()
+                                    },
+                                    success: function (data) {
+                                        if (data['success'] == true) {
+                                            iziToast.show({
+                                                theme: 'dark',
+                                                backgroundColor: '#239B56',
+                                                icon: 'las la-check-circle',
+                                                title: 'Yeah',
+                                                message: data[
+                                                    'message'],
+                                                position: 'topRight',
+                                                progressBarColor: '#F4F6F7',
+                                            });
+                                            $("#attachment_spinner").hide();
+                                            Load_Attachments(pk);
+                                        } else {
+                                            iziToast.show({
+                                                theme: 'dark',
+                                                icon: 'las la-exclamation',
+                                                title: 'Error',
+                                                message: data['error'],
+                                                position: 'topRight',
+                                                progressBarColor: '#ff0800',
+                                            });
+                                        }
+                                    },
+                                    error: function (error) {
+                                        console.log(error)
+                                    }
+                                });
+                            });
+                            fileManBoxDiv.append(deleteButton);
+                        }
+                        // create the div for the file icon
+                        var fileImgBoxDiv = $("<div>", {
+                            class: "file-img-box"
+                        }).append($("<img>", {
+                            src: "../../static/img/file-download.png",
+                            alt: "icon"
+                        }));
+                        fileManBoxDiv.append(fileImgBoxDiv);
+                        // create the div for the file name
+                        var fileManTitleDiv = $("<div>", {
+                            class: "file-man-title"
+                        }).append($("<h5>", {
+                            class: "mb-0 text-overflow"
+                        }).text(File_Name + "." + File_Extension));
+                        fileManBoxDiv.append(fileManTitleDiv);
+                        attachmentDiv.append(fileManBoxDiv);
+                        containerDiv.append(attachmentDiv);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
+
+
+        loadProfessionals(document_header);
+
+        function loadProfessionals(pk) {
+            $.ajax({
+                url: "/ManufacturingLicenseLines/" + pk + "/",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tableBody = $('#ProfessionalsTable tbody');
+                    tableBody.empty(); // clear existing rows if any
+                    // iterate through the data and append to the table
+                    for (var i = 0; i < data[1].length; i++) {
+                        if (data[1].length > 0) {
+                            $step2Icon.addClass('completed');
+                            $Professionals_btn.show();
+                        } else {
+                            $step2Icon.removeClass('completed');
+                            $Professionals_btn.hide();
+                        }
+                        var VeterinaryMedecineName = data[1][i].VeterinaryMedecineName;
+                        var MedecineComposition = data[1][i].MedecineComposition;
+                        var DirectPersonalSupervisor = data[1][i].DirectPersonalSupervisor;
+                        var SupervisorQualifications = data[1][i].SupervisorQualifications;
+                        let Line_No = data[1][i].PremiseLineNo;
+
+                        var row = $('<tr>');
+                        row.append($('<td>').text(VeterinaryMedecineName));
+                        row.append($('<td>').text(MedecineComposition));
+                        row.append($('<td>').text(DirectPersonalSupervisor));
+                        row.append($('<td>').text(SupervisorQualifications));
+                        if (documentStatus === 'Open') {
+                            var form = $('<form>').attr({
+                                method: 'POST',
+                                action: '/ManufacturingLicense/' + pk + '/',
+                            }).append('{% csrf_token %}');
+
+                            var pro_veterinaryMedicineName = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'veterinaryMedicineName',
+                                value: "0"
+                            });
+                            var pro_medicineComposition = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'medicineComposition',
+                                value: "0"
+                            });
+                            var pro_directPersonalSupervisor = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'directPersonalSupervisor',
+                                value: "0"
+                            });
+                            var pro_supervisorQualifications = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'supervisorQualifications',
+                                value: "0"
+                            });
+
+                            var pro_lineNoInput = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'lineNo',
+                                value: Line_No
+                            });
+                            var pro_myActionInput = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'myAction',
+                                value: 'delete'
+                            });
+                            var pro_submitBtn = $('<button>').attr({
+                                type: 'submit',
+                                class: 'btn btn-danger'
+                            }).text('delete');
+
+                            // Handle form submission
+                            form.submit(function (event) {
+                                event.preventDefault();
+                                $spinner.show();
+                                $.ajax({
+                                    url: form.attr('action'),
+                                    type: form.attr('method'),
+                                    data: form.serialize(),
+                                    success: function (response) {
+                                        loadProfessionals(document_header);
+                                        $spinner.hide();
+                                        if (response['response']) {
+                                            iziToast.show({
+                                                theme: 'dark',
+                                                backgroundColor: '#239B56',
+                                                icon: 'las la-check-circle',
+                                                message: "deleted",
+                                                position: 'topRight',
+                                                progressBarColor: '#F4F6F7',
+                                            });
+                                        } else {
+                                            iziToast.show({
+                                                theme: 'dark',
+                                                icon: 'las la-exclamation',
+                                                title: 'Error',
+                                                message: response[
+                                                    'message'],
+                                                position: 'topRight',
+                                                progressBarColor: '#ff0800',
+                                            });
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.log("Error:", error);
+                                        $spinner.hide();
+                                        iziToast.show({
+                                            theme: 'dark',
+                                            icon: 'las la-exclamation',
+                                            title: 'Error',
+                                            message: 'CSRF verification failed. Request aborted.',
+                                            position: 'topRight',
+                                            progressBarColor: '#ff0800',
+                                        });
+                                    }
+                                });
+                            });
+
+                            var td = $('<td>').append(form.append(pro_veterinaryMedicineName,
+                                pro_medicineComposition,
+                                pro_directPersonalSupervisor,
+                                pro_supervisorQualifications, pro_lineNoInput,
+                                pro_myActionInput, pro_submitBtn));
+                            row.append(td);
+                        }
+                        tableBody.append(row);
+                    }
+                    // initialize DataTables for each table
+                    if (!$.fn.DataTable.isDataTable('#ProfessionalsTable')) {
+                        $('#ProfessionalsTable').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
+
+
+        $FNGenerateInvoice.on('submit', (e) => {
+            e.preventDefault();
+            $invoice_spinner.show();
+            $.ajax({
+                type: 'POST',
+                url: '/ManufacturingLicenseInvoice/',
+                data: {
+                    manufacturingNo: document_header,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                xhrFields: {
+                    responseType: 'blob' // Set the response type to 'blob'
+                },
+                success: function (response) {
+                    $invoice_spinner.hide();
+                    const blob = new Blob([response], {
+                        type: 'application/pdf'
+                    });
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'Manufacturing_License_Invoice.pdf';
+                    link.click();
+                    window.URL.revokeObjectURL(url);
+
+                    iziToast.show({
+                        theme: 'dark',
+                        backgroundColor: '#239B56',
+                        icon: 'las la-check-circle',
+                        title: 'Success',
+                        message: 'Downloaded successfully',
+                        position: 'topRight',
+                        progressBarColor: '#F4F6F7',
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                    $invoice_spinner.hide();
+                    iziToast.show({
+                        theme: 'dark',
+                        backgroundColor: '#E74C3C',
+                        icon: 'las la-times-circle',
+                        title: 'Error',
+                        message: 'An error occurred',
+                        position: 'topRight',
+                        progressBarColor: '#F4F6F7',
+                    });
+                }
+            });
+        });
+        filter_list(document_header);
+
+        function filter_list(pk) {
+            var query = '/QyManufacturingLicence'
+            var filter_one = 'ManufacturingNo'
+            var filter_two = 'UserCode'
+
+
+            $.ajax({
+                url: "/filter_list/" + pk,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    query: query,
+                    filter_one: filter_one,
+                    filter_two: filter_two,
+                },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        if (data['data']['Paid'] === true) {
+                            $('#payment_submit_form').css('display', 'inline-block');
+                            $step4con.addClass('completed');
+                            $payment_state.empty().append("Paid");
+                            $(".pesa_paid").addClass('text-success');
+                        }
+                        if (data['data']['Status'] != 'Open') {
+                            $step5con.addClass('completed');
+                            $('#payment_submit_form').css('display', 'none');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $("#confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                        }
+                        if (data['data']['Status'] === 'Approved') {
+                            $('#cert_card').show();
+                        }
+                    } else {
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+
+        }
+        $payment_submit_form.on('submit', (e) => {
+            e.preventDefault();
+            $submit_spinner.show();
+
+            $.ajax({
+                type: 'POST',
+                url: '/submit/manufacturing/license/' + document_header + "/",
+                data: {
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (response) {
+                    $submit_spinner.hide();
+                    if (response['response']) {
+                        filter_list(document_header);
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            title: 'Yeah',
+                            message: "submitted successfully",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+
+                    } else if (response['error']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response['error'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                    $submit_spinner.hide();
+
+                }
+            });
+        });
+
+        $PremiseCertForm.on('submit', (e) => {
+            e.preventDefault();
+            $("#download_spinner").show();
+            $.ajax({
+                type: 'POST',
+                url: '/manufacturing/license/cert/' + document_header + '/',
+                data: {
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (response) {
+                    $("#download_spinner").hide();
+                    const blob_cert = new Blob([response], {
+                        type: 'application/pdf'
+                    });
+                    const urls = window.URL.createObjectURL(blob_cert);
+                    const links = document.createElement('a');
+                    links.href = urls;
+                    links.download = 'Manufacturing_License_Certificate.pdf';
+                    links.click();
+                    window.URL.revokeObjectURL(urls);
+
+                    iziToast.show({
+                        theme: 'dark',
+                        backgroundColor: '#239B56',
+                        icon: 'las la-check-circle',
+                        title: 'Success',
+                        message: 'Downloaded successfully',
+                        position: 'topRight',
+                        progressBarColor: '#F4F6F7',
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                    $("#download_spinner").hide();
+                    iziToast.show({
+                        theme: 'dark',
+                        backgroundColor: '#E74C3C',
+                        icon: 'las la-times-circle',
+                        title: 'Error',
+                        message: 'An error occurred',
+                        position: 'topRight',
+                        progressBarColor: '#F4F6F7',
+                    });
+                }
+            });
+        });
+
+    })
+</script>
+{% endblock %}
