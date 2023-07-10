@@ -29,10 +29,22 @@
                             alt="Loading Gif" style="height: 100px;" class="img-fluid">
                     </div>
                     <div class="border border-success rounded p-3  my-3">
-                        <div class="row my-3">
-                            <div class="col-md-12">
-                                <label class="form-label">GMP Standards <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="gMPStandards" id="gMPStandards">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label class="form-label">Direct Personal Supervisor<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="directPersonalSupervisor"
+                                        id="directPersonalSupervisor" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label class="form-label">Supervisor Qualifications <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="supervisorQualifications"
+                                        id="supervisorQualifications" required>
+                                </div>
                             </div>
                         </div>
                         <div class="row my-2">
@@ -102,7 +114,6 @@
                                     <thead>
                                         <tr>
                                             <th>Code</th>
-                                            <th>GMP Standards</th>
                                             <th>Amount Payable</th>
                                             <th>Paid</th>
                                             <th>Status</th>
@@ -111,7 +122,6 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -128,7 +138,6 @@
                                     <thead>
                                         <tr>
                                             <th>Code</th>
-                                            <th>GMP Standards</th>
                                             <th>Amount Payable</th>
                                             <th>Paid</th>
                                             <th>Status</th>
@@ -137,7 +146,6 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -154,7 +162,6 @@
                                     <thead>
                                         <tr>
                                             <th>Code</th>
-                                            <th>GMP Standards</th>
                                             <th>Amount Payable</th>
                                             <th>Paid</th>
                                             <th>Status</th>
@@ -163,7 +170,6 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -180,7 +186,6 @@
                                     <thead>
                                         <tr>
                                             <th>Code</th>
-                                            <th>GMP Standards</th>
                                             <th>Amount Payable</th>
                                             <th>Paid</th>
                                             <th>Status</th>
@@ -189,7 +194,6 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -230,7 +234,6 @@
 
                     for (var i = 0; i < data.length; i++) {
                         var ManufacturingNo = data[i].ManufacturingNo;
-                        var GMPStandards = data[i].GMPStandards;
                         var Status = data[i].Status;
                         var Currency = data[i].Currency;
                         var AmountPayable = data[i].AmountPayable;
@@ -238,7 +241,6 @@
 
                         var row = $('<tr>');
                         row.append($('<td>').text(ManufacturingNo));
-                        row.append($('<td>').text(GMPStandards));
                         row.append($('<td>').text(Currency + " " + AmountPayable));
                         row.append($('<td>').text(Paid));
                         row.append($('<td>').text(Status));
@@ -321,7 +323,9 @@
         $headerForm.on('submit', (e) => {
             e.preventDefault();
 
-            if ($('#gMPStandards').val() === '') {
+            if ($(
+                    '#directPersonalSupervisor')
+                .val() === '' || $('#supervisorQualifications').val() === '') {
                 alert('Please fill in all required fields.');
                 return false;
             }
@@ -332,7 +336,8 @@
                 url: '/ManufacturingLicense/',
                 data: {
                     manufacturingNo: $("#manufacturingNo").val(),
-                    gMPStandards: $('#gMPStandards').val(),
+                    directPersonalSupervisor: $("#directPersonalSupervisor").val(),
+                    supervisorQualifications: $("#supervisorQualifications").val(),
                     iAgree: $('#iAgree').val(),
                     myAction: $("#myAction").val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
@@ -354,8 +359,9 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $('#gMPStandards').val(
-                            '');
+                        $('#supervisorQualifications, #directPersonalSupervisor')
+                            .val(
+                                '');
                     } else if (response['error']) {
                         iziToast.show({
                             theme: 'dark',

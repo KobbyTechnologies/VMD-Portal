@@ -99,38 +99,24 @@
                             <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
                             <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="mb-2">
-                                        <label class="form-label">Veterinary Medicine Name <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="veterinaryMedicineName"
-                                            id="veterinaryMedicineName" required>
+                                        <label for="" class="form-label">Product</label>
+                                        <select class="form-select" name="productNo" id="productNo" required>
+                                            <option value="0" disabled selected>--Select Product--</option>
+                                            {% for product in approved_products %}
+                                            <option value="{{product.ProductNo}}">{{product.Productname}}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="mb-2">
                                         <label class="form-label">Medicine Composition<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="medicineComposition"
                                             id="medicineComposition" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Direct Personal Supervisor<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="directPersonalSupervisor"
-                                            id="directPersonalSupervisor" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Supervisor Qualifications <span
-                                                class="text-danger">*</span></label>
-                                        <textarea class="form-control longText" name="supervisorQualifications"
-                                            id="supervisorQualifications"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -140,17 +126,13 @@
                             class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
-                                    <th scope="col">Veterinary Medicine Name</th>
+                                    <th scope="col">Product</th>
                                     <th scope="col">Medicine Composition</th>
-                                    <th scope="col">Direct Personal Supervisor</th>
-                                    <th scope="col">Supervisor Qualifications</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -384,11 +366,25 @@
                                     <div class="tab">
                                         <div class="border border-success rounded p-3 my-3">
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <label class="form-label">GMP Standards <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="gMPStandards"
-                                                        id="gMPStandards" value="{{permit.GMPStandards}}" disabled>
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label class="form-label">Direct Personal Supervisor<span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            name="directPersonalSupervisor"
+                                                            id="directPersonalSupervisor"
+                                                            value="{{permit.DirectPersonalSupervisor}}" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label class="form-label">Supervisor Qualifications <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            name="supervisorQualifications"
+                                                            id="supervisorQualifications"
+                                                            value="{{permit.SupervisorQualifications}}" disabled>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -503,7 +499,8 @@
         })
 
         if (documentStatus === 'Open') {
-            $('#gMPStandards').prop('disabled', false);
+            $('#supervisorQualifications').prop('disabled', false);
+            $('#directPersonalSupervisor').prop('disabled', false);
         }
 
         $AttachmentsPrev.click(function () {
@@ -520,10 +517,8 @@
 
         $ProfessionalsForm.on('submit', (e) => {
             e.preventDefault();
-            if ($('#veterinaryMedicineName').val() === '' || $('#medicineComposition')
-                .val() === '' || $(
-                    '#directPersonalSupervisor')
-                .val() === '' || $('#supervisorQualifications').val() === '') {
+            if ($('#productNo').val() === '' || $('#medicineComposition')
+                .val() === '') {
                 alert('Please fill in all required fields.');
                 return false;
             }
@@ -535,10 +530,8 @@
                 data: {
                     myAction: $("#Professionals_my_action").val(),
                     lineNo: $('#Professionals_lineNo').val(),
-                    veterinaryMedicineName: $('#veterinaryMedicineName').val(),
+                    productNo: $('#productNo').val(),
                     medicineComposition: $('#medicineComposition').val(),
-                    directPersonalSupervisor: $('#directPersonalSupervisor').val(),
-                    supervisorQualifications: $('#supervisorQualifications').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
@@ -554,10 +547,9 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $('#veterinaryMedicineName, #medicineComposition, #directPersonalSupervisor')
+                        $('#productNo, #medicineComposition')
                             .val(
                                 '');
-                        $('#supervisorQualifications').val('');
                     } else if (response['error']) {
                         iziToast.show({
                             theme: 'dark',
@@ -768,41 +760,27 @@
                             $step2Icon.removeClass('completed');
                             $Professionals_btn.hide();
                         }
-                        var VeterinaryMedecineName = data[1][i].VeterinaryMedecineName;
+                        var Product_No = data[1][i].Product_No;
                         var MedecineComposition = data[1][i].MedecineComposition;
-                        var DirectPersonalSupervisor = data[1][i].DirectPersonalSupervisor;
-                        var SupervisorQualifications = data[1][i].SupervisorQualifications;
                         let Line_No = data[1][i].PremiseLineNo;
 
                         var row = $('<tr>');
-                        row.append($('<td>').text(VeterinaryMedecineName));
+                        row.append($('<td>').text(Product_No));
                         row.append($('<td>').text(MedecineComposition));
-                        row.append($('<td>').text(DirectPersonalSupervisor));
-                        row.append($('<td>').text(SupervisorQualifications));
                         if (documentStatus === 'Open') {
                             var form = $('<form>').attr({
                                 method: 'POST',
                                 action: '/ManufacturingLicense/' + pk + '/',
                             }).append('{% csrf_token %}');
 
-                            var pro_veterinaryMedicineName = $('<input>').attr({
+                            var pro_productNo = $('<input>').attr({
                                 type: 'hidden',
-                                name: 'veterinaryMedicineName',
+                                name: 'productNo',
                                 value: "0"
                             });
                             var pro_medicineComposition = $('<input>').attr({
                                 type: 'hidden',
                                 name: 'medicineComposition',
-                                value: "0"
-                            });
-                            var pro_directPersonalSupervisor = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'directPersonalSupervisor',
-                                value: "0"
-                            });
-                            var pro_supervisorQualifications = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'supervisorQualifications',
                                 value: "0"
                             });
 
@@ -868,10 +846,9 @@
                                 });
                             });
 
-                            var td = $('<td>').append(form.append(pro_veterinaryMedicineName,
+                            var td = $('<td>').append(form.append(pro_productNo,
                                 pro_medicineComposition,
-                                pro_directPersonalSupervisor,
-                                pro_supervisorQualifications, pro_lineNoInput,
+                                pro_lineNoInput,
                                 pro_myActionInput, pro_submitBtn));
                             row.append(td);
                         }

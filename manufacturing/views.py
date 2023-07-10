@@ -10,7 +10,6 @@ from myRequest.views import UserObjectMixins
 from asgiref.sync import sync_to_async
 import asyncio
 import aiohttp
-from datetime import datetime
 
 
 # Create your views here.
@@ -50,21 +49,19 @@ class ManufacturingLicense(UserObjectMixins, View):
     async def post(self, request):
         try:
             manufacturingNo = request.POST.get("manufacturingNo")
-            gMPStandards = request.POST.get("gMPStandards")
+            directPersonalSupervisor = request.POST.get("directPersonalSupervisor")
+            supervisorQualifications = request.POST.get("supervisorQualifications")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            date = "2023-07-09"
             iAgree = eval(request.POST.get("iAgree"))
             myAction = request.POST.get("myAction")
             if not iAgree:
                 iAgree = False
 
-            defaultDate = datetime.strptime((date), "%Y-%m-%d").date()
-
             response = self.make_soap_request(
                 "FnManufacturingLicenceCard",
                 manufacturingNo,
-                gMPStandards,
-                defaultDate,
+                directPersonalSupervisor,
+                supervisorQualifications,
                 iAgree,
                 userCode,
                 myAction,
@@ -107,10 +104,22 @@ class ManufacturingLicenseDetails(UserObjectMixins, View):
                         pk,
                     )
                 )
-                response = await asyncio.gather(task_get_permit)
+                task_get_product = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session,
+                        "/QYRegistration",
+                        "User_code",
+                        "eq",
+                        userID,
+                    )
+                )
+                response = await asyncio.gather(task_get_permit, task_get_product)
                 for permit in response[0]:
                     if permit["UserCode"] == userID:
                         permit = permit
+                approved_products = [
+                    x for x in response[1] if x["Status"] == "Approved"
+                ]
         except Exception as e:
             messages.info(request, f"{e}")
             print(e)
@@ -119,6 +128,7 @@ class ManufacturingLicenseDetails(UserObjectMixins, View):
             "permit": permit,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
+            "approved_products": approved_products,
         }
         return render(request, "manufacture-detail.html", ctx)
 
@@ -127,23 +137,18 @@ class ManufacturingLicenseDetails(UserObjectMixins, View):
             myAction = request.POST.get("myAction")
             lineNo = request.POST.get("lineNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            veterinaryMedicineName = request.POST.get("veterinaryMedicineName")
+            productNo = request.POST.get("productNo")
             medicineComposition = request.POST.get("medicineComposition")
-            directPersonalSupervisor = request.POST.get("directPersonalSupervisor")
-            supervisorQualifications = request.POST.get("supervisorQualifications")
 
             response = self.make_soap_request(
                 "FnManufacturingLcenecLines",
                 pk,
                 lineNo,
-                veterinaryMedicineName,
                 medicineComposition,
-                directPersonalSupervisor,
-                supervisorQualifications,
+                productNo,
                 userCode,
                 myAction,
             )
-            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response == True:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -257,7 +262,7 @@ class ManufacturingLicenseAttachments(UserObjectMixins, View):
     async def post(self, request, pk):
         try:
             attachments = request.FILES.getlist("attachment")
-            tableID = 50040
+            tableID = 50046
             attachment_names = []
             response = False
             for file in attachments:
