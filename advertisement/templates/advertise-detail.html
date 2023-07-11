@@ -24,66 +24,31 @@
 <main id="main" class="main">
     <div class="pagetitle">
         <div class="row">
-            <div class="col-md-12">
-                <h1>Advertisement</h1>
+            <div class="col-md-8">
+                <h1 class="my-2">Advertisement</h1>
             </div>
-        </div>
-    </div><!-- End Page Title -->
-    <section class="section contact">
-        <div class="row">
-            <div class="col-md-12">
-                <div
-                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-                    <div class="step completed">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-check"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Application Form</h4>
-                    </div>
-                    <div class="step step2Icon">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-user-tie"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Product Details Form</h4>
-                    </div>
-                    <div class="step step3Icon">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-upload"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Attachments</h4>
-                    </div>
-                    <div class="step step4con">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-coins"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Payment</h4>
-                    </div>
-                    <div class="step step5con">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-check-double"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Submit</h4>
-                    </div>
+            <div class="col-md-4 text-right">
+                <label class="my-2">Document Status: <span
+                        class="document_status text-small text-primary"></span></label>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="20"
+                        aria-valuemax="100"><span class="doc_status">20%</span></div>
                 </div>
             </div>
         </div>
+    </div>
+    <section class="section contact">
         <div class="row">
             <div class="col-md-12">
+                <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__ball"></div>
+                </div>
                 <div id="stepTwo" class="bg-white p-4" style="display: none">
-                    <div class="money-spinner mx-auto text-center" id="spinner" style="display:none">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                    </div>
                     <div class="premise_data" id="premise_data">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="card-title">
@@ -171,7 +136,7 @@
                         </form>
                         {% endif %}
                         <table id="ProfessionalsTable"
-                            class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            class="table table-striped dt-responsive table-responsive-lg table-bordered datatable">
                             <thead>
                                 <tr>
                                     <th scope="col">Product Name</th>
@@ -181,9 +146,7 @@
                                     <th scope="col">Country Of Manufacture </th>
                                     <th scope="col">Target Audience </th>
                                     <th scope="col">Uses </th>
-                                    {% if permit.Status == 'Open' %}
                                     <th scope="col">Action</th>
-                                    {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
@@ -492,7 +455,53 @@
                 {% include 'alert.html' %}
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-md-12">
+                <div
+                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                    <div class="step completed">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Application Form</h4>
+                    </div>
+                    <div class="step step2Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-tie"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Product Details Form</h4>
+                    </div>
+                    <div class="step step3Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-upload"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Attachments</h4>
+                    </div>
+                    <div class="step step4con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-coins"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Payment</h4>
+                    </div>
+                    <div class="step step5con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check-double"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Submit</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </main>
 
@@ -526,17 +535,99 @@
         const $submit_spinner = $('#submit_spinner');
         const $payment_state = $('#payment_state');
         const $PremiseCertForm = $('#PremiseCertForm');
+        var progressBar = $(".progress-bar");
 
         Amount_Payable = parseInt(AmountPayable)
 
-        if (Amount_Payable > 0) {
-            $stepTwo.show();
+        function animateProgressBar(percentage) {
+            var progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = percentage + '%';
+
+            var progressValue = document.querySelector('.doc_status');
+            progressValue.textContent = percentage + '%'; // Update the progress value
+        }
+
+        filter_list(document_header);
+
+        function filter_list(pk) {
+            var query = '/QyAdvertisement'
+            var filter_one = 'AdvartisementNo'
+            var filter_two = 'UserCode'
+
+
+            $.ajax({
+                url: "/filter_list/" + pk,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    query: query,
+                    filter_one: filter_one,
+                    filter_two: filter_two,
+                },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        $('.document_status').empty().append(data['data']['Status']);
+
+                        if (data['data']['Paid'] === true) {
+                            $('#payment_submit_form').css('display', 'inline-block');
+                            $step4con.addClass('completed');
+                            $payment_state.empty().append("Paid");
+                            $(".pesa_paid").addClass('text-success');
+                        }
+                        if (data['data']['Paid'] === true && data['data']['Status'] === 'Open') {
+                            progressBar.css("width", "80%");
+                            animateProgressBar(80);
+
+                        }
+
+                        if (data['data']['Status'] === 'Open') {
+                            $(".confirm_div").show();
+                            $stepTwo.show();
+                            progressBar.addClass("bg-warning");
+                            progressBar.css("width", "20%");
+                            animateProgressBar(20);
+                        } else if (data['data']['Status'] === 'Processing') {
+                            $("#loading_div").show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "80%");
+                            progressBar.addClass("bg-primary");
+                            animateProgressBar(80);
+                        } else if (data['data']['Status'] === 'Approved') {
+                            $('#cert_card').show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "100%");
+                            progressBar.addClass("bg-success");
+                            animateProgressBar(100);
+                        }
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+
         }
 
         $ProfessionalsNext.click(function () {
             if (Invoiced === 'False' && Paid === 'False') {
-                $('#premise_data').hide();
-                $spinner.show();
+                $spinner.show(400);
+                document.getElementById('main').classList.add('loads');
+                $ProfessionalsForm.hide();
                 $.ajax({
                     type: 'POST',
                     url: '/AdvertisingCustomer/',
@@ -557,7 +648,7 @@
                             });
                             $stepTwo.hide();
                             $stepThree.show();
-                            $spinner.hide();
+
                         } else if (response['error']) {
                             iziToast.show({
                                 theme: 'dark',
@@ -567,13 +658,17 @@
                                 position: 'topRight',
                                 progressBarColor: '#ff0800',
                             });
-                            $("#premise_data").show();
-                            $spinner.hide();
+                            $ProfessionalsForm.show();
+
                         }
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
                     },
                     error: function (error) {
                         console.log(error)
-
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
+                        $ProfessionalsForm.show();
                     }
                 });
             } else {
@@ -617,7 +712,9 @@
                 return false;
             }
 
-            $('#spinner').show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $ProfessionalsForm.hide();
 
             $.ajax({
                 type: 'POST',
@@ -635,7 +732,6 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $('#spinner').hide();
                     if (response['response']) {
                         loadProfessionals(document_header);
                         iziToast.show({
@@ -662,14 +758,197 @@
                             progressBarColor: '#ff0800',
                         });
                     }
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $('#spinner').hide();
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
 
                 }
             });
         });
+
+        function handleFormSubmission(form) {
+            event.preventDefault();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $ProfessionalsForm.hide();
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function (response) {
+                    loadProfessionals(document_header);
+                    if (response['response']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            message: "deleted",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                    } else {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response[
+                                'message'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
+                    iziToast.show({
+                        theme: 'dark',
+                        icon: 'las la-exclamation',
+                        title: 'Error',
+                        message: 'CSRF verification failed. Request aborted.',
+                        position: 'topRight',
+                        progressBarColor: '#ff0800',
+                    });
+                }
+            });
+        }
+
+
+        loadProfessionals(document_header);
+
+        function loadProfessionals(pk) {
+            $.ajax({
+                url: "/AdvertisementLines/" + pk + "/",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tableBody = $('#ProfessionalsTable tbody');
+                    tableBody.empty(); // clear existing rows if any
+                    // iterate through the data and append to the table
+                    for (var i = 0; i < data[1].length; i++) {
+                        if (data[1].length > 0) {
+                            $step2Icon.addClass('completed');
+                            $Professionals_btn.show();
+                        } else {
+                            $step2Icon.removeClass('completed');
+                            $Professionals_btn.hide();
+                        }
+                        var Name = data[1][i].ProductName;
+                        var MarketingAuthorizationNo = data[1][i].MarketingAuthorizationNo;
+                        var Formulation = data[1][i].Formulation;
+                        var ProductCategory = data[1][i].ProductCategory;
+                        var CountryOfManufactureName = data[1][i].CountryOfManufactureName;
+                        var TargetAudience = data[1][i].TargetAudience;
+                        var Uses = data[1][i].Users;
+                        let Line_No = data[1][i].ADVProdDNo;
+
+                        var row = $('<tr>');
+                        row.append($('<td>').text(Name));
+                        row.append($('<td>').text(MarketingAuthorizationNo));
+                        row.append($('<td>').text(Formulation));
+                        row.append($('<td>').text(ProductCategory));
+                        row.append($('<td>').text(CountryOfManufactureName));
+                        row.append($('<td>').text(TargetAudience));
+                        row.append($('<td>').text(Uses));
+                        if (documentStatus === 'Open') {
+                            var form = $('<form>').attr({
+                                method: 'POST',
+                                action: '/advertise/' + pk + '/',
+                            }).append('{% csrf_token %}');
+
+                            var pro_Name = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'pro_name',
+                                value: "0"
+                            });
+                            var pro_marketingAuthorizationNo = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'marketingAuthorizationNo',
+                                value: "0"
+                            });
+                            var pro_formulation = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'formulation',
+                                value: "0"
+                            });
+                            var pro_category = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'category',
+                                value: "0"
+                            });
+                            var pro_targetAudience = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'targetAudience',
+                                value: "0"
+                            });
+                            var pro_uses = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'uses',
+                                value: "0"
+                            });
+                            var pro_countryOfManufacture = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'countryOfManufacture',
+                                value: "0"
+                            });
+                            var pro_lineNoInput = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'lineNo',
+                                value: Line_No
+                            });
+                            var pro_myActionInput = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'myAction',
+                                value: 'delete'
+                            });
+                            var pro_submitBtn = $('<button>').attr({
+                                type: 'submit',
+                                class: 'btn btn-danger'
+                            }).text('delete');
+
+                            // Handle form submission
+                            form.submit(function (event) {
+                                handleFormSubmission($(this));
+                            });
+
+                            var td = $('<td>').append(form.append(pro_Name,
+                                pro_marketingAuthorizationNo,
+                                pro_formulation,
+                                pro_category, pro_targetAudience, pro_uses,
+                                pro_countryOfManufacture, pro_lineNoInput,
+                                pro_myActionInput, pro_submitBtn));
+                            row.append(td);
+                        }
+                        tableBody.append(row);
+                    }
+                    // initialize DataTables for each table
+                    if (!$.fn.DataTable.isDataTable('#ProfessionalsTable')) {
+                        $('#ProfessionalsTable').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
 
         $attachmentForm.on("submit", (e) => {
             e.preventDefault();
@@ -842,173 +1121,6 @@
             });
         }
 
-
-        loadProfessionals(document_header);
-
-        function loadProfessionals(pk) {
-            $.ajax({
-                url: "/AdvertisementLines/" + pk + "/",
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    var tableBody = $('#ProfessionalsTable tbody');
-                    tableBody.empty(); // clear existing rows if any
-                    // iterate through the data and append to the table
-                    for (var i = 0; i < data[1].length; i++) {
-                        if (data[1].length > 0) {
-                            $step2Icon.addClass('completed');
-                            $Professionals_btn.show();
-                        } else {
-                            $step2Icon.removeClass('completed');
-                            $Professionals_btn.hide();
-                        }
-                        var Name = data[1][i].ProductName;
-                        var MarketingAuthorizationNo = data[1][i].MarketingAuthorizationNo;
-                        var Formulation = data[1][i].Formulation;
-                        var ProductCategory = data[1][i].ProductCategory;
-                        var CountryOfManufactureName = data[1][i].CountryOfManufactureName;
-                        var TargetAudience = data[1][i].TargetAudience;
-                        var Uses = data[1][i].Users;
-                        let Line_No = data[1][i].ADVProdDNo;
-
-                        var row = $('<tr>');
-                        row.append($('<td>').text(Name));
-                        row.append($('<td>').text(MarketingAuthorizationNo));
-                        row.append($('<td>').text(Formulation));
-                        row.append($('<td>').text(ProductCategory));
-                        row.append($('<td>').text(CountryOfManufactureName));
-                        row.append($('<td>').text(TargetAudience));
-                        row.append($('<td>').text(Uses));
-                        if (documentStatus === 'Open') {
-                            var form = $('<form>').attr({
-                                method: 'POST',
-                                action: '/advertise/' + pk + '/',
-                            }).append('{% csrf_token %}');
-
-                            var pro_Name = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'pro_name',
-                                value: "0"
-                            });
-                            var pro_marketingAuthorizationNo = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'marketingAuthorizationNo',
-                                value: "0"
-                            });
-                            var pro_formulation = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'formulation',
-                                value: "0"
-                            });
-                            var pro_category = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'category',
-                                value: "0"
-                            });
-                            var pro_targetAudience = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'targetAudience',
-                                value: "0"
-                            });
-                            var pro_uses = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'uses',
-                                value: "0"
-                            });
-                            var pro_countryOfManufacture = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'countryOfManufacture',
-                                value: "0"
-                            });
-                            var pro_lineNoInput = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'lineNo',
-                                value: Line_No
-                            });
-                            var pro_myActionInput = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'myAction',
-                                value: 'delete'
-                            });
-                            var pro_submitBtn = $('<button>').attr({
-                                type: 'submit',
-                                class: 'btn btn-danger'
-                            }).text('delete');
-
-                            // Handle form submission
-                            form.submit(function (event) {
-                                event.preventDefault();
-                                $spinner.show();
-                                $.ajax({
-                                    url: form.attr('action'),
-                                    type: form.attr('method'),
-                                    data: form.serialize(),
-                                    success: function (response) {
-                                        loadProfessionals(document_header);
-                                        $spinner.hide();
-                                        if (response['response']) {
-                                            iziToast.show({
-                                                theme: 'dark',
-                                                backgroundColor: '#239B56',
-                                                icon: 'las la-check-circle',
-                                                message: "deleted",
-                                                position: 'topRight',
-                                                progressBarColor: '#F4F6F7',
-                                            });
-                                        } else {
-                                            iziToast.show({
-                                                theme: 'dark',
-                                                icon: 'las la-exclamation',
-                                                title: 'Error',
-                                                message: response[
-                                                    'message'],
-                                                position: 'topRight',
-                                                progressBarColor: '#ff0800',
-                                            });
-                                        }
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.log("Error:", error);
-                                        $spinner.hide();
-                                        iziToast.show({
-                                            theme: 'dark',
-                                            icon: 'las la-exclamation',
-                                            title: 'Error',
-                                            message: 'CSRF verification failed. Request aborted.',
-                                            position: 'topRight',
-                                            progressBarColor: '#ff0800',
-                                        });
-                                    }
-                                });
-                            });
-
-                            var td = $('<td>').append(form.append(pro_Name,
-                                pro_marketingAuthorizationNo,
-                                pro_formulation,
-                                pro_category, pro_targetAudience, pro_uses,
-                                pro_countryOfManufacture, pro_lineNoInput,
-                                pro_myActionInput, pro_submitBtn));
-                            row.append(td);
-                        }
-                        tableBody.append(row);
-                    }
-                    // initialize DataTables for each table
-                    if (!$.fn.DataTable.isDataTable('#ProfessionalsTable')) {
-                        $('#ProfessionalsTable').DataTable({
-                            "pageLength": 5,
-                            "order": [
-                                [0, "desc"]
-                            ]
-                        });
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                },
-            });
-        }
-
-
         $FNGenerateInvoice.on('submit', (e) => {
             e.preventDefault();
             $invoice_spinner.show();
@@ -1059,65 +1171,8 @@
                 }
             });
         });
-        filter_list(document_header);
-
-        function filter_list(pk) {
-            var query = '/QyAdvertisement'
-            var filter_one = 'AdvartisementNo'
-            var filter_two = 'UserCode'
 
 
-            $.ajax({
-                url: "/filter_list/" + pk,
-                type: "GET",
-                dataType: "json",
-                data: {
-                    query: query,
-                    filter_one: filter_one,
-                    filter_two: filter_two,
-                },
-                success: function (data) {
-                    if (data['success'] == true) {
-                        if (data['data']['Paid'] === true) {
-                            $('#payment_submit_form').css('display', 'inline-block');
-                            $step4con.addClass('completed');
-                            $payment_state.empty().append("Paid");
-                            $(".pesa_paid").addClass('text-success');
-                        }
-
-                        if (data['data']['Status'] === 'Approved') {
-                            $('#cert_card').show();
-                            $('#payment_submit_form').css('display', 'none');
-                            $step5con.addClass('completed');
-                            $ProfessionalsForm.hide();
-                            $attachmentForm.hide();
-                            $(".confirm_div").hide();
-                            $stepTwo.hide();
-                            $stepThree.hide();
-                            $stepFour.show();
-                        } else if (data['data']['Status'] === 'Open') {
-                            $(".confirm_div").show();
-                        } else if (data['data']['Status'] === 'Processing') {
-                            $("#loading_div").show();
-                            $('#payment_submit_form').css('display', 'none');
-                            $step5con.addClass('completed');
-                            $ProfessionalsForm.hide();
-                            $attachmentForm.hide();
-                            $(".confirm_div").hide();
-                            $stepTwo.hide();
-                            $stepThree.hide();
-                            $stepFour.show();
-                        }
-                    } else {
-
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                },
-            });
-
-        }
         $payment_submit_form.on('submit', (e) => {
             e.preventDefault();
             $submit_spinner.show();

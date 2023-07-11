@@ -274,6 +274,14 @@
     const $headerForm = $('#regForm');
     const $spinner = $('#spinner');
 
+    function animateProgressBar(percentage) {
+        var progressBar = document.querySelector('.progress-bar');
+        progressBar.style.width = percentage + '%';
+
+        var progressValue = document.querySelector('.doc_status');
+        progressValue.textContent = percentage + '%'; // Update the progress value
+    }
+
     $(document).ready(function () {
 
         $('#firstTimeApplication').on('change', function () {

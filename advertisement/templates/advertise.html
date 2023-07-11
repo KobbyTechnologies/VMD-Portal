@@ -9,26 +9,27 @@
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
 <main id="main" class="main">
-    <div class="pagetitle">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Advertisement</h1>
-            </div>
-        </div>
-    </div><!-- End Page Title -->
     <section class="section contact">
-        <div class="row">
+        <div class="row bg-white">
             <div class="col-md-12">
+                <div class="pagetitle my-3">
+                    <h1>Advertisement</h1>
+                </div>
                 {% include 'alert.html' %}
+                <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__ball"></div>
+                </div>
                 <form id="regForm" class="bg-white p-4" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="advertisementNo" id="advertisementNo" value="">
                     <input type="hidden" name="myAction" id="myAction" value="insert">
-                    <div class="money-spinner mx-auto text-center" id="header-spinner" style="display:none">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                    </div>
                     <div class="border border-success rounded p-3  my-3">
+                        <p class="text-small text-info">Advertisement Information</p>
                         <div class="row my-3">
                             <div class="col-md-12">
                                 <label class="form-label">Form Of Advertisement <span
@@ -198,6 +199,8 @@
 {% include 'footer.html' %}
 <script>
     const $headerForm = $('#regForm');
+    const $spinner = $('#spinner');
+
     $(document).ready(function () {
         Header_Data();
 
@@ -230,7 +233,7 @@
                         row.append($('<td>').text(advertisementNo));
                         row.append($('<td>').text(FormOfAdvertisement));
                         row.append($('<td>').text(Currency + " " + AmountPayable));
-                        row.append($('<td>').text(Paid));
+                        row.append($('<td>').text(Paid ? "Yes" : "No"));
                         row.append($('<td>').text(Status));
 
 
@@ -317,8 +320,9 @@
                 return false;
             }
 
-            $('#header-spinner').show();
-            $headerForm.hide();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+
             $.ajax({
                 type: 'POST',
                 url: '/advertise/',
@@ -330,7 +334,6 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $('#header-spinner').hide();
                     Header_Data();
                     if (response['response']) {
                         window.location.href = "/advertise/" + response['response'] +
@@ -346,7 +349,6 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $headerForm.show();
                         $('#formOfAdvertisement').val(
                             '');
                     } else if (response['error']) {
@@ -359,11 +361,13 @@
                             progressBarColor: '#ff0800',
                         });
                     }
+                    $spinner.hide(1500);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $('#header-spinner').hide();
-                    $headerForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
 
                 }
             });

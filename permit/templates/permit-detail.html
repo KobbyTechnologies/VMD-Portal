@@ -25,67 +25,19 @@
     <div class="pagetitle">
         <div class="row">
             <div class="col-md-8">
-                <h1>Wholesalers Premises Permit</h1>
+                <h1 class="my-2">Wholesalers Premises Permit</h1>
             </div>
             <div class="col-md-4 text-right">
-                <label class="my-2">Application Status: <span class="doc_status text-small text-primary"></span></label>
+                <label class="my-2">Document Status: <span
+                        class="document_status text-small text-primary"></span></label>
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                        aria-valuemax="100"></div>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="20"
+                        aria-valuemax="100"><span class="doc_status">20%</span></div>
                 </div>
             </div>
         </div>
     </div>
-
-
     <section class="section contact">
-        <div class="row">
-            <div class="col-md-12">
-                <div
-                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-                    <div class="step completed">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-check"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Application Form</h4>
-                    </div>
-                    <div class="step step2Icon">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-user-tie"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Professionals Form</h4>
-                    </div>
-                    <div class="step step3Icon">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-upload"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Attachments</h4>
-                    </div>
-                    <div class="step step4con">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-coins"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Payment</h4>
-                    </div>
-                    <div class="step step5con">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-check-double"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Submit</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="loader mx-auto text-center" id="spinner" style="display: none;">
@@ -495,7 +447,53 @@
                 {% include 'alert.html' %}
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-md-12">
+                <div
+                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                    <div class="step completed">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Application Form</h4>
+                    </div>
+                    <div class="step step2Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-tie"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Professionals Form</h4>
+                    </div>
+                    <div class="step step3Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-upload"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Attachments</h4>
+                    </div>
+                    <div class="step step4con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-coins"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Payment</h4>
+                    </div>
+                    <div class="step step5con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check-double"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Submit</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </main>
 
@@ -535,9 +533,90 @@
 
         Amount_Payable = parseInt(AmountPayable)
 
-        if (Amount_Payable > 0) {
-            $stepTwo.show();
+        function animateProgressBar(percentage) {
+            var progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = percentage + '%';
+
+            var progressValue = document.querySelector('.doc_status');
+            progressValue.textContent = percentage + '%'; // Update the progress value
         }
+
+        filter_list(document_header);
+
+        function filter_list(pk) {
+            var query = '/QyWholesalePremisePermit'
+            var filter_one = 'PremiseNo'
+            var filter_two = 'UserCode'
+
+
+            $.ajax({
+                url: "/filter_list/" + pk,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    query: query,
+                    filter_one: filter_one,
+                    filter_two: filter_two,
+                },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        $('.document_status').empty().append(data['data']['Status']);
+
+                        if (data['data']['Paid'] === true) {
+                            $('#payment_submit_form').css('display', 'inline-block');
+                            $step4con.addClass('completed');
+                            $payment_state.empty().append("Paid");
+                            $(".pesa_paid").addClass('text-success');
+                        }
+                        if (data['data']['Paid'] === true && data['data']['Status'] === 'Open') {
+                            progressBar.css("width", "80%");
+                            animateProgressBar(80);
+
+                        }
+
+                        if (data['data']['Status'] === 'Open') {
+                            $(".confirm_div").show();
+                            $stepTwo.show();
+                            progressBar.addClass("bg-warning");
+                            progressBar.css("width", "20%");
+                            animateProgressBar(20);
+                        } else if (data['data']['Status'] === 'Processing') {
+                            $("#loading_div").show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "80%");
+                            progressBar.addClass("bg-primary");
+                            animateProgressBar(80);
+                        } else if (data['data']['Status'] === 'Approved') {
+                            $('#cert_card').show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "100%");
+                            progressBar.addClass("bg-success");
+                            animateProgressBar(100);
+                        }
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+
+        }
+
 
         $ProfessionalsNext.click(function () {
             if (Invoiced === 'False' && Paid === 'False') {
@@ -573,6 +652,7 @@
                                 position: 'topRight',
                                 progressBarColor: '#ff0800',
                             });
+                            $ProfessionalsForm.show();
 
                         }
                         $spinner.hide(1000);
@@ -582,6 +662,7 @@
                         console.log(error)
                         $spinner.hide(1000);
                         document.getElementById('main').classList.remove('loads');
+                        $ProfessionalsForm.show();
 
                     }
                 });
@@ -812,7 +893,8 @@
                                         tableID: tableID,
                                         leaveCode: pk,
                                         csrfmiddlewaretoken: $(
-                                                'input[name=csrfmiddlewaretoken]')
+                                                'input[name=csrfmiddlewaretoken]'
+                                            )
                                             .val()
                                     },
                                     success: function (data) {
@@ -833,7 +915,8 @@
                                                 theme: 'dark',
                                                 icon: 'las la-exclamation',
                                                 title: 'Error',
-                                                message: data['error'],
+                                                message: data[
+                                                    'error'],
                                                 position: 'topRight',
                                                 progressBarColor: '#ff0800',
                                             });
@@ -1108,72 +1191,7 @@
                 }
             });
         });
-        filter_list(document_header);
 
-        function filter_list(pk) {
-            var query = '/QyWholesalePremisePermit'
-            var filter_one = 'PremiseNo'
-            var filter_two = 'UserCode'
-
-
-            $.ajax({
-                url: "/filter_list/" + pk,
-                type: "GET",
-                dataType: "json",
-                data: {
-                    query: query,
-                    filter_one: filter_one,
-                    filter_two: filter_two,
-                },
-                success: function (data) {
-                    if (data['success'] == true) {
-                        $('.doc_status').empty().append(data['data']['Status']);
-                        if (data['data']['Paid'] === true) {
-                            $('#payment_submit_form').css('display', 'inline-block');
-                            $step4con.addClass('completed');
-                            $payment_state.empty().append("Paid");
-                            $(".pesa_paid").addClass('text-success');
-                        }
-                        if (data['data']['Status'] === 'Approved') {
-                            $('#cert_card').show();
-                            $('#payment_submit_form').css('display', 'none');
-                            $step5con.addClass('completed');
-                            $ProfessionalsForm.hide();
-                            $attachmentForm.hide();
-                            $(".confirm_div").hide();
-                            $stepTwo.hide();
-                            $stepThree.hide();
-                            $stepFour.show();
-                            progressBar.css("width", "100%");
-                            progressBar.addClass("bg-success");
-                        } else if (data['data']['Status'] === 'Open') {
-                            $(".confirm_div").show();
-                            $stepTwo.show();
-                            progressBar.css("width", "20%");
-                            progressBar.addClass("bg-warning");
-                        } else if (data['data']['Status'] === 'Processing') {
-                            $("#loading_div").show();
-                            $('#payment_submit_form').css('display', 'none');
-                            $step5con.addClass('completed');
-                            $ProfessionalsForm.hide();
-                            $attachmentForm.hide();
-                            $(".confirm_div").hide();
-                            $stepTwo.hide();
-                            $stepThree.hide();
-                            $stepFour.show();
-                            progressBar.css("width", "80%");
-                            progressBar.addClass("bg-primary");
-                        }
-                    } else {
-
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                },
-            });
-
-        }
         $payment_submit_form.on('submit', (e) => {
             e.preventDefault();
             $spinner.show(400);
@@ -1276,7 +1294,6 @@
                 }
             });
         });
-
     })
 </script>
 {% endblock %}

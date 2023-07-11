@@ -807,3 +807,11 @@ button:hover {
     transform: scale(1, 1);
   }
 }
+.progress-bar {
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
+
+.doc_status {
+  font-weight: bold;
+}
