@@ -24,11 +24,20 @@
 <main id="main" class="main">
     <div class="pagetitle">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <h1>Wholesalers Premises Permit</h1>
             </div>
+            <div class="col-md-4 text-right">
+                <label class="my-2">Application Status: <span class="doc_status text-small text-primary"></span></label>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                        aria-valuemax="100"></div>
+                </div>
+            </div>
         </div>
-    </div><!-- End Page Title -->
+    </div>
+
+
     <section class="section contact">
         <div class="row">
             <div class="col-md-12">
@@ -79,83 +88,103 @@
         </div>
         <div class="row">
             <div class="col-md-12">
+                <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__ball"></div>
+                </div>
                 <div id="stepTwo" class="bg-white p-4" style="display: none">
-                    <div class="money-spinner mx-auto text-center" id="spinner" style="display:none">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                    </div>
-                    <div class="premise_data" id="premise_data">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">
-                                Other Professionals Working in the Premise
-                            </h5>
-                            <div id="Professionals_btn" style="display: none">
-                                <button class="btn btn-primary" id="ProfessionalsNext">Next Step <i
-                                        class="las la-angle-double-right"></i></button>
+                    <div class="border border-success rounded p-3  my-3">
+                        <div class="premise_data" id="premise_data">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="text-small text-info">Professionals Working in the Premise</p>
+                                <div id="Professionals_btn" style="display: none">
+                                    <button class="btn btn-primary" id="ProfessionalsNext">Next Step <i
+                                            class="las la-angle-double-right"></i></button>
+                                </div>
                             </div>
-                        </div>
-                        <form method="POST" id="ProfessionalsForm">
-                            {% csrf_token %}
-                            <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
-                            <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Name <span class="text-danger">*</span></label>
+                            <form method="POST" id="ProfessionalsForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
+                                <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
+                                <div class="row gx-2">
+                                    <div class="col-md-8">
+                                        <label class="form-label">Full Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="pro_name" id="pro_name" required>
                                     </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Professional Reg No. </label>
+                                        <input type="text" class="form-control" name="professionalRegNo"
+                                            id="professionalRegNo" required>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="mb-2">
+                                <div class="row my-3 gx-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Nationality <span class="text-danger">*</span></label>
+                                        <select class="form-select" aria-label="Default select example"
+                                            name="nationality" id="nationality">
+                                            <option selected disabled value="0">Choose...</option>
+                                            {% for res in country %}
+                                            <option value="{{res.Code}}">{{res.Name}}</option>
+                                            {% empty %}
+                                            <option value="KE">KENYA</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">ID/Passport/Alien ID No <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="iDorPassportOrAlienIDNo"
+                                            id="iDorPassportOrAlienIDNo">
+                                    </div>
+                                    <div class="col-md-4">
                                         <label class="form-label">Position in the Business<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="position_in_business"
                                             id="position_in_business" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Reg/Enrollment No.<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reg_no" id="reg_no" required>
+                                <div class="row my-3">
+                                    <div class="col-md-12">
+                                        <div class="mb-2">
+                                            <label class="form-label">Qualification And Experience <span
+                                                    class="text-danger">*</span></label>
+                                            <textarea class="form-control longText" name="qualificationAndExperience"
+                                                id="qualificationAndExperience"></textarea>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Qualification And Experience <span
-                                                class="text-danger">*</span></label>
-                                        <textarea class="form-control longText" name="qualificationAndExperience"
-                                            id="qualificationAndExperience"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
-                        </form>
-                        <table id="ProfessionalsTable"
-                            class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Position in the Business</th>
-                                    <th scope="col">Reg/Enrollment No.</th>
-                                    <th scope="col">Qualification And Experience </th>
-                                    {% if permit.Status == 'Open' %}
-                                    <th scope="col">Action</th>
-                                    {% endif %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
+                            </form>
+                            <table id="ProfessionalsTable"
+                                class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Pro Reg No.</th>
+                                        <th scope="col">Nationality</th>
+                                        <th scope="col">ID/Passport/Alien ID No.</th>
+                                        <th scope="col">Position</th>
+                                        <th scope="col">Qualification</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="stepThree" id="stepThree" style="display: none">
@@ -172,10 +201,6 @@
                                     <button class="btn btn-primary" id="AttachmentsNext">Next Step <i
                                             class="las la-angle-double-right"></i></button>
                                 </div>
-                            </div>
-                            <div class="money-spinner mx-auto text-center" id="attachment_spinner" style="display:none">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                    alt="Loading Gif" style="height: 100px;" class="img-fluid">
                             </div>
                             {% if permit.Status == 'Open' %}
                             <form method="POST" id="attachmentForm">
@@ -208,10 +233,6 @@
                     <div class="row m-0">
                         <div class="col-md-12 bg-white my-2">
                             <div class="d-flex justify-content-end align-items-center my-3">
-                                <div class="money-spinner" id="submit_spinner" style="display:none">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                        alt="Loading Gif" style="height: 70px;" class="img-fluid">
-                                </div>
                                 <div id="payment_btn">
                                     <button class="btn btn-secondary" id="paymentPrev"><i
                                             class="las la-angle-double-left"></i> Prev
@@ -241,12 +262,6 @@
                                     </div>
                                     {% if permit.Status == 'Approved' %}
                                     <div class="row box-right my-3" id="cert_card" style="display:none">
-                                        <div class="money-spinner text-center" id="download_spinner"
-                                            style="display:none">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                                alt="Loading Gif" style="height: 70px;" class="img-fluid">
-                                        </div>
-
                                         <div class="col-md-12 text-center cert_div">
                                             <img src="../../static/img/certificate.png" class="img-fluid cert_img"
                                                 alt="">
@@ -310,11 +325,6 @@
                                         will be processed
                                         immediately.
                                     </p>
-                                    <div class="money-spinner mx-auto text-center" id="invoice_spinner"
-                                        style="display:none">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                                    </div>
                                     <form id="FNGenerateInvoice" method="post">
                                         {% csrf_token %}
                                         <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
@@ -399,71 +409,50 @@
                                                         value="{{permit.AmountPayable}}" disabled>
                                                 </div>
                                             </div>
-
+                                            <div class="row my-3">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">First Time Application <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        name="firstTimeApplication" id="firstTimeApplication" disabled>
+                                                        <option value="0">--select--</option>
+                                                        <option value="1">Yes</option>
+                                                        <option value="2">True</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Previous Inspection </label>
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        name="inspectionNo" id="inspectionNo" disabled>
+                                                        <option value="0">--select--</option>
+                                                        {% for inspection in Approved_Inspection %}
+                                                        <option value="{{inspection.PremiseInpectionNo}}">
+                                                            {{inspection.PremiseInpectionNo}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                {% if permit.FirstTimeApplication == "No" %}
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Last Paid Date</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{permit.Last_Paid_Date}}" disabled>
+                                                </div>
+                                                {% else %}
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Invoiced</label>
+                                                    <input type="text" class="form-control" value="{{permit.Invoiced}}"
+                                                        disabled>
+                                                </div>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="border border-success rounded p-3  my-3">
-                                        <div class="row my-3">
-                                            <div class="col-md-4">
-                                                <label class="form-label">Professional Registration No</label>
-                                                <input type="text" class="form-control" name="professionalRegNo"
-                                                    id="professionalRegNo" value="{{permit.ProfessionalRegNo}}"
-                                                    disabled>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">Nationality</label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="nationality" id="nationality" disabled>
-                                                    <option selected disabled value="0">Choose...</option>
-                                                    {% for res in country %}
-                                                    <option value="{{res.Code}}">{{res.Name}}</option>
-                                                    {% empty %}
-                                                    <option value="KE">KENYA</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">ID/Passport/Alien ID No</label>
-                                                <input type="text" class="form-control" name="iDorPassportOrAlienIDNo"
-                                                    id="iDorPassportOrAlienIDNo"
-                                                    value="{{permit.IDOrPassportOrAlienIDNo}}" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="border border-success rounded p-3 my-3">
-                                        <div class="row my-2">
-                                            <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-4">
                                                 <label class="form-label">Premise Name</label>
                                                 <input type="text" class="form-control" name="premiseName"
                                                     id="premiseName" value="{{permit.Premise_Name}}" disabled>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Period of Experience Working in A Veterinary
-                                                    Pharmacy</label>
-                                                <input type="text" class="form-control" name="periodOfExperience"
-                                                    id="periodOfExperience" value="{{permit.Experience}}" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="mb-2">
-                                                    <label class="form-label">Qualification<span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="qualification"
-                                                        id="qualification" value="{{permit.Qualification}}" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="border border-success rounded p-3 my-3">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label class="form-label">Premise Location <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="premiseLocation"
-                                                    id="premiseLocation" value="{{permit.PremiseLocation}}" disabled>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Town <span
@@ -490,20 +479,13 @@
                                                 <input type="text" class="form-control" name="plotNo" id="plotNo"
                                                     value="{{permit.Plot_No}}" disabled>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">First Time Application <span
-                                                        class="text-danger">*</span></label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="firstTimeApplication" id="firstTimeApplication">
-                                                    <option value="0">--select--</option>
-                                                    <option value="1">Yes</option>
-                                                    <option value="2">True</option>
-                                                </select>
-                                            </div>
+
                                         </div>
                                     </div>
                                     {% if permit.Status == 'Open' %}
-                                    <button type="submit" class="btn button-87 my-3 w-100">Edit Form</button>
+                                    <button type="submit" class="btn button-87 my-3 w-100"><i
+                                            class="las la-pen-fancy"></i> Edit Application
+                                        Form</button>
                                     {% endif %}
                                 </form>
                             </div>
@@ -520,10 +502,9 @@
 {% include 'footer.html' %}
 <script>
     $(document).ready(function () {
-
-        var Nationality = '{{permit.Nationality}}';
         var documentStatus = '{{permit.Status}}';
         var firstTimeApplication = '{{permit.FirstTimeApplication}}';
+        var inspectionNo = '{{permit.Inspection_No}}';
         var AmountPayable = '{{permit.AmountPayable}}';
         var document_header = '{{permit.PremiseNo}}';
         var Invoiced = '{{permit.Invoiced}}';
@@ -540,7 +521,6 @@
 
         const $stepThree = $('#stepThree');
         const $FNGenerateInvoice = $('#FNGenerateInvoice');
-        const $invoice_spinner = $('#invoice_spinner');
         const $attachmentForm = $('#attachmentForm');
         const $AttachmentsPrev = $('#AttachmentsPrev');
         const $AttachmentsNext = $('#AttachmentsNext');
@@ -549,9 +529,9 @@
         const $payment_submit_form = $('#payment_submit_form');
         const $step4con = $('.step4con');
         const $step5con = $('.step5con');
-        const $submit_spinner = $('#submit_spinner');
         const $payment_state = $('#payment_state');
         const $PremiseCertForm = $('#PremiseCertForm');
+        var progressBar = $(".progress-bar");
 
         Amount_Payable = parseInt(AmountPayable)
 
@@ -561,8 +541,9 @@
 
         $ProfessionalsNext.click(function () {
             if (Invoiced === 'False' && Paid === 'False') {
-                $('#premise_data').hide();
-                $spinner.show();
+                $spinner.show(400);
+                document.getElementById('main').classList.add('loads');
+                $ProfessionalsForm.hide();
                 $.ajax({
                     type: 'POST',
                     url: '/customer/',
@@ -583,7 +564,6 @@
                             });
                             $stepTwo.hide();
                             $stepThree.show();
-                            $spinner.hide();
                         } else if (response['error']) {
                             iziToast.show({
                                 theme: 'dark',
@@ -593,12 +573,15 @@
                                 position: 'topRight',
                                 progressBarColor: '#ff0800',
                             });
-                            $("#premise_data").show();
-                            $spinner.hide();
+
                         }
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
                     },
                     error: function (error) {
                         console.log(error)
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
 
                     }
                 });
@@ -613,29 +596,26 @@
             $stepThree.show();
         })
 
-        $('#nationality option[value="' + Nationality + '"]').prop('selected', true);
 
         if (firstTimeApplication == 'YES') {
             $('#firstTimeApplication option[value="1"]').prop('selected', true);
+            $('#inspectionNo option[value="0"]').prop('selected', true);
         } else if (firstTimeApplication == 'NO') {
             $('#firstTimeApplication option[value="2"]').prop('selected', true);
+            $('#inspectionNo option[value="' + inspectionNo + '"]').prop('selected', true);
         } else {
             $('#firstTimeApplication option[value="0"]').prop('selected', true);
+            $('#inspectionNo option[value="0"]').prop('selected', true);
         }
 
         if (documentStatus === 'Open') {
-            $('#professionalRegNo').prop('disabled', false);
-            $('#nationality').prop('disabled', false);
-            $('#iDorPassportOrAlienIDNo').prop('disabled', false);
             $('#premiseName').prop('disabled', false);
-            $('#periodOfExperience').prop('disabled', false);
-            $('#qualification').prop('disabled', false);
             $('#town').prop('disabled', false);
             $('#road').prop('disabled', false);
             $('#building').prop('disabled', false);
             $('#plotNo').prop('disabled', false);
             $('#firstTimeApplication').prop('disabled', false);
-            $('#premiseLocation').prop('disabled', false);
+            $('#inspectionNo').prop('disabled', false);
             $('#applicantName').prop('disabled', false);
         }
 
@@ -654,13 +634,15 @@
         $ProfessionalsForm.on('submit', (e) => {
             e.preventDefault();
             if ($('#pro_name').val() === '' || $('#position_in_business')
-                .val() === '' || $(
-                    '#reg_no')
-                .val() === '' || $('#qualificationAndExperience').val() === '') {
+                .val() === '' || $('#qualificationAndExperience').val() === '' || $('#nationality')
+                .val() === '' || $('#iDorPassportOrAlienIDNo')
+                .val() === '') {
                 alert('Please fill in all required fields.');
                 return false;
             }
-            $('#spinner').show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $ProfessionalsForm.hide();
 
             $.ajax({
                 type: 'POST',
@@ -670,12 +652,13 @@
                     lineNo: $('#Professionals_lineNo').val(),
                     pro_name: $('#pro_name').val(),
                     position_in_business: $('#position_in_business').val(),
-                    reg_no: $('#reg_no').val(),
+                    nationality: $('#nationality').val(),
+                    iDorPassportOrAlienIDNo: $('#iDorPassportOrAlienIDNo').val(),
+                    professionalRegNo: $('#professionalRegNo').val(),
                     qualificationAndExperience: $('#qualificationAndExperience').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $('#spinner').hide();
                     if (response['response']) {
                         loadProfessionals(document_header);
                         iziToast.show({
@@ -687,7 +670,7 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $('#pro_name, #position_in_business, #reg_no')
+                        $('#pro_name, #position_in_business, #professionalRegNo, #nationality, #iDorPassportOrAlienIDNo')
                             .val(
                                 '');
                         $('#qualificationAndExperience').val('');
@@ -701,10 +684,15 @@
                             progressBarColor: '#ff0800',
                         });
                     }
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $('#spinner').hide();
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
 
                 }
             });
@@ -713,7 +701,8 @@
         $attachmentForm.on("submit", (e) => {
             e.preventDefault();
 
-            $("#attachment_spinner").show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             var formData = new FormData($attachmentForm[0]);
 
             let attachments = $('#attachments')[0];
@@ -733,7 +722,6 @@
                 success: function (data) {
 
                     $('#attachments').val('');
-                    $("#attachment_spinner").hide();
                     if (data['success'] == true) {
                         iziToast.show({
                             theme: 'dark',
@@ -755,6 +743,8 @@
                             progressBarColor: '#ff0800',
                         });
                     }
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log(xhr.responseText);
@@ -812,7 +802,8 @@
                             }));
                             deleteButton.on("click", function (event) {
                                 event.preventDefault();
-                                $("#attachment_spinner").show();
+                                $spinner.show(400);
+                                document.getElementById('main').classList.add('loads');
                                 $.ajax({
                                     type: 'POST',
                                     url: "/RemovePermitAttachment/",
@@ -836,7 +827,6 @@
                                                 position: 'topRight',
                                                 progressBarColor: '#F4F6F7',
                                             });
-                                            $("#attachment_spinner").hide();
                                             Load_Attachments(pk);
                                         } else {
                                             iziToast.show({
@@ -848,9 +838,15 @@
                                                 progressBarColor: '#ff0800',
                                             });
                                         }
+                                        $spinner.hide(1000);
+                                        document.getElementById('main')
+                                            .classList.remove('loads');
                                     },
                                     error: function (error) {
                                         console.log(error)
+                                        $spinner.hide(1000);
+                                        document.getElementById('main')
+                                            .classList.remove('loads');
                                     }
                                 });
                             });
@@ -884,6 +880,61 @@
 
         loadProfessionals(document_header);
 
+        function handleFormSubmission(form) {
+            event.preventDefault();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $ProfessionalsForm.hide();
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function (response) {
+                    loadProfessionals(document_header);
+                    if (response['response']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            message: "deleted",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                    } else {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response[
+                                'message'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
+                    iziToast.show({
+                        theme: 'dark',
+                        icon: 'las la-exclamation',
+                        title: 'Error',
+                        message: 'CSRF verification failed. Request aborted.',
+                        position: 'topRight',
+                        progressBarColor: '#ff0800',
+                    });
+                }
+            });
+        }
+
+
         function loadProfessionals(pk) {
             $.ajax({
                 url: "/Professionals/" + pk + "/",
@@ -902,15 +953,19 @@
                             $Professionals_btn.hide();
                         }
                         var Name = data[1][i].Name;
+                        var Nationality = data[1][i].Nationality_Description;
+                        var IDOrPassportOrAlienIDNo = data[1][i].IDOrPassportOrAlienIDNo;
                         var PositionIntheBusiness = data[1][i].PositionIntheBusiness;
-                        var RegistrationNo = data[1][i].RegistrationNo;
+                        var ProfessionalRegNo = data[1][i].ProfessionalRegNo;
                         var QualificationAndExperience = data[1][i].QualificationAndExperience;
-                        let Line_No = data[1][i].PremiseLineNo;
+                        var Line_No = data[1][i].PremiseLineNo;
 
                         var row = $('<tr>');
                         row.append($('<td>').text(Name));
+                        row.append($('<td>').text(ProfessionalRegNo));
+                        row.append($('<td>').text(Nationality));
+                        row.append($('<td>').text(IDOrPassportOrAlienIDNo));
                         row.append($('<td>').text(PositionIntheBusiness));
-                        row.append($('<td>').text(RegistrationNo));
                         row.append($('<td>').text(QualificationAndExperience));
                         if (documentStatus === 'Open') {
                             var form = $('<form>').attr({
@@ -928,9 +983,20 @@
                                 name: 'position_in_business',
                                 value: "0"
                             });
-                            var pro_reg_no = $('<input>').attr({
+                            var pro_nationality = $('<input>').attr({
                                 type: 'hidden',
-                                name: 'reg_no',
+                                name: 'nationality',
+                                value: "KE"
+                            });
+                            var pro_iDorPassportOrAlienIDNo = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'iDorPassportOrAlienIDNo',
+                                value: "0"
+                            });
+
+                            var pro_professionalRegNo = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'professionalRegNo',
                                 value: "0"
                             });
                             var pro_qualificationAndExperience = $('<input>').attr({
@@ -956,54 +1022,14 @@
 
                             // Handle form submission
                             form.submit(function (event) {
-                                event.preventDefault();
-                                $spinner.show();
-                                $.ajax({
-                                    url: form.attr('action'),
-                                    type: form.attr('method'),
-                                    data: form.serialize(),
-                                    success: function (response) {
-                                        loadProfessionals(document_header);
-                                        $spinner.hide();
-                                        if (response['response']) {
-                                            iziToast.show({
-                                                theme: 'dark',
-                                                backgroundColor: '#239B56',
-                                                icon: 'las la-check-circle',
-                                                message: "deleted",
-                                                position: 'topRight',
-                                                progressBarColor: '#F4F6F7',
-                                            });
-                                        } else {
-                                            iziToast.show({
-                                                theme: 'dark',
-                                                icon: 'las la-exclamation',
-                                                title: 'Error',
-                                                message: response[
-                                                    'message'],
-                                                position: 'topRight',
-                                                progressBarColor: '#ff0800',
-                                            });
-                                        }
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.log("Error:", error);
-                                        $spinner.hide();
-                                        iziToast.show({
-                                            theme: 'dark',
-                                            icon: 'las la-exclamation',
-                                            title: 'Error',
-                                            message: 'CSRF verification failed. Request aborted.',
-                                            position: 'topRight',
-                                            progressBarColor: '#ff0800',
-                                        });
-                                    }
-                                });
+                                handleFormSubmission($(this));
                             });
 
                             var td = $('<td>').append(form.append(pro_Name,
                                 pro_position_in_business,
-                                pro_reg_no,
+                                pro_nationality,
+                                pro_iDorPassportOrAlienIDNo,
+                                pro_professionalRegNo,
                                 pro_qualificationAndExperience, pro_lineNoInput,
                                 pro_myActionInput, pro_submitBtn));
                             row.append(td);
@@ -1029,7 +1055,8 @@
 
         $FNGenerateInvoice.on('submit', (e) => {
             e.preventDefault();
-            $invoice_spinner.show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/invoice/',
@@ -1041,7 +1068,6 @@
                     responseType: 'blob' // Set the response type to 'blob'
                 },
                 success: function (response) {
-                    $invoice_spinner.hide();
                     const blob = new Blob([response], {
                         type: 'application/pdf'
                     });
@@ -1061,10 +1087,15 @@
                         position: 'topRight',
                         progressBarColor: '#F4F6F7',
                     });
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error);
-                    $invoice_spinner.hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                     iziToast.show({
                         theme: 'dark',
                         backgroundColor: '#E74C3C',
@@ -1096,24 +1127,42 @@
                 },
                 success: function (data) {
                     if (data['success'] == true) {
+                        $('.doc_status').empty().append(data['data']['Status']);
                         if (data['data']['Paid'] === true) {
                             $('#payment_submit_form').css('display', 'inline-block');
                             $step4con.addClass('completed');
                             $payment_state.empty().append("Paid");
                             $(".pesa_paid").addClass('text-success');
                         }
-                        if (data['data']['Status'] != 'Open') {
-                            $step5con.addClass('completed');
+                        if (data['data']['Status'] === 'Approved') {
+                            $('#cert_card').show();
                             $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
                             $ProfessionalsForm.hide();
                             $attachmentForm.hide();
-                            $("#confirm_div").hide();
+                            $(".confirm_div").hide();
                             $stepTwo.hide();
                             $stepThree.hide();
                             $stepFour.show();
-                        }
-                        if (data['data']['Status'] === 'Approved') {
-                            $('#cert_card').show();
+                            progressBar.css("width", "100%");
+                            progressBar.addClass("bg-success");
+                        } else if (data['data']['Status'] === 'Open') {
+                            $(".confirm_div").show();
+                            $stepTwo.show();
+                            progressBar.css("width", "20%");
+                            progressBar.addClass("bg-warning");
+                        } else if (data['data']['Status'] === 'Processing') {
+                            $("#loading_div").show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "80%");
+                            progressBar.addClass("bg-primary");
                         }
                     } else {
 
@@ -1127,7 +1176,8 @@
         }
         $payment_submit_form.on('submit', (e) => {
             e.preventDefault();
-            $submit_spinner.show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
 
             $.ajax({
                 type: 'POST',
@@ -1136,7 +1186,6 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $submit_spinner.hide();
                     if (response['response']) {
                         filter_list(document_header);
                         iziToast.show({
@@ -1159,10 +1208,15 @@
                             progressBarColor: '#ff0800',
                         });
                     }
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $submit_spinner.hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
 
                 }
             });
@@ -1170,7 +1224,8 @@
 
         $PremiseCertForm.on('submit', (e) => {
             e.preventDefault();
-            $("#download_spinner").show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/premise/cert/' + document_header + '/',
@@ -1181,7 +1236,6 @@
                     responseType: 'blob'
                 },
                 success: function (response) {
-                    $("#download_spinner").hide();
                     const blob_cert = new Blob([response], {
                         type: 'application/pdf'
                     });
@@ -1201,10 +1255,15 @@
                         position: 'topRight',
                         progressBarColor: '#F4F6F7',
                     });
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error);
-                    $("#download_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                     iziToast.show({
                         theme: 'dark',
                         backgroundColor: '#E74C3C',

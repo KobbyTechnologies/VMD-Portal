@@ -31,13 +31,23 @@ class Permit(UserObjectMixins, View):
                 task_get_countries = asyncio.ensure_future(
                     self.simple_fetch_data(session, "/QYCountries")
                 )
+                task_get_inspection = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session, "/QyWholesaleInspection", "UserCode", "eq", userID
+                    )
+                )
 
-                response = await asyncio.gather(task_get_permits, task_get_countries)
+                response = await asyncio.gather(
+                    task_get_permits, task_get_countries, task_get_inspection
+                )
 
                 permits = [x for x in response[0]]
                 Approved = [x for x in response[0] if x["Status"] == "Approved"]
 
                 resCountry = [x for x in response[1]]
+                Approved_Inspection = [
+                    x for x in response[2] if x["Status"] == "Approved"
+                ]
 
         except Exception as e:
             messages.info(request, f"{e}")
@@ -51,20 +61,16 @@ class Permit(UserObjectMixins, View):
             "country": resCountry,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
+            "Approved_Inspection": Approved_Inspection,
         }
         return render(request, "permit.html", ctx)
 
     async def post(self, request):
         try:
             premiseNo = request.POST.get("premiseNo")
-            professionalRegNo = request.POST.get("professionalRegNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            iDorPassportOrAlienIDNo = request.POST.get("iDorPassportOrAlienIDNo")
-            nationality = request.POST.get("nationality")
+            inspectionNo = request.POST.get("inspectionNo")
             premiseName = request.POST.get("premiseName")
-            qualification = request.POST.get("qualification")
-            periodOfExperience = request.POST.get("periodOfExperience")
-            premiseLocation = request.POST.get("premiseLocation")
             town = request.POST.get("town")
             road = request.POST.get("road")
             building = request.POST.get("building")
@@ -76,17 +82,16 @@ class Permit(UserObjectMixins, View):
             if not iAgree:
                 iAgree = False
 
+            if not inspectionNo:
+                inspectionNo = "None"
+
             response = self.make_soap_request(
                 "FnWholesalePremisePermit",
                 premiseNo,
-                professionalRegNo,
                 userCode,
-                iDorPassportOrAlienIDNo,
-                nationality,
                 premiseName,
-                qualification,
-                periodOfExperience,
-                premiseLocation,
+                inspectionNo,
+                building,
                 town,
                 road,
                 building,
@@ -96,7 +101,6 @@ class Permit(UserObjectMixins, View):
                 iAgree,
                 myAction,
             )
-            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response != None and response != "" and response != 0:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -135,28 +139,34 @@ class PermitDetails(UserObjectMixins, View):
                         pk,
                     )
                 )
+                task_get_inspection = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session, "/QyWholesaleInspection", "UserCode", "eq", userID
+                    )
+                )
                 task_get_countries = asyncio.ensure_future(
                     self.simple_fetch_data(session, "/QYCountries")
                 )
-                response = await asyncio.gather(task_get_permit, task_get_countries)
+                response = await asyncio.gather(
+                    task_get_permit, task_get_countries, task_get_inspection
+                )
                 for permit in response[0]:
                     if permit["UserCode"] == userID:
                         permit = permit
                 resCountry = [x for x in response[1]]
-                print(permit)
-                print(pk)
+                Approved_Inspection = [
+                    x for x in response[2] if x["Status"] == "Approved"
+                ]
         except Exception as e:
             messages.info(request, f"{e}")
             print(e)
             return redirect("dashboard")
-        # if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-        #     return JsonResponse(permit, safe=False)
-
         ctx = {
             "permit": permit,
             "country": resCountry,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
+            "Approved_Inspection": Approved_Inspection,
         }
         return render(request, "permit-detail.html", ctx)
 
@@ -167,8 +177,10 @@ class PermitDetails(UserObjectMixins, View):
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
             pro_name = request.POST.get("pro_name")
             position_in_business = request.POST.get("position_in_business")
-            reg_no = request.POST.get("reg_no")
+            professionalRegNo = request.POST.get("professionalRegNo")
             qualificationAndExperience = request.POST.get("qualificationAndExperience")
+            nationality = request.POST.get("nationality")
+            iDorPassportOrAlienIDNo = request.POST.get("iDorPassportOrAlienIDNo")
 
             response = self.make_soap_request(
                 "FnWholesalePremiseLine",
@@ -177,8 +189,10 @@ class PermitDetails(UserObjectMixins, View):
                 lineNo,
                 pro_name,
                 position_in_business,
-                reg_no,
                 qualificationAndExperience,
+                iDorPassportOrAlienIDNo,
+                nationality,
+                professionalRegNo,
                 userCode,
             )
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
