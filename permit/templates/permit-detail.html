@@ -823,13 +823,15 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
+                        document.getElementById('main').classList.remove('loads');
                     }
                     $spinner.hide(1000);
                     document.getElementById('main').classList.remove('loads');
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log(xhr.responseText);
-                    $("#attachment_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 }
             });
         });

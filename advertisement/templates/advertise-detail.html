@@ -49,161 +49,111 @@
                     <div class="loader__ball"></div>
                 </div>
                 <div id="stepTwo" class="bg-white p-4" style="display: none">
-                    <div class="premise_data" id="premise_data">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">
-                                Advertisement Product Details
-                            </h5>
-                            <div id="Professionals_btn" style="display: none">
-                                <button class="btn btn-primary" id="ProfessionalsNext">Next Step <i
-                                        class="las la-angle-double-right"></i></button>
+                    <div class="border border-success rounded p-3  my-3">
+                        <div class="premise_data" id="premise_data">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="text-small text-info">Advertisement Product Details</p>
+                                <div id="Professionals_btn" style="display: none">
+                                    <button class="btn btn-primary" id="ProfessionalsNext">Next Step <i
+                                            class="las la-angle-double-right"></i></button>
+                                </div>
                             </div>
+                            {% if permit.Status == 'Open' %}
+                            <form method="POST" id="ProfessionalsForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
+                                <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
+                                <div class="row my-2 gx-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Product <span class="text-danger">*</span></label>
+                                        <select class="form-select" aria-label="Default select example" name="product"
+                                            id="product">
+                                            <option selected disabled value="0">--Select product to advertise--</option>
+                                            {% for product in product %}
+                                            <option value="{{product.ProductNo}}">{{product.Productname}}
+                                            </option>
+                                            {% empty %}
+                                            <option selected disabled value="0">--You have not registered any product--
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label class="form-label">Target Audience<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="targetAudience"
+                                            id="targetAudience" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-2">
+                                            <label class="form-label">Uses<span class="text-danger">*</span></label>
+                                            <textarea class="form-control longText" name="uses" id="uses"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
+                            </form>
+                            {% endif %}
+                            <table id="ProfessionalsTable"
+                                class="table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Product Name</th>
+                                        <th scope="col">Target Audience </th>
+                                        <th scope="col">Uses </th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        {% if permit.Status == 'Open' %}
-                        <form method="POST" id="ProfessionalsForm">
-                            {% csrf_token %}
-                            <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
-                            <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Product Name <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="pro_name" id="pro_name" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Marketing Authorization No.<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="marketingAuthorizationNo"
-                                            id="marketingAuthorizationNo" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Formulation<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="formulation" id="formulation"
-                                            required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col-md-6">
-                                    <label class="form-label">Category <span class="text-danger">*</span></label>
-                                    <select class="form-select" aria-label="Default select example" name="category"
-                                        id="category">
-                                        <option selected disabled value="0">Choose...</option>
-                                        <option value="1">Category 1</option>
-                                        <option value="2">Category 2</option>
-                                        <option value="3">Category 3</option>
-                                        <option value="4">Category 3-Anthelmintics</option>
-                                        <option value="5">Category 3-Feed Additives</option>
-                                        <option value="6">Category 3-Devices</option>
-                                        <option value="7">Category 3-Biocidal</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Country Of Manufacture <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-select" aria-label="Default select example"
-                                        name="countryOfManufacture" id="countryOfManufacture">
-                                        <option selected disabled value="0">Choose...</option>
-                                        {% for res in country %}
-                                        <option value="{{res.Code}}">{{res.Name}}</option>
-                                        {% empty %}
-                                        <option value="KE">KENYA</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Target Audience<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="targetAudience" id="targetAudience"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Uses<span class="text-danger">*</span></label>
-                                        <textarea class="form-control longText" name="uses" id="uses"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
-                        </form>
-                        {% endif %}
-                        <table id="ProfessionalsTable"
-                            class="table table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Product Name</th>
-                                    <th scope="col">Marketing Authorization No</th>
-                                    <th scope="col">Formulation</th>
-                                    <th scope="col">Category </th>
-                                    <th scope="col">Country Of Manufacture </th>
-                                    <th scope="col">Target Audience </th>
-                                    <th scope="col">Uses </th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
                 <div class="stepThree" id="stepThree" style="display: none">
                     <div class="row m-0 bg-white p-4">
-                        <div class="Attachment_data" id="Attachment_data">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="card-title">
-                                    Attachment
-                                </h5>
-                                <div id="AttachmentsBtns">
-                                    <button class="btn btn-secondary" id="AttachmentsPrev"><i
-                                            class="las la-angle-double-left"></i> Prev
-                                        Step</button>
-                                    <button class="btn btn-primary" id="AttachmentsNext">Next Step <i
-                                            class="las la-angle-double-right"></i></button>
-                                </div>
-                            </div>
-                            <div class="money-spinner mx-auto text-center" id="attachment_spinner" style="display:none">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                    alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                            </div>
-                            {% if permit.Status == 'Open' %}
-                            <form method="POST" id="attachmentForm">
-                                {% csrf_token %}
-                                <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
-                                <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="mb-2">
-                                            <label class="form-label">Upload Attachment <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="file" class="form-control" name="attachments" id="attachments"
-                                                accept=".doc,.docx,.pdf">
-                                        </div>
+                        <div class="border border-success rounded p-3  my-3">
+                            <div class="Attachment_data" id="Attachment_data">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="text-small text-info">Attachment</p>
+                                    <div id="AttachmentsBtns">
+                                        <button class="btn btn-secondary" id="AttachmentsPrev"><i
+                                                class="las la-angle-double-left"></i> Prev
+                                            Step</button>
+                                        <button class="btn btn-primary" id="AttachmentsNext">Next Step <i
+                                                class="las la-angle-double-right"></i></button>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn button-87 my-2 w-100">Upload</button>
-                            </form>
-                            {% endif %}
-                        </div>
-                        <div class="row my-3" id="attachments-container">
+                                {% if permit.Status == 'Open' %}
+                                <form method="POST" id="attachmentForm">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
+                                    <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-2">
+                                                <label class="form-label">Upload Attachment <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="file" class="form-control" name="attachments"
+                                                    id="attachments" accept=".doc,.docx,.pdf">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn button-87 my-2 w-100">Upload</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                            <div class="row my-3" id="attachments-container">
 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -214,10 +164,6 @@
                     <div class="row m-0">
                         <div class="col-md-12 bg-white my-2">
                             <div class="d-flex justify-content-end align-items-center my-3">
-                                <div class="money-spinner" id="submit_spinner" style="display:none">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                        alt="Loading Gif" style="height: 70px;" class="img-fluid">
-                                </div>
                                 <div id="payment_btn">
                                     <button class="btn btn-secondary" id="paymentPrev"><i
                                             class="las la-angle-double-left"></i> Prev
@@ -247,12 +193,6 @@
                                     </div>
                                     {% if permit.Status == 'Approved' %}
                                     <div class="row box-right my-3" id="cert_card" style="display:none">
-                                        <div class="money-spinner text-center" id="download_spinner"
-                                            style="display:none">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                                alt="Loading Gif" style="height: 70px;" class="img-fluid">
-                                        </div>
-
                                         <div class="col-md-12 text-center cert_div">
                                             <img src="../../static/img/certificate.png" class="img-fluid cert_img"
                                                 alt="">
@@ -327,11 +267,6 @@
                                         will be processed
                                         immediately.
                                     </p>
-                                    <div class="money-spinner mx-auto text-center" id="invoice_spinner"
-                                        style="display:none">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                                    </div>
                                     <form id="FNGenerateInvoice" method="post">
                                         {% csrf_token %}
                                         <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
@@ -523,7 +458,6 @@
 
         const $stepThree = $('#stepThree');
         const $FNGenerateInvoice = $('#FNGenerateInvoice');
-        const $invoice_spinner = $('#invoice_spinner');
         const $attachmentForm = $('#attachmentForm');
         const $AttachmentsPrev = $('#AttachmentsPrev');
         const $AttachmentsNext = $('#AttachmentsNext');
@@ -532,7 +466,6 @@
         const $payment_submit_form = $('#payment_submit_form');
         const $step4con = $('.step4con');
         const $step5con = $('.step5con');
-        const $submit_spinner = $('#submit_spinner');
         const $payment_state = $('#payment_state');
         const $PremiseCertForm = $('#PremiseCertForm');
         var progressBar = $(".progress-bar");
@@ -574,18 +507,21 @@
                             $payment_state.empty().append("Paid");
                             $(".pesa_paid").addClass('text-success');
                         }
-                        if (data['data']['Paid'] === true && data['data']['Status'] === 'Open') {
-                            progressBar.css("width", "80%");
-                            animateProgressBar(80);
-
-                        }
 
                         if (data['data']['Status'] === 'Open') {
                             $(".confirm_div").show();
                             $stepTwo.show();
-                            progressBar.addClass("bg-warning");
-                            progressBar.css("width", "20%");
-                            animateProgressBar(20);
+
+                            if (data['data']['Paid'] === true) {
+                                progressBar.addClass("bg-info");
+                                progressBar.css("width", "60%");
+                                animateProgressBar(80);
+                            } else {
+                                progressBar.addClass("bg-warning");
+                                progressBar.css("width", "20%");
+                                animateProgressBar(20);
+                            }
+
                         } else if (data['data']['Status'] === 'Processing') {
                             $("#loading_div").show();
                             $('#payment_submit_form').css('display', 'none');
@@ -700,14 +636,11 @@
 
         $ProfessionalsForm.on('submit', (e) => {
             e.preventDefault();
-            if ($('#pro_name').val() === '' || $('#marketingAuthorizationNo')
-                .val() === '' || $(
-                    '#formulation')
-                .val() === '' || $(
-                    '#category')
+            if ($(
+                    '#product')
                 .val() === '' || $(
                     '#targetAudience')
-                .val() === '' || $('#uses').val() === '' || $('#countryOfManufacture').val() === '') {
+                .val() === '' || $('#uses').val() === '') {
                 alert('Please fill in all required fields.');
                 return false;
             }
@@ -722,13 +655,9 @@
                 data: {
                     myAction: $("#Professionals_my_action").val(),
                     lineNo: $('#Professionals_lineNo').val(),
-                    pro_name: $('#pro_name').val(),
-                    marketingAuthorizationNo: $('#marketingAuthorizationNo').val(),
-                    formulation: $('#formulation').val(),
-                    category: $('#category').val(),
+                    product: $('#product').val(),
                     targetAudience: $('#targetAudience').val(),
                     uses: $('#uses').val(),
-                    countryOfManufacture: $('#countryOfManufacture').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
@@ -743,10 +672,8 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $('#pro_name, #marketingAuthorizationNo, #formulation')
-                            .val(
-                                '');
-                        $('#uses,#category, #targetAudience, #countryOfManufacture').val(
+
+                        $('#uses,#product, #targetAudience').val(
                             '');
                     } else if (response['error']) {
                         iziToast.show({
@@ -846,21 +773,13 @@
                             $step2Icon.removeClass('completed');
                             $Professionals_btn.hide();
                         }
-                        var Name = data[1][i].ProductName;
-                        var MarketingAuthorizationNo = data[1][i].MarketingAuthorizationNo;
-                        var Formulation = data[1][i].Formulation;
-                        var ProductCategory = data[1][i].ProductCategory;
-                        var CountryOfManufactureName = data[1][i].CountryOfManufactureName;
+                        var ProductName = data[1][i].ProductName;
                         var TargetAudience = data[1][i].TargetAudience;
                         var Uses = data[1][i].Users;
                         let Line_No = data[1][i].ADVProdDNo;
 
                         var row = $('<tr>');
-                        row.append($('<td>').text(Name));
-                        row.append($('<td>').text(MarketingAuthorizationNo));
-                        row.append($('<td>').text(Formulation));
-                        row.append($('<td>').text(ProductCategory));
-                        row.append($('<td>').text(CountryOfManufactureName));
+                        row.append($('<td>').text(ProductName));
                         row.append($('<td>').text(TargetAudience));
                         row.append($('<td>').text(Uses));
                         if (documentStatus === 'Open') {
@@ -868,25 +787,9 @@
                                 method: 'POST',
                                 action: '/advertise/' + pk + '/',
                             }).append('{% csrf_token %}');
-
-                            var pro_Name = $('<input>').attr({
+                            var pro_product = $('<input>').attr({
                                 type: 'hidden',
-                                name: 'pro_name',
-                                value: "0"
-                            });
-                            var pro_marketingAuthorizationNo = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'marketingAuthorizationNo',
-                                value: "0"
-                            });
-                            var pro_formulation = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'formulation',
-                                value: "0"
-                            });
-                            var pro_category = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'category',
+                                name: 'product',
                                 value: "0"
                             });
                             var pro_targetAudience = $('<input>').attr({
@@ -897,11 +800,6 @@
                             var pro_uses = $('<input>').attr({
                                 type: 'hidden',
                                 name: 'uses',
-                                value: "0"
-                            });
-                            var pro_countryOfManufacture = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'countryOfManufacture',
                                 value: "0"
                             });
                             var pro_lineNoInput = $('<input>').attr({
@@ -924,11 +822,9 @@
                                 handleFormSubmission($(this));
                             });
 
-                            var td = $('<td>').append(form.append(pro_Name,
-                                pro_marketingAuthorizationNo,
-                                pro_formulation,
-                                pro_category, pro_targetAudience, pro_uses,
-                                pro_countryOfManufacture, pro_lineNoInput,
+                            var td = $('<td>').append(form.append(
+                                pro_product, pro_targetAudience, pro_uses,
+                                pro_lineNoInput,
                                 pro_myActionInput, pro_submitBtn));
                             row.append(td);
                         }
@@ -953,7 +849,8 @@
         $attachmentForm.on("submit", (e) => {
             e.preventDefault();
 
-            $("#attachment_spinner").show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             var formData = new FormData($attachmentForm[0]);
 
             let attachments = $('#attachments')[0];
@@ -973,7 +870,6 @@
                 success: function (data) {
 
                     $('#attachments').val('');
-                    $("#attachment_spinner").hide();
                     if (data['success'] == true) {
                         iziToast.show({
                             theme: 'dark',
@@ -994,11 +890,15 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
+                        document.getElementById('main').classList.remove('loads');
                     }
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log(xhr.responseText);
-                    $("#attachment_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 }
             });
         });
@@ -1052,7 +952,8 @@
                             }));
                             deleteButton.on("click", function (event) {
                                 event.preventDefault();
-                                $("#attachment_spinner").show();
+                                $spinner.show(400);
+                                document.getElementById('main').classList.add('loads');
                                 $.ajax({
                                     type: 'POST',
                                     url: "/RemovePermitAttachment/",
@@ -1076,7 +977,6 @@
                                                 position: 'topRight',
                                                 progressBarColor: '#F4F6F7',
                                             });
-                                            $("#attachment_spinner").hide();
                                             Load_Attachments(pk);
                                         } else {
                                             iziToast.show({
@@ -1087,10 +987,18 @@
                                                 position: 'topRight',
                                                 progressBarColor: '#ff0800',
                                             });
+                                            document.getElementById('main')
+                                                .classList.remove('loads');
                                         }
+                                        $spinner.hide(1000);
+                                        document.getElementById('main')
+                                            .classList.remove('loads');
                                     },
                                     error: function (error) {
                                         console.log(error)
+                                        $spinner.hide(1000);
+                                        document.getElementById('main')
+                                            .classList.remove('loads');
                                     }
                                 });
                             });
@@ -1123,7 +1031,8 @@
 
         $FNGenerateInvoice.on('submit', (e) => {
             e.preventDefault();
-            $invoice_spinner.show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/AdvertisingInvoice/',
@@ -1135,7 +1044,6 @@
                     responseType: 'blob' // Set the response type to 'blob'
                 },
                 success: function (response) {
-                    $invoice_spinner.hide();
                     const blob = new Blob([response], {
                         type: 'application/pdf'
                     });
@@ -1155,10 +1063,13 @@
                         position: 'topRight',
                         progressBarColor: '#F4F6F7',
                     });
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error);
-                    $invoice_spinner.hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     iziToast.show({
                         theme: 'dark',
                         backgroundColor: '#E74C3C',
@@ -1175,7 +1086,8 @@
 
         $payment_submit_form.on('submit', (e) => {
             e.preventDefault();
-            $submit_spinner.show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
 
             $.ajax({
                 type: 'POST',
@@ -1184,7 +1096,6 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $submit_spinner.hide();
                     if (response['response']) {
                         filter_list(document_header);
                         iziToast.show({
@@ -1206,19 +1117,23 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
+                        document.getElementById('main').classList.remove('loads');
                     }
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $submit_spinner.hide();
-
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 }
             });
         });
 
         $PremiseCertForm.on('submit', (e) => {
             e.preventDefault();
-            $("#download_spinner").show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/advert/cert/' + document_header + '/',
@@ -1229,7 +1144,7 @@
                     responseType: 'blob'
                 },
                 success: function (response) {
-                    $("#download_spinner").hide();
+
                     const blob_cert = new Blob([response], {
                         type: 'application/pdf'
                     });
@@ -1249,10 +1164,13 @@
                         position: 'topRight',
                         progressBarColor: '#F4F6F7',
                     });
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error);
-                    $("#download_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     iziToast.show({
                         theme: 'dark',
                         backgroundColor: '#E74C3C',

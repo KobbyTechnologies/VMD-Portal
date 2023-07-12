@@ -105,11 +105,17 @@ class AdvertiseDetails(UserObjectMixins, View):
                 task_get_countries = asyncio.ensure_future(
                     self.simple_fetch_data(session, "/QYCountries")
                 )
-                response = await asyncio.gather(task, task_get_countries)
+                task3 = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session, "/QYRegistration", "User_code", "eq", userID
+                    )
+                )
+                response = await asyncio.gather(task, task_get_countries, task3)
                 for task in response[0]:
                     if task["UserCode"] == userID:
                         res = task
                 resCountry = [x for x in response[1]]
+                product = [x for x in response[2] if x["Status"] == "Approved"]
         except Exception as e:
             messages.info(request, f"{e}")
             print(e)
@@ -122,6 +128,7 @@ class AdvertiseDetails(UserObjectMixins, View):
             "country": resCountry,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
+            "product": product,
         }
         return render(request, "advertise-detail.html", ctx)
 
@@ -129,26 +136,18 @@ class AdvertiseDetails(UserObjectMixins, View):
         try:
             lineNo = request.POST.get("lineNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            pro_name = request.POST.get("pro_name")
-            marketingAuthorizationNo = request.POST.get("marketingAuthorizationNo")
-            formulation = request.POST.get("formulation")
-            category = int(request.POST.get("category"))
+            product = request.POST.get("product")
             targetAudience = request.POST.get("targetAudience")
             uses = request.POST.get("uses")
-            countryOfManufacture = request.POST.get("countryOfManufacture")
             myAction = request.POST.get("myAction")
 
             response = self.make_soap_request(
                 "FnAdvartisementLines",
                 pk,
                 lineNo,
-                pro_name,
-                marketingAuthorizationNo,
-                formulation,
-                category,
+                product,
                 targetAudience,
                 uses,
-                countryOfManufacture,
                 userCode,
                 myAction,
             )
