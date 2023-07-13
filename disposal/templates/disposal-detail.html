@@ -24,196 +24,152 @@
 <main id="main" class="main">
     <div class="pagetitle">
         <div class="row">
-            <div class="col-md-12">
-                <h1>Disposal Request</h1>
+            <div class="col-md-8">
+                <h1 class="my-2">Disposal Request</h1>
+            </div>
+            <div class="col-md-4 text-right">
+                <label class="my-2">Document Status: <span
+                        class="document_status text-small text-primary"></span></label>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="20"
+                        aria-valuemax="100"><span class="doc_status">20%</span></div>
+                </div>
             </div>
         </div>
     </div><!-- End Page Title -->
     <section class="section contact">
         <div class="row">
             <div class="col-md-12">
-                <div
-                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-                    <div class="step completed">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-check"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Application Form</h4>
-                    </div>
-                    <div class="step step2Icon">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-user-tie"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Professionals Form</h4>
-                    </div>
-                    <div class="step step3Icon">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-upload"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Attachments</h4>
-                    </div>
-                    <div class="step step4con">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-coins"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Payment</h4>
-                    </div>
-                    <div class="step step5con">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-check-double"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Submit</h4>
-                    </div>
+                <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__ball"></div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
                 <div id="stepTwo" class="bg-white p-4" style="display: none">
-                    <div class="money-spinner mx-auto text-center" id="spinner" style="display:none">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                    </div>
-                    <div class="premise_data" id="premise_data">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title">
-                                Disposal Request Lines
-                            </h5>
-                            <div id="Professionals_btn" style="display: none">
-                                <button class="btn btn-primary" id="ProfessionalsNext">Next Step <i
-                                        class="las la-angle-double-right"></i></button>
-                            </div>
-                        </div>
-                        <form method="POST" id="ProfessionalsForm">
-                            {% csrf_token %}
-                            <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
-                            <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Trade Name And Strength <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="tradeNameAndStrength"
-                                            id="tradeNameAndStrength" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Batch No<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="batchNo" id="batchNo" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Dosage Form<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="dosageForm" id="dosageForm"
-                                            required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-2">
-                                        <label class="form-label">Pack Size<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="packSize" id="packSize" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-2">
-                                        <label class="form-label">Quantity<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="quantity" id="quantity" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-2">
-                                        <label class="form-label">Reason For Destruction <span
-                                                class="text-danger">*</span></label>
-                                        <textarea class="form-control longText" name="reasonForDestruction"
-                                            id="reasonForDestruction"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
-                        </form>
-                        <table id="ProfessionalsTable"
-                            class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Batch No</th>
-                                    <th scope="col">Dosage Form</th>
-                                    <th scope="col">PackSize</th>
-                                    <th scope="col">Quantity </th>
-                                    <th scope="col">Trade Name And Strength</th>
-                                    <th scope="col">Reason For Destruction</th>
-                                    {% if permit.Status == 'Open' %}
-                                    <th scope="col">Action</th>
-                                    {% endif %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="stepThree" id="stepThree" style="display: none">
-                    <div class="row m-0 bg-white p-4">
-                        <div class="Attachment_data" id="Attachment_data">
+                    <div class="border border-success rounded p-3 my-3">
+                        <div class="premise_data" id="premise_data">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="card-title">
-                                    Attachment
-                                </h5>
-                                <div id="AttachmentsBtns">
-                                    <button class="btn btn-secondary" id="AttachmentsPrev"><i
-                                            class="las la-angle-double-left"></i> Prev
-                                        Step</button>
-                                    <button class="btn btn-primary" id="AttachmentsNext">Next Step <i
+                                <p class="text-small text-info">Product Information</p>
+                                <div id="Professionals_btn" style="display: none">
+                                    <button class="btn btn-primary" id="ProfessionalsNext">Next Step <i
                                             class="las la-angle-double-right"></i></button>
                                 </div>
                             </div>
-                            <div class="money-spinner mx-auto text-center" id="attachment_spinner" style="display:none">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                    alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                            </div>
-                            {% if permit.Status == 'Open' %}
-                            <form method="POST" id="attachmentForm">
+                            <form method="POST" id="ProfessionalsForm">
                                 {% csrf_token %}
                                 <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
                                 <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="mb-2">
-                                            <label class="form-label">Upload Attachment <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="file" class="form-control" name="attachments" id="attachments"
-                                                accept=".doc,.docx,.pdf">
-                                        </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Product to Dispose<span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-select" aria-label="Default select example" name="product"
+                                            id="product">
+                                            <option selected disabled value="0">--Select product to dispose--</option>
+                                            {% for product in product %}
+                                            <option value="{{product.ProductNo}}">{{product.Productname}}
+                                            </option>
+                                            {% empty %}
+                                            <option selected disabled value="0">--You have not registered any product--
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Batch No.<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="batchNo" id="batchNo" required>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn button-87 my-2 w-100">Upload</button>
+                                <div class="row my-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Quantity to Dispose<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="quantity" id="quantity" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Reason For Destruction Or Disposition <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-select" aria-label="Default select example"
+                                            name="reasonForDestruction" id="reasonForDestruction">
+                                            <option selected disabled value="0">Choose...</option>
+                                            <option value="1">Expired</option>
+                                            <option value="2">Improperly Labelled</option>
+                                            <option value="3">Improperly Sealed</option>
+                                            <option value="4">Counterfeit Or Substandard And Adulterated</option>
+                                            <option value="5">Damaged</option>
+                                            <option value="6">Prohibited</option>
+                                            <option value="7">Other</option>
+                                            <option value="8">Out Of Specification</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
                             </form>
-                            {% endif %}
+                            <table id="ProfessionalsTable"
+                                class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Batch No</th>
+                                        <th scope="col">Quantity </th>
+                                        <th scope="col">Reason For Destruction</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="row my-3" id="attachments-container">
+                    </div>
+                </div>
+                <div class="stepThree" id="stepThree" style="display: none">
+                    <div class="row m-0 bg-white p-4">
+                        <div class="border border-success rounded p-3 my-3">
+                            <div class="Attachment_data" id="Attachment_data">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">
+                                        Attachment
+                                    </h5>
+                                    <div id="AttachmentsBtns">
+                                        <button class="btn btn-secondary" id="AttachmentsPrev"><i
+                                                class="las la-angle-double-left"></i> Prev
+                                            Step</button>
+                                        <button class="btn btn-primary" id="AttachmentsNext">Next Step <i
+                                                class="las la-angle-double-right"></i></button>
+                                    </div>
+                                </div>
+                                {% if permit.Status == 'Open' %}
+                                <form method="POST" id="attachmentForm">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
+                                    <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-2">
+                                                <label class="form-label">Upload Attachment <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="file" class="form-control" name="attachments"
+                                                    id="attachments" accept=".doc,.docx,.pdf">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn button-87 my-2 w-100">Upload</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                            <div class="row my-3" id="attachments-container">
 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -224,10 +180,6 @@
                     <div class="row m-0">
                         <div class="col-md-12 bg-white my-2">
                             <div class="d-flex justify-content-end align-items-center my-3">
-                                <div class="money-spinner" id="submit_spinner" style="display:none">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                        alt="Loading Gif" style="height: 70px;" class="img-fluid">
-                                </div>
                                 <div id="payment_btn">
                                     <button class="btn btn-secondary" id="paymentPrev"><i
                                             class="las la-angle-double-left"></i> Prev
@@ -257,12 +209,6 @@
                                     </div>
                                     {% if permit.Status == 'Approved' %}
                                     <div class="row box-right my-3" id="cert_card" style="display:none">
-                                        <div class="money-spinner text-center" id="download_spinner"
-                                            style="display:none">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                                alt="Loading Gif" style="height: 70px;" class="img-fluid">
-                                        </div>
-
                                         <div class="col-md-12 text-center cert_div">
                                             <img src="../../static/img/certificate.png" class="img-fluid cert_img"
                                                 alt="">
@@ -326,11 +272,6 @@
                                         will be processed
                                         immediately.
                                     </p>
-                                    <div class="money-spinner mx-auto text-center" id="invoice_spinner"
-                                        style="display:none">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                                    </div>
                                     <form id="FNGenerateInvoice" method="post">
                                         {% csrf_token %}
                                         <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
@@ -398,25 +339,8 @@
                                     <input type="hidden" name="iAgree" value="True">
                                     <div class="tab">
                                         <div class="border border-success rounded p-3 my-3">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Reason For Destruction Or Disposition
-                                                        <span class="text-danger">*</span></label>
-                                                    <select class="form-select" aria-label="Default select example"
-                                                        name="reasonForDestruction" id="reasonsForDestruction" disabled>
-                                                        <option selected disabled value="0">Choose...</option>
-                                                        <option value="1">Expired</option>
-                                                        <option value="2">Improperly Labelled</option>
-                                                        <option value="3">Improperly Sealed</option>
-                                                        <option value="4">Counterfeit Or Substandard And Adulterated
-                                                        </option>
-                                                        <option value="5">Damaged</option>
-                                                        <option value="6">Prohibited</option>
-                                                        <option value="7">Other</option>
-                                                        <option value="8">Out Of Specification</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6">
+                                            <div class="row gx-2">
+                                                <div class="col-md-5">
                                                     <label class="form-label">Name Of The Destruction Company<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control"
@@ -424,26 +348,19 @@
                                                         id="nameOfTheDestructionCompany"
                                                         value="{{permit.NameOfTheDestructionCompany}}" disabled>
                                                 </div>
-                                                <div class="col-md-6">
-
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Place Of Disposal <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="placeOfDisposal"
+                                                        id="placeOfDisposal" value="{{permit.AmountPayable}}" disabled>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Amount Payable</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{permit.AmountPayable}}" disabled>
                                                 </div>
                                             </div>
 
-                                        </div>
-                                    </div>
-                                    <div class="border border-success rounded p-3  my-3">
-                                        <div class="row my-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label">Amount Payable</label>
-                                                <input type="text" class="form-control" value="{{permit.AmountPayable}}"
-                                                    disabled>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Place Of Disposal <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="placeOfDisposal"
-                                                    id="placeOfDisposal" value="{{permit.AmountPayable}}" disabled>
-                                            </div>
                                         </div>
                                     </div>
                                     {% if permit.Status == 'Open' %}
@@ -457,7 +374,53 @@
                 {% include 'alert.html' %}
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-md-12">
+                <div
+                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                    <div class="step completed">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Application Form</h4>
+                    </div>
+                    <div class="step step2Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-tie"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Professionals Form</h4>
+                    </div>
+                    <div class="step step3Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-upload"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Attachments</h4>
+                    </div>
+                    <div class="step step4con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-coins"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Payment</h4>
+                    </div>
+                    <div class="step step5con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check-double"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Submit</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </main>
 
@@ -470,7 +433,6 @@
         var document_header = '{{permit.DisposalNo}}';
         var Invoiced = '{{permit.Invoiced}}';
         var Paid = '{{permit.Paid}}';
-        var Reasons_for_Destruction_Disposition = '{{permit.Reasons_for_Destruction_Disposition}}';
 
         console.log(document_header)
 
@@ -483,7 +445,6 @@
 
         const $stepThree = $('#stepThree');
         const $FNGenerateInvoice = $('#FNGenerateInvoice');
-        const $invoice_spinner = $('#invoice_spinner');
         const $attachmentForm = $('#attachmentForm');
         const $AttachmentsPrev = $('#AttachmentsPrev');
         const $AttachmentsNext = $('#AttachmentsNext');
@@ -492,20 +453,104 @@
         const $payment_submit_form = $('#payment_submit_form');
         const $step4con = $('.step4con');
         const $step5con = $('.step5con');
-        const $submit_spinner = $('#submit_spinner');
         const $payment_state = $('#payment_state');
         const $PremiseCertForm = $('#PremiseCertForm');
+        var progressBar = $(".progress-bar");
 
         Amount_Payable = parseInt(AmountPayable)
 
-        if (Amount_Payable > 0) {
-            $stepTwo.show();
+        function animateProgressBar(percentage) {
+            var progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = percentage + '%';
+
+            var progressValue = document.querySelector('.doc_status');
+            progressValue.textContent = percentage + '%'; // Update the progress value
+        }
+
+        filter_list(document_header);
+
+        function filter_list(pk) {
+            var query = '/QyDisposalRequest'
+            var filter_one = 'DisposalNo'
+            var filter_two = 'UserCode'
+
+
+            $.ajax({
+                url: "/filter_list/" + pk,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    query: query,
+                    filter_one: filter_one,
+                    filter_two: filter_two,
+                },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        $('.document_status').empty().append(data['data']['Status']);
+
+                        if (data['data']['Paid'] === true) {
+                            $('#payment_submit_form').css('display', 'inline-block');
+                            $step4con.addClass('completed');
+                            $payment_state.empty().append("Paid");
+                            $(".pesa_paid").addClass('text-success');
+                        }
+
+                        if (data['data']['Status'] === 'Open') {
+                            $(".confirm_div").show();
+                            $stepTwo.show();
+
+                            if (data['data']['Paid'] === true) {
+                                progressBar.addClass("bg-info");
+                                progressBar.css("width", "60%");
+                                animateProgressBar(80);
+                            } else {
+                                progressBar.addClass("bg-warning");
+                                progressBar.css("width", "20%");
+                                animateProgressBar(20);
+                            }
+
+                        } else if (data['data']['Status'] === 'Processing') {
+                            $("#loading_div").show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "80%");
+                            progressBar.addClass("bg-primary");
+                            animateProgressBar(80);
+                        } else if (data['data']['Status'] === 'Approved') {
+                            $('#cert_card').show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "100%");
+                            progressBar.addClass("bg-success");
+                            animateProgressBar(100);
+                        }
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+
         }
 
         $ProfessionalsNext.click(function () {
             if (Invoiced === 'False' && Paid === 'False') {
-                $('#premise_data').hide();
-                $spinner.show();
+                $spinner.show(400);
+                document.getElementById('main').classList.add('loads');
+                $ProfessionalsForm.hide();
                 $.ajax({
                     type: 'POST',
                     url: '/DisposalCustomer/',
@@ -514,6 +559,9 @@
                         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                     },
                     success: function (response) {
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
+                        $ProfessionalsForm.show();
                         if (response['response']) {
                             iziToast.show({
                                 theme: 'dark',
@@ -526,7 +574,6 @@
                             });
                             $stepTwo.hide();
                             $stepThree.show();
-                            $spinner.hide();
                         } else if (response['error']) {
                             iziToast.show({
                                 theme: 'dark',
@@ -536,12 +583,13 @@
                                 position: 'topRight',
                                 progressBarColor: '#ff0800',
                             });
-                            $("#premise_data").show();
-                            $spinner.hide();
                         }
                     },
                     error: function (error) {
                         console.log(error)
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
+                        $ProfessionalsForm.show();
 
                     }
                 });
@@ -556,30 +604,9 @@
             $stepThree.show();
         })
 
-        if (Reasons_for_Destruction_Disposition == 'Expired') {
-            $('#reasonsForDestruction option[value="1"]').prop('selected', true);
-        } else if (Reasons_for_Destruction_Disposition == 'Improperly Labelled') {
-            $('#reasonsForDestruction option[value="2"]').prop('selected', true);
-        } else if (Reasons_for_Destruction_Disposition == 'Improperly Sealed') {
-            $('#reasonsForDestruction option[value="3"]').prop('selected', true);
-        } else if (Reasons_for_Destruction_Disposition == 'Counterfeit Or Substandard And Adulterated') {
-            $('#reasonsForDestruction option[value="4"]').prop('selected', true);
-        } else if (Reasons_for_Destruction_Disposition == 'Damaged') {
-            $('#reasonsForDestruction option[value="5"]').prop('selected', true);
-        } else if (Reasons_for_Destruction_Disposition == 'Prohibited') {
-            $('#reasonsForDestruction option[value="6"]').prop('selected', true);
-        } else if (Reasons_for_Destruction_Disposition == 'Other') {
-            $('#reasonsForDestruction option[value="7"]').prop('selected', true);
-        } else if (Reasons_for_Destruction_Disposition == 'Out Of Specification') {
-            $('#reasonsForDestruction option[value="8"]').prop('selected', true);
-        } else {
-            $('#reasonsForDestruction option[value="0"]').prop('selected', true);
-        }
-
 
         if (documentStatus === 'Open') {
             $('#nameOfTheDestructionCompany').prop('disabled', false);
-            $('#reasonsForDestruction').prop('disabled', false);
             $('#placeOfDisposal').prop('disabled', false);
         }
 
@@ -597,16 +624,17 @@
 
         $ProfessionalsForm.on('submit', (e) => {
             e.preventDefault();
-            if ($('#tradeNameAndStrength').val() === '' || $('#batchNo')
+            if ($('#batchNo')
                 .val() === '' || $(
-                    '#dosageForm')
-                .val() === '' || $('#reasonForDestruction').val() === '' || $('#packSize')
-                .val() === '' || $('#quantity')
+                    '#product')
+                .val() === '' || $('#reasonForDestruction').val() === '' || $('#quantity')
                 .val() === '') {
                 alert('Please fill in all required fields.');
                 return false;
             }
-            $('#spinner').show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $ProfessionalsForm.hide();
 
             $.ajax({
                 type: 'POST',
@@ -614,16 +642,16 @@
                 data: {
                     myAction: $("#Professionals_my_action").val(),
                     lineNo: $('#Professionals_lineNo').val(),
-                    tradeNameAndStrength: $('#tradeNameAndStrength').val(),
                     batchNo: $('#batchNo').val(),
-                    dosageForm: $('#dosageForm').val(),
-                    packSize: $('#packSize').val(),
+                    product: $('#product').val(),
                     quantity: $('#quantity').val(),
                     reasonForDestruction: $('#reasonForDestruction').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $('#spinner').hide();
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     if (response['response']) {
                         loadProfessionals(document_header);
                         iziToast.show({
@@ -635,7 +663,7 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $('#tradeNameAndStrength, #batchNo, #dosageForm, #packSize, #quantity')
+                        $('#batchNo, #product, #quantity')
                             .val(
                                 '');
                         $('#reasonForDestruction').val('');
@@ -652,16 +680,176 @@
                 },
                 error: function (error) {
                     console.log(error)
-                    $('#spinner').hide();
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
 
                 }
             });
         });
 
+        function handleFormSubmission(form) {
+            event.preventDefault();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $ProfessionalsForm.hide();
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function (response) {
+                    loadProfessionals(document_header);
+                    if (response['response']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            message: "deleted",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                    } else {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response[
+                                'message'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
+                    iziToast.show({
+                        theme: 'dark',
+                        icon: 'las la-exclamation',
+                        title: 'Error',
+                        message: 'CSRF verification failed. Request aborted.',
+                        position: 'topRight',
+                        progressBarColor: '#ff0800',
+                    });
+                }
+            });
+        }
+
+        loadProfessionals(document_header);
+
+        function loadProfessionals(pk) {
+            $.ajax({
+                url: "/DisposalLines/" + pk + "/",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tableBody = $('#ProfessionalsTable tbody');
+                    tableBody.empty(); // clear existing rows if any
+                    // iterate through the data and append to the table
+                    for (var i = 0; i < data[1].length; i++) {
+                        if (data[1].length > 0) {
+                            $step2Icon.addClass('completed');
+                            $Professionals_btn.show();
+                        } else {
+                            $step2Icon.removeClass('completed');
+                            $Professionals_btn.hide();
+                        }
+                        var BatchNo = data[1][i].BatchNo;
+                        var product = data[1][i].Product_Name;
+                        var Quantity = data[1][i].Quantity;
+                        var ReasonForDestruction = data[1][i].Reasons_for_Destruction_Disposition;
+                        let Line_No = data[1][i].DisposalRequestLineNo;
+
+                        var row = $('<tr>');
+                        row.append($('<td>').text(product));
+                        row.append($('<td>').text(BatchNo));
+                        row.append($('<td>').text(Quantity));
+                        row.append($('<td>').text(ReasonForDestruction));
+                        if (documentStatus === 'Open') {
+                            var form = $('<form>').attr({
+                                method: 'POST',
+                                action: '/Disposal/' + pk + '/',
+                            }).append('{% csrf_token %}');
+
+                            var pro_batchNo = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'batchNo',
+                                value: "0"
+                            });
+                            var pro_product = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'product',
+                                value: "0"
+                            });
+                            var pro_quantity = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'quantity',
+                                value: "0"
+                            });
+                            var pro_reasonForDestruction = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'reasonForDestruction',
+                                value: "0"
+                            });
+
+                            var pro_lineNoInput = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'lineNo',
+                                value: Line_No
+                            });
+                            var pro_myActionInput = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'myAction',
+                                value: 'delete'
+                            });
+                            var pro_submitBtn = $('<button>').attr({
+                                type: 'submit',
+                                class: 'btn btn-danger'
+                            }).text('delete');
+
+                            // Handle form submission
+                            form.submit(function (event) {
+                                handleFormSubmission($(this));
+                            });
+
+                            var td = $('<td>').append(form.append(
+                                pro_batchNo,
+                                pro_product,
+                                pro_quantity,
+                                pro_reasonForDestruction, pro_myActionInput,
+                                pro_lineNoInput, pro_submitBtn));
+                            row.append(td);
+                        }
+                        tableBody.append(row);
+                    }
+                    // initialize DataTables for each table
+                    if (!$.fn.DataTable.isDataTable('#ProfessionalsTable')) {
+                        $('#ProfessionalsTable').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
+
         $attachmentForm.on("submit", (e) => {
             e.preventDefault();
 
-            $("#attachment_spinner").show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             var formData = new FormData($attachmentForm[0]);
 
             let attachments = $('#attachments')[0];
@@ -679,9 +867,9 @@
                     'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()
                 },
                 success: function (data) {
-
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     $('#attachments').val('');
-                    $("#attachment_spinner").hide();
                     if (data['success'] == true) {
                         iziToast.show({
                             theme: 'dark',
@@ -706,7 +894,8 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log(xhr.responseText);
-                    $("#attachment_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 }
             });
         });
@@ -760,7 +949,8 @@
                             }));
                             deleteButton.on("click", function (event) {
                                 event.preventDefault();
-                                $("#attachment_spinner").show();
+                                $spinner.show(400);
+                                document.getElementById('main').classList.add('loads');
                                 $.ajax({
                                     type: 'POST',
                                     url: "/RemovePermitAttachment/",
@@ -773,6 +963,9 @@
                                             .val()
                                     },
                                     success: function (data) {
+                                        $spinner.hide(1000);
+                                        document.getElementById('main')
+                                            .classList.remove('loads');
                                         if (data['success'] == true) {
                                             iziToast.show({
                                                 theme: 'dark',
@@ -784,7 +977,6 @@
                                                 position: 'topRight',
                                                 progressBarColor: '#F4F6F7',
                                             });
-                                            $("#attachment_spinner").hide();
                                             Load_Attachments(pk);
                                         } else {
                                             iziToast.show({
@@ -799,6 +991,9 @@
                                     },
                                     error: function (error) {
                                         console.log(error)
+                                        $spinner.hide(1000);
+                                        document.getElementById('main')
+                                            .classList.remove('loads');
                                     }
                                 });
                             });
@@ -829,170 +1024,10 @@
             });
         }
 
-
-        loadProfessionals(document_header);
-
-        function loadProfessionals(pk) {
-            $.ajax({
-                url: "/DisposalLines/" + pk + "/",
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    var tableBody = $('#ProfessionalsTable tbody');
-                    tableBody.empty(); // clear existing rows if any
-                    // iterate through the data and append to the table
-                    for (var i = 0; i < data[1].length; i++) {
-                        if (data[1].length > 0) {
-                            $step2Icon.addClass('completed');
-                            $Professionals_btn.show();
-                        } else {
-                            $step2Icon.removeClass('completed');
-                            $Professionals_btn.hide();
-                        }
-                        var BatchNo = data[1][i].BatchNo;
-                        var DosageForm = data[1][i].DosageForm;
-                        var PackSize = data[1][i].PackSize;
-                        var Quantity = data[1][i].Quantity;
-                        var TradeNameAndStrength = data[1][i].TradeNameAndStrength;
-                        var ReasonForDestruction = data[1][i].ReasonForDestruction;
-                        let Line_No = data[1][i].DisposalRequestLineNo;
-
-                        var row = $('<tr>');
-                        row.append($('<td>').text(BatchNo));
-                        row.append($('<td>').text(DosageForm));
-                        row.append($('<td>').text(PackSize));
-                        row.append($('<td>').text(Quantity));
-                        row.append($('<td>').text(TradeNameAndStrength));
-                        row.append($('<td>').text(ReasonForDestruction));
-                        if (documentStatus === 'Open') {
-                            var form = $('<form>').attr({
-                                method: 'POST',
-                                action: '/Disposal/' + pk + '/',
-                            }).append('{% csrf_token %}');
-
-                            var pro_tradeNameAndStrength = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'tradeNameAndStrength',
-                                value: "0"
-                            });
-                            var pro_batchNo = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'batchNo',
-                                value: "0"
-                            });
-                            var pro_dosageForm = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'dosageForm',
-                                value: "0"
-                            });
-                            var pro_packSize = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'packSize',
-                                value: "0"
-                            });
-                            var pro_quantity = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'quantity',
-                                value: "0"
-                            });
-                            var pro_reasonForDestruction = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'reasonForDestruction',
-                                value: "0"
-                            });
-
-                            var pro_lineNoInput = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'lineNo',
-                                value: Line_No
-                            });
-                            var pro_myActionInput = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'myAction',
-                                value: 'delete'
-                            });
-                            var pro_submitBtn = $('<button>').attr({
-                                type: 'submit',
-                                class: 'btn btn-danger'
-                            }).text('delete');
-
-                            // Handle form submission
-                            form.submit(function (event) {
-                                event.preventDefault();
-                                $spinner.show();
-                                $.ajax({
-                                    url: form.attr('action'),
-                                    type: form.attr('method'),
-                                    data: form.serialize(),
-                                    success: function (response) {
-                                        loadProfessionals(document_header);
-                                        $spinner.hide();
-                                        if (response['response']) {
-                                            iziToast.show({
-                                                theme: 'dark',
-                                                backgroundColor: '#239B56',
-                                                icon: 'las la-check-circle',
-                                                message: "deleted",
-                                                position: 'topRight',
-                                                progressBarColor: '#F4F6F7',
-                                            });
-                                        } else {
-                                            iziToast.show({
-                                                theme: 'dark',
-                                                icon: 'las la-exclamation',
-                                                title: 'Error',
-                                                message: response[
-                                                    'message'],
-                                                position: 'topRight',
-                                                progressBarColor: '#ff0800',
-                                            });
-                                        }
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.log("Error:", error);
-                                        $spinner.hide();
-                                        iziToast.show({
-                                            theme: 'dark',
-                                            icon: 'las la-exclamation',
-                                            title: 'Error',
-                                            message: 'CSRF verification failed. Request aborted.',
-                                            position: 'topRight',
-                                            progressBarColor: '#ff0800',
-                                        });
-                                    }
-                                });
-                            });
-
-                            var td = $('<td>').append(form.append(pro_tradeNameAndStrength,
-                                pro_batchNo,
-                                pro_dosageForm,
-                                pro_packSize, pro_quantity,
-                                pro_reasonForDestruction, pro_myActionInput,
-                                pro_lineNoInput, pro_submitBtn));
-                            row.append(td);
-                        }
-                        tableBody.append(row);
-                    }
-                    // initialize DataTables for each table
-                    if (!$.fn.DataTable.isDataTable('#ProfessionalsTable')) {
-                        $('#ProfessionalsTable').DataTable({
-                            "pageLength": 5,
-                            "order": [
-                                [0, "desc"]
-                            ]
-                        });
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                },
-            });
-        }
-
-
         $FNGenerateInvoice.on('submit', (e) => {
             e.preventDefault();
-            $invoice_spinner.show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/DisposalInvoice/',
@@ -1004,7 +1039,8 @@
                     responseType: 'blob' // Set the response type to 'blob'
                 },
                 success: function (response) {
-                    $invoice_spinner.hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     const blob = new Blob([response], {
                         type: 'application/pdf'
                     });
@@ -1027,7 +1063,8 @@
                 },
                 error: function (error) {
                     console.log(error);
-                    $invoice_spinner.hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     iziToast.show({
                         theme: 'dark',
                         backgroundColor: '#E74C3C',
@@ -1040,57 +1077,11 @@
                 }
             });
         });
-        filter_list(document_header);
 
-        function filter_list(pk) {
-            var query = '/QyDisposalRequest'
-            var filter_one = 'DisposalNo'
-            var filter_two = 'UserCode'
-
-
-            $.ajax({
-                url: "/filter_list/" + pk,
-                type: "GET",
-                dataType: "json",
-                data: {
-                    query: query,
-                    filter_one: filter_one,
-                    filter_two: filter_two,
-                },
-                success: function (data) {
-                    if (data['success'] == true) {
-                        if (data['data']['Paid'] === true) {
-                            $('#payment_submit_form').css('display', 'inline-block');
-                            $step4con.addClass('completed');
-                            $payment_state.empty().append("Paid");
-                            $(".pesa_paid").addClass('text-success');
-                        }
-                        if (data['data']['Status'] != 'Open') {
-                            $step5con.addClass('completed');
-                            $('#payment_submit_form').css('display', 'none');
-                            $ProfessionalsForm.hide();
-                            $attachmentForm.hide();
-                            $("#confirm_div").hide();
-                            $stepTwo.hide();
-                            $stepThree.hide();
-                            $stepFour.show();
-                        }
-                        if (data['data']['Status'] === 'Approved') {
-                            $('#cert_card').show();
-                        }
-                    } else {
-
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                },
-            });
-
-        }
         $payment_submit_form.on('submit', (e) => {
             e.preventDefault();
-            $submit_spinner.show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
 
             $.ajax({
                 type: 'POST',
@@ -1099,7 +1090,8 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $submit_spinner.hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     if (response['response']) {
                         filter_list(document_header);
                         iziToast.show({
@@ -1125,15 +1117,16 @@
                 },
                 error: function (error) {
                     console.log(error)
-                    $submit_spinner.hide();
-
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 }
             });
         });
 
         $PremiseCertForm.on('submit', (e) => {
             e.preventDefault();
-            $("#download_spinner").show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/disposal/cert/' + document_header + '/',
@@ -1144,7 +1137,8 @@
                     responseType: 'blob'
                 },
                 success: function (response) {
-                    $("#download_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     const blob_cert = new Blob([response], {
                         type: 'application/pdf'
                     });
@@ -1167,7 +1161,8 @@
                 },
                 error: function (error) {
                     console.log(error);
-                    $("#download_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     iziToast.show({
                         theme: 'dark',
                         backgroundColor: '#E74C3C',

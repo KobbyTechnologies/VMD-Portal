@@ -2,62 +2,38 @@
 {% load static %}
 {% block base %}
 
-<!--Header-->
 {% include 'navbar.html' %}
-<!-- End Header -->
-<!-- Sidebar-->
 {% include 'sidebar.html' %}
-<!-- End Sidebar -->
 <main id="main" class="main">
-    <div class="pagetitle">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Disposal Request</h1>
-            </div>
-        </div>
-    </div><!-- End Page Title -->
     <section class="section contact">
-        <div class="row">
+        <div class="row bg-white">
             <div class="col-md-12">
+                <div class="pagetitle my-3">
+                    <h1>Disposal Request</h1>
+                </div>
                 {% include 'alert.html' %}
+                <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__ball"></div>
+                </div>
                 <form id="regForm" class="bg-white p-4" method="post" novalidate>
                     {% csrf_token %}
                     <input type="hidden" name="disposalNo" id="disposalNo" value="">
                     <input type="hidden" name="myAction" id="myAction" value="insert">
-                    <div class="money-spinner mx-auto text-center" id="header-spinner" style="display:none">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                    </div>
-                    <div class="border border-success rounded p-3  my-3">
-                        <div class="row my-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Reason For Destruction Or Disposition <span
-                                        class="text-danger">*</span></label>
-                                <select class="form-select" aria-label="Default select example"
-                                    name="reasonForDestruction" id="reasonForDestruction">
-                                    <option selected disabled value="0">Choose...</option>
-                                    <option value="1">Expired</option>
-                                    <option value="2">Improperly Labelled</option>
-                                    <option value="3">Improperly Sealed</option>
-                                    <option value="4">Counterfeit Or Substandard And Adulterated</option>
-                                    <option value="5">Damaged</option>
-                                    <option value="6">Prohibited</option>
-                                    <option value="7">Other</option>
-                                    <option value="8">Out Of Specification</option>
-                                </select>
-                            </div>
+                    <div class="border border-success rounded p-3 my-3">
+                        <p class="text-small text-info">Disposal Information</p>
+                        <div class="row my-2 gx-2">
                             <div class="col-md-6">
                                 <label class="form-label">Name Of The Destruction Company<span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="nameOfTheDestructionCompany"
                                     id="nameOfTheDestructionCompany">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="border border-success rounded p-3 my-3">
-                        <div class="row my-2">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label class="form-label">Place Of Disposal <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="placeOfDisposal" id="placeOfDisposal">
                             </div>
@@ -129,7 +105,6 @@
                                     <thead>
                                         <tr>
                                             <th>Code</th>
-                                            <th>Reason For Destruction</th>
                                             <th>Place Of Disposal</th>
                                             <th>Amount Payable</th>
                                             <th>Paid</th>
@@ -139,7 +114,6 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -157,7 +131,6 @@
                                     <thead>
                                         <tr>
                                             <th>Code</th>
-                                            <th>Reason For Destruction</th>
                                             <th>Place Of Disposal</th>
                                             <th>Amount Payable</th>
                                             <th>Paid</th>
@@ -167,7 +140,6 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -185,7 +157,6 @@
                                     <thead>
                                         <tr>
                                             <th>Code</th>
-                                            <th>Reason For Destruction</th>
                                             <th>Place Of Disposal</th>
                                             <th>Amount Payable</th>
                                             <th>Paid</th>
@@ -195,7 +166,6 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -213,7 +183,6 @@
                                     <thead>
                                         <tr>
                                             <th>Code</th>
-                                            <th>Reason For Destruction</th>
                                             <th>Place Of Disposal</th>
                                             <th>Amount Payable</th>
                                             <th>Paid</th>
@@ -223,7 +192,6 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -245,6 +213,8 @@
 {% include 'footer.html' %}
 <script>
     const $headerForm = $('#regForm');
+    const $spinner = $('#spinner');
+
     $(document).ready(function () {
         Header_Data();
 
@@ -265,8 +235,6 @@
 
                     for (var i = 0; i < data.length; i++) {
                         var disposalNo = data[i].DisposalNo;
-                        var Reasons_for_Destruction_Disposition = data[i]
-                            .Reasons_for_Destruction_Disposition;
                         var Status = data[i].Status;
                         var NameOfTheDestructionCompany = data[i].NameOfTheDestructionCompany;
                         var Place_Of_Disposal = data[i].Place_Of_Disposal;
@@ -276,10 +244,9 @@
 
                         var row = $('<tr>');
                         row.append($('<td>').text(disposalNo));
-                        row.append($('<td>').text(Reasons_for_Destruction_Disposition));
                         row.append($('<td>').text(Place_Of_Disposal));
                         row.append($('<td>').text(Currency + " " + AmountPayable));
-                        row.append($('<td>').text(Paid));
+                        row.append($('<td>').text(Paid ? "Yes" : "No"));
                         row.append($('<td>').text(Status));
 
                         // create a link button
@@ -360,21 +327,19 @@
         $headerForm.on('submit', (e) => {
             e.preventDefault();
 
-            if ($('#reasonForDestruction')
-                .val() === '' || $(
+            if ($(
                     '#nameOfTheDestructionCompany')
                 .val() === '' || $('#placeOfDisposal').val() === '') {
                 alert('Please fill in all required fields.');
                 return false;
             }
-
-            $('#header-spinner').show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/Disposal/',
                 data: {
                     disposalNo: $("#disposalNo").val(),
-                    reasonForDestruction: $('#reasonForDestruction').val(),
                     nameOfTheDestructionCompany: $('#nameOfTheDestructionCompany').val(),
                     placeOfDisposal: $('#placeOfDisposal').val(),
                     iAgree: $('#iAgree').val(),
@@ -382,7 +347,6 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $('#header-spinner').hide();
                     Header_Data();
                     if (response['response']) {
                         window.location.href = "/Disposal/" + response['response'] + "/";
@@ -397,7 +361,7 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $('#nameOfTheDestructionCompany, #reasonForDestruction')
+                        $('#nameOfTheDestructionCompany')
                             .val(
                                 '');
                         $('#placeOfDisposal').val('');
@@ -410,11 +374,15 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
+                        document.getElementById('main').classList.remove('loads');
                     }
+                    $spinner.hide(1500);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $('#header-spinner').hide();
+                    $spinner.hide(1500);
+                    document.getElementById('main').classList.remove('loads');
                 }
             });
         });

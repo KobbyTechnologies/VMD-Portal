@@ -48,7 +48,6 @@ class Disposal(UserObjectMixins, View):
     async def post(self, request):
         try:
             disposalNo = request.POST.get("disposalNo")
-            reasonForDestruction = int(request.POST.get("reasonForDestruction"))
             nameOfTheDestructionCompany = request.POST.get(
                 "nameOfTheDestructionCompany"
             )
@@ -63,7 +62,6 @@ class Disposal(UserObjectMixins, View):
                 "FnDisposalRequestCard",
                 disposalNo,
                 iAgree,
-                reasonForDestruction,
                 nameOfTheDestructionCompany,
                 placeOfDisposal,
                 userCode,
@@ -107,10 +105,16 @@ class DisposalDetails(UserObjectMixins, View):
                         pk,
                     )
                 )
-                response = await asyncio.gather(task)
+                task2 = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session, "/QYRegistration", "User_code", "eq", userID
+                    )
+                )
+                response = await asyncio.gather(task, task2)
                 for task in response[0]:
                     if task["UserCode"] == userID:
                         res = task
+                product = [x for x in response[1] if x["Status"] == "Approved"]
         except Exception as e:
             messages.info(request, f"{e}")
             print(e)
@@ -122,6 +126,7 @@ class DisposalDetails(UserObjectMixins, View):
             "permit": res,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
+            "product": product,
         }
         return render(request, "disposal-detail.html", ctx)
 
@@ -130,26 +135,23 @@ class DisposalDetails(UserObjectMixins, View):
             myAction = request.POST.get("myAction")
             lineNo = request.POST.get("lineNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            tradeNameAndStrength = request.POST.get("tradeNameAndStrength")
             batchNo = request.POST.get("batchNo")
-            dosageForm = request.POST.get("dosageForm")
-            packSize = request.POST.get("packSize")
+            product = request.POST.get("product")
             quantity = request.POST.get("quantity")
-            reasonForDestruction = request.POST.get("reasonForDestruction")
+            reasonForDestruction = int(request.POST.get("reasonForDestruction"))
 
             response = self.make_soap_request(
                 "FnDisposalRequestLines",
                 pk,
-                tradeNameAndStrength,
+                product,
                 batchNo,
-                dosageForm,
-                packSize,
                 quantity,
                 reasonForDestruction,
                 myAction,
                 lineNo,
                 userCode,
             )
+            print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
                 if response == True:
                     return JsonResponse({"response": str(response)}, safe=False)
@@ -312,9 +314,7 @@ class DisposalCert(UserObjectMixins, View):
     def post(self, request, pk):
         try:
             filenameFromApp = "Pharmacy_Cert_" + pk + ".pdf"
-            response = self.make_soap_request(
-                "PrintDisposalRequestCertificate", pk
-            )
+            response = self.make_soap_request("PrintDisposalRequestCertificate", pk)
             buffer = BytesIO.BytesIO()
             content = base64.b64decode(response)
             buffer.write(content)

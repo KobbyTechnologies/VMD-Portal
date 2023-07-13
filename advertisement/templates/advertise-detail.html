@@ -868,7 +868,8 @@
                     'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()
                 },
                 success: function (data) {
-
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                     $('#attachments').val('');
                     if (data['success'] == true) {
                         iziToast.show({
@@ -890,10 +891,8 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
-                        document.getElementById('main').classList.remove('loads');
                     }
-                    $spinner.hide(1000);
-                    document.getElementById('main').classList.remove('loads');
+
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log(xhr.responseText);
