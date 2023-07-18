@@ -9,92 +9,193 @@
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
 <main id="main" class="main">
-    <div class="pagetitle">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Premise Permit For Veterinary Pharmacy</h1>
+    <section class="section contact">
+        <div class="card mt-2">
+            <div class="card-body">
+                <div class="pagetitle my-3">
+                    <h1>Premise Permit For Veterinary Pharmacy</h1>
+                </div>
+                <h5 class="card-title">My Applications</h5>
+                <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__ball"></div>
+                </div>
+                <!-- Bordered Tabs Justified -->
+                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                            data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home"
+                            aria-selected="true">New
+                            (<span class="open_count">
+                                {{0}}
+                            </span>)
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                            data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                            aria-controls="profile" aria-selected="false"> Pending Approval
+                            (<span class="pending_count">
+                                {{0}}
+                            </span>)
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                            data-bs-target="#bordered-justified-contact" type="button" role="tab"
+                            aria-controls="contact" aria-selected="false">Approved
+                            (<span class="approved_count">
+                                {{0}}
+                            </span>)
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
+                            data-bs-target="#bordered-justified-pending" type="button" role="tab"
+                            aria-controls="contact" aria-selected="false">Rejected
+                            (<span class="rejected_count">
+                                {{0}}
+                            </span>)
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                    <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
+                        aria-labelledby="home-tab">
+                        <table id="open_table"
+                            class="table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                            <thead>
+                                <tr>
+                                    <th>Premise No</th>
+                                    <th>Premise Name</th>
+                                    <th>Amount Payable</th>
+                                    <th>Paid</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
+                        aria-labelledby="profile-tab">
+                        <table id="pending_table"
+                            class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                            <thead>
+                                <tr>
+                                    <th>Premise No</th>
+                                    <th>Premise Name</th>
+                                    <th>Amount Payable</th>
+                                    <th>Paid</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
+                        aria-labelledby="contact-tab">
+                        <table id="approved_table"
+                            class="table table-striped w-100 dt-responsive table-responsive-lg table-bordered datatable w-100">
+                            <thead>
+                                <tr>
+                                    <th>Premise No</th>
+                                    <th>Premise Name</th>
+                                    <th>Amount Payable</th>
+                                    <th>Paid</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
+                        aria-labelledby="contact-tab">
+                        <table id="rejected_table"
+                            class="table table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable w-100">
+                            <thead>
+                                <tr>
+                                    <th>Premise No</th>
+                                    <th>Premise Name</th>
+                                    <th>Amount Payable</th>
+                                    <th>Paid</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div><!-- End Page Title -->
-    <section class="section contact">
         <div class="row">
             <div class="col-md-12">
                 {% include 'alert.html' %}
                 <form id="regForm" class="bg-white p-4" method="post">
                     {% csrf_token %}
+                    <h5 class="card-title">New Application</h5>
                     <input type="hidden" name="vetPharmacyNo" id="vetPharmacyNo" value="">
                     <input type="hidden" name="myAction" id="myAction" value="insert">
-                    <div class="money-spinner mx-auto text-center" id="header-spinner" style="display:none">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                    </div>
-                    <div class="border border-success rounded p-3  my-3">
-                        <div class="row my-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Professional Registration No <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="professionalRegNo" id="professionalRegNo">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Nationality <span class="text-danger">*</span></label>
-                                <select class="form-select" aria-label="Default select example" name="nationality"
-                                    id="nationality">
-                                    <option selected disabled value="0">Choose...</option>
-                                    {% for res in country %}
-                                    <option value="{{res.Code}}">{{res.Name}}</option>
-                                    {% empty %}
-                                    <option value="KE">KENYA</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">ID/Passport/Alien ID No <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="iDorPassportOrAlienIDNo"
-                                    id="iDorPassportOrAlienIDNo">
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="border border-success rounded p-3 my-3">
-                        <div class="row my-2">
-                            <div class="col-md-6">
+                        <p class="text-small text-info">Veterinary Pharmacy Information</p>
+                        <div class="row my-2 gx-2">
+                            <div class="col-md-8">
                                 <label class="form-label">Premise Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="premiseName" id="premiseName">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Period of Experience Working in A Veterinary Pharmacy</label>
-                                <input type="text" class="form-control" name="periodOfExperience"
-                                    id="periodOfExperience">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-2">
-                                    <label class="form-label">Qualification<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="qualification" id="qualification">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border border-success rounded p-3 my-3">
-                        <div class="row my-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Premise Location <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="premiseLocation" id="premiseLocation"
-                                    required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Town <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="town" id="town" required>
                             </div>
+                        </div>
+                        <div class="row my-3 gx-2">
                             <div class="col-md-4">
                                 <label class="form-label">Road <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="road" id="road" required>
                             </div>
-                        </div>
-                        <div class="row my-3">
                             <div class="col-md-4">
                                 <label class="form-label">Building <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="building" id="building" required>
@@ -103,6 +204,16 @@
                                 <label class="form-label">Plot No</label>
                                 <input type="text" class="form-control" name="plotNo" id="plotNo">
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-success rounded p-3 my-3">
+                        <p class="text-small text-info">Applicant's' Information</p>
+                        <div class="row my-3 gx-1">
+                            <div class="col-md-8">
+                                <label class="form-label">Applicant Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="applicantName" id="applicantName">
+                            </div>
                             <div class="col-md-4">
                                 <label class="form-label">First Time Application <span
                                         class="text-danger">*</span></label>
@@ -110,195 +221,40 @@
                                     name="firstTimeApplication" id="firstTimeApplication">
                                     <option value="0">--select--</option>
                                     <option value="1">Yes</option>
-                                    <option value="2">True</option>
+                                    <option value="2">No</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab">
-                        <div class="border border-success rounded p-3 my-3">
-                            <div class="row my-2">
-                                <div class="col-md-12">
-                                    <div class="mb-2">
-                                        <input class="form-check-input" type="checkbox" value="True" name="iAgree"
-                                            id="iAgree" checked>
-                                        <label class="form-check-label text-primary">
-                                            I hereby apply for registration of
-                                            the product detailed above and
-                                            declare that all the information herein is correct
-                                            and true.
-                                        </label>
-                                    </div>
-                                </div>
+                        <div class="row my-2" style="display: none;" id="inspectionNoRow">
+                            <div class="col-md-12">
+                                <label class="form-label">Previous Inspection <span class="text-danger">*</span></label>
+                                <select class="form-select" aria-label="Default select example" name="inspectionNo"
+                                    id="inspectionNo" disabled>
+                                    <option value="0">--select--</option>
+                                    {% for inspection in Approved_Inspection %}
+                                    <option value="{{inspection.PremiseInpectionNo}}">
+                                        {{inspection.PremiseInpectionNo}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
-                            <div class="row my-3">
-                                <div class="col-md-12">
-                                    <label class="form-label">Applicant Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="applicantName" id="applicantName">
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                <div class="mb-2">
+                                    <input class="form-check-input" type="checkbox" value="True" name="iAgree"
+                                        id="iAgree" checked>
+                                    <label class="form-check-label text-primary">
+                                        I hereby apply for registration of
+                                        the product detailed above and
+                                        declare that all the information herein is correct
+                                        and true.
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <button type="submit" class="btn button-87 my-3 w-100">Submit</button>
                 </form>
-                <div class="card mt-2">
-                    <div class="card-body">
-                        <h5 class="card-title">My Applications</h5>
-                        <!-- Bordered Tabs Justified -->
-                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
-                            <li class="nav-item flex-fill" role="presentation">
-                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
-                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
-                                    aria-controls="home" aria-selected="true">New
-                                    (<span class="open_count">
-                                        {{0}}
-                                    </span>)
-                                </button>
-                            </li>
-                            <li class="nav-item flex-fill" role="presentation">
-                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
-                                    data-bs-target="#bordered-justified-profile" type="button" role="tab"
-                                    aria-controls="profile" aria-selected="false"> Pending Approval
-                                    (<span class="pending_count">
-                                        {{0}}
-                                    </span>)
-                                </button>
-                            </li>
-                            <li class="nav-item flex-fill" role="presentation">
-                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
-                                    data-bs-target="#bordered-justified-contact" type="button" role="tab"
-                                    aria-controls="contact" aria-selected="false">Approved
-                                    (<span class="approved_count">
-                                        {{0}}
-                                    </span>)
-                                </button>
-                            </li>
-                            <li class="nav-item flex-fill" role="presentation">
-                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
-                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
-                                    aria-controls="contact" aria-selected="false">Rejected
-                                    (<span class="rejected_count">
-                                        {{0}}
-                                    </span>)
-                                </button>
-                            </li>
-                        </ul>
-                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
-                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
-                                aria-labelledby="home-tab">
-                                <table id="open_table"
-                                    class="table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Premise No</th>
-                                            <th>Premise Name</th>
-                                            <th>Professional Reg No</th>
-                                            <th>Amount Payable</th>
-                                            <th>Paid</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
-                                aria-labelledby="profile-tab">
-                                <table id="pending_table"
-                                    class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Premise No</th>
-                                            <th>Premise Name</th>
-                                            <th>Professional Reg No</th>
-                                            <th>Amount Payable</th>
-                                            <th>Paid</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
-                                aria-labelledby="contact-tab">
-                                <table id="approved_table"
-                                    class="table table-striped w-100 dt-responsive table-responsive-lg table-bordered datatable w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Premise No</th>
-                                            <th>Premise Name</th>
-                                            <th>Professional Reg No</th>
-                                            <th>Amount Payable</th>
-                                            <th>Paid</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
-                                aria-labelledby="contact-tab">
-                                <table id="rejected_table"
-                                    class="table table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Premise No</th>
-                                            <th>Premise Name</th>
-                                            <th>Professional Reg No</th>
-                                            <th>Amount Payable</th>
-                                            <th>Paid</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -307,7 +263,20 @@
 {% include 'footer.html' %}
 <script>
     const $headerForm = $('#regForm');
+    const $spinner = $('#spinner');
+
     $(document).ready(function () {
+
+        $('#firstTimeApplication').on('change', function () {
+            if (this.value == '2') {
+                $('#inspectionNoRow').show(700);
+                $('#inspectionNo').prop('disabled', false);
+            } else {
+                $('#inspectionNoRow').hide(300);
+                $('#inspectionNo').prop('disabled', true);
+            }
+        });
+
         Header_Data();
 
         function Header_Data() {
@@ -327,7 +296,6 @@
 
                     for (var i = 0; i < data.length; i++) {
                         var vetPharmacyNo = data[i].VeterinaryPharmacyNo;
-                        var ProfessionalRegNo = data[i].ProfessionalRegNo;
                         var Status = data[i].Status;
                         var Premise_Name = data[i].PremiseName;
                         var Currency = data[i].Currency;
@@ -337,9 +305,8 @@
                         var row = $('<tr>');
                         row.append($('<td>').text(vetPharmacyNo));
                         row.append($('<td>').text(Premise_Name));
-                        row.append($('<td>').text(ProfessionalRegNo));
                         row.append($('<td>').text(Currency + " " + AmountPayable));
-                        row.append($('<td>').text(Paid));
+                        row.append($('<td>').text(Paid ? "Yes" : "No"));
                         row.append($('<td>').text(Status));
 
                         // create a link button
@@ -420,14 +387,7 @@
         $headerForm.on('submit', (e) => {
             e.preventDefault();
 
-            if ($('#professionalRegNo').val() === '' || $('#nationality')
-                .val() === '' || $(
-                    '#iDorPassportOrAlienIDNo')
-                .val() === '' || $('#premiseName').val() === '' || $(
-                    '#periodOfExperience').val() ===
-                '' || $(
-                    '#qualification').val() === '' || $('#premiseLocation')
-                .val() === '' || $(
+            if ($('#premiseName').val() === '' || $(
                     '#town').val() ===
                 '' || $('#road').val() === '' || $('#building').val() ===
                 '' || $(
@@ -439,28 +399,22 @@
                 return false;
             }
 
-            $('#header-spinner').show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $headerForm.hide();
             $.ajax({
                 type: 'POST',
                 url: '/pharmacy/',
                 data: {
                     vetPharmacyNo: $("#vetPharmacyNo").val(),
-                    professionalRegNo: $('#professionalRegNo').val(),
-                    iDorPassportOrAlienIDNo: $('#iDorPassportOrAlienIDNo').val(),
-                    nationality: $('#nationality').val(),
                     premiseName: $('#premiseName').val(),
-                    qualification: $('#qualification').val(),
-                    periodOfExperience: $(
-                        '#periodOfExperience').val(),
-                    premiseLocation: $('#premiseLocation').val(),
                     town: $('#town').val(),
                     road: $('#road').val(),
                     building: $('#building').val(),
-                    proposedCategory: $('#proposedCategory').val(),
                     applicantName: $('#applicantName').val(),
                     plotNo: $('#plotNo').val(),
                     firstTimeApplication: $('#firstTimeApplication').val(),
+                    inspectionNo: $('#inspectionNo').val(),
                     iAgree: $('#iAgree').val(),
                     myAction: $("#myAction").val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
@@ -482,10 +436,8 @@
                             progressBarColor: '#F4F6F7',
                         });
                         $headerForm.show();
-                        $('#professionalRegNo, #iDorPassportOrAlienIDNo, #nationality').val(
-                            '');
-                        $('#premiseName, #qualification, #periodOfExperience').val('');
-                        $('#premiseLocation, #town,#firstTimeApplication').val('');
+                        $('#premiseName').val('');
+                        $('#town,#firstTimeApplication').val('');
                         $('#road, #building, #proposedCategory').val('');
                         $('#applicantName, #plotNo').val('');
                     } else if (response['error']) {
@@ -497,12 +449,18 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
+                        $headerForm.show();
+                        document.getElementById('main').classList.remove('loads');
                     }
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
                     $('#header-spinner').hide();
                     $headerForm.show();
+                    $spinner.hide();
+                    document.getElementById('main').classList.remove('loads');
 
                 }
             });

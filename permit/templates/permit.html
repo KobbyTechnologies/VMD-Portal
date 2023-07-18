@@ -9,13 +9,6 @@
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
 <main id="main" class="main">
-    <div class="pagetitle">
-        <div class="row">
-            <div class="col-md-12">
-
-            </div>
-        </div>
-    </div><!-- End Page Title -->
     <div class="row bg-white">
         <div class="col-md-12">
             <div class="pagetitle my-3">
@@ -274,14 +267,6 @@
     const $headerForm = $('#regForm');
     const $spinner = $('#spinner');
 
-    function animateProgressBar(percentage) {
-        var progressBar = document.querySelector('.progress-bar');
-        progressBar.style.width = percentage + '%';
-
-        var progressValue = document.querySelector('.doc_status');
-        progressValue.textContent = percentage + '%'; // Update the progress value
-    }
-
     $(document).ready(function () {
 
         $('#firstTimeApplication').on('change', function () {
@@ -467,6 +452,8 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
+                        $headerForm.show();
+                        document.getElementById('main').classList.remove('loads');
                     }
                     $spinner.hide(1000);
                     document.getElementById('main').classList.remove('loads');
