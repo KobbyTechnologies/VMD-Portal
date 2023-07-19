@@ -420,7 +420,6 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $('#header-spinner').hide();
                     Header_Data();
                     if (response['response']) {
                         window.location.href = "/pharmacy/" + response['response'] + "/";
@@ -457,7 +456,6 @@
                 },
                 error: function (error) {
                     console.log(error)
-                    $('#header-spinner').hide();
                     $headerForm.show();
                     $spinner.hide();
                     document.getElementById('main').classList.remove('loads');

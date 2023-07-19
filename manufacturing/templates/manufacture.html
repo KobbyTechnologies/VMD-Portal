@@ -9,64 +9,24 @@
 {% include 'sidebar.html' %}
 <!-- End Sidebar -->
 <main id="main" class="main">
-    <div class="pagetitle">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Manufacturing License</h1>
-            </div>
-        </div>
-    </div><!-- End Page Title -->
     <section class="section contact">
         <div class="row">
             <div class="col-md-12">
                 {% include 'alert.html' %}
-                <form id="regForm" class="bg-white p-4" method="post" novalidate>
-                    {% csrf_token %}
-                    <input type="hidden" name="manufacturingNo" id="manufacturingNo" value="">
-                    <input type="hidden" name="myAction" id="myAction" value="insert">
-                    <div class="money-spinner mx-auto text-center" id="header-spinner" style="display:none">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                    </div>
-                    <div class="border border-success rounded p-3  my-3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-2">
-                                    <label class="form-label">Direct Personal Supervisor<span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="directPersonalSupervisor"
-                                        id="directPersonalSupervisor" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-2">
-                                    <label class="form-label">Supervisor Qualifications <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="supervisorQualifications"
-                                        id="supervisorQualifications" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-md-12">
-                                <div class="mb-2">
-                                    <input class="form-check-input" type="checkbox" value="True" name="iAgree"
-                                        id="iAgree" checked>
-                                    <label class="form-check-label text-primary">
-                                        I hereby apply for registration of
-                                        the product detailed above and
-                                        declare that all the information herein is correct
-                                        and true.
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn button-87 my-3 w-100">Submit</button>
-                </form>
                 <div class="card mt-2">
                     <div class="card-body">
+                        <div class="pagetitle my-3">
+                            <h1>Manufacturing License</h1>
+                        </div>
                         <h5 class="card-title">My Applications</h5>
+                        <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                            <div class="loader__bar"></div>
+                            <div class="loader__bar"></div>
+                            <div class="loader__bar"></div>
+                            <div class="loader__bar"></div>
+                            <div class="loader__bar"></div>
+                            <div class="loader__ball"></div>
+                        </div>
                         <!-- Bordered Tabs Justified -->
                         <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
                             <li class="nav-item flex-fill" role="presentation">
@@ -206,6 +166,45 @@
                         </div>
                     </div>
                 </div>
+                <form id="regForm" class="bg-white p-4" method="post" novalidate>
+                    {% csrf_token %}
+                    <h5 class="card-title"><i class="las la-plus"></i> New Application</h5>
+                    <input type="hidden" name="manufacturingNo" id="manufacturingNo" value="">
+                    <input type="hidden" name="myAction" id="myAction" value="insert">
+                    <div class="border border-success rounded p-3  my-3">
+                        <p class="text-small text-info">Direct Personal Supervisor Information</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label">Supervisor Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="directPersonalSupervisor"
+                                    id="directPersonalSupervisor" required>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                <label class="form-label">Supervisor Qualifications <span
+                                        class="text-danger">*</span></label>
+                                <textarea type="text" class="form-control" name="supervisorQualifications"
+                                    id="supervisorQualifications" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-12">
+                                <div class="mb-2">
+                                    <input class="form-check-input" type="checkbox" value="True" name="iAgree"
+                                        id="iAgree" checked>
+                                    <label class="form-check-label text-primary">
+                                        I hereby apply for registration of
+                                        the product detailed above and
+                                        declare that all the information herein is correct
+                                        and true.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn button-87 my-3 w-100">Submit</button>
+                </form>
             </div>
         </div>
     </section>
@@ -214,6 +213,8 @@
 {% include 'footer.html' %}
 <script>
     const $headerForm = $('#regForm');
+    const $spinner = $('#spinner');
+
     $(document).ready(function () {
         Header_Data();
 
@@ -242,7 +243,7 @@
                         var row = $('<tr>');
                         row.append($('<td>').text(ManufacturingNo));
                         row.append($('<td>').text(Currency + " " + AmountPayable));
-                        row.append($('<td>').text(Paid));
+                        row.append($('<td>').text(Paid ? "Yes" : "No"));
                         row.append($('<td>').text(Status));
 
                         // create a link button
@@ -330,7 +331,9 @@
                 return false;
             }
 
-            $('#header-spinner').show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $headerForm.hide();
             $.ajax({
                 type: 'POST',
                 url: '/ManufacturingLicense/',
@@ -343,7 +346,6 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $('#header-spinner').hide();
                     Header_Data();
                     if (response['response']) {
                         window.location.href = "/ManufacturingLicense/" + response[
@@ -371,12 +373,17 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
+                        $headerForm.show();
+                        document.getElementById('main').classList.remove('loads');
                     }
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $('#header-spinner').hide();
                     $headerForm.show();
+                    $spinner.hide();
+                    document.getElementById('main').classList.remove('loads');
 
                 }
             });
