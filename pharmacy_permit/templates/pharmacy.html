@@ -10,170 +10,170 @@
 <!-- End Sidebar -->
 <main id="main" class="main">
     <section class="section contact">
-        <div class="card mt-2">
-            <div class="card-body">
-                <div class="pagetitle my-3">
-                    <h1>Premise Permit For Veterinary Pharmacy</h1>
-                </div>
-                <h5 class="card-title">My Applications</h5>
-                <div class="loader mx-auto text-center" id="spinner" style="display: none;">
-                    <div class="loader__bar"></div>
-                    <div class="loader__bar"></div>
-                    <div class="loader__bar"></div>
-                    <div class="loader__bar"></div>
-                    <div class="loader__bar"></div>
-                    <div class="loader__ball"></div>
-                </div>
-                <!-- Bordered Tabs Justified -->
-                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
-                            data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home"
-                            aria-selected="true">New
-                            (<span class="open_count">
-                                {{0}}
-                            </span>)
-                        </button>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
-                            data-bs-target="#bordered-justified-profile" type="button" role="tab"
-                            aria-controls="profile" aria-selected="false"> Pending Approval
-                            (<span class="pending_count">
-                                {{0}}
-                            </span>)
-                        </button>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
-                            data-bs-target="#bordered-justified-contact" type="button" role="tab"
-                            aria-controls="contact" aria-selected="false">Approved
-                            (<span class="approved_count">
-                                {{0}}
-                            </span>)
-                        </button>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
-                            data-bs-target="#bordered-justified-pending" type="button" role="tab"
-                            aria-controls="contact" aria-selected="false">Rejected
-                            (<span class="rejected_count">
-                                {{0}}
-                            </span>)
-                        </button>
-                    </li>
-                </ul>
-                <div class="tab-content pt-2" id="borderedTabJustifiedContent">
-                    <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
-                        aria-labelledby="home-tab">
-                        <table id="open_table"
-                            class="table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
-                            <thead>
-                                <tr>
-                                    <th>Premise No</th>
-                                    <th>Premise Name</th>
-                                    <th>Amount Payable</th>
-                                    <th>Paid</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
-                        aria-labelledby="profile-tab">
-                        <table id="pending_table"
-                            class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
-                            <thead>
-                                <tr>
-                                    <th>Premise No</th>
-                                    <th>Premise Name</th>
-                                    <th>Amount Payable</th>
-                                    <th>Paid</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
-                        aria-labelledby="contact-tab">
-                        <table id="approved_table"
-                            class="table table-striped w-100 dt-responsive table-responsive-lg table-bordered datatable w-100">
-                            <thead>
-                                <tr>
-                                    <th>Premise No</th>
-                                    <th>Premise Name</th>
-                                    <th>Amount Payable</th>
-                                    <th>Paid</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
-                        aria-labelledby="contact-tab">
-                        <table id="rejected_table"
-                            class="table table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable w-100">
-                            <thead>
-                                <tr>
-                                    <th>Premise No</th>
-                                    <th>Premise Name</th>
-                                    <th>Amount Payable</th>
-                                    <th>Paid</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-md-12">
                 {% include 'alert.html' %}
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <div class="pagetitle my-3">
+                            <h1>Premise Permit For Veterinary Pharmacy</h1>
+                        </div>
+                        <h5 class="card-title">My Applications</h5>
+                        <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                            <div class="loader__bar"></div>
+                            <div class="loader__bar"></div>
+                            <div class="loader__bar"></div>
+                            <div class="loader__bar"></div>
+                            <div class="loader__bar"></div>
+                            <div class="loader__ball"></div>
+                        </div>
+                        <!-- Bordered Tabs Justified -->
+                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-home" type="button" role="tab"
+                                    aria-controls="home" aria-selected="true">New
+                                    (<span class="open_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-profile" type="button" role="tab"
+                                    aria-controls="profile" aria-selected="false"> Pending Approval
+                                    (<span class="pending_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-contact" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Approved
+                                    (<span class="approved_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
+                            </li>
+                            <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="pending-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bordered-justified-pending" type="button" role="tab"
+                                    aria-controls="contact" aria-selected="false">Rejected
+                                    (<span class="rejected_count">
+                                        {{0}}
+                                    </span>)
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                            <div class="tab-pane fade show active my-4" id="bordered-justified-home" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <table id="open_table"
+                                    class="table table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Premise No</th>
+                                            <th>Premise Name</th>
+                                            <th>Amount Payable</th>
+                                            <th>Paid</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-profile" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <table id="pending_table"
+                                    class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Premise No</th>
+                                            <th>Premise Name</th>
+                                            <th>Amount Payable</th>
+                                            <th>Paid</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-contact" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table id="approved_table"
+                                    class="table table-striped w-100 dt-responsive table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Premise No</th>
+                                            <th>Premise Name</th>
+                                            <th>Amount Payable</th>
+                                            <th>Paid</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade my-4" id="bordered-justified-pending" role="tabpanel"
+                                aria-labelledby="contact-tab">
+                                <table id="rejected_table"
+                                    class="table table-striped dt-responsive w-100 table-responsive-lg table-bordered datatable w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Premise No</th>
+                                            <th>Premise Name</th>
+                                            <th>Amount Payable</th>
+                                            <th>Paid</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <form id="regForm" class="bg-white p-4" method="post">
                     {% csrf_token %}
                     <h5 class="card-title">New Application</h5>

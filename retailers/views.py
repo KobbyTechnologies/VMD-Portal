@@ -34,13 +34,22 @@ class RetailersPermit(UserObjectMixins, View):
                 task_get_countries = asyncio.ensure_future(
                     self.simple_fetch_data(session, "/QYCountries")
                 )
+                task_get_inspection = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session, "/QyWholesaleInspection", "UserCode", "eq", userID
+                    )
+                )
 
-                response = await asyncio.gather(task_get_permits, task_get_countries)
+                response = await asyncio.gather(
+                    task_get_permits, task_get_countries, task_get_inspection
+                )
 
                 permits = [x for x in response[0]]
                 Approved = [x for x in response[0] if x["Status"] == "Approved"]
-
                 resCountry = [x for x in response[1]]
+                Approved_Inspection = [
+                    x for x in response[2] if x["Status"] == "Approved"
+                ]
 
         except Exception as e:
             messages.info(request, f"{e}")
@@ -54,46 +63,43 @@ class RetailersPermit(UserObjectMixins, View):
             "country": resCountry,
             "LTR_Name": LTR_Name,
             "LTR_Email": LTR_Email,
+            "Approved_Inspection": Approved_Inspection,
         }
         return render(request, "retailer.html", ctx)
 
     async def post(self, request):
         try:
             retailDealersNo = request.POST.get("retailDealersNo")
-            professionalRegNo = request.POST.get("professionalRegNo")
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
-            iDorPassportOrAlienIDNo = request.POST.get("iDorPassportOrAlienIDNo")
-            nationality = request.POST.get("nationality")
             premiseName = request.POST.get("premiseName")
-            qualification = request.POST.get("qualification")
-            periodOfExperience = request.POST.get("periodOfExperience")
-            # premiseLocation = request.POST.get("premiseLocation")
             town = request.POST.get("town")
             road = request.POST.get("road")
             building = request.POST.get("building")
             applicantName = request.POST.get("applicantName")
             iAgree = eval(request.POST.get("iAgree"))
             myAction = request.POST.get("myAction")
+            firstTimeApplication = int(request.POST.get("firstTimeApplication"))
+            inspectionNo = request.POST.get("inspectionNo")
+
             if not iAgree:
                 iAgree = False
+            if not inspectionNo:
+                inspectionNo = "None"
 
             response = self.make_soap_request(
                 "FnRetailDealersPremisePermit",
                 retailDealersNo,
-                professionalRegNo,
                 userCode,
-                iDorPassportOrAlienIDNo,
-                nationality,
                 premiseName,
-                qualification,
-                periodOfExperience,
                 building,
                 town,
                 road,
                 building,
                 applicantName,
+                firstTimeApplication,
                 iAgree,
                 myAction,
+                inspectionNo,
             )
 
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -164,8 +170,10 @@ class RetailerPermitDetails(UserObjectMixins, View):
             userCode = await sync_to_async(request.session.__getitem__)("UserID")
             pro_name = request.POST.get("pro_name")
             position_in_business = request.POST.get("position_in_business")
-            reg_no = request.POST.get("reg_no")
             qualificationAndExperience = request.POST.get("qualificationAndExperience")
+            iDorPassportOrAlienIDNo = request.POST.get("iDorPassportOrAlienIDNo")
+            nationality = request.POST.get("nationality")
+            professionalRegNo = request.POST.get("professionalRegNo")
 
             response = self.make_soap_request(
                 "FnRetailDealersLine",
@@ -174,7 +182,9 @@ class RetailerPermitDetails(UserObjectMixins, View):
                 lineNo,
                 pro_name,
                 position_in_business,
-                reg_no,
+                iDorPassportOrAlienIDNo,
+                nationality,
+                professionalRegNo,
                 qualificationAndExperience,
                 userCode,
             )

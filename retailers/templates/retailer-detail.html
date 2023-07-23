@@ -24,66 +24,31 @@
 <main id="main" class="main">
     <div class="pagetitle">
         <div class="row">
-            <div class="col-md-12">
-                <h1>Retailer Dealer Premises Permit</h1>
+            <div class="col-md-8">
+                <h1 class="my-2">Retailer Dealer Premises Permit</h1>
             </div>
-        </div>
-    </div><!-- End Page Title -->
-    <section class="section contact">
-        <div class="row">
-            <div class="col-md-12">
-                <div
-                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-                    <div class="step completed">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-check"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Application Form</h4>
-                    </div>
-                    <div class="step step2Icon">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-user-tie"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Professionals Form</h4>
-                    </div>
-                    <div class="step step3Icon">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-upload"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Attachments</h4>
-                    </div>
-                    <div class="step step4con">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-coins"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Payment</h4>
-                    </div>
-                    <div class="step step5con">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon">
-                                <i class="las la-check-double"></i>
-                            </div>
-                        </div>
-                        <h4 class="step-title">Submit</h4>
-                    </div>
+            <div class="col-md-4 text-right">
+                <label class="my-2">Document Status: <span
+                        class="document_status text-small text-primary"></span></label>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="20"
+                        aria-valuemax="100"><span class="doc_status">20%</span></div>
                 </div>
             </div>
         </div>
+    </div>
+    <section class="section contact">
         <div class="row">
             <div class="col-md-12">
+                <div class="loader mx-auto text-center" id="spinner" style="display: none;">
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__bar"></div>
+                    <div class="loader__ball"></div>
+                </div>
                 <div id="stepTwo" class="bg-white p-4" style="display: none">
-                    <div class="money-spinner mx-auto text-center" id="spinner" style="display:none">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                    </div>
                     <div class="premise_data" id="premise_data">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="card-title">
@@ -94,35 +59,74 @@
                                         class="las la-angle-double-right"></i></button>
                             </div>
                         </div>
-                        {% if permit.Status == 'Open' %}
+                        <table id="ProfessionalsTable"
+                            class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Pro Reg No.</th>
+                                    <th scope="col">Nationality</th>
+                                    <th scope="col">ID/Passport/Alien ID No.</th>
+                                    <th scope="col">Position</th>
+                                    <th scope="col">Qualification</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <form method="POST" id="ProfessionalsForm">
                             {% csrf_token %}
+                            <p class="text-small text-info"><i class="las la-plus"></i> Add Professional</p>
                             <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
                             <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="pro_name" id="pro_name" required>
-                                    </div>
+                            <div class="row gx-2">
+                                <div class="col-md-8">
+                                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="pro_name" id="pro_name" required>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Position in the Business<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="position_in_business"
-                                            id="position_in_business" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-label">Reg/Enrollment No.<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reg_no" id="reg_no" required>
-                                    </div>
+                                    <label class="form-label">Professional Reg No. </label>
+                                    <input type="text" class="form-control" name="professionalRegNo"
+                                        id="professionalRegNo" required>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3 gx-2">
+                                <div class="col-md-4">
+                                    <label class="form-label">Nationality <span class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Default select example" name="nationality"
+                                        id="nationality">
+                                        <option selected disabled value="0">Choose...</option>
+                                        {% for res in country %}
+                                        <option value="{{res.Code}}">{{res.Name}}</option>
+                                        {% empty %}
+                                        <option value="KE">KENYA</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">ID/Passport/Alien ID No <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="iDorPassportOrAlienIDNo"
+                                        id="iDorPassportOrAlienIDNo">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Position in the Business<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="position_in_business"
+                                        id="position_in_business" required>
+                                </div>
+                            </div>
+                            <div class="row my-3">
                                 <div class="col-md-12">
                                     <div class="mb-2">
                                         <label class="form-label">Qualification And Experience <span
@@ -134,30 +138,6 @@
                             </div>
                             <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
                         </form>
-                        {% endif %}
-                        <table id="ProfessionalsTable"
-                            class="table w-100 table-striped dt-responsive table-responsive-lg table-bordered datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Position in the Business</th>
-                                    <th scope="col">Reg/Enrollment No.</th>
-                                    <th scope="col">Qualification And Experience </th>
-                                    {% if permit.Status == 'Open' %}
-                                    <th scope="col">Action</th>
-                                    {% endif %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
                 <div class="stepThree" id="stepThree" style="display: none">
@@ -174,10 +154,6 @@
                                     <button class="btn btn-primary" id="AttachmentsNext">Next Step <i
                                             class="las la-angle-double-right"></i></button>
                                 </div>
-                            </div>
-                            <div class="money-spinner mx-auto text-center" id="attachment_spinner" style="display:none">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                    alt="Loading Gif" style="height: 100px;" class="img-fluid">
                             </div>
                             {% if permit.Status == 'Open' %}
                             <form method="POST" id="attachmentForm">
@@ -210,10 +186,6 @@
                     <div class="row m-0">
                         <div class="col-md-12 bg-white my-2">
                             <div class="d-flex justify-content-end align-items-center my-3">
-                                <div class="money-spinner" id="submit_spinner" style="display:none">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                        alt="Loading Gif" style="height: 70px;" class="img-fluid">
-                                </div>
                                 <div id="payment_btn">
                                     <button class="btn btn-secondary" id="paymentPrev"><i
                                             class="las la-angle-double-left"></i> Prev
@@ -243,12 +215,6 @@
                                     </div>
                                     {% if permit.Status == 'Approved' %}
                                     <div class="row box-right my-3" id="cert_card" style="display:none">
-                                        <div class="money-spinner text-center" id="download_spinner"
-                                            style="display:none">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                                alt="Loading Gif" style="height: 70px;" class="img-fluid">
-                                        </div>
-
                                         <div class="col-md-12 text-center cert_div">
                                             <img src="../../static/img/certificate.png" class="img-fluid cert_img"
                                                 alt="">
@@ -312,11 +278,6 @@
                                         will be processed
                                         immediately.
                                     </p>
-                                    <div class="money-spinner mx-auto text-center" id="invoice_spinner"
-                                        style="display:none">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-                                            alt="Loading Gif" style="height: 100px;" class="img-fluid">
-                                    </div>
                                     <form id="FNGenerateInvoice" method="post">
                                         {% csrf_token %}
                                         <button type='submit' class="button-87 w-100 my-3">Preview Invoice</button>
@@ -401,66 +362,52 @@
                                                         value="{{permit.AmountPayable}}" disabled>
                                                 </div>
                                             </div>
+                                            <div class="row my-3">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">First Time Application <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        name="firstTimeApplication" id="firstTimeApplication" disabled>
+                                                        <option value="0">--select--</option>
+                                                        <option value="1">Yes</option>
+                                                        <option value="2">True</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Previous Inspection </label>
+                                                    <select class="form-select" aria-label="Default select example"
+                                                        name="inspectionNo" id="inspectionNo" disabled>
+                                                        <option value="0">--select--</option>
+                                                        {% for inspection in Approved_Inspection %}
+                                                        <option value="{{inspection.PremiseInpectionNo}}">
+                                                            {{inspection.PremiseInpectionNo}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                {% if permit.FirstTimeApplication == "No" %}
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Last Paid Date</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{permit.Last_Paid_Date}}" disabled>
+                                                </div>
+                                                {% else %}
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Invoiced</label>
+                                                    <input type="text" class="form-control" value="{{permit.Invoiced}}"
+                                                        disabled>
+                                                </div>
+                                                {% endif %}
+                                            </div>
 
                                         </div>
                                     </div>
-                                    <div class="border border-success rounded p-3  my-3">
-                                        <div class="row my-3">
-                                            <div class="col-md-4">
-                                                <label class="form-label">Professional Registration No</label>
-                                                <input type="text" class="form-control" name="professionalRegNo"
-                                                    id="professionalRegNo" value="{{permit.ProfessionalRegNo}}"
-                                                    disabled>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">Nationality</label>
-                                                <select class="form-select" aria-label="Default select example"
-                                                    name="nationality" id="nationality" disabled>
-                                                    <option selected disabled value="0">Choose...</option>
-                                                    {% for res in country %}
-                                                    <option value="{{res.Code}}">{{res.Name}}</option>
-                                                    {% empty %}
-                                                    <option value="KE">KENYA</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">ID/Passport/Alien ID No</label>
-                                                <input type="text" class="form-control" name="iDorPassportOrAlienIDNo"
-                                                    id="iDorPassportOrAlienIDNo"
-                                                    value="{{permit.IDOrPassportOrAlienIDNo}}" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="border border-success rounded p-3 my-3">
-                                        <div class="row my-2">
-                                            <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-4">
                                                 <label class="form-label">Premise Name</label>
                                                 <input type="text" class="form-control" name="premiseName"
                                                     id="premiseName" value="{{permit.PremiseName}}" disabled>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Period of Experience Working in A Veterinary
-                                                    Pharmacy</label>
-                                                <input type="text" class="form-control" name="periodOfExperience"
-                                                    id="periodOfExperience" value="{{permit.Experience}}" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="mb-2">
-                                                    <label class="form-label">Qualification<span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" name="qualification"
-                                                        id="qualification" value="{{permit.Qualification}}" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="border border-success rounded p-3 my-3">
-                                        <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label">Town <span
                                                         class="text-danger">*</span></label>
@@ -473,17 +420,24 @@
                                                 <input type="text" class="form-control" name="road" id="road"
                                                     value="{{permit.Road}}" disabled>
                                             </div>
+                                        </div>
+                                        <div class="row mt-2">
                                             <div class="col-md-4">
                                                 <label class="form-label">Building <span
                                                         class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="building" id="building"
                                                     value="{{permit.Building}}" disabled>
                                             </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Plot No</label>
+                                                <input type="text" class="form-control" name="plotNo" id="plotNo"
+                                                    value="{{permit.Plot_No}}" disabled>
+                                            </div>
+
                                         </div>
-                                    </div>
-                                    {% if permit.Status == 'Open' %}
-                                    <button type="submit" class="btn button-87 my-3 w-100">Edit Form</button>
-                                    {% endif %}
+                                        {% if permit.Status == 'Open' %}
+                                        <button type="submit" class="btn button-87 my-3 w-100">Edit Form</button>
+                                        {% endif %}
                                 </form>
                             </div>
                         </div>
@@ -492,7 +446,53 @@
                 {% include 'alert.html' %}
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-md-12">
+                <div
+                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                    <div class="step completed">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Application Form</h4>
+                    </div>
+                    <div class="step step2Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-user-tie"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Professionals Form</h4>
+                    </div>
+                    <div class="step step3Icon">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-upload"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Attachments</h4>
+                    </div>
+                    <div class="step step4con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-coins"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Payment</h4>
+                    </div>
+                    <div class="step step5con">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon">
+                                <i class="las la-check-double"></i>
+                            </div>
+                        </div>
+                        <h4 class="step-title">Submit</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </main>
 {% include 'footer.html' %}
@@ -515,7 +515,6 @@
 
         const $stepThree = $('#stepThree');
         const $FNGenerateInvoice = $('#FNGenerateInvoice');
-        const $invoice_spinner = $('#invoice_spinner');
         const $attachmentForm = $('#attachmentForm');
         const $AttachmentsPrev = $('#AttachmentsPrev');
         const $AttachmentsNext = $('#AttachmentsNext');
@@ -524,20 +523,101 @@
         const $payment_submit_form = $('#payment_submit_form');
         const $step4con = $('.step4con');
         const $step5con = $('.step5con');
-        const $submit_spinner = $('#submit_spinner');
         const $payment_state = $('#payment_state');
         const $PremiseCertForm = $('#PremiseCertForm');
+        var progressBar = $(".progress-bar");
+
+        function animateProgressBar(percentage) {
+            var progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = percentage + '%';
+
+            var progressValue = document.querySelector('.doc_status');
+            progressValue.textContent = percentage + '%'; // Update the progress value
+        }
 
         Amount_Payable = parseInt(AmountPayable)
 
-        if (Amount_Payable > 0) {
-            $stepTwo.show();
+        filter_list(document_header);
+
+        function filter_list(pk) {
+            var query = '/QyRetailDealersPremisePermit'
+            var filter_one = 'RetailDealersNo'
+            var filter_two = 'UserCode'
+
+
+            $.ajax({
+                url: "/filter_list/" + pk,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    query: query,
+                    filter_one: filter_one,
+                    filter_two: filter_two,
+                },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        $('.document_status').empty().append(data['data']['Status']);
+
+                        if (data['data']['Paid'] === true) {
+                            $('#payment_submit_form').css('display', 'inline-block');
+                            $step4con.addClass('completed');
+                            $payment_state.empty().append("Paid");
+                            $(".pesa_paid").addClass('text-success');
+                        }
+                        if (data['data']['Paid'] === true && data['data']['Status'] === 'Open') {
+                            progressBar.css("width", "80%");
+                            animateProgressBar(80);
+
+                        }
+
+                        if (data['data']['Status'] === 'Open') {
+                            $(".confirm_div").show();
+                            $stepTwo.show();
+                            progressBar.addClass("bg-warning");
+                            progressBar.css("width", "20%");
+                            animateProgressBar(20);
+                        } else if (data['data']['Status'] === 'Processing') {
+                            $("#loading_div").show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "80%");
+                            progressBar.addClass("bg-primary");
+                            animateProgressBar(80);
+                        } else if (data['data']['Status'] === 'Approved') {
+                            $('#cert_card').show();
+                            $('#payment_submit_form').css('display', 'none');
+                            $step5con.addClass('completed');
+                            $ProfessionalsForm.hide();
+                            $attachmentForm.hide();
+                            $(".confirm_div").hide();
+                            $stepTwo.hide();
+                            $stepThree.hide();
+                            $stepFour.show();
+                            progressBar.css("width", "100%");
+                            progressBar.addClass("bg-success");
+                            animateProgressBar(100);
+                        }
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+
         }
 
         $ProfessionalsNext.click(function () {
             if (Invoiced === 'False' && Paid === 'False') {
-                $('#premise_data').hide();
-                $spinner.show();
+                $spinner.show(400);
+                document.getElementById('main').classList.add('loads');
+                $ProfessionalsForm.hide();
                 $.ajax({
                     type: 'POST',
                     url: '/RetailCustomer/',
@@ -568,12 +648,17 @@
                                 position: 'topRight',
                                 progressBarColor: '#ff0800',
                             });
-                            $("#premise_data").show();
-                            $spinner.hide();
+                            $ProfessionalsForm.show();
+
                         }
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
                     },
                     error: function (error) {
                         console.log(error)
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
+                        $ProfessionalsForm.show();
 
                     }
                 });
@@ -588,20 +673,16 @@
             $stepThree.show();
         })
 
-        $('#nationality option[value="' + Nationality + '"]').prop('selected', true);
-
 
         if (documentStatus === 'Open') {
-            $('#professionalRegNo').prop('disabled', false);
-            $('#nationality').prop('disabled', false);
-            $('#iDorPassportOrAlienIDNo').prop('disabled', false);
             $('#premiseName').prop('disabled', false);
-            $('#periodOfExperience').prop('disabled', false);
-            $('#qualification').prop('disabled', false);
             $('#town').prop('disabled', false);
             $('#road').prop('disabled', false);
             $('#building').prop('disabled', false);
+            $('#firstTimeApplication').prop('disabled', false);
+            $('#plotNo').prop('disabled', false);
             $('#applicantName').prop('disabled', false);
+            $('#inspectionNo').prop('disabled', false);
         }
 
         $AttachmentsPrev.click(function () {
@@ -619,13 +700,15 @@
         $ProfessionalsForm.on('submit', (e) => {
             e.preventDefault();
             if ($('#pro_name').val() === '' || $('#position_in_business')
-                .val() === '' || $(
-                    '#reg_no')
-                .val() === '' || $('#qualificationAndExperience').val() === '') {
+                .val() === '' || $('#qualificationAndExperience').val() === '' || $('#nationality')
+                .val() === '' || $('#iDorPassportOrAlienIDNo')
+                .val() === '') {
                 alert('Please fill in all required fields.');
                 return false;
             }
-            $('#spinner').show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $ProfessionalsForm.hide();
 
             $.ajax({
                 type: 'POST',
@@ -635,12 +718,13 @@
                     lineNo: $('#Professionals_lineNo').val(),
                     pro_name: $('#pro_name').val(),
                     position_in_business: $('#position_in_business').val(),
-                    reg_no: $('#reg_no').val(),
+                    nationality: $('#nationality').val(),
+                    iDorPassportOrAlienIDNo: $('#iDorPassportOrAlienIDNo').val(),
+                    professionalRegNo: $('#professionalRegNo').val(),
                     qualificationAndExperience: $('#qualificationAndExperience').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $('#spinner').hide();
                     if (response['response']) {
                         loadProfessionals(document_header);
                         iziToast.show({
@@ -652,7 +736,7 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $('#pro_name, #position_in_business, #reg_no')
+                        $('#pro_name, #position_in_business, #professionalRegNo, #nationality, #iDorPassportOrAlienIDNo')
                             .val(
                                 '');
                         $('#qualificationAndExperience').val('');
@@ -666,19 +750,197 @@
                             progressBarColor: '#ff0800',
                         });
                     }
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $('#spinner').hide();
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
 
                 }
             });
         });
 
+        function handleFormSubmission(form) {
+            event.preventDefault();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
+            $ProfessionalsForm.hide();
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function (response) {
+                    loadProfessionals(document_header);
+                    if (response['response']) {
+                        iziToast.show({
+                            theme: 'dark',
+                            backgroundColor: '#239B56',
+                            icon: 'las la-check-circle',
+                            message: "deleted",
+                            position: 'topRight',
+                            progressBarColor: '#F4F6F7',
+                        });
+                    } else {
+                        iziToast.show({
+                            theme: 'dark',
+                            icon: 'las la-exclamation',
+                            title: 'Error',
+                            message: response[
+                                'message'],
+                            position: 'topRight',
+                            progressBarColor: '#ff0800',
+                        });
+                    }
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                    $ProfessionalsForm.show();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
+                    iziToast.show({
+                        theme: 'dark',
+                        icon: 'las la-exclamation',
+                        title: 'Error',
+                        message: 'CSRF verification failed. Request aborted.',
+                        position: 'topRight',
+                        progressBarColor: '#ff0800',
+                    });
+                }
+            });
+        }
+
+        loadProfessionals(document_header);
+
+        function loadProfessionals(pk) {
+            $.ajax({
+                url: "/RetailProfessionals/" + pk + "/",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tableBody = $('#ProfessionalsTable tbody');
+                    tableBody.empty(); // clear existing rows if any
+                    // iterate through the data and append to the table
+                    for (var i = 0; i < data[1].length; i++) {
+                        if (data[1].length > 0) {
+                            $step2Icon.addClass('completed');
+                            $Professionals_btn.show();
+                        } else {
+                            $step2Icon.removeClass('completed');
+                            $Professionals_btn.hide();
+                        }
+                        var Name = data[1][i].Name;
+                        var Nationality = data[1][i].Nationality_Description;
+                        var IDOrPassportOrAlienIDNo = data[1][i].IDOrPassportOrAlien_ID_No;
+                        var PositionIntheBusiness = data[1][i].PositionIntheBusiness;
+                        var ProfessionalRegNo = data[1][i].Professional_Reg__No;
+                        var QualificationAndExperience = data[1][i].Qualification;
+                        let Line_No = data[1][i].PremiseLineNo;
+
+                        var row = $('<tr>');
+                        row.append($('<td>').text(Name));
+                        row.append($('<td>').text(ProfessionalRegNo));
+                        row.append($('<td>').text(Nationality));
+                        row.append($('<td>').text(IDOrPassportOrAlienIDNo));
+                        row.append($('<td>').text(PositionIntheBusiness));
+                        row.append($('<td>').text(QualificationAndExperience));
+                        if (documentStatus === 'Open') {
+                            var form = $('<form>').attr({
+                                method: 'POST',
+                                action: '/retailer/' + pk + '/',
+                            }).append('{% csrf_token %}');
+
+                            var pro_Name = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'pro_name',
+                                value: "0"
+                            });
+                            var pro_position_in_business = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'position_in_business',
+                                value: "0"
+                            });
+                            var pro_nationality = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'nationality',
+                                value: "KE"
+                            });
+                            var pro_iDorPassportOrAlienIDNo = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'iDorPassportOrAlienIDNo',
+                                value: "0"
+                            });
+                            var pro_professionalRegNo = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'professionalRegNo',
+                                value: "0"
+                            });
+                            var pro_qualificationAndExperience = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'qualificationAndExperience',
+                                value: "0"
+                            });
+
+                            var pro_lineNoInput = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'lineNo',
+                                value: Line_No
+                            });
+                            var pro_myActionInput = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'myAction',
+                                value: 'delete'
+                            });
+                            var pro_submitBtn = $('<button>').attr({
+                                type: 'submit',
+                                class: 'btn btn-danger'
+                            }).text('delete');
+
+                            // Handle form submission
+                            form.submit(function (event) {
+                                handleFormSubmission($(this));
+                            });
+
+                            var td = $('<td>').append(form.append(pro_Name,
+                                pro_position_in_business,
+                                pro_nationality,
+                                pro_iDorPassportOrAlienIDNo,
+                                pro_professionalRegNo,
+                                pro_qualificationAndExperience, pro_lineNoInput,
+                                pro_myActionInput, pro_submitBtn));
+                            row.append(td);
+                        }
+                        tableBody.append(row);
+                    }
+                    // initialize DataTables for each table
+                    if (!$.fn.DataTable.isDataTable('#ProfessionalsTable')) {
+                        $('#ProfessionalsTable').DataTable({
+                            "pageLength": 5,
+                            "order": [
+                                [0, "desc"]
+                            ]
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
+
+
         $attachmentForm.on("submit", (e) => {
             e.preventDefault();
-
-            $("#attachment_spinner").show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             var formData = new FormData($attachmentForm[0]);
 
             let attachments = $('#attachments')[0];
@@ -698,7 +960,6 @@
                 success: function (data) {
 
                     $('#attachments').val('');
-                    $("#attachment_spinner").hide();
                     if (data['success'] == true) {
                         iziToast.show({
                             theme: 'dark',
@@ -719,11 +980,15 @@
                             position: 'topRight',
                             progressBarColor: '#ff0800',
                         });
+                        document.getElementById('main').classList.remove('loads');
                     }
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log(xhr.responseText);
-                    $("#attachment_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main').classList.remove('loads');
                 }
             });
         });
@@ -777,7 +1042,8 @@
                             }));
                             deleteButton.on("click", function (event) {
                                 event.preventDefault();
-                                $("#attachment_spinner").show();
+                                $spinner.show(400);
+                                document.getElementById('main').classList.add('loads');
                                 $.ajax({
                                     type: 'POST',
                                     url: "/RemoveRetailAttachment/",
@@ -801,7 +1067,6 @@
                                                 position: 'topRight',
                                                 progressBarColor: '#F4F6F7',
                                             });
-                                            $("#attachment_spinner").hide();
                                             Load_Attachments(pk);
                                         } else {
                                             iziToast.show({
@@ -813,9 +1078,15 @@
                                                 progressBarColor: '#ff0800',
                                             });
                                         }
+                                        $spinner.hide(1000);
+                                        document.getElementById('main')
+                                            .classList.remove('loads');
                                     },
                                     error: function (error) {
                                         console.log(error)
+                                        $spinner.hide(1000);
+                                        document.getElementById('main')
+                                            .classList.remove('loads');
                                     }
                                 });
                             });
@@ -847,154 +1118,10 @@
         }
 
 
-        loadProfessionals(document_header);
-
-        function loadProfessionals(pk) {
-            $.ajax({
-                url: "/RetailProfessionals/" + pk + "/",
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    var tableBody = $('#ProfessionalsTable tbody');
-                    tableBody.empty(); // clear existing rows if any
-                    // iterate through the data and append to the table
-                    for (var i = 0; i < data[1].length; i++) {
-                        if (data[1].length > 0) {
-                            $step2Icon.addClass('completed');
-                            $Professionals_btn.show();
-                        } else {
-                            $step2Icon.removeClass('completed');
-                            $Professionals_btn.hide();
-                        }
-                        var Name = data[1][i].Name;
-                        var PositionIntheBusiness = data[1][i].PositionIntheBusiness;
-                        var RegistrationNo = data[1][i].RegistrationNo;
-                        var QualificationAndExperience = data[1][i].QualificationAndExperience;
-                        let Line_No = data[1][i].PremiseLineNo;
-
-                        var row = $('<tr>');
-                        row.append($('<td>').text(Name));
-                        row.append($('<td>').text(PositionIntheBusiness));
-                        row.append($('<td>').text(RegistrationNo));
-                        row.append($('<td>').text(QualificationAndExperience));
-                        if (documentStatus === 'Open') {
-                            var form = $('<form>').attr({
-                                method: 'POST',
-                                action: '/retailer/' + pk + '/',
-                            }).append('{% csrf_token %}');
-
-                            var pro_Name = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'pro_name',
-                                value: "0"
-                            });
-                            var pro_position_in_business = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'position_in_business',
-                                value: "0"
-                            });
-                            var pro_reg_no = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'reg_no',
-                                value: "0"
-                            });
-                            var pro_qualificationAndExperience = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'qualificationAndExperience',
-                                value: "0"
-                            });
-
-                            var pro_lineNoInput = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'lineNo',
-                                value: Line_No
-                            });
-                            var pro_myActionInput = $('<input>').attr({
-                                type: 'hidden',
-                                name: 'myAction',
-                                value: 'delete'
-                            });
-                            var pro_submitBtn = $('<button>').attr({
-                                type: 'submit',
-                                class: 'btn btn-danger'
-                            }).text('delete');
-
-                            // Handle form submission
-                            form.submit(function (event) {
-                                event.preventDefault();
-                                $spinner.show();
-                                $.ajax({
-                                    url: form.attr('action'),
-                                    type: form.attr('method'),
-                                    data: form.serialize(),
-                                    success: function (response) {
-                                        loadProfessionals(document_header);
-                                        $spinner.hide();
-                                        if (response['response']) {
-                                            iziToast.show({
-                                                theme: 'dark',
-                                                backgroundColor: '#239B56',
-                                                icon: 'las la-check-circle',
-                                                message: "deleted",
-                                                position: 'topRight',
-                                                progressBarColor: '#F4F6F7',
-                                            });
-                                        } else {
-                                            iziToast.show({
-                                                theme: 'dark',
-                                                icon: 'las la-exclamation',
-                                                title: 'Error',
-                                                message: response[
-                                                    'message'],
-                                                position: 'topRight',
-                                                progressBarColor: '#ff0800',
-                                            });
-                                        }
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.log("Error:", error);
-                                        $spinner.hide();
-                                        iziToast.show({
-                                            theme: 'dark',
-                                            icon: 'las la-exclamation',
-                                            title: 'Error',
-                                            message: 'CSRF verification failed. Request aborted.',
-                                            position: 'topRight',
-                                            progressBarColor: '#ff0800',
-                                        });
-                                    }
-                                });
-                            });
-
-                            var td = $('<td>').append(form.append(pro_Name,
-                                pro_position_in_business,
-                                pro_reg_no,
-                                pro_qualificationAndExperience, pro_lineNoInput,
-                                pro_myActionInput, pro_submitBtn));
-                            row.append(td);
-                        }
-                        tableBody.append(row);
-                    }
-                    // initialize DataTables for each table
-                    if (!$.fn.DataTable.isDataTable('#ProfessionalsTable')) {
-                        $('#ProfessionalsTable').DataTable({
-                            "pageLength": 5,
-                            "order": [
-                                [0, "desc"]
-                            ]
-                        });
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                },
-            });
-        }
-
-
         $FNGenerateInvoice.on('submit', (e) => {
             e.preventDefault();
-            $invoice_spinner.show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/RetailerInvoice/',
@@ -1006,7 +1133,6 @@
                     responseType: 'blob' // Set the response type to 'blob'
                 },
                 success: function (response) {
-                    $invoice_spinner.hide();
                     const blob = new Blob([response], {
                         type: 'application/pdf'
                     });
@@ -1026,10 +1152,15 @@
                         position: 'topRight',
                         progressBarColor: '#F4F6F7',
                     });
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error);
-                    $invoice_spinner.hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                     iziToast.show({
                         theme: 'dark',
                         backgroundColor: '#E74C3C',
@@ -1042,57 +1173,11 @@
                 }
             });
         });
-        filter_list(document_header);
 
-        function filter_list(pk) {
-            var query = '/QyRetailDealersPremisePermit'
-            var filter_one = 'RetailDealersNo'
-            var filter_two = 'UserCode'
-
-
-            $.ajax({
-                url: "/filter_list/" + pk,
-                type: "GET",
-                dataType: "json",
-                data: {
-                    query: query,
-                    filter_one: filter_one,
-                    filter_two: filter_two,
-                },
-                success: function (data) {
-                    if (data['success'] == true) {
-                        if (data['data']['Paid'] === true) {
-                            $('#payment_submit_form').css('display', 'inline-block');
-                            $step4con.addClass('completed');
-                            $payment_state.empty().append("Paid");
-                            $(".pesa_paid").addClass('text-success');
-                        }
-                        if (data['data']['Status'] != 'Open') {
-                            $step5con.addClass('completed');
-                            $('#payment_submit_form').css('display', 'none');
-                            $ProfessionalsForm.hide();
-                            $attachmentForm.hide();
-                            $("#confirm_div").hide();
-                            $stepTwo.hide();
-                            $stepThree.hide();
-                            $stepFour.show();
-                        }
-                        if (data['data']['Status'] === 'Approved') {
-                            $('#cert_card').show();
-                        }
-                    } else {
-
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                },
-            });
-
-        }
         $payment_submit_form.on('submit', (e) => {
             e.preventDefault();
-            $submit_spinner.show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
 
             $.ajax({
                 type: 'POST',
@@ -1101,7 +1186,6 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $submit_spinner.hide();
                     if (response['response']) {
                         filter_list(document_header);
                         iziToast.show({
@@ -1124,10 +1208,15 @@
                             progressBarColor: '#ff0800',
                         });
                     }
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error)
-                    $submit_spinner.hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
 
                 }
             });
@@ -1135,7 +1224,8 @@
 
         $PremiseCertForm.on('submit', (e) => {
             e.preventDefault();
-            $("#download_spinner").show();
+            $spinner.show(400);
+            document.getElementById('main').classList.add('loads');
             $.ajax({
                 type: 'POST',
                 url: '/retail/cert/' + document_header + '/',
@@ -1146,7 +1236,6 @@
                     responseType: 'blob'
                 },
                 success: function (response) {
-                    $("#download_spinner").hide();
                     const blob_cert = new Blob([response], {
                         type: 'application/pdf'
                     });
@@ -1166,10 +1255,15 @@
                         position: 'topRight',
                         progressBarColor: '#F4F6F7',
                     });
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                 },
                 error: function (error) {
                     console.log(error);
-                    $("#download_spinner").hide();
+                    $spinner.hide(1000);
+                    document.getElementById('main')
+                        .classList.remove('loads');
                     iziToast.show({
                         theme: 'dark',
                         backgroundColor: '#E74C3C',
