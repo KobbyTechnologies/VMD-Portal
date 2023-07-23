@@ -199,7 +199,7 @@
                                             <form id="PremiseCertForm" method="post">
                                                 {% csrf_token %}
                                                 <button type="submit" class="button-87">
-                                                    <i class="las la-download"></i> Download Wholesale Premise Permit
+                                                    <i class="las la-download"></i> Download Advertisement
                                                     Certificate
                                                 </button>
                                             </form>
@@ -500,6 +500,8 @@
                 success: function (data) {
                     if (data['success'] == true) {
                         $('.document_status').empty().append(data['data']['Status']);
+                        Invoiced = data['data']['Invoiced']
+                        Paid = data['data']['Paid']
 
                         if (data['data']['Paid'] === true) {
                             $('#payment_submit_form').css('display', 'inline-block');
@@ -582,6 +584,7 @@
                                 position: 'topRight',
                                 progressBarColor: '#F4F6F7',
                             });
+                            filter_list(document_header);
                             $stepTwo.hide();
                             $stepThree.show();
 

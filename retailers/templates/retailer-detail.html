@@ -25,7 +25,7 @@
     <div class="pagetitle">
         <div class="row">
             <div class="col-md-8">
-                <h1 class="my-2">Retailer Dealer Premises Permit</h1>
+                <h1 class="my-2">Retail Dealer Premise Permit</h1>
             </div>
             <div class="col-md-4 text-right">
                 <label class="my-2">Document Status: <span
@@ -221,7 +221,8 @@
                                             <form id="PremiseCertForm" method="post">
                                                 {% csrf_token %}
                                                 <button type="submit" class="button-87">
-                                                    <i class="las la-download"></i> Download Wholesale Premise Permit
+                                                    <i class="las la-download"></i> Download Retail Dealer Premise
+                                                    Permit
                                                     Certificate
                                                 </button>
                                             </form>
@@ -332,7 +333,7 @@
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                Retailer Dealers Premises Permit {{permit.RetailDealersNo}} Details
+                                Retail Dealers Premise Permit {{permit.RetailDealersNo}} Details
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
@@ -557,6 +558,8 @@
                 success: function (data) {
                     if (data['success'] == true) {
                         $('.document_status').empty().append(data['data']['Status']);
+                        Invoiced = data['data']['Invoiced']
+                        Paid = data['data']['Paid']
 
                         if (data['data']['Paid'] === true) {
                             $('#payment_submit_form').css('display', 'inline-block');
@@ -636,6 +639,7 @@
                                 position: 'topRight',
                                 progressBarColor: '#F4F6F7',
                             });
+                            filter_list(document_header);
                             $stepTwo.hide();
                             $stepThree.show();
                             $spinner.hide();

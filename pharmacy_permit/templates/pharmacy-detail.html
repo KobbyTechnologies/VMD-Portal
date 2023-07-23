@@ -84,7 +84,6 @@
                         </table>
                         <form method="POST" id="ProfessionalsForm">
                             {% csrf_token %}
-                            <p class="text-small text-info"><i class="las la-plus"></i> Add Professional</p>
                             <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
                             <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
                             <div class="row gx-2">
@@ -220,7 +219,8 @@
                                             <form id="PremiseCertForm" method="post">
                                                 {% csrf_token %}
                                                 <button type="submit" class="button-87">
-                                                    <i class="las la-download"></i> Download Wholesale Premise Permit
+                                                    <i class="las la-download"></i> Download Premise Permit For
+                                                    Veterinary Pharmacy
                                                     Certificate
                                                 </button>
                                             </form>
@@ -559,6 +559,8 @@
                 success: function (data) {
                     if (data['success'] == true) {
                         $('.document_status').empty().append(data['data']['Status']);
+                        Invoiced = data['data']['Invoiced']
+                        Paid = data['data']['Paid']
 
                         if (data['data']['Paid'] === true) {
                             $('#payment_submit_form').css('display', 'inline-block');
@@ -638,6 +640,7 @@
                                 position: 'topRight',
                                 progressBarColor: '#F4F6F7',
                             });
+                            filter_list(document_header);
                             $stepTwo.hide();
                             $stepThree.show();
                             $spinner.hide();
@@ -748,6 +751,7 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
+
                         $('#pro_name, #position_in_business, #professionalRegNo, #nationality, #iDorPassportOrAlienIDNo')
                             .val(
                                 '');

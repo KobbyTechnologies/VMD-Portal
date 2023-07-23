@@ -64,8 +64,7 @@
                                 <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label class="form-label">Product to Dispose<span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Product<span class="text-danger">*</span></label>
                                         <select class="form-select" aria-label="Default select example" name="product"
                                             id="product">
                                             <option selected disabled value="0">--Select product to dispose--</option>
@@ -85,8 +84,7 @@
                                 </div>
                                 <div class="row my-3">
                                     <div class="col-md-6">
-                                        <label class="form-label">Quantity to Dispose<span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Quantity<span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="quantity" id="quantity" required>
                                     </div>
                                     <div class="col-md-6">
@@ -215,8 +213,7 @@
                                             <form id="PremiseCertForm" method="post">
                                                 {% csrf_token %}
                                                 <button type="submit" class="button-87">
-                                                    <i class="las la-download"></i> Download Wholesale Premise Permit
-                                                    Certificate
+                                                    <i class="las la-download"></i> CERTIFICATE OF DESTRUCTION
                                                 </button>
                                             </form>
                                         </div>
@@ -326,7 +323,7 @@
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                Disposal Request {{permit.PremiseNo}} Details
+                                Disposal Request {{permit.DisposalNo}} Details
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
@@ -487,6 +484,8 @@
                 success: function (data) {
                     if (data['success'] == true) {
                         $('.document_status').empty().append(data['data']['Status']);
+                        Invoiced = data['data']['Invoiced']
+                        Paid = data['data']['Paid']
 
                         if (data['data']['Paid'] === true) {
                             $('#payment_submit_form').css('display', 'inline-block');
@@ -572,6 +571,7 @@
                                 position: 'topRight',
                                 progressBarColor: '#F4F6F7',
                             });
+                            filter_list(document_header);
                             $stepTwo.hide();
                             $stepThree.show();
                         } else if (response['error']) {
