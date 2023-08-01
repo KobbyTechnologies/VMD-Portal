@@ -457,8 +457,8 @@
         var documentStatus = '{{permit.Status}}';
         var AmountPayable = '{{permit.AmountPayable}}';
         var document_header = '{{permit.DisposalNo}}';
-        var Invoiced = '{{permit.Invoiced}}';
-        var Paid = '{{permit.Paid}}';
+        var Invoiced = false;
+        var Paid = false;
 
         console.log(document_header)
 
@@ -515,7 +515,6 @@
                         $('.document_status').empty().append(data['data']['Status']);
                         Invoiced = data['data']['Invoiced']
                         Paid = data['data']['Paid']
-
                         if (data['data']['Paid'] === true) {
                             $('#payment_submit_form').css('display', 'inline-block');
                             $step4con.addClass('completed');
@@ -573,9 +572,8 @@
             });
 
         }
-
         $ProfessionalsNext.click(function () {
-            if (Invoiced === 'False' && Paid === 'False') {
+            if (Invoiced === false && Paid === false) {
                 $spinner.show(400);
                 document.getElementById('main').classList.add('loads');
                 $ProfessionalsForm.hide();
@@ -587,9 +585,6 @@
                         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                     },
                     success: function (response) {
-                        $spinner.hide(1000);
-                        document.getElementById('main').classList.remove('loads');
-                        $ProfessionalsForm.show();
                         if (response['response']) {
                             iziToast.show({
                                 theme: 'dark',
@@ -600,7 +595,6 @@
                                 position: 'topRight',
                                 progressBarColor: '#F4F6F7',
                             });
-                            filter_list(document_header);
                             $stepTwo.hide();
                             $stepThree.show();
                         } else if (response['error']) {
@@ -612,14 +606,17 @@
                                 position: 'topRight',
                                 progressBarColor: '#ff0800',
                             });
+                            $ProfessionalsForm.show();
+
                         }
+                        $spinner.hide(1000);
+                        document.getElementById('main').classList.remove('loads');
                     },
                     error: function (error) {
                         console.log(error)
                         $spinner.hide(1000);
                         document.getElementById('main').classList.remove('loads');
                         $ProfessionalsForm.show();
-
                     }
                 });
             } else {
@@ -640,6 +637,7 @@
         }
 
         $AttachmentsPrev.click(function () {
+            filter_list(document_header);
             $stepTwo.show();
             $stepThree.hide();
         })
