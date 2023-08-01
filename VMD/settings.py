@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     "permit",
     "retailers",
     "advertisement",
-    "pharmacy_permit",
     "disposal",
     "manufacturing",
 ]
@@ -74,6 +73,14 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
+if config("MODE") == "prod":
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_HTTPONLY = True
+    CONTENT_SECURITY_POLICY = "default-src 'self'; script-src 'self'; style-src 'self';"
 
 ROOT_URLCONF = "VMD.urls"
 

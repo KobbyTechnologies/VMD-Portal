@@ -139,6 +139,23 @@ class DisposalDetails(UserObjectMixins, View):
             product = request.POST.get("product")
             quantity = request.POST.get("quantity")
             reasonForDestruction = int(request.POST.get("reasonForDestruction"))
+            Other_Reason = request.POST.get("Other_Reason")
+            product_disposal_status = eval(request.POST.get("product_disposal_status"))
+            Waste_Description = request.POST.get("Waste_Description")
+
+            if not product:
+                product = ""
+
+            if not batchNo:
+                batchNo = "None"
+
+            if not Other_Reason:
+                Other_Reason = "None"
+
+            if not Waste_Description:
+                Waste_Description = "None"
+                
+            print(Waste_Description)
 
             response = self.make_soap_request(
                 "FnDisposalRequestLines",
@@ -150,6 +167,9 @@ class DisposalDetails(UserObjectMixins, View):
                 myAction,
                 lineNo,
                 userCode,
+                Other_Reason,
+                Waste_Description,
+                product_disposal_status,
             )
             print(response)
             if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":

@@ -63,10 +63,28 @@
                                 <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
                                 <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
                                 <div class="row">
+                                    <div class="col-md-7">
+                                        <label class="form-label">Are you disposing of an already registered
+                                            product?<span class="text-danger">*</span></label>
+                                        <select class="form-select" aria-label="Default select example"
+                                            name="product_disposal_status" id="product_disposal_status">
+                                            <option selected disabled value="0">--Select--</option>
+                                            <option value="True">Yes</option>
+                                            <option value="False">No (Manufacturing Waste)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <label class="form-label">Quantity to Dispose/Destroy<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="quantity" id="quantity" required>
+                                    </div>
+                                </div>
+                                <div class="row my-3" id="product_row" style="display: none;">
                                     <div class="col-md-6">
-                                        <label class="form-label">Product<span class="text-danger">*</span></label>
+                                        <label class="form-label">Product</label>
                                         <select class="form-select" aria-label="Default select example" name="product"
-                                            id="product">
+                                            id="product" disabled>
                                             <option selected disabled value="0">--Select product to dispose--</option>
                                             {% for product in product %}
                                             <option value="{{product.ProductNo}}">{{product.Productname}}
@@ -78,16 +96,19 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Batch No.<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="batchNo" id="batchNo" required>
+                                        <label class="form-label">Batch No.</label>
+                                        <input type="text" class="form-control" name="batchNo" id="batchNo" disabled>
+                                    </div>
+                                </div>
+                                <div class="row my-3" id="waste_row" style="display: none;">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Waste Description</label>
+                                        <textarea class="form-control" name="Waste_Description" id="Waste_Description"
+                                            disabled></textarea>
                                     </div>
                                 </div>
                                 <div class="row my-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Quantity<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="quantity" id="quantity" required>
-                                    </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label class="form-label">Reason For Destruction Or Disposition <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-select" aria-label="Default select example"
@@ -99,9 +120,15 @@
                                             <option value="4">Counterfeit Or Substandard And Adulterated</option>
                                             <option value="5">Damaged</option>
                                             <option value="6">Prohibited</option>
-                                            <option value="7">Other</option>
                                             <option value="8">Out Of Specification</option>
+                                            <option value="7">Other</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="row my-3" id="Other_Reason_Row" style="display: none;">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Other Reason </label>
+                                        <input type="text" class="form-control" name="Other_Reason" id="Other_Reason">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn button-87 my-2 w-100">Submit</button>
@@ -114,11 +141,13 @@
                                         <th scope="col">Batch No</th>
                                         <th scope="col">Quantity </th>
                                         <th scope="col">Reason For Destruction</th>
+                                        <th scope="col">Waste Description</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -624,9 +653,8 @@
 
         $ProfessionalsForm.on('submit', (e) => {
             e.preventDefault();
-            if ($('#batchNo')
-                .val() === '' || $(
-                    '#product')
+            if ($(
+                    '#product_disposal_status')
                 .val() === '' || $('#reasonForDestruction').val() === '' || $('#quantity')
                 .val() === '') {
                 alert('Please fill in all required fields.');
@@ -642,9 +670,12 @@
                 data: {
                     myAction: $("#Professionals_my_action").val(),
                     lineNo: $('#Professionals_lineNo').val(),
+                    product_disposal_status: $('#product_disposal_status').val(),
                     batchNo: $('#batchNo').val(),
+                    Waste_Description: $('#Waste_Description').val(),
                     product: $('#product').val(),
                     quantity: $('#quantity').val(),
+                    Other_Reason: $('#Other_Reason').val(),
                     reasonForDestruction: $('#reasonForDestruction').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
@@ -663,7 +694,7 @@
                             position: 'topRight',
                             progressBarColor: '#F4F6F7',
                         });
-                        $('#batchNo, #product, #quantity')
+                        $('#product_disposal_status, #batchNo, #product, #Waste_Description, #Other_Reason, #quantity')
                             .val(
                                 '');
                         $('#reasonForDestruction').val('');
@@ -761,17 +792,38 @@
                             $step2Icon.removeClass('completed');
                             $Professionals_btn.hide();
                         }
+                        var Product_Disposal_Status = data[1][i].Product_Disposal_Status;
                         var BatchNo = data[1][i].BatchNo;
                         var product = data[1][i].Product_Name;
                         var Quantity = data[1][i].Quantity;
                         var ReasonForDestruction = data[1][i].Reasons_for_Destruction_Disposition;
                         let Line_No = data[1][i].DisposalRequestLineNo;
+                        var Other_Reason_For_Destruction = data[1][i].Other_Reason_For_Destruction;
+                        var Waste_Description = data[1][i].Waste_Description;
 
                         var row = $('<tr>');
-                        row.append($('<td>').text(product));
-                        row.append($('<td>').text(BatchNo));
+                        if (Product_Disposal_Status === false) {
+                            row.append($('<td>').text("Manufacturing waste Disposal"));
+                        } else {
+                            row.append($('<td>').text(product));
+                        }
+                        if (BatchNo === 'NONE' || BatchNo === '' || BatchNo === "None") {
+                            row.append($('<td>').text('-'));
+                        } else {
+                            row.append($('<td>').text(BatchNo));
+                        }
                         row.append($('<td>').text(Quantity));
-                        row.append($('<td>').text(ReasonForDestruction));
+                        if (ReasonForDestruction === 'Other') {
+                            row.append($('<td>').text(Other_Reason_For_Destruction));
+                        } else {
+                            row.append($('<td>').text(ReasonForDestruction));
+                        }
+                        if (Waste_Description === 'NONE' || Waste_Description === '' ||
+                            Waste_Description === "None") {
+                            row.append($('<td>').text('-'));
+                        } else {
+                            row.append($('<td>').text(Waste_Description));
+                        }
                         if (documentStatus === 'Open') {
                             var form = $('<form>').attr({
                                 method: 'POST',
@@ -799,6 +851,23 @@
                                 value: "0"
                             });
 
+                            var pro_Other_Reason = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'Other_Reason',
+                                value: "0"
+                            });
+
+                            var pro_Waste_Description = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'Waste_Description',
+                                value: "0"
+                            });
+                            var pro_product_disposal_status = $('<input>').attr({
+                                type: 'hidden',
+                                name: 'product_disposal_status',
+                                value: "False"
+                            });
+
                             var pro_lineNoInput = $('<input>').attr({
                                 type: 'hidden',
                                 name: 'lineNo',
@@ -824,7 +893,9 @@
                                 pro_product,
                                 pro_quantity,
                                 pro_reasonForDestruction, pro_myActionInput,
-                                pro_lineNoInput, pro_submitBtn));
+                                pro_lineNoInput, pro_Other_Reason, pro_Waste_Description,
+                                pro_product_disposal_status,
+                                pro_submitBtn));
                             row.append(td);
                         }
                         tableBody.append(row);
@@ -1174,6 +1245,31 @@
                     });
                 }
             });
+        });
+        $('#product_disposal_status').on('change', function () {
+            if (this.value === 'False') {
+                $('#product_row').hide(1000);
+                $('#waste_row').show(1000);
+                $('#product').prop('disabled', true);
+                $('#batchNo').prop('disabled', true);
+                $('#Waste_Description').prop('disabled', false);
+            } else if (this.value === 'True') {
+                $('#product').prop('disabled', false);
+                $('#batchNo').prop('disabled', false);
+                $('#Waste_Description').prop('disabled', true);
+                $('#product_row').show(1000);
+                $('#waste_row').hide(1000);
+            }
+        });
+
+        $('#reasonForDestruction').on('change', function () {
+            if (this.value === '7') {
+                $('#Other_Reason_Row').show(1000);
+                $('#Other_Reason').prop('disabled', false);
+            } else {
+                $('#Other_Reason').prop('disabled', true);
+                $('#Other_Reason_Row').hide(1000);
+            }
         });
 
     })
