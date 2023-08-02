@@ -180,6 +180,18 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="myAction" id="Professionals_my_action" value="insert">
                                     <input type="hidden" name="lineNo" id="Professionals_lineNo" value="">
+                                    <div class="row my-2">
+                                        <div class="col-md-12">
+                                            <div class="form-group" id="attachmentCodeRow">
+                                                <label class="form-label">Select Document to Upload<span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-select" aria-label="Default select example"
+                                                    name="attachmentCode" id="attachmentCode">
+                                                    <option class="after" value="" disabled>--Select--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="mb-2">
@@ -913,18 +925,58 @@
                 },
             });
         }
+        TechnicalRequirementsData(
+            document_header);
+
+        function TechnicalRequirementsData(pk) {
+            $("#attachmentForm select[name='attachmentCode']").find('.after').nextAll().remove();
+            $.ajax({
+                url: "/TechnicalRequirements/" + pk + "/",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data.length > 0) {
+                        let options = '';
+                        for (var i = 0; i < data.length; i++) {
+                            const formattedDescription = data[i].Description.replace(/ /g, '_');
+                            options += '<option value="' + formattedDescription + '">' + data[i]
+                                .Description + '</option>';
+                        }
+                        $("#attachmentForm select[name='attachmentCode']").find('.after').after(
+                            options);
+                    } else {
+                        const emptyOption =
+                            '<option disabled selected>You have nothing to attach</option>';
+                        $("#attachmentForm select[name='attachmentCode']").find('.after').after(
+                            emptyOption);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                },
+            });
+        }
+
 
         $attachmentForm.on("submit", (e) => {
             e.preventDefault();
-
+            if ($('#attachmentCode').val() === '') {
+                alert('Please fill in all required fields.');
+                return false;
+            }
             $spinner.show(400);
             document.getElementById('main').classList.add('loads');
             var formData = new FormData($attachmentForm[0]);
 
             let attachments = $('#attachments')[0];
+            var attachmentCode = $('#attachmentCode').val();
+
             for (let i = 0; i < attachments.files.length; i++) {
                 formData.append('attachment', attachments.files[i]);
             }
+
+            formData.append('attachmentCode', attachmentCode);
 
             $.ajax({
                 url: "/DisposalAttachments/" + document_header + "/",
@@ -950,6 +1002,7 @@
                             progressBarColor: '#F4F6F7',
                         });
                         Load_Attachments(document_header);
+                        TechnicalRequirementsData(document_header);
                     } else {
                         iziToast.show({
                             theme: 'dark',
@@ -1047,6 +1100,8 @@
                                                 progressBarColor: '#F4F6F7',
                                             });
                                             Load_Attachments(pk);
+                                            TechnicalRequirementsData(
+                                                document_header);
                                         } else {
                                             iziToast.show({
                                                 theme: 'dark',

@@ -1,5 +1,6 @@
 import base64
 import logging
+import os
 from django.shortcuts import render, redirect
 from django.conf import settings as config
 from django.contrib import messages
@@ -154,7 +155,7 @@ class DisposalDetails(UserObjectMixins, View):
 
             if not Waste_Description:
                 Waste_Description = "None"
-                
+
             print(Waste_Description)
 
             response = self.make_soap_request(
@@ -260,30 +261,26 @@ class DisposalAttachments(UserObjectMixins, View):
 
     async def post(self, request, pk):
         try:
-            attachments = request.FILES.getlist("attachment")
+            attachment = request.FILES.get("attachment")
             tableID = 50053
-            attachment_names = []
+            fileName = request.POST.get("attachmentCode")
             response = False
-            for file in attachments:
-                fileName = file.name
-                attachment_names.append(fileName)
-                attachment = base64.b64encode(file.read())
-                response = self.make_soap_request(
-                    "FnAttachementDisposalRequest",
-                    pk,
-                    fileName,
-                    attachment,
-                    tableID,
-                )
-            if response is not None:
-                if response == True:
-                    message = "Uploaded {} attachments successfully".format(
-                        len(attachments)
-                    )
-                    return JsonResponse({"success": True, "message": message})
-                error = "Upload failed: {}".format(response)
-                return JsonResponse({"success": False, "error": error})
-            error = "Upload failed: Response from server was None"
+
+            _, file_extension = os.path.splitext(attachment.name)
+            fileName_with_extension = f"{fileName}{file_extension}"
+            attachment_data = base64.b64encode(attachment.read())
+
+            response = self.make_soap_request(
+                "FnAttachementDisposalRequest",
+                pk,
+                fileName_with_extension,
+                attachment_data,
+                tableID,
+            )
+            if response == True:
+                message = "Attachment uploaded successfully"
+                return JsonResponse({"success": True, "message": message})
+            error = "Upload failed: {}".format(response)
             return JsonResponse({"success": False, "error": error})
         except Exception as e:
             error = "Upload failed: {}".format(e)
@@ -348,3 +345,38 @@ class DisposalCert(UserObjectMixins, View):
             messages.error(request, f"Failed, {e}")
             logging.exception(e)
             return redirect("DisposalDetails", pk=pk)
+
+
+class TechnicalRequirements(UserObjectMixins, View):
+    async def get(self, request, pk):
+        try:
+            required_files = []
+            attached = []
+            async with aiohttp.ClientSession() as session:
+                task = asyncio.ensure_future(
+                    self.simple_one_filtered_data(
+                        session,
+                        "/QyInspectorateRequiredDocument",
+                        "Class",
+                        "eq",
+                        "DISPOSAL",
+                    )
+                )
+                task2 = asyncio.ensure_future(
+                    self.simple_fetch_data(session, "/QYDocumentAttachments")
+                )
+                response = await asyncio.gather(task, task2)
+
+                required_files = [x for x in response[0]]
+                attached = [x for x in response[1] if x["No_"] == pk]
+
+                for d in required_files:
+                    d["Description"] = d["Description"].replace(" ", "_")
+                required_files = [
+                    d
+                    for d in required_files
+                    if not any(a["File_Name"] == d["Description"] for a in attached)
+                ]
+                return JsonResponse(required_files, safe=False)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, safe=False)

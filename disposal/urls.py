@@ -27,4 +27,9 @@ urlpatterns = [
         views.DisposalCert.as_view(),
         name="DisposalCert",
     ),
+    path(
+        "TechnicalRequirements/<str:pk>/",
+        views.TechnicalRequirements.as_view(),
+        name="TechnicalRequirements",
+    ),
 ]
