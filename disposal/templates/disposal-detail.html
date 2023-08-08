@@ -262,8 +262,7 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-12 px-0 mb-4">
-                                    {% if permit.Status == 'Open' %}
-                                    <div class="box-right confirm_div">
+                                    <div class="box-right confirm_div" style="display: none;">
                                         <div class="d-flex">
                                             <p class="fw-bold h7">Confirm Payment</p>
 
@@ -297,12 +296,11 @@
                                             </button>
                                         </form>
                                     </div>
-                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-12 ps-md-5 p-0 ">
-                            <div class="box-left">
+                            <div class="box-left" id="payment_box" style="display: none;">
                                 <div class="">
                                     <p class="h7 fw-bold mb-1">Make Payments</p>
                                     <p class="textmuted h8 mb-2">Choose from the payment options available to proceed.
@@ -350,6 +348,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="box-left" id="summary_box" style="display: none;">
+                                <p class="h7 fw-bold mb-3">Document Summary</p>
+                                <div class="form">
+                                    <p>Document ID: <span class="text-primary Document_ID"></span></p>
+                                    <p>Document Status: <span class="text-primary document_status"></span></p>
+                                    <p>Document Type: <span class="text-primary">Disposal Request</span></p>
+                                    <p>Amount Paid: <span class="text-primary Currency"></span> <span
+                                            class="text-primary AmountPayable"></span></p>
+                                    <p>Amount Inclusive of VAT: <span class="text-primary">01071203347300</span></p>
                                 </div>
                             </div>
                         </div>
@@ -493,6 +502,8 @@
         const $step5con = $('.step5con');
         const $payment_state = $('#payment_state');
         const $PremiseCertForm = $('#PremiseCertForm');
+        const $payment_box = $('#payment_box');
+        const $summary_box = $('#summary_box');
         var progressBar = $(".progress-bar");
 
         Amount_Payable = parseInt(AmountPayable)
@@ -525,6 +536,11 @@
                 success: function (data) {
                     if (data['success'] == true) {
                         $('.document_status').empty().append(data['data']['Status']);
+                        $('.Document_ID').empty().append(data['data']['DisposalNo']);
+                        $('.Currency').empty().append(data['data']['Currency']);
+                        $('.AmountPayable').empty().append(data['data']['AmountPayable']);
+
+
                         Invoiced = data['data']['Invoiced']
                         Paid = data['data']['Paid']
                         if (data['data']['Paid'] === true) {
@@ -536,12 +552,16 @@
 
                         if (data['data']['Status'] === 'Open') {
                             $(".confirm_div").show();
+                            $payment_box.show();
+                            $summary_box.hide();
                             $stepTwo.show();
 
                             if (data['data']['Paid'] === true) {
                                 progressBar.addClass("bg-info");
                                 progressBar.css("width", "60%");
                                 animateProgressBar(80);
+                                $payment_box.hide();
+                                $summary_box.show();
                             } else {
                                 progressBar.addClass("bg-warning");
                                 progressBar.css("width", "20%");
@@ -561,6 +581,8 @@
                             progressBar.css("width", "80%");
                             progressBar.addClass("bg-primary");
                             animateProgressBar(80);
+                            $payment_box.hide();
+                            $summary_box.show();
                         } else if (data['data']['Status'] === 'Approved') {
                             $('#cert_card').show();
                             $('#payment_submit_form').css('display', 'none');
@@ -574,6 +596,8 @@
                             progressBar.css("width", "100%");
                             progressBar.addClass("bg-success");
                             animateProgressBar(100);
+                            $payment_box.hide();
+                            $summary_box.show();
                         }
 
                     }
@@ -1169,10 +1193,14 @@
                         type: 'application/pdf'
                     });
                     const url = window.URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = 'Disposal_Invoice.pdf';
-                    link.click();
+
+                    // Open the PDF in a new tab
+                    const newTab = window.open();
+                    newTab.document.open();
+                    newTab.document.write('<iframe src="' + url +
+                        '" width="100%" height="100%"></iframe>');
+                    newTab.document.close();
+
                     window.URL.revokeObjectURL(url);
 
                     iziToast.show({
@@ -1180,7 +1208,7 @@
                         backgroundColor: '#239B56',
                         icon: 'las la-check-circle',
                         title: 'Success',
-                        message: 'Downloaded successfully',
+                        message: 'Opened successfully in a new tab',
                         position: 'topRight',
                         progressBarColor: '#F4F6F7',
                     });
@@ -1201,6 +1229,7 @@
                 }
             });
         });
+
 
         $payment_submit_form.on('submit', (e) => {
             e.preventDefault();
@@ -1267,10 +1296,14 @@
                         type: 'application/pdf'
                     });
                     const urls = window.URL.createObjectURL(blob_cert);
-                    const links = document.createElement('a');
-                    links.href = urls;
-                    links.download = 'Disposal_Certificate.pdf';
-                    links.click();
+
+                    // Open the PDF in a new tab
+                    const newTab = window.open();
+                    newTab.document.open();
+                    newTab.document.write('<iframe src="' + urls +
+                        '" width="100%" height="100%"></iframe>');
+                    newTab.document.close();
+
                     window.URL.revokeObjectURL(urls);
 
                     iziToast.show({
@@ -1278,7 +1311,7 @@
                         backgroundColor: '#239B56',
                         icon: 'las la-check-circle',
                         title: 'Success',
-                        message: 'Downloaded successfully',
+                        message: 'Opened successfully in a new tab',
                         position: 'topRight',
                         progressBarColor: '#F4F6F7',
                     });
@@ -1299,6 +1332,7 @@
                 }
             });
         });
+
         $('#product_disposal_status').on('change', function () {
             if (this.value === 'False') {
                 $('#product_row').hide(1000);
