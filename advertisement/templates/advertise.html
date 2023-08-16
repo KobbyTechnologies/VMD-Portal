@@ -24,23 +24,6 @@
                     <div class="loader__bar"></div>
                     <div class="loader__ball"></div>
                 </div>
-                <form id="regForm" class="bg-white p-4" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="advertisementNo" id="advertisementNo" value="">
-                    <input type="hidden" name="myAction" id="myAction" value="insert">
-                    <div class="border border-success rounded p-3  my-3">
-                        <p class="text-small text-info">Advertisement Information</p>
-                        <div class="row my-3">
-                            <div class="col-md-12">
-                                <label class="form-label">Form Of Advertisement <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="formOfAdvertisement"
-                                    id="formOfAdvertisement">
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn button-87 my-3 w-100">Submit</button>
-                </form>
                 <div class="card mt-2">
                     <div class="card-body">
                         <h5 class="card-title">My Applications</h5>
@@ -191,6 +174,24 @@
                         </div>
                     </div>
                 </div>
+                <form id="regForm" class="bg-white p-4" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="advertisementNo" id="advertisementNo" value="">
+                    <input type="hidden" name="myAction" id="myAction" value="insert">
+                    <div class="border border-success rounded p-3  my-3">
+                        <p class="text-small text-info">Advertisement Information</p>
+                        <div class="row my-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Form Of Advertisement <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="formOfAdvertisement"
+                                    id="formOfAdvertisement">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn button-87 my-3 w-100">Submit</button>
+                </form>
+
             </div>
         </div>
     </section>

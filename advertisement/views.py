@@ -1,5 +1,6 @@
 import base64
 import logging
+import os
 from django.shortcuts import render, redirect
 import requests
 import json
@@ -240,30 +241,26 @@ class AdvertAttachments(UserObjectMixins, View):
 
     async def post(self, request, pk):
         try:
-            attachments = request.FILES.getlist("attachment")
+            attachment = request.FILES.get("attachment")
             tableID = 50045
-            attachment_names = []
+            fileName = request.POST.get("attachmentCode")
             response = False
-            for file in attachments:
-                fileName = file.name
-                attachment_names.append(fileName)
-                attachment = base64.b64encode(file.read())
-                response = self.make_soap_request(
-                    "FnAttachementAdvartisement",
-                    pk,
-                    fileName,
-                    attachment,
-                    tableID,
-                )
-            if response is not None:
-                if response == True:
-                    message = "Uploaded {} attachments successfully".format(
-                        len(attachments)
-                    )
-                    return JsonResponse({"success": True, "message": message})
-                error = "Upload failed: {}".format(response)
-                return JsonResponse({"success": False, "error": error})
-            error = "Upload failed: Response from server was None"
+
+            _, file_extension = os.path.splitext(attachment.name)
+            fileName_with_extension = f"{fileName}{file_extension}"
+            attachment_data = base64.b64encode(attachment.read())
+
+            response = self.make_soap_request(
+                "FnAttachementAdvartisement",
+                pk,
+                fileName_with_extension,
+                attachment_data,
+                tableID,
+            )
+            if response == True:
+                message = "Attachment uploaded successfully"
+                return JsonResponse({"success": True, "message": message})
+            error = "Upload failed: {}".format(response)
             return JsonResponse({"success": False, "error": error})
         except Exception as e:
             error = "Upload failed: {}".format(e)

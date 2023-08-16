@@ -352,6 +352,7 @@ class TechnicalRequirements(UserObjectMixins, View):
         try:
             required_files = []
             attached = []
+            filter = request.GET.get("filter")
             async with aiohttp.ClientSession() as session:
                 task = asyncio.ensure_future(
                     self.simple_one_filtered_data(
@@ -359,7 +360,7 @@ class TechnicalRequirements(UserObjectMixins, View):
                         "/QyInspectorateRequiredDocument",
                         "Class",
                         "eq",
-                        "DISPOSAL",
+                        filter,
                     )
                 )
                 task2 = asyncio.ensure_future(

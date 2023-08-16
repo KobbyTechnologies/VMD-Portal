@@ -358,7 +358,6 @@
                                     <p>Document Type: <span class="text-primary">Disposal Request</span></p>
                                     <p>Amount Paid: <span class="text-primary Currency"></span> <span
                                             class="text-primary AmountPayable"></span></p>
-                                    <p>Amount Inclusive of VAT: <span class="text-primary">01071203347300</span></p>
                                 </div>
                             </div>
                         </div>
@@ -958,6 +957,9 @@
                 url: "/TechnicalRequirements/" + pk + "/",
                 type: "GET",
                 dataType: "json",
+                data: {
+                    filter: "DISPOSAL"
+                },
                 success: function (data) {
                     console.log(data);
                     if (data.length > 0) {
